@@ -1,52 +1,17 @@
 import os
-import time
-from shutil import copyfile
-from playwright.sync_api import sync_playwright
 
-# Function to download the Excel file
-def download_excel_file(page):
-    page.click("a[href$='.xlsx']")
-
-# Function to verify the cell value in the downloaded Excel file
-def verify_cell_value(file_path):
-    try:
-        with open(file_path, 'rb') as file:
-            # Perform necessary operations with the file content
-            # Example: Read file content, parse Excel data, etc.
-            pass
-        return True
-    except Exception as e:
-        print("Error occurred while verifying cell value:", e)
-        return False
-
-with sync_playwright() as p:
-    browser = p.chromium.launch()
-    page = browser.new_page()
-    
-    page.goto("https://example.com")  # Replace with the URL of your website
-    
-    # Click on the link to download the Excel file
-    download_excel_file(page)
-    
-    # Wait for the download to complete (you may need to adjust the timeout)
-    time.sleep(5)
-    
-    # Get the latest downloaded Excel file
-    download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
-    files = os.listdir(download_folder)
-    excel_files = [f for f in files if f.endswith('.xlsx')]
-    if excel_files:
-        latest_file = max(excel_files, key=lambda x: os.path.getctime(os.path.join(download_folder, x)))
-        file_path = os.path.join(download_folder, latest_file)
-        print("Latest downloaded file:", file_path)
-        
-        # Verify the cell value in the downloaded Excel file
-        cell_value_correct = verify_cell_value(file_path)
-        if cell_value_correct:
-            print("Cell value in column 2, row 1 is 4.")
-        else:
-            print("Cell value in column 2, row 1 is not 4.")
+def get_latest_file_from_folder(folder_path):
+    files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
+    if files:
+        latest_file = max(files, key=os.path.getctime)
+        return latest_file
     else:
-        print("No Excel file found in the download folder.")
-    
-    browser.close()
+        return None
+
+# Replace 'YOUR_DOWNLOAD_FOLDER_PATH' with the path to your download folder
+download_folder = 'YOUR_DOWNLOAD_FOLDER_PATH'
+latest_file = get_latest_file_from_folder(download_folder)
+if latest_file:
+    print("Latest file in download folder:", latest_file)
+else:
+    print("No files found in download folder.")
