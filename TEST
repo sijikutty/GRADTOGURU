@@ -1,17 +1,25 @@
-import os
+from playwright.sync_api import sync_playwright
 
-def get_latest_file_from_folder(folder_path):
-    files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
-    if files:
-        latest_file = max(files, key=os.path.getctime)
-        return latest_file
-    else:
-        return None
+# Function to download a file to a specific folder
+def download_file(url, download_path):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        context = browser.new_context(
+            accept_downloads=True,
+            downloads_path=download_path  # Set the download path here
+        )
+        page = context.new_page()
+        
+        # Navigate to the URL where the file is located
+        page.goto(url)
 
-# Replace 'YOUR_DOWNLOAD_FOLDER_PATH' with the path to your download folder
-download_folder = 'YOUR_DOWNLOAD_FOLDER_PATH'
-latest_file = get_latest_file_from_folder(download_folder)
-if latest_file:
-    print("Latest file in download folder:", latest_file)
-else:
-    print("No files found in download folder.")
+        # Wait for the download to complete
+        page.wait_for_download()
+
+        browser.close()
+
+# Example usage:
+url = 'https://example.com/download/file.xlsx'
+download_path = '/path/to/result/folder'  # Set your desired result folder path here
+
+download_file(url, download_path)
