@@ -1,33 +1,37 @@
-import requests
-import openpyxl
+import os
+from openpyxl import load_workbook
 
-def download_excel_file(url, filename):
-    response = requests.get(url)
-    with open(filename, 'wb') as f:
-        f.write(response.content)
+def find_latest_download(folder):
+    # Get list of files in the folder
+    files = os.listdir(folder)
+    # Filter only Excel files
+    excel_files = [f for f in files if f.endswith('.xlsx')]
+    # Sort files by modification time (newest first)
+    excel_files.sort(key=lambda x: os.path.getmtime(os.path.join(folder, x)), reverse=True)
+    if excel_files:
+        return os.path.join(folder, excel_files[0])
+    else:
+        return None
 
-def check_drilldown_functionality(filename):
+def input_data_into_cell(file_path, sheet_name, cell, data):
     try:
-        workbook = openpyxl.load_workbook(filename)
-        # Here, you can implement your logic to check for drill-down functionality.
-        # For example, you might search for specific data, formulas, or properties
-        # in the Excel file that indicate the presence of drill-down functionality.
-        # This example checks if there are multiple sheets in the Excel file.
-        if len(workbook.sheetnames) > 1:
-            return True
-        else:
-            return False
+        wb = load_workbook(filename=file_path)
+        ws = wb[sheet_name]
+        ws[cell] = data
+        wb.save(file_path)
+        print("Data input successful.")
     except Exception as e:
-        print("Error occurred while checking drill-down functionality:", e)
-        return False
+        print("Error occurred while inputting data:", e)
 
-# Example usage
-excel_url = 'https://example.com/example.xlsx'
-excel_filename = 'example.xlsx'
+# Replace 'YOUR_DOWNLOAD_FOLDER_PATH' with the path to your browser's download folder
+download_folder = 'YOUR_DOWNLOAD_FOLDER_PATH'
+latest_file_path = find_latest_download(download_folder)
 
-download_excel_file(excel_url, excel_filename)
-has_drilldown = check_drilldown_functionality(excel_filename)
-if has_drilldown:
-    print("The Excel file has drill-down functionality.")
+if latest_file_path:
+    print("Latest downloaded file:", latest_file_path)
+    sheet_name = 'Sheet1'  # Change to the name of your sheet
+    cell = 'A1'            # Change to the cell where you want to input the data
+    data = 'Hello, World!' # Change to the data you want to input
+    input_data_into_cell(latest_file_path, sheet_name, cell, data)
 else:
-    print("The Excel file does not have drill-down functionality.")
+    print("No Excel file found in the download folder.")
