@@ -1,43 +1,55 @@
 import os
 import time
 import win32com.client
-import pyautogui
+from playwright.sync_api import sync_playwright
 
+# Function to open the latest Excel file
 def open_excel_file(file_path):
     excel = win32com.client.Dispatch("Excel.Application")
     workbook = excel.Workbooks.Open(file_path)
     return excel, workbook
 
-def check_drill_down_functionality(excel, workbook):
-    # Wait for Excel to fully open
-    time.sleep(5)
-    # Activate Excel window
-    excel.Visible = True
-    # Simulate clicking on a cell to activate Excel
-    pyautogui.click(100, 100)  # Adjust coordinates as needed
-    # Here you would write the logic to check for drill-down functionality
-    # For example, you might search for specific UI elements or use keyboard shortcuts
-    # In this example, we'll just print a message
-    print("Drill-down functionality may be available (based on your specific criteria).")
-    # Close Excel
-    workbook.Close(SaveChanges=False)
-    excel.Quit()
+# Replace 'YOUR_DOWNLOAD_FOLDER_PATH' with the actual download path
+download_folder = 'YOUR_DOWNLOAD_FOLDER_PATH'
 
-# Replace 'YOUR_DOWNLOAD_PATH' with the actual download path
-download_path = 'YOUR_DOWNLOAD_PATH'
+# Function to find the latest downloaded Excel file
+def find_latest_excel_file(folder):
+    files = os.listdir(folder)
+    excel_files = [f for f in files if f.endswith('.xlsx')]
+    if excel_files:
+        latest_file = max(excel_files, key=lambda x: os.path.getctime(os.path.join(folder, x)))
+        return os.path.join(folder, latest_file)
+    else:
+        return None
+
+# Use Playwright to open a browser and navigate to a webpage
+with sync_playwright() as p:
+    browser = p.chromium.launch()
+    page = browser.new_page()
+    page.goto("https://example.com")  # Replace with your target website
+
+    # Find and click the link to download the Excel file
+    excel_download_link = page.wait_for_selector("a[download]")
+    excel_download_link.click()
+
+    # Wait for the download to complete (you may need to adjust the timeout)
+    time.sleep(5)
+
+    # Close the browser
+    browser.close()
 
 # Get the latest downloaded Excel file
-files = os.listdir(download_path)
-excel_files = [f for f in files if f.endswith('.xlsx')]
-if excel_files:
-    latest_file = sorted(excel_files, key=lambda x: os.path.getctime(os.path.join(download_path, x)), reverse=True)[0]
-    file_path = os.path.join(download_path, latest_file)
-    print("Latest downloaded file:", file_path)
+latest_file_path = find_latest_excel_file(download_folder)
 
-    # Open the Excel file
-    excel, workbook = open_excel_file(file_path)
+if latest_file_path:
+    print("Latest downloaded file:", latest_file_path)
 
-    # Check drill-down functionality
-    check_drill_down_functionality(excel, workbook)
+    # Open the Excel file using pywin32
+    excel, workbook = open_excel_file(latest_file_path)
+
+    # Close Excel after a delay
+    time.sleep(5)
+    workbook.Close(SaveChanges=False)
+    excel.Quit()
 else:
     print("No Excel file found in the download folder.")
