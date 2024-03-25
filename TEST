@@ -4,10 +4,8 @@ from playwright.sync_api import sync_playwright
 def download_file(url, download_path):
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        context = browser.new_context(
-            accept_downloads=True,
-            downloads_path=download_path  # Set the download path here
-        )
+        context = browser.new_context(accept_downloads=True)
+        context.set_default_download_path(download_path)  # Set the download path here
         page = context.new_page()
         
         # Navigate to the URL where the file is located
