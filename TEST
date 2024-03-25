@@ -1,35 +1,20 @@
-from playwright.sync_api import sync_playwright
-import os
-import time
+ # Wait for the download to complete (you may need to adjust the timeout)
+        download = page.wait_for_download()
 
-def main():
-    with sync_playwright() as p:
-        # Launch the browser
-        browser = p.chromium.launch()
+        # Get the downloaded file path
+        downloaded_file_path = download.path()
 
-        # Create a new browser context
-        context = browser.new_context()
+        # Wait for the file to be fully downloaded (you may need to adjust the timeout)
+        timeout = 30  # Timeout in seconds
+        while not os.path.exists(downloaded_file_path):
+            if timeout <= 0:
+                print("Timeout: File download took too long.")
+                break
+            time.sleep(1)
+            timeout -= 1
 
-        # Create a new page in the context
-        page = context.new_page()
-
-        # Navigate to a page where a file will be downloaded (e.g., example.com)
-        page.goto("https://example.com")
-
-        # Find and click the link to download the Excel file
-        page.click("a[href$='.xlsx']")  # Modify the selector as needed to target the download link
-
-        # Wait for the download to complete (you may need to adjust the timeout)
-        time.sleep(5)  # Wait for 5 seconds (adjust as needed)
-
-        # Get the path to the download folder
-        download_folder = os.path.join(os.path.expanduser("~"), "Downloads")
-
-        # Take a screenshot of the download folder
-        page.screenshot(path="download_folder_screenshot.png", full_page=True)
-
-        # Close the browser
-        browser.close()
-
-if __name__ == "__main__":
-    main()
+        # Check if the file exists
+        if os.path.exists(downloaded_file_path):
+            print("File downloaded successfully!")
+        else:
+            print("File download failed!")
