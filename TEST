@@ -1,20 +1,33 @@
- # Wait for the download to complete (you may need to adjust the timeout)
-        download = page.wait_for_download()
+import requests
+import openpyxl
 
-        # Get the downloaded file path
-        downloaded_file_path = download.path()
+def download_excel_file(url, filename):
+    response = requests.get(url)
+    with open(filename, 'wb') as f:
+        f.write(response.content)
 
-        # Wait for the file to be fully downloaded (you may need to adjust the timeout)
-        timeout = 30  # Timeout in seconds
-        while not os.path.exists(downloaded_file_path):
-            if timeout <= 0:
-                print("Timeout: File download took too long.")
-                break
-            time.sleep(1)
-            timeout -= 1
-
-        # Check if the file exists
-        if os.path.exists(downloaded_file_path):
-            print("File downloaded successfully!")
+def check_drilldown_functionality(filename):
+    try:
+        workbook = openpyxl.load_workbook(filename)
+        # Here, you can implement your logic to check for drill-down functionality.
+        # For example, you might search for specific data, formulas, or properties
+        # in the Excel file that indicate the presence of drill-down functionality.
+        # This example checks if there are multiple sheets in the Excel file.
+        if len(workbook.sheetnames) > 1:
+            return True
         else:
-            print("File download failed!")
+            return False
+    except Exception as e:
+        print("Error occurred while checking drill-down functionality:", e)
+        return False
+
+# Example usage
+excel_url = 'https://example.com/example.xlsx'
+excel_filename = 'example.xlsx'
+
+download_excel_file(excel_url, excel_filename)
+has_drilldown = check_drilldown_functionality(excel_filename)
+if has_drilldown:
+    print("The Excel file has drill-down functionality.")
+else:
+    print("The Excel file does not have drill-down functionality.")
