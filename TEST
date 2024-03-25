@@ -31,9 +31,7 @@ with sync_playwright() as p:
     time.sleep(5)
     
     # Get the latest downloaded Excel file
-    download_folder = browser.context.pages[0].evaluate('''() => {
-        return window.downloadFolder;
-    }''')
+    download_folder = p._impl._browser_contexts[0].storage_state()['origins'][0]['path']
     files = os.listdir(download_folder)
     excel_files = [f for f in files if f.endswith('.xlsx')]
     if excel_files:
