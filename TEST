@@ -1,32 +1,8 @@
-from playwright.sync_api import sync_playwright
+import shutil
 
-# Function to download a file to a specific folder
-def download_file(url, download_path):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        context = browser.new_context(accept_downloads=True)
-        page = context.new_page()
+# Source and destination file paths
+source_file = '/path/to/source/folder/source_file.xlsx'
+destination_folder = '/path/to/destination/folder/'
 
-        # Listen for download events
-        def on_download(event):
-            if event['url'] == url:  # Check if the URL matches the download URL
-                event['path'] = download_path  # Set the download path
-                event['saveAs'] = True  # Ensure that the file is saved with the correct name
-        context.on('download', on_download)
-
-        # Navigate to the URL where the file is located
-        page.goto(url)
-
-        # Function to wait for the download to complete
-        def wait_for_download():
-            while not any(file.endswith('.crdownload') for file in os.listdir(download_path)):
-                time.sleep(1)  # Wait for 1 second
-        wait_for_download()
-
-        browser.close()
-
-# Example usage:
-url = 'https://example.com/download/file.xlsx'
-download_path = '/path/to/result/folder'  # Set your desired result folder path here
-
-download_file(url, download_path)
+# Copy the file from source to destination
+shutil.copy(source_file, destination_folder)
