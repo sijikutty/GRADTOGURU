@@ -1,17 +1,36 @@
-from openpyxl import Workbook
+from openpyxl import load_workbook
 from openpyxl.styles import NamedStyle
 
-# Create a new workbook
-wb = Workbook()
+def apply_default_style(wb):
+    # Create a new default style
+    default_style = NamedStyle(name="default")
+    default_style.font = None  # Setting font to None will apply the default font
+    default_style.fill = None  # Setting fill to None will apply the default fill
+    default_style.border = None  # Setting border to None will apply the default border
+    default_style.alignment = None  # Setting alignment to None will apply the default alignment
 
-# Create a new default style
-default_style = NamedStyle(name="default")
-default_style.font = None  # Setting font to None will apply the default font
-default_style.fill = None  # Setting fill to None will apply the default fill
-default_style.border = None  # Setting border to None will apply the default border
-default_style.alignment = None  # Setting alignment to None will apply the default alignment
+    # Apply the default style to the workbook
+    wb.style = default_style
 
-# Apply the default style to the workbook
-wb.style = default_style
+def verify_cell_value(file_path, sheet_name, cell):
+    # Load the workbook
+    wb = load_workbook(file_path)
 
-# Now you can work with the workbook as usual
+    # Apply default style
+    apply_default_style(wb)
+
+    # Access the desired worksheet
+    ws = wb[sheet_name]
+
+    # Retrieve the value of the specified cell
+    cell_value = ws[cell].value
+
+    return cell_value
+
+# Example usage
+file_path = 'example.xlsx'
+sheet_name = 'Sheet1'
+cell = 'A1'
+
+value = verify_cell_value(file_path, sheet_name, cell)
+print(f"The value of cell {cell} is: {value}")
