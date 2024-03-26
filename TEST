@@ -1,8 +1,17 @@
-import shutil
+from openpyxl import Workbook
+from openpyxl.styles import NamedStyle
 
-# Source and destination file paths
-source_file = '/path/to/source/folder/source_file.xlsx'
-destination_folder = '/path/to/destination/folder/'
+# Create a new workbook
+wb = Workbook()
 
-# Copy the file from source to destination
-shutil.copy(source_file, destination_folder)
+# Create a new default style
+default_style = NamedStyle(name="default")
+default_style.font = None  # Setting font to None will apply the default font
+default_style.fill = None  # Setting fill to None will apply the default fill
+default_style.border = None  # Setting border to None will apply the default border
+default_style.alignment = None  # Setting alignment to None will apply the default alignment
+
+# Apply the default style to the workbook
+wb.style = default_style
+
+# Now you can work with the workbook as usual
