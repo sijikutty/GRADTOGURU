@@ -1,3 +1,4 @@
+from playwright.sync_api import sync_playwright
 from openpyxl import load_workbook
 from openpyxl.styles import NamedStyle
 
@@ -12,25 +13,32 @@ def apply_default_style(wb):
     # Apply the default style to the workbook
     wb.style = default_style
 
+# Function to automate browser and download Excel file
+def download_excel_with_playwright(url):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(url)
+        # Here you need to replace 'selector_for_download_link' with the actual CSS selector for the download link
+        download_link = page.locator('selector_for_download_link')
+        download_link.click()
+        browser.close()
+
+# Function to verify cell value in Excel file
 def verify_cell_value(file_path, sheet_name, cell):
-    # Load the workbook
     wb = load_workbook(file_path)
-
-    # Apply default style
-    apply_default_style(wb)
-
-    # Access the desired worksheet
+    apply_default_style(wb)  # Apply default style to the workbook
     ws = wb[sheet_name]
-
-    # Retrieve the value of the specified cell
     cell_value = ws[cell].value
-
     return cell_value
 
 # Example usage
-file_path = 'example.xlsx'
+website_url = 'https://example.com'
+download_excel_with_playwright(website_url)
+
+# Provide the downloaded file path, sheet name, and cell address for verification
+file_path = 'path/to/downloaded_excel.xlsx'
 sheet_name = 'Sheet1'
 cell = 'A1'
-
-value = verify_cell_value(file_path, sheet_name, cell)
-print(f"The value of cell {cell} is: {value}")
+cell_value = verify_cell_value(file_path, sheet_name, cell)
+print(f"The value of cell {cell} is: {cell_value}")
