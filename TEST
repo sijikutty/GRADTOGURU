@@ -5,12 +5,14 @@ def check_data_grouping(worksheet_name):
     workbook = load_workbook('example.xlsx')
     worksheet = workbook[worksheet_name]
     
-    # Check if any rows or columns are hidden
-    for row in worksheet.iter_rows():
-        if row[0].hidden:
+    # Check if any row dimensions are grouped
+    for row_dimension in worksheet.row_dimensions:
+        if worksheet.row_dimensions[row_dimension].outline_level > 0:
             return True
-    for column in worksheet.iter_cols():
-        if column[0].hidden:
+    
+    # Check if any column dimensions are grouped
+    for col_dimension in worksheet.column_dimensions:
+        if worksheet.column_dimensions[col_dimension].outline_level > 0:
             return True
     
     return False
