@@ -5,17 +5,11 @@ def check_data_grouping(worksheet_name):
     workbook = load_workbook('example.xlsx')
     worksheet = workbook[worksheet_name]
     
-    # Check if any row dimensions are grouped
-    for row_dimension in worksheet.row_dimensions:
-        if row_dimension.outline_level > 0:
-            return True
-    
-    # Check if any column dimensions are grouped
-    for col_dimension in worksheet.column_dimensions:
-        if col_dimension.outline_level > 0:
-            return True
-    
-    return False
+    # Check if any data grouping exists
+    if worksheet.sheet_properties.outlinePr:
+        return True
+    else:
+        return False
 
 # Specify the sheet in which to check for grouping
 target_sheet_name = 'Sheet1'
