@@ -4,26 +4,30 @@ from openpyxl import load_workbook
 workbook = load_workbook('example.xlsx')
 worksheet = workbook.active
 
-# Function to check if outlining exists
-def check_outlining():
-    if worksheet.column_dimensions.grouped:
-        return True
+# Function to check if outlining (grouping) exists in rows
+def check_row_grouping():
+    for row in worksheet.iter_rows():
+        for cell in row:
+            if cell.row_outline_level != 0:
+                return True
     return False
 
-# Function to check if data grouping exists
-def check_data_grouping():
-    if worksheet.row_dimensions.grouped:
-        return True
+# Function to check if outlining (grouping) exists in columns
+def check_column_grouping():
+    for column in worksheet.iter_cols():
+        for cell in column:
+            if cell.column_outline_level != 0:
+                return True
     return False
 
-# Check if outlining exists in the Excel file
-if check_outlining():
-    print("Outlining exists in the Excel file")
+# Check if outlining (grouping) exists in rows
+if check_row_grouping():
+    print("Row grouping exists in the Excel file")
 else:
-    print("Outlining does not exist in the Excel file")
+    print("Row grouping does not exist in the Excel file")
 
-# Check if data grouping exists in the Excel file
-if check_data_grouping():
-    print("Data grouping exists in the Excel file")
+# Check if outlining (grouping) exists in columns
+if check_column_grouping():
+    print("Column grouping exists in the Excel file")
 else:
-    print("Data grouping does not exist in the Excel file")
+    print("Column grouping does not exist in the Excel file")
