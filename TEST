@@ -4,12 +4,14 @@ from openpyxl import load_workbook
 def check_data_grouping(worksheet_name):
     workbook = load_workbook('example.xlsx')
     worksheet = workbook[worksheet_name]
-    for row in worksheet.iter_rows():
-        if row[0].hidden:
-            return True  # If any row is hidden, data grouping is likely applied
-    for column in worksheet.iter_cols():
-        if column[0].hidden:
-            return True  # If any column is hidden, data grouping is likely applied
+    for row in worksheet.iter_rows(min_row=1, max_row=1):
+        for cell in row:
+            if cell.row_hidden:
+                return True  # If any row is hidden, data grouping is likely applied
+    for column in worksheet.iter_cols(min_col=1, max_col=1):
+        for cell in column:
+            if cell.column_hidden:
+                return True  # If any column is hidden, data grouping is likely applied
     return False
 
 # Specify the sheet in which to check for grouping
