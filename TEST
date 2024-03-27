@@ -1,33 +1,40 @@
 from openpyxl import load_workbook
+from zipfile import ZipFile
+import xml.etree.ElementTree as ET
 
 # Load the Excel file
 workbook = load_workbook('example.xlsx')
-worksheet = workbook.active
 
-# Function to check if outlining (grouping) exists in rows
-def check_row_grouping():
-    for row in worksheet.iter_rows():
-        for cell in row:
-            if cell.row_outline_level != 0:
-                return True
+# Function to check if outlining exists
+def check_outlining(worksheet_name):
+    sheet_path = f'xl/worksheets/{worksheet_name}.xml'
+    with ZipFile('example.xlsx') as zip:
+        with zip.open(sheet_path) as xml_file:
+            root = ET.parse(xml_file).getroot()
+            for node in root.iter():
+                if 'outlineLevel' in node.tag:
+                    return True
     return False
 
-# Function to check if outlining (grouping) exists in columns
-def check_column_grouping():
-    for column in worksheet.iter_cols():
-        for cell in column:
-            if cell.column_outline_level != 0:
-                return True
+# Function to check if data grouping exists
+def check_data_grouping(worksheet_name):
+    sheet_path = f'xl/worksheets/{worksheet_name}.xml'
+    with ZipFile('example.xlsx') as zip:
+        with zip.open(sheet_path) as xml_file:
+            root = ET.parse(xml_file).getroot()
+            for node in root.iter():
+                if 'outlineLevel' in node.tag:
+                    return True
     return False
 
-# Check if outlining (grouping) exists in rows
-if check_row_grouping():
-    print("Row grouping exists in the Excel file")
+# Check if outlining exists in the Excel file
+if check_outlining('Sheet1'):
+    print("Outlining exists in the Excel file")
 else:
-    print("Row grouping does not exist in the Excel file")
+    print("Outlining does not exist in the Excel file")
 
-# Check if outlining (grouping) exists in columns
-if check_column_grouping():
-    print("Column grouping exists in the Excel file")
+# Check if data grouping exists in the Excel file
+if check_data_grouping('Sheet1'):
+    print("Data grouping exists in the Excel file")
 else:
-    print("Column grouping does not exist in the Excel file")
+    print("Data grouping does not exist in the Excel file")
