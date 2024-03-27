@@ -4,14 +4,17 @@ from openpyxl import load_workbook
 def check_data_grouping(worksheet_name):
     workbook = load_workbook('example.xlsx')
     worksheet = workbook[worksheet_name]
-    for row in worksheet.iter_rows(min_row=1, max_row=1):
-        for cell in row:
-            if cell.row_hidden:
-                return True  # If any row is hidden, data grouping is likely applied
-    for column in worksheet.iter_cols(min_col=1, max_col=1):
-        for cell in column:
-            if cell.column_hidden:
-                return True  # If any column is hidden, data grouping is likely applied
+    
+    # Check if any row dimensions are grouped
+    for row_dimension in worksheet.row_dimensions:
+        if row_dimension.outline_level > 0:
+            return True
+    
+    # Check if any column dimensions are grouped
+    for col_dimension in worksheet.column_dimensions:
+        if col_dimension.outline_level > 0:
+            return True
+    
     return False
 
 # Specify the sheet in which to check for grouping
