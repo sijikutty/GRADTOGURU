@@ -5,11 +5,15 @@ def check_data_grouping(worksheet_name):
     workbook = load_workbook('example.xlsx')
     worksheet = workbook[worksheet_name]
     
-    # Check if any data grouping exists
-    if worksheet.sheet_properties.outlinePr:
-        return True
-    else:
-        return False
+    # Check if any rows or columns are hidden
+    for row in worksheet.iter_rows():
+        if row[0].hidden:
+            return True
+    for column in worksheet.iter_cols():
+        if column[0].hidden:
+            return True
+    
+    return False
 
 # Specify the sheet in which to check for grouping
 target_sheet_name = 'Sheet1'
