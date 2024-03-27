@@ -1,18 +1,20 @@
 from openpyxl import Workbook
-from openpyxl.styles import NamedStyle
+from openpyxl.styles import Font, PatternFill, Border, Alignment
 
 def apply_default_style(ws):
-    # Create a new default style
-    default_style = NamedStyle(name="default")
-    default_style.font = None  # Setting font to None will apply the default font
-    default_style.fill = None  # Setting fill to None will apply the default fill
-    default_style.border = None  # Setting border to None will apply the default border
-    default_style.alignment = None  # Setting alignment to None will apply the default alignment
+    # Obtain default style attributes from the workbook's style object
+    default_font = ws.parent._fonts[0]
+    default_fill = ws.parent._fills[0]
+    default_border = ws.parent._borders[0]
+    default_alignment = ws.parent._alignments[0]
 
-    # Apply the default style to each cell in the worksheet
+    # Apply the default style attributes to each cell in the worksheet
     for row in ws.iter_rows():
         for cell in row:
-            cell.style = default_style
+            cell.font = default_font
+            cell.fill = default_fill
+            cell.border = default_border
+            cell.alignment = default_alignment
 
 # Function to verify cell value in Excel file
 def verify_cell_value(file_path, sheet_name, cell):
