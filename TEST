@@ -1,35 +1,12 @@
 from openpyxl import load_workbook
-from zipfile import ZipFile
-import xml.etree.ElementTree as ET
 
 # Load the Excel file
 workbook = load_workbook('example.xlsx')
 
 # Function to check if outlining exists in a specific worksheet
 def check_outlining(worksheet_name):
-    sheet_path = f'xl/worksheets/sheet{worksheet_name}.xml'
-    with ZipFile('example.xlsx') as zip:
-        if sheet_path not in zip.namelist():
-            return False  # Worksheet file doesn't exist
-        with zip.open(sheet_path) as xml_file:
-            root = ET.parse(xml_file).getroot()
-            for node in root.iter():
-                if 'outlineLevel' in node.tag:
-                    return True
-    return False
-
-# Function to check if data grouping exists in a specific worksheet
-def check_data_grouping(worksheet_name):
-    sheet_path = f'xl/worksheets/sheet{worksheet_name}.xml'
-    with ZipFile('example.xlsx') as zip:
-        if sheet_path not in zip.namelist():
-            return False  # Worksheet file doesn't exist
-        with zip.open(sheet_path) as xml_file:
-            root = ET.parse(xml_file).getroot()
-            for node in root.iter():
-                if 'outlineLevel' in node.tag:
-                    return True
-    return False
+    worksheet = workbook[worksheet_name]
+    return bool(worksheet.sheet_properties.outlinePr)
 
 # Specify the sheet in which to check for grouping
 target_sheet_name = 'Sheet1'
@@ -39,9 +16,3 @@ if check_outlining(target_sheet_name):
     print(f"Outlining exists in {target_sheet_name}")
 else:
     print(f"No outlining in {target_sheet_name}")
-
-# Check if data grouping exists in the specified sheet
-if check_data_grouping(target_sheet_name):
-    print(f"Data grouping exists in {target_sheet_name}")
-else:
-    print(f"No data grouping in {target_sheet_name}")
