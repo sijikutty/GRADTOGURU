@@ -4,10 +4,10 @@ from openpyxl.styles import NamedStyle
 def apply_default_style(ws):
     # Create a new default style
     default_style = NamedStyle(name="default")
-    default_style.font = ws.parent._fonts[0]
-    default_style.fill = ws.parent._fills[0]
-    default_style.border = ws.parent._borders[0]
-    default_style.alignment = ws.parent._alignments[0]
+    default_style.font = None  # Setting font to None will apply the default font
+    default_style.fill = None  # Setting fill to None will apply the default fill
+    default_style.border = None  # Setting border to None will apply the default border
+    default_style.alignment = None  # Setting alignment to None will apply the default alignment
 
     # Apply the default style to each cell in the worksheet
     for row in ws.iter_rows():
