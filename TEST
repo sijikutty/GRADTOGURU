@@ -1,14 +1,15 @@
 from openpyxl import load_workbook
 
-# Load the Excel file
-workbook = load_workbook('example.xlsx')
-
 # Function to check if data grouping exists in a specific worksheet
 def check_data_grouping(worksheet_name):
+    workbook = load_workbook('example.xlsx')
     worksheet = workbook[worksheet_name]
-    for group in worksheet.row_dimensions.groupNames:
-        if group.hidden:
-            return True
+    for row in worksheet.iter_rows():
+        if row[0].hidden:
+            return True  # If any row is hidden, data grouping is likely applied
+    for column in worksheet.iter_cols():
+        if column[0].hidden:
+            return True  # If any column is hidden, data grouping is likely applied
     return False
 
 # Specify the sheet in which to check for grouping
