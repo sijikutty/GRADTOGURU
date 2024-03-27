@@ -1,39 +1,29 @@
-from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Border, Alignment
+from openpyxl import load_workbook
 
-def apply_default_style(ws):
-    # Obtain default style attributes from the workbook's style object
-    default_font = ws.parent._fonts[0]
-    default_fill = ws.parent._fills[0]
-    default_border = ws.parent._borders[0]
-    default_alignment = ws.parent._alignments[0]
+# Load the Excel file
+workbook = load_workbook('example.xlsx')
+worksheet = workbook.active
 
-    # Apply the default style attributes to each cell in the worksheet
-    for row in ws.iter_rows():
-        for cell in row:
-            cell.font = default_font
-            cell.fill = default_fill
-            cell.border = default_border
-            cell.alignment = default_alignment
+# Function to check if outlining exists
+def check_outlining():
+    if worksheet.column_dimensions.grouped:
+        return True
+    return False
 
-# Function to verify cell value in Excel file
-def verify_cell_value(file_path, sheet_name, cell):
-    wb = load_workbook(file_path)
-    ws = wb[sheet_name]
-    cell_value = ws[cell].value
-    return cell_value
+# Function to check if data grouping exists
+def check_data_grouping():
+    if worksheet.row_dimensions.grouped:
+        return True
+    return False
 
-# Example usage
-file_path = 'path/to/downloaded_excel.xlsx'
-sheet_name = 'Sheet1'
-cell = 'A1'
+# Check if outlining exists in the Excel file
+if check_outlining():
+    print("Outlining exists in the Excel file")
+else:
+    print("Outlining does not exist in the Excel file")
 
-# Apply default style to the downloaded workbook
-wb = load_workbook(file_path)
-ws = wb[sheet_name]
-apply_default_style(ws)
-wb.save(file_path)
-
-# Verify cell value
-cell_value = verify_cell_value(file_path, sheet_name, cell)
-print(f"The value of cell {cell} is: {cell_value}")
+# Check if data grouping exists in the Excel file
+if check_data_grouping():
+    print("Data grouping exists in the Excel file")
+else:
+    print("Data grouping does not exist in the Excel file")
