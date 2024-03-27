@@ -5,10 +5,12 @@ import xml.etree.ElementTree as ET
 # Load the Excel file
 workbook = load_workbook('example.xlsx')
 
-# Function to check if outlining exists
+# Function to check if outlining exists in a specific worksheet
 def check_outlining(worksheet_name):
-    sheet_path = f'xl/worksheets/{worksheet_name}.xml'
+    sheet_path = f'xl/worksheets/sheet{worksheet_name}.xml'
     with ZipFile('example.xlsx') as zip:
+        if sheet_path not in zip.namelist():
+            return False  # Worksheet file doesn't exist
         with zip.open(sheet_path) as xml_file:
             root = ET.parse(xml_file).getroot()
             for node in root.iter():
@@ -16,10 +18,12 @@ def check_outlining(worksheet_name):
                     return True
     return False
 
-# Function to check if data grouping exists
+# Function to check if data grouping exists in a specific worksheet
 def check_data_grouping(worksheet_name):
-    sheet_path = f'xl/worksheets/{worksheet_name}.xml'
+    sheet_path = f'xl/worksheets/sheet{worksheet_name}.xml'
     with ZipFile('example.xlsx') as zip:
+        if sheet_path not in zip.namelist():
+            return False  # Worksheet file doesn't exist
         with zip.open(sheet_path) as xml_file:
             root = ET.parse(xml_file).getroot()
             for node in root.iter():
@@ -27,14 +31,17 @@ def check_data_grouping(worksheet_name):
                     return True
     return False
 
-# Check if outlining exists in the Excel file
-if check_outlining('Sheet1'):
-    print("Outlining exists in the Excel file")
-else:
-    print("Outlining does not exist in the Excel file")
+# Specify the sheet in which to check for grouping
+target_sheet_name = 'Sheet1'
 
-# Check if data grouping exists in the Excel file
-if check_data_grouping('Sheet1'):
-    print("Data grouping exists in the Excel file")
+# Check if outlining exists in the specified sheet
+if check_outlining(target_sheet_name):
+    print(f"Outlining exists in {target_sheet_name}")
 else:
-    print("Data grouping does not exist in the Excel file")
+    print(f"No outlining in {target_sheet_name}")
+
+# Check if data grouping exists in the specified sheet
+if check_data_grouping(target_sheet_name):
+    print(f"Data grouping exists in {target_sheet_name}")
+else:
+    print(f"No data grouping in {target_sheet_name}")
