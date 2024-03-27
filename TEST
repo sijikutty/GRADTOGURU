@@ -1,8 +1,7 @@
-from playwright.sync_api import sync_playwright
-from openpyxl import load_workbook
+from openpyxl import Workbook
 from openpyxl.styles import NamedStyle
 
-def apply_default_style(wb):
+def apply_default_style(ws):
     # Create a new default style
     default_style = NamedStyle(name="default")
     default_style.font = None  # Setting font to None will apply the default font
@@ -10,35 +9,29 @@ def apply_default_style(wb):
     default_style.border = None  # Setting border to None will apply the default border
     default_style.alignment = None  # Setting alignment to None will apply the default alignment
 
-    # Apply the default style to the workbook
-    wb.style = default_style
-
-# Function to automate browser and download Excel file
-def download_excel_with_playwright(url):
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page()
-        page.goto(url)
-        # Here you need to replace 'selector_for_download_link' with the actual CSS selector for the download link
-        download_link = page.locator('selector_for_download_link')
-        download_link.click()
-        browser.close()
+    # Apply the default style to each cell in the worksheet
+    for row in ws.iter_rows():
+        for cell in row:
+            cell.style = default_style
 
 # Function to verify cell value in Excel file
 def verify_cell_value(file_path, sheet_name, cell):
     wb = load_workbook(file_path)
-    apply_default_style(wb)  # Apply default style to the workbook
     ws = wb[sheet_name]
     cell_value = ws[cell].value
     return cell_value
 
 # Example usage
-website_url = 'https://example.com'
-download_excel_with_playwright(website_url)
-
-# Provide the downloaded file path, sheet name, and cell address for verification
 file_path = 'path/to/downloaded_excel.xlsx'
 sheet_name = 'Sheet1'
 cell = 'A1'
+
+# Apply default style to the downloaded workbook
+wb = load_workbook(file_path)
+ws = wb[sheet_name]
+apply_default_style(ws)
+wb.save(file_path)
+
+# Verify cell value
 cell_value = verify_cell_value(file_path, sheet_name, cell)
 print(f"The value of cell {cell} is: {cell_value}")
