@@ -6,7 +6,10 @@ workbook = load_workbook('example.xlsx')
 # Function to check if data grouping exists in a specific worksheet
 def check_data_grouping(worksheet_name):
     worksheet = workbook[worksheet_name]
-    return bool(worksheet.row_dimensions.grouped)
+    for group in worksheet.row_dimensions.groupNames:
+        if group.collapsed:
+            return True
+    return False
 
 # Specify the sheet in which to check for grouping
 target_sheet_name = 'Sheet1'
