@@ -2,7 +2,11 @@ from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
     browser = p.firefox.launch()
-    context = browser.new_context(permissions=['downloads'])  # Enable download permissions
+    context = browser.new_context(
+        accept_downloads=True,  # Enable downloads
+        bypass_csp=True,  # Bypass Content Security Policy
+        record_video_dir='downloads'  # Optional: Set the directory to save downloaded files
+    )
     page = context.new_page()
 
     # Navigate to a page where you want to download a file
