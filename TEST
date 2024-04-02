@@ -1,37 +1,35 @@
-The ~/.config/pip/pip.conf file is a configuration file for pip, and its location varies depending on your operating system.
+from playwright.sync_api import sync_playwright
+from pywinauto import Application, Desktop
+import time
 
-On Unix-like systems (such as Linux or macOS), the ~ symbol represents your home directory. So ~/.config/pip/pip.conf refers to a file named pip.conf located in the .config/pip directory within your home directory.
+def download_and_open_excel():
+    # Step 1: Use Playwright to download the Excel file
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto("https://example.com")  # Replace with the URL of the webpage containing the download button
+        page.click("button.download")  # Replace "button.download" with the selector of the download button
+        page.wait_for_download()  # Wait for the download to complete
+        browser.close()
 
-Here are the typical locations for the pip.conf file:
+    # Step 2: Use Pywinauto to open the downloaded Excel file
+    app = Application(backend="uia").start("C:\\Path\\To\\Excel.exe")  # Replace with the path to Excel
+    time.sleep(2)  # Wait for Excel to open
+    Desktop(backend="uia").Window().set_focus()  # Focus on the Excel window
+    Desktop(backend="uia").Window().type_keys("^o")  # Send Ctrl+O to open the file dialog
+    time.sleep(2)  # Wait for the file dialog to open
+    file_dialog = Desktop(backend="uia").Window(title="Open")  # Get a reference to the file dialog window
+    file_dialog["File name:"].type_keys("C:\\Path\\To\\DownloadedFile.xlsx")  # Replace with the path to the downloaded file
+    file_dialog["Open"].click_input()  # Click the "Open" button to open the file
 
-Linux/macOS: ~/.config/pip/pip.conf
-Windows: %APPDATA%\pip\pip.ini
-To create or edit the pip.conf file, you can use a text editor of your choice. Here's an example of how to create the file on a Unix-like system:
+    # Step 3: Use Pywinauto to interact with the Excel application window to select the "Add-ins" tab
+    excel_window = Desktop(backend="uia").Window(title="Microsoft Excel")  # Get a reference to the Excel application window
+    ribbon_control = excel_window.child_window(class_name="NetUIHWND")  # Find the ribbon control within the Excel window
+    addins_tab = ribbon_control.child_window(title="Add-ins", control_type="TabItem")  # Find the "Add-ins" tab within the ribbon control
+    addins_tab.click_input()  # Click on the "Add-ins" tab
 
-Open a terminal.
+def main():
+    download_and_open_excel()
 
-Use a text editor (such as nano, vim, gedit, etc.) to create or edit the pip.conf file:
-
-javascript
-Copy code
-nano ~/.config/pip/pip.conf
-Add your configuration settings to the file. For example:
-
-csharp
-Copy code
-[global]
-index-url = https://pypi.example.com/simple/
-[pypi.example.com]
-username = your_username
-password = your_password
-Replace your_username, your_password, and https://pypi.example.com/simple/ with your actual credentials and repository URL.
-
-Save the file and exit the text editor.
-
-By placing the pip.conf file in the appropriate location with the correct configuration settings, pip will automatically use these settings when executing pip install commands, including authentication credentials, without requiring interactive prompts.
-
-
-
-
-
-
+if __name__ == "__main__":
+    main()
