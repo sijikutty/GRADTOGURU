@@ -4,15 +4,15 @@ file_dialog_element = None
 if isinstance(file_dialog["File name:"], (list, tuple)):
     # Iterate over the elements
     for element in file_dialog["File name:"]:
-        # Check if the element is visible
-        if element.is_visible():
+        try:
+            # Attempt to access the element to verify if it behaves as expected
+            _ = element.is_visible()
             file_dialog_element = element
             break
-elif hasattr(file_dialog["File name:"], 'is_visible'):  # Check if the object has `is_visible` attribute
-    # Check if the element is visible
-    if file_dialog["File name:"].is_visible():
-        file_dialog_element = file_dialog["File name:"]
+        except (TypeError, AttributeError):
+            # Handle the case where the element does not behave as expected
+            pass
 else:
     # Handle the case when `file_dialog["File name:"]` is not iterable
-    # and doesn't have `is_visible` attribute
+    # or does not behave as expected
     pass
