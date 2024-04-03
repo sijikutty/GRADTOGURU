@@ -1,18 +1,28 @@
-file_dialog_element = None
+from pywinauto import Desktop, Application
+from playwright.sync_api import sync_playwright
 
-# Check if `file_dialog["File name:"]` is a list-like object
-if isinstance(file_dialog["File name:"], (list, tuple)):
-    # Iterate over the elements
-    for element in file_dialog["File name:"]:
-        try:
-            # Attempt to access the element to verify if it behaves as expected
-            _ = element.is_visible()
-            file_dialog_element = element
-            break
-        except (TypeError, AttributeError):
-            # Handle the case where the element does not behave as expected
-            pass
-else:
-    # Handle the case when `file_dialog["File name:"]` is not iterable
-    # or does not behave as expected
-    pass
+# Function to handle file dialog using Pywinauto
+def handle_file_dialog(file_path):
+    app = Application().connect(title="Open")
+    window = app.window(title="Open")
+    window.wait("visible")
+    window["Edit"].type_keys(file_path)
+    window["&Open"].click()
+
+# Path to the Excel file you want to open
+excel_file_path = "C:\\path\\to\\your\\excel_file.xlsx"
+
+# Launch Excel using Playwright
+with sync_playwright() as p:
+    browser = p.chromium.launch()
+    page = browser.new_page()
+    page.goto("excel:///")
+
+# Wait for Excel to open
+page.wait_for_selector("#app > div > div > div:nth-child(1) > div > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)")
+
+# Handle the file dialog to open the Excel file
+handle_file_dialog(excel_file_path)
+
+# Close the browser
+browser.close()
