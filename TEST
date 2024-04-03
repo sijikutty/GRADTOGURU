@@ -1,24 +1,5 @@
-from pywinauto import Desktop, findwindows
+# Assuming "File name:" is the title of the child window you want to interact with
+file_dialog_element = file_dialog.child_window(title="File name:")
 
-# Connect to the desktop
-desktop = Desktop(backend="uia")
-
-# Find all windows matching the criteria
-windows = desktop.windows(title="Your Window Title")
-
-# If there are multiple windows matching the criteria
-if len(windows) > 1:
-    # Print information about all matching windows
-    for window in windows:
-        print(window)
-    # Choose one of the windows based on the information printed
-    # For example, you can choose the window with a specific process ID
-    desired_window = windows[0]  # Choose the first window, adjust as needed
-    # Set focus to the desired window
-    desired_window.set_focus()
-elif len(windows) == 1:
-    # If there is only one window matching the criteria, set focus to it
-    windows[0].set_focus()
-else:
-    # If no windows match the criteria
-    print("No matching windows found.")
+# Type the file path into the file dialog
+file_dialog_element.type_keys(folder_path + filename)
