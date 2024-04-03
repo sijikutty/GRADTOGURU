@@ -1,5 +1,13 @@
 # Assuming "File name:" is the title of the child window you want to interact with
-file_dialog_element = file_dialog.child_window(title="File name:")
+file_dialog_element = None
+for element in file_dialog["File name:"]:
+    if element.is_visible():
+        file_dialog_element = element
+        break
 
-# Type the file path into the file dialog
-file_dialog_element.type_keys(folder_path + filename)
+# Check if the file dialog element is found
+if file_dialog_element is not None:
+    # Type the file path into the file dialog
+    file_dialog_element.type_keys(folder_path + filename)
+else:
+    print("File dialog element not found.")
