@@ -1,6 +1,6 @@
 file_dialog_element = None
 
-# Check if `file_dialog["File name:"]` is iterable (list-like)
+# Check if `file_dialog["File name:"]` is a list-like object
 if isinstance(file_dialog["File name:"], (list, tuple)):
     # Iterate over the elements
     for element in file_dialog["File name:"]:
@@ -8,7 +8,11 @@ if isinstance(file_dialog["File name:"], (list, tuple)):
         if element.is_visible():
             file_dialog_element = element
             break
+elif hasattr(file_dialog["File name:"], 'is_visible'):  # Check if the object has `is_visible` attribute
+    # Check if the element is visible
+    if file_dialog["File name:"].is_visible():
+        file_dialog_element = file_dialog["File name:"]
 else:
     # Handle the case when `file_dialog["File name:"]` is not iterable
-    # You may need to use a different approach here based on the type of `file_dialog["File name:"]`
+    # and doesn't have `is_visible` attribute
     pass
