@@ -1,13 +1,14 @@
-# Assuming "File name:" is the title of the child window you want to interact with
 file_dialog_element = None
-for element in file_dialog["File name:"]:
-    if element.is_visible():
-        file_dialog_element = element
-        break
 
-# Check if the file dialog element is found
-if file_dialog_element is not None:
-    # Type the file path into the file dialog
-    file_dialog_element.type_keys(folder_path + filename)
+# Check if `file_dialog["File name:"]` is iterable (list-like)
+if isinstance(file_dialog["File name:"], (list, tuple)):
+    # Iterate over the elements
+    for element in file_dialog["File name:"]:
+        # Check if the element is visible
+        if element.is_visible():
+            file_dialog_element = element
+            break
 else:
-    print("File dialog element not found.")
+    # Handle the case when `file_dialog["File name:"]` is not iterable
+    # You may need to use a different approach here based on the type of `file_dialog["File name:"]`
+    pass
