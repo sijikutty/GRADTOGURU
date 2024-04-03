@@ -1,35 +1,10 @@
-from playwright.sync_api import sync_playwright
-from pywinauto import Application, Desktop
-import time
+from pywinauto import Desktop
 
-def download_and_open_excel():
-    # Step 1: Use Playwright to download the Excel file
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page()
-        page.goto("https://example.com")  # Replace with the URL of the webpage containing the download button
-        page.click("button.download")  # Replace "button.download" with the selector of the download button
-        page.wait_for_download()  # Wait for the download to complete
-        browser.close()
+# Connect to the desktop
+desktop = Desktop(backend="uia")
 
-    # Step 2: Use Pywinauto to open the downloaded Excel file
-    app = Application(backend="uia").start("C:\\Path\\To\\Excel.exe")  # Replace with the path to Excel
-    time.sleep(2)  # Wait for Excel to open
-    Desktop(backend="uia").Window().set_focus()  # Focus on the Excel window
-    Desktop(backend="uia").Window().type_keys("^o")  # Send Ctrl+O to open the file dialog
-    time.sleep(2)  # Wait for the file dialog to open
-    file_dialog = Desktop(backend="uia").Window(title="Open")  # Get a reference to the file dialog window
-    file_dialog["File name:"].type_keys("C:\\Path\\To\\DownloadedFile.xlsx")  # Replace with the path to the downloaded file
-    file_dialog["Open"].click_input()  # Click the "Open" button to open the file
+# Get a reference to the active window
+window = desktop.window()
 
-    # Step 3: Use Pywinauto to interact with the Excel application window to select the "Add-ins" tab
-    excel_window = Desktop(backend="uia").Window(title="Microsoft Excel")  # Get a reference to the Excel application window
-    ribbon_control = excel_window.child_window(class_name="NetUIHWND")  # Find the ribbon control within the Excel window
-    addins_tab = ribbon_control.child_window(title="Add-ins", control_type="TabItem")  # Find the "Add-ins" tab within the ribbon control
-    addins_tab.click_input()  # Click on the "Add-ins" tab
-
-def main():
-    download_and_open_excel()
-
-if __name__ == "__main__":
-    main()
+# Set focus to the active window
+window.set_focus()
