@@ -45,10 +45,12 @@ def test_nvision_reportbook(page:Page, run_cntrl_id:str):
 
 with sync_playwright() as playwright:
     try:
-        page = instantiate_browser(playwright)
-        navigate_to_PS(page)
+            browser = playwright.chromium.launch(headless=False,  slow_mo=1000)
+    context = browser.new_context()
+    page = context.new_page()
+        page.goto("http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG")
 
-        login_status = PS_login(page, username="PWTEST", pswd="Pwtest@100")
+       login_status = PS_login(page, username="PWTEST", pswd="Pwtest@100")
 
         if login_status != 0:
             raise Exception(f"Login Failed. {login_status}")
