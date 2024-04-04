@@ -1,62 +1,31 @@
-from playwright.sync_api import Playwright, sync_playwright, Page
-from automation_utils import instantiate_browser, navigate_to_PS, PS_login, navigate_menu
-from run_sample_program import add_run_control_id, schedule_process, monitor_process, download_report
+' Create Edge Browser Object
+Set browser = Browser("Edge")
 
-def test_nvision_reportbook(page:Page, run_cntrl_id:str):
-    navigate_menu(page=page,
-                  menu_sequence=["Reporting Tools",
-                                 "PS/nVision",
-                                 "PS/nVision Schedule Books"])
+' Launch Edge Browser
+SystemUtil.Run "msedge.exe", "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG"
 
-    frame = page.frame_locator("iframe[name='TargetContent']")
-    
-    add_run_control_id(frame=frame, run_ctrl_id=run_cntrl_id)
+' Wait for the browser to open (adjust wait time as needed)
+Wait 5 ' Adjust wait time as needed
 
-    line1 = frame.locator("[id^='tr'][id$='row1']")
-    popup_dialog = page.frame_locator("[id^='ptModFrame']")
+' Get the Browser object
+Set page = browser.Page("Page")
 
-    line1.get_by_role("button", name="Look Up Business Unit").click()
-    #popup_dialog.get_by_role("link", name="10000").click()
-    #popup_dialog.get_by_role("link", name="25000").click()
-    #popup_dialog.locator("#SP_BU_FS_CLSVW_BUSINESS_UNIT").click()
-    popup_dialog.locator("#SP_BU_FS_CLSVW_BUSINESS_UNIT").fill("25000")
-    popup_dialog.get_by_role("button", name="Search").click()
-    popup_dialog.get_by_role("link", name="25000").click()
+' Perform Login Action
+page.WebEdit("userid").Set "PWTEST" ' Enter username
+page.WebEdit("pswd").Set "Pwtest@100" ' Enter password
 
-    line1.get_by_role("button", name="Look up Report ID").click()
-    #popup_dialog.get_by_role("link", name="PCSTBS", exact=True).click()
-    popup_dialog.get_by_role("link", name="LFSTTB01", exact=True).click()
+' Click on Login Button
+page.WebButton("Login").Click ' Assuming there is a button with the label "Login" to perform login action
 
-    frame.get_by_role("button", name="Save").click()
-    frame.get_by_title("Process Request Dialog").click()
-    
-    process_instance_id = schedule_process(page=page, server_name="PSNT")
-    
-    run_status = monitor_process(frame=frame, process_inst_id=process_instance_id)
-    print(f"Nvision Program Run status : ", run_status)
+' Wait for some time for the login process to complete
+Wait 10 ' Adjust wait time as needed
 
-    #frame.get_by_role("link", name="Go back to Report Request").click()
-    #frame.get_by_role("link", name="Report Manager").click()
-    download_report(page=page, process_inst_id=process_instance_id)
+' Check for login success or failure
+If page.Exists("Some_Element_On_Next_Page") Then
+    MsgBox "Login Successful."
+Else
+    MsgBox "Login Failed."
+End If
 
-    # Take Screenshot of the result
-    page.screenshot(path="Result\TC32539_Nvision_2.png")
-
-
-with sync_playwright() as playwright:
-    try:
-            browser = playwright.chromium.launch(headless=False,  slow_mo=1000)
-    context = browser.new_context()
-    page = context.new_page()
-        page.goto("http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG")
-
-       login_status = PS_login(page, username="PWTEST", pswd="Pwtest@100")
-
-        if login_status != 0:
-            raise Exception(f"Login Failed. {login_status}")
-        
-        test_nvision_reportbook(page=page, run_cntrl_id="test1")
-            
-    except Exception as e:
-        print(e)
-    
+' Close the browser
+browser.Close
