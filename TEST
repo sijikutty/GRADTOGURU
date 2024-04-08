@@ -1,31 +1,14 @@
-' Create Edge Browser Object
-Set browser = Browser("Edge")
+; Wait for the login page to load
+WinWaitActive("Login Page Title")
 
-' Launch Edge Browser
-SystemUtil.Run "msedge.exe", "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG"
+; Enter username
+Send("username")
 
-' Wait for the browser to open (adjust wait time as needed)
-Wait 5 ' Adjust wait time as needed
+; Tab to switch to the password field
+Send("{TAB}")
 
-' Get the Browser object
-Set page = browser.Page("Page")
+; Enter password
+Send("password")
 
-' Perform Login Action
-page.WebEdit("userid").Set "PWTEST" ' Enter username
-page.WebEdit("pswd").Set "Pwtest@100" ' Enter password
-
-' Click on Login Button
-page.WebButton("Login").Click ' Assuming there is a button with the label "Login" to perform login action
-
-' Wait for some time for the login process to complete
-Wait 10 ' Adjust wait time as needed
-
-' Check for login success or failure
-If page.Exists("Some_Element_On_Next_Page") Then
-    MsgBox "Login Successful."
-Else
-    MsgBox "Login Failed."
-End If
-
-' Close the browser
-browser.Close
+; Send Enter key to submit the form
+Send("{ENTER}")
