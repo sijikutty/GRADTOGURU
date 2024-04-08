@@ -1,14 +1,8 @@
-; Wait for the login page to load
-WinWaitActive("Login Page Title")
+follow the step
 
-; Enter username
-Send("username")
-
-; Tab to switch to the password field
-Send("{TAB}")
-
-; Enter password
-Send("password")
-
-; Send Enter key to submit the form
-Send("{ENTER}")
+verify Record & run setting
+ try to use "-Dmic.enforce=bcel" into JAVA_TOOL_OPTIONS
+Use long path into _JAVA_OPTIONS
+-Xrunjvmhook -Xbootclasspath/a:"C:\Program Files (x86)\Micro Focus\UFT One\bin\java_shared\classes";"C:\Program Files (x86)\Micro Focus\UFT One\bin\java_shared\classes\jasmine.jar" (check if the path corresponds to UFT installation path into Program Files (x86)
+Checking if they can spy and have JavaWindow and Java identification over the Configure Java / Java Control Pane
+if the steps result little, please kindly raise a CPE support case. 
