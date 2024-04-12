@@ -19,11 +19,14 @@ app = Application().start(f'"{javaws_exe_path}" "{jnlp_file_path}"')
 # Wait for the Java Web Start application to fully load
 time.sleep(10)  # Adjust this wait time as needed
 
-# Access the file dialog window
+# Access the file dialog window and click "Open"
 dialog = Desktop(backend="uia").CommonOpenDialog
-
-# Access the file name edit box and set the file path
 dialog.Edit.set_edit_text(jnlp_file_path)
-
-# Click the "Open" button to open the JNLP file
 dialog.Button.click()
+
+# Once the JNLP application is opened, interact with it
+jnlp_app = Application().connect(title="Title of your JNLP application window")
+
+# Access the "submit" button and click it
+submit_button = jnlp_app.window(title="Submit")
+submit_button.click()
