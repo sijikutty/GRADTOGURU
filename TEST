@@ -30,3 +30,11 @@ jnlp_app = Application().connect(title="Title of your JNLP application window")
 # Access the "submit" button and click it
 submit_button = jnlp_app.window(title="Submit")
 submit_button.click()
+
+# Wait for the OK/Cancel dialog to appear
+time.sleep(5)  # Adjust this wait time as needed
+
+# Handle the OK/Cancel dialog
+ok_cancel_dialog = jnlp_app.window(title="OK/Cancel Dialog")
+ok_button = ok_cancel_dialog.Button1  # Assuming "OK" button is the first button
+ok_button.click()
