@@ -1,40 +1,4 @@
-from pywinauto import Desktop, Application
-import time
+# Get the title of the JNLP application window
+jnlp_window_title = app.top_window().window_text()
 
-# Specify the path to the Java Web Start launcher executable (javaws.exe)
-javaws_exe_path = r'C:\path\to\javaws.exe'
-
-# Specify the path to the folder containing the JNLP file
-folder_path = r'C:\Result'
-
-# Specify the name of the JNLP file
-jnlp_file_name = 'frm.jnlp'
-
-# Combine folder path and file name to get the full path to the JNLP file
-jnlp_file_path = fr'{folder_path}\{jnlp_file_name}'
-
-# Launch the Java Web Start application with the JNLP file
-app = Application().start(f'"{javaws_exe_path}" "{jnlp_file_path}"')
-
-# Wait for the Java Web Start application to fully load
-time.sleep(10)  # Adjust this wait time as needed
-
-# Access the file dialog window and click "Open"
-dialog = Desktop(backend="uia").CommonOpenDialog
-dialog.Edit.set_edit_text(jnlp_file_path)
-dialog.Button.click()
-
-# Once the JNLP application is opened, interact with it
-jnlp_app = Application().connect(title="Title of your JNLP application window")
-
-# Access the "submit" button and click it
-submit_button = jnlp_app.window(title="Submit")
-submit_button.click()
-
-# Wait for the OK/Cancel dialog to appear
-time.sleep(5)  # Adjust this wait time as needed
-
-# Handle the OK/Cancel dialog
-ok_cancel_dialog = jnlp_app.window(title="OK/Cancel Dialog")
-ok_button = ok_cancel_dialog.Button1  # Assuming "OK" button is the first button
-ok_button.click()
+print("Title of the JNLP application window:", jnlp_window_title)
