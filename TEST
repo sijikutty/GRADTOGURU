@@ -7,11 +7,14 @@ app = Application().start("your_application.exe")
 main_window = app.window()
 
 # Print the text of the main window
-print("Main window text:", main_window.text())
+print("Main window text:", main_window.text_block())
 
 # Get all child windows
 child_windows = main_window.children()
 
 # Iterate through child windows and print their texts
 for child_window in child_windows:
-    print("Child window text:", child_window.window_text())
+    try:
+        print("Child window text:", child_window.window_text())
+    except Exception as e:
+        print(f"Error retrieving text for child window: {e}")
