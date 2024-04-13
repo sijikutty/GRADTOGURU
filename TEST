@@ -1,4 +1,5 @@
-    required_row = frame.locator("[id^='trCDM_LIST_VW'][id$='row1']")
-    with page.expect_download() as download_info:
-    # Click the hyperlink
-        required_row.locator("[id^='CONTENT_LINK']").click()
+with page.expect_download() as download_info:
+        with page.expect_popup() as page1_info:
+            page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("link", name="Life_STTB-HLA-PWTEST").click()
+        page1 = page1_info.value
+    download = download_info.value
