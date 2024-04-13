@@ -1,19 +1,5 @@
-from pywinauto import Application
-import time
-
-# Launch the application
-app = Application().start("your_application.exe")
-
-# Get the main window
-main_window = app.window(title="Main Window Title")
-
-# Wait for the child window to appear (adjust the sleep time as needed)
-time.sleep(5)
-
-# Find the child window based on its control type
-child_window = main_window.child_window(control_type="Window")
-# You may need to adjust the control_type parameter based on the type of child window you're targeting
-
-# Click the "OK" button inside the child window
-ok_button = child_window.child_window(title="OK", control_type="Button")
-ok_button.click()
+required_row = frame.locator("[id^='trCDM_LIST_VW'][id$='row1']")
+required_row.locator("[id^='CONTENT_LINK']").click()
+Error: strict mode violation: locator("[id^='trCDM_LIST_VW'][id$='row1']").locator("[id^='CONTENT_LINK']") resolved to 2 elements:
+    1) <span class="PSHYPERLINK" id="CONTENT_LINK$span$0" tit…>…</span> aka get_by_title("Report Description")
+    2) <a tabindex="67" id="CONTENT_LINK$0" class="PSHYPER…>Life_STTB-HLA-PWTEST</a> aka get_by_role("link", name="Life_STTB-HLA-PWTEST")
