@@ -1,8 +1,4 @@
-    # Find the first row of the table
-    first_row = page.locator('.table-class tbody tr:nth-child(1)')
-
-    # Find the hyperlink within the first row
-    hyperlink = first_row.locator('a')
-
+    required_row = frame.locator("[id^='trCDM_LIST_VW'][id$='row1']")
+    with page.expect_download() as download_info:
     # Click the hyperlink
-    hyperlink.click()
+        required_row.locator("[id^='CONTENT_LINK']").click()
