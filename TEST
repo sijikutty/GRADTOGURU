@@ -1,3 +1,8 @@
+# Check if the "Security Warning" dialog appears
+if app.top_window().window(title="Security Warning").exists(timeout=10):
+    security_warning_dialog = app.top_window().window(title="Security Warning")
+    security_warning_dialog.Button.click()
+
 # Wait for the "Enable Content" button to appear
 time.sleep(5)  # Adjust this delay as needed
 
