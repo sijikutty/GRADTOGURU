@@ -1,23 +1,14 @@
 from pywinauto import Application
 
 # Connect to the running Excel application
-app = Application(backend="uia").connect(title="VV")
+app = Application(backend="uia").connect(title="Microsoft Excel")
 
 # Get the main window of Excel
-main_window = app.window(title="VV")
+main_window = app.window(title="Microsoft Excel")
 
-# Find all child windows
-child_windows = main_window.children()
+# Find the message bar control
+message_bar = main_window.child_window(title="Message Bar", control_type="Pane")
 
-# Check if there are any child windows found
-if child_windows:
-    found_index = 0  # Index of the element to print
-
-    # Ensure the index is within bounds
-    if found_index < len(child_windows):
-        # Print titles and properties of the first found child window
-        print(child_windows[found_index].dump_tree())
-    else:
-        print(f"Index {found_index} is out of bounds.")
-else:
-    print("No child windows found.")
+# Perform actions on the message bar control as needed
+# For example, print the text of the message bar
+print("Message Bar Text:", message_bar.window_text())
