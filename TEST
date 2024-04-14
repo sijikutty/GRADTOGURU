@@ -1,1 +1,14 @@
-pywinauto.findwindows.ElementAmbiguousError: There are 37 elements that match the criteria {'top_level_only': False, 'parent': <win32_element_info.HwndElementInfo
+from pywinauto import Application
+
+# Connect to the running Excel application
+app = Application(backend="uia").connect(title="VV")
+
+# Get the main window of Excel
+main_window = app.window(title="VV")
+
+# Find all child windows
+child_windows = main_window.descendants()
+
+# Print titles of all child windows
+for window in child_windows:
+    print(window.window_text())
