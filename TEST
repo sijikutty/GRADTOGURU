@@ -1,10 +1,14 @@
-    excel_window = app.window(title="Microsoft Excel")
+from pywinauto.application import Application
 
-    # Find the "Message Bars" control
-    message_bars = excel_window.child_window(title="Message Bars", control_type="Custom")
-    
-    # Find the "Enable Content" button
-    enable_content_button = message_bars.child_window(title="Enable Content", control_type="Button")
-    
-    # Click the "Enable Content" button
-    enable_content_button.click()
+# Start your application
+app = Application().start("your_application.exe")
+
+# Get the main window
+main_window = app.window()
+
+# Get all child windows
+child_windows = main_window.children()
+
+# Print titles of all child windows
+for window in child_windows:
+    print(window.window_text())
