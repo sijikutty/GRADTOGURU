@@ -1,6 +1,7 @@
-# Wait for the file to open
+# Wait for the "Enable Content" button to appear
 time.sleep(5)  # Adjust this delay as needed
 
-# Press the "Enable Content" button
-enable_content_button = app.window(title="Microsoft Excel").window(title="Enable Content")
-enable_content_button.click()
+# Click the "Enable Content" button
+if app.top_window().window(title="Enable Content").exists(timeout=10):
+    enable_content_dialog = app.top_window().window(title="Enable Content")
+    enable_content_dialog.click()
