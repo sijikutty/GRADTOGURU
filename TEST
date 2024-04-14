@@ -1,1 +1,10 @@
-Window("Excel").WinObject("Message Bars").WinButton("Enable Content").Click
+    excel_window = app.window(title="Microsoft Excel")
+
+    # Find the "Message Bars" control
+    message_bars = excel_window.child_window(title="Message Bars", control_type="Custom")
+    
+    # Find the "Enable Content" button
+    enable_content_button = message_bars.child_window(title="Enable Content", control_type="Button")
+    
+    # Click the "Enable Content" button
+    enable_content_button.click()
