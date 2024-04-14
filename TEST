@@ -1,8 +1,23 @@
+from pywinauto import Application
+
+# Connect to the running Excel application
+app = Application(backend="uia").connect(title="VV")
+
+# Get the main window of Excel
+main_window = app.window(title="VV")
+
 # Find all child windows
 child_windows = main_window.children()
 
-# Print titles and properties of all child windows
-for i, window in enumerate(child_windows):
-    print(f"Element {i+1}:")
-    print(window.dump_tree())
-    print("-" * 50)
+# Check if there are any child windows found
+if child_windows:
+    found_index = 0  # Index of the element to print
+
+    # Ensure the index is within bounds
+    if found_index < len(child_windows):
+        # Print titles and properties of the first found child window
+        print(child_windows[found_index].dump_tree())
+    else:
+        print(f"Index {found_index} is out of bounds.")
+else:
+    print("No child windows found.")
