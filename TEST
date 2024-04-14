@@ -1,14 +1,1 @@
-from pywinauto.application import Application
-
-# Start your application
-app = Application().start("your_application.exe")
-
-# Get the main window
-main_window = app.window()
-
-# Get all child windows
-child_windows = main_window.children()
-
-# Print titles of all child windows
-for window in child_windows:
-    print(window.window_text())
+pywinauto.findwindows.ElementAmbiguousError: There are 37 elements that match the criteria {'top_level_only': False, 'parent': <win32_element_info.HwndElementInfo
