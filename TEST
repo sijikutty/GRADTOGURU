@@ -6,9 +6,6 @@ app = Application(backend="uia").connect(title="Microsoft Excel")
 # Get the main window of Excel
 main_window = app.window(title="Microsoft Excel")
 
-# Find the message bar control
-message_bar = main_window.child_window(title="Message Bar", control_type="Pane")
-
-# Perform actions on the message bar control as needed
-# For example, print the text of the message bar
-print("Message Bar Text:", message_bar.window_text())
+# Find the "Add-ins" menu item and click on it
+addins_menu = main_window.child_window(title="Add-ins", control_type="MenuItem")
+addins_menu.click_input()
