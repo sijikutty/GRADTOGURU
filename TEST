@@ -1,11 +1,29 @@
 from pywinauto import Application
+import win32com.client
 
-# Connect to the running Excel application
-app = Application(backend="uia").connect(title="Microsoft Excel")
+# Path to the Excel file
+excel_file_path = "path_to_your_excel_file\\vv.xlsm"
 
-# Get the main window of Excel
-main_window = app.window(title="Microsoft Excel")
+# Start Excel application using Pywinauto
+app = Application(backend="uia").start("excel.exe")
 
-# Find the "Add-ins" menu item and click on it
-addins_menu = main_window.child_window(title="Add-ins", control_type="MenuItem")
-addins_menu.click_input()
+# Connect to the running Excel application using COM interface
+xl = win32com.client.Dispatch("Excel.Application")
+xl.Visible = True
+
+# Open the Excel file
+wb = xl.Workbooks.Open(excel_file_path)
+
+# Activate the worksheet
+ws = wb.Worksheets("Sheet1")
+ws.Activate()
+
+# Click on cell A1Q2 (assuming A1Q2 is a valid cell address)
+ws.Range("A1Q2").Select()
+
+# Click on the "Add-ins" tab
+xl.ExecuteExcel4Macro("SHOW.TOOLBAR(\"Ribbon\",True)")
+
+# Close the Excel file (optional)
+# wb.Close(False)
+# xl.Quit()
