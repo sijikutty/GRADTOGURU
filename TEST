@@ -1,5 +1,6 @@
-with page.expect_download() as download_info:
-        with page.expect_popup() as page1_info:
-            page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("link", name="Life_STTB-HLA-PWTEST").click()
-        page1 = page1_info.value
-    download = download_info.value
+# Wait for the file to open
+time.sleep(5)  # Adjust this delay as needed
+
+# Press the "Enable Content" button
+enable_content_button = app.window(title="Microsoft Excel").window(title="Enable Content")
+enable_content_button.click()
