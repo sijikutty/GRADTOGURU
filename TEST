@@ -1,32 +1,5 @@
-import os
-import win32com.client
-
-# Function to open Excel file from the Downloads folder
-def open_excel():
-    download_folder = os.path.expanduser("~/Downloads")  # Assuming the Downloads folder is used
-    excel_file_path = os.path.join(download_folder, "vv.xlsm")
-    xl = win32com.client.Dispatch("Excel.Application")
-    xl.Visible = True
-    xl.Workbooks.Open(excel_file_path)
-
-# Function to click on cell I45
-def click_cell():
-    xl = win32com.client.Dispatch("Excel.Application")
-    xl.Visible = True
-    xl.Range("I45").Select()
-
-# Function to select add-ins from the menu
-def select_add_in():
-    xl = win32com.client.Dispatch("Excel.Application")
-    xl.Visible = True
-    add_ins_menu = xl.CommandBars("Worksheet Menu Bar").Controls("Tools").Controls("Add-Ins...")
-    add_ins_menu.Execute()
-
-# Main function to execute the steps
-def main():
-    open_excel()
-    click_cell()
-    select_add_in()
-
-if __name__ == "__main__":
-    main()
+# Find the 'drill' add-in in the Add-Ins dialog
+    add_ins_dialog = xl.CommandBars("Add-Ins")
+    drill_addin = add_ins_dialog.Controls("drill")
+    drill_addin.Checked = True  # Check the 'drill' add-in
+    add_ins_dialog.Controls("OK").Click()  # Click OK to confirm selection
