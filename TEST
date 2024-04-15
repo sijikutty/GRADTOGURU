@@ -3,3 +3,10 @@ ribbon = main_window.child_window(title="Ribbon", control_type="Tab")
 
 # Switch to the "Review" tab
 ribbon.child_window(title="Review", control_type="TabItem").click_input()
+
+# Check if the "Review" tab is now activated
+review_tab = ribbon.child_window(title="Review", control_type="TabItem")
+if review_tab.is_selected():
+    print("Review tab is now selected.")
+else:
+    print("Failed to select the Review tab.")
