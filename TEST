@@ -6,13 +6,18 @@ def open_excel_and_select_addin():
     
     xlWB = xl.Workbooks.Open(r"C:\path\to\your\file.xlsx")  # Replace with the path to your Excel file
     
-    # Navigate to Add-Ins menu
-    xl.CommandBars("Worksheet Menu Bar").Controls("Tools").Controls("Add-Ins...").Execute()
+    # Access the Developer tab
+    xl.Application.ExecuteExcel4Macro("Show.Toolbar(""Ribbon"", True)")
+    
+    # Navigate to Add-Ins option in the ribbon menu bar
+    xl.Application.SendKeys("%{tj}") # Access Developer tab
+    xl.Application.SendKeys("i") # Select Add-ins option
+    xl.Application.SendKeys("a") # Select Add-ins dialog
+    xl.Application.SendKeys("{ENTER}") # Confirm the selection
     
     # Select the dropdown of the 'drill' add-in and click on it
-    xl.CommandBars("Add-Ins").Controls("drill").Execute()
-    # The following line is optional if 'drill' add-in has a submenu
-    # xl.CommandBars("Add-Ins").Controls("drill").Controls("drillk").Execute()
+    xl.Application.SendKeys("drill")
+    xl.Application.SendKeys("%(v)")
 
 if __name__ == "__main__":
     open_excel_and_select_addin()
