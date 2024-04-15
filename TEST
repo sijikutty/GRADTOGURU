@@ -1,5 +1,14 @@
-# Find the 'drill' add-in in the Add-Ins dialog
+def select_add_in(xl):
+    xl.Worksheets("Sheet1").Activate()
+    add_ins_menu = xl.CommandBars("Worksheet Menu Bar").Controls("Tools").Controls("Add-Ins...")
+    add_ins_menu.Execute()
+
+    # Find the 'drill' add-in in the Add-Ins dialog
     add_ins_dialog = xl.CommandBars("Add-Ins")
     drill_addin = add_ins_dialog.Controls("drill")
-    drill_addin.Checked = True  # Check the 'drill' add-in
-    add_ins_dialog.Controls("OK").Click()  # Click OK to confirm selection
+    
+    # Click on the checkbox to select 'drill' add-in
+    drill_addin.Click()
+    
+    # Click 'OK' to confirm selection
+    add_ins_dialog.Controls("OK").Click()
