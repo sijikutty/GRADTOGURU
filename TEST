@@ -1,22 +1,18 @@
-import os
 import win32com.client
 
-# Function to open Excel file from the Downloads folder
-def open_excel():
-    download_folder = os.path.expanduser("~/Downloads")  # Assuming the Downloads folder is used
-    excel_file_path = os.path.join(download_folder, "vv.xlsm")
+def open_excel_and_select_addin():
     xl = win32com.client.Dispatch("Excel.Application")
     xl.Visible = True
     
-    # Enable add-ins to load on startup
-    xl.Application.AddIns2("drill").Installed = True  # Assuming 'drill' is the name of the add-in
+    xlWB = xl.Workbooks.Open(r"C:\path\to\your\file.xlsx")  # Replace with the path to your Excel file
     
-    workbook = xl.Workbooks.Open(excel_file_path)
-    return xl, workbook
-
-# Main function to execute the steps
-def main():
-    xl, workbook = open_excel()
+    # Navigate to Add-Ins menu
+    xl.CommandBars("Worksheet Menu Bar").Controls("Tools").Controls("Add-Ins...").Execute()
+    
+    # Select the dropdown of the 'drill' add-in and click on it
+    xl.CommandBars("Add-Ins").Controls("drill").Execute()
+    # The following line is optional if 'drill' add-in has a submenu
+    # xl.CommandBars("Add-Ins").Controls("drill").Controls("drillk").Execute()
 
 if __name__ == "__main__":
-    main()
+    open_excel_and_select_addin()
