@@ -1,17 +1,32 @@
-from pywinauto import Application, Desktop
+import os
+import win32com.client
 
-# Connect to the running Excel application
-app = Application(backend="uia").connect(title="Microsoft Excel")
+# Function to open Excel file from the Downloads folder
+def open_excel():
+    download_folder = os.path.expanduser("~/Downloads")  # Assuming the Downloads folder is used
+    excel_file_path = os.path.join(download_folder, "vv.xlsm")
+    xl = win32com.client.Dispatch("Excel.Application")
+    xl.Visible = True
+    xl.Workbooks.Open(excel_file_path)
 
-# Access the main Excel window
-excel_window = app.window(title="Microsoft Excel")
+# Function to click on cell I45
+def click_cell():
+    xl = win32com.client.Dispatch("Excel.Application")
+    xl.Visible = True
+    xl.Range("I45").Select()
 
-# Access the Ribbon control
-desktop = Desktop(backend="uia")
-ribbon = desktop.window(title="Ribbon", control_type="Tab")
+# Function to select add-ins from the menu
+def select_add_in():
+    xl = win32com.client.Dispatch("Excel.Application")
+    xl.Visible = True
+    add_ins_menu = xl.CommandBars("Worksheet Menu Bar").Controls("Tools").Controls("Add-Ins...")
+    add_ins_menu.Execute()
 
-# Click on the "Review" tab
-review_tab = ribbon.child_window(title="Review", control_type="TabItem")
-review_tab.click_input()
+# Main function to execute the steps
+def main():
+    open_excel()
+    click_cell()
+    select_add_in()
 
-# Perform additional actions on the "Review" tab as needed
+if __name__ == "__main__":
+    main()
