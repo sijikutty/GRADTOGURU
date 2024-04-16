@@ -1,1 +1,5 @@
-OracleFlexWindow("Parameters").OracleTextField("Request Id").
+OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
+OracleListOfValues("Reports").Select datatable("Reports")
+OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
+OracleListOfValues("Source").Select datatable("Source")
+OracleFlexWindow("Parameters").OracleTextField("Request Id").Set datatable("Requestid")
