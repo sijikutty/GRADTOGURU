@@ -1,5 +1,1 @@
-Dim browser
-Set browser = Browser(Index:=0) ' Assuming the browser you want to interact with is the first one opened
-
-' Navigate to a website
-browser.Navigate "http://example.com"
+OracleFlexWindow("Parameters").OracleTextField("Request Id").
