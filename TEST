@@ -1,33 +1,5 @@
-SystemUtil.Run "msedge.exe"
-Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set DataTable("Userid", dtGlobalSheet)
-Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set DataTable("Password", dtGlobalSheet)
-Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-Browser("iConnect - Home").Page("Home").Image("Expand").Click
-Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
-If JavaDialog("Security Warning").Exist(10) Then
-	JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-	JavaDialog("Security Warning").JavaButton("Run").Click
-End If
-OracleFormWindow("Submit a New Request").OracleButton("OK").Click
-OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
-OracleListOfValues("Reports").Select DataTable("Reports", dtGlobalSheet)
-OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
-OracleListOfValues("Source").Select DataTable("Source", dtGlobalSheet)
-OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter DataTable("Requestid", dtGlobalSheet)
-OracleFlexWindow("Parameters").Approve
-OracleFormWindow("Submit Request").OracleButton("Submit").Click
+' Handling error here
+On Error Resume Next
 OracleNotification("Decision").Decline
-OracleFormWindow("Navigator").OracleButton("Open").Click
-OracleFormWindow("Find Requests").OracleButton("Find").Click
-OracleFormWindow("Requests").OracleButton("View Details").Click
-OracleFormWindow("Request Detail").OracleButton("OK").Click
-OracleFormWindow("Requests").CloseWindow
-OracleFormWindow("Navigator").CloseWindow
 OracleNotification("Caution").Approve
-Browser("iConnect - Home").Close
-
-
-
-
-
+On Error GoTo 0 ' Resetting error handling
