@@ -1,1 +1,2 @@
+JavaWindow("Oracle Applications -").Close
 OracleNotification("Caution").Approve
