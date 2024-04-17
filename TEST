@@ -1,4 +1,8 @@
-' Approve Caution notification if exists
-If OracleNotification("Caution").Exist(5) Then
-    OracleNotification("Caution").Approve
+' Optional: Wait for the Oracle form window to close
+OracleWindow("your_form_window_title").WaitProperty "visible", false, 30 ' Wait up to 30 seconds for the window to close
+
+' Check if caution window exists
+If OracleWindow("title:=Caution").Exist(5) Then
+    ' Close the caution window
+    OracleWindow("title:=Caution").Close
 End If
