@@ -1,8 +1,13 @@
-' Optional: Wait for the Oracle form window to close
-OracleWindow("your_form_window_title").WaitProperty "visible", false, 30 ' Wait up to 30 seconds for the window to close
+    frame.get_by_role("button", name="Add a New Value").click()
+    frame.get_by_label("Run Control ID").fill(run_ctrl_id)
+    frame.get_by_role("button", name="Add").click()
 
-' Check if caution window exists
-If OracleWindow("title:=Caution").Exist(5) Then
-    ' Close the caution window
-    OracleWindow("title:=Caution").Close
-End If
+    try:
+        # Checking if the Run Control ID altready exists
+        expect(frame.get_by_text("Search Results")).to_be_visible(timeout=2000)
+
+        required_section = frame.locator("table").filter(has_text="Search Results")
+        required_section.get_by_text(run_ctrl_id, exact=True).click()
+
+    except AssertionError as e:
+        print("Adding new Run Control ID")
