@@ -1,5 +1,4 @@
-' Handling error here
-On Error Resume Next
-OracleNotification("Decision").Decline
-OracleNotification("Caution").Approve
-On Error GoTo 0 ' Resetting error handling
+' Approve Caution notification if exists
+If OracleNotification("Caution").Exist(5) Then
+    OracleNotification("Caution").Approve
+End If
