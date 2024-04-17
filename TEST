@@ -1,5 +1,9 @@
-OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
-OracleListOfValues("Reports").Select datatable("Reports")
-OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
-OracleListOfValues("Source").Select datatable("Source")
-OracleFlexWindow("Parameters").OracleTextField("Request Id").Set datatable("Requestid")
+' Check if the Java dialog "securitywarning" exists
+If JavaDialog("securitywarning").Exist(10) Then
+    ' If the dialog exists, perform the desired action (e.g., click a button)
+    JavaDialog("securitywarning").JavaButton("OK").Click
+    ' You can add additional actions here if needed
+Else
+    ' If the dialog does not exist, you can log a message or perform other actions
+    Reporter.ReportEvent micFail, "Security Warning", "Security warning dialog did not appear"
+End If
