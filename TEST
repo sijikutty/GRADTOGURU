@@ -5,10 +5,7 @@ Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set DataTable(
 Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
 Browser("iConnect - Home").Page("Home").Image("Expand").Click
 Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
-'Browser("Browser").Close
-' Check if the Java dialog "securitywarning" exists
 If JavaDialog("Security Warning").Exist(10) Then
-	'JavaDialog("Security Warning").JavaEdit("Connection not secure").SetCaretPos 0,47
 	JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
 	JavaDialog("Security Warning").JavaButton("Run").Click
 End If
@@ -25,13 +22,11 @@ OracleFormWindow("Navigator").OracleButton("Open").Click
 OracleFormWindow("Find Requests").OracleButton("Find").Click
 OracleFormWindow("Requests").OracleButton("View Details").Click
 OracleFormWindow("Request Detail").OracleButton("OK").Click
-'JavaWindow("Oracle Applications -").Close
-'OracleNotification("Caution").Approve
 OracleFormWindow("Requests").CloseWindow
 OracleFormWindow("Navigator").CloseWindow
 OracleNotification("Caution").Approve
-'Browser("iConnect - Home").Close
-Browser("Browser").Close
+Browser("iConnect - Home").Close
+
 
 
 
