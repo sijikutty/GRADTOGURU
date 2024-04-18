@@ -1,3 +1,10 @@
-If Not IsEmpty(elementText) Then
-    ' Trim "hiki" from the beginning of the text
-    elementText = Replace(elementText, "hiki", "", 1, 1)
+    retry = 0
+    while retry < 1600:
+        expected_values=['Success','Error','Warning','No Success']
+
+        if run_status.text_content() in expected_values:
+            break
+
+        else:
+            frame.get_by_role("button", name="Refresh").click() 
+            retry += 1
