@@ -1,10 +1,26 @@
-    retry = 0
-    while retry < 1600:
-        expected_values=['Success','Error','Warning','No Success']
+Dim retry
+retry = 0
 
-        if run_status.text_content() in expected_values:
-            break
+' Loop with a timeout of 1600 iterations
+While retry < 1600
+    ' Define the expected values
+    expected_values = Array("Success", "Error", "Warning", "No Success")
 
-        else:
-            frame.get_by_role("button", name="Refresh").click() 
-            retry += 1
+    ' Check if the text content is one of the expected values
+    If Browser("Your Browser").Page("Your Page").Frame("Your Frame").WebElement("html tag:=yourTag").Exist(0) Then
+        ' Get the text content of the element
+        actual_value = Browser("Your Browser").Page("Your Page").Frame("Your Frame").WebElement("html tag:=yourTag").GetROProperty("innerText")
+        
+        ' Check if the actual value is in the expected values array
+        For Each value In expected_values
+            If InStr(actual_value, value) > 0 Then
+                ' If the actual value matches one of the expected values, exit the loop
+                Exit While
+            End If
+        Next
+    End If
+
+    ' If the expected value is not found, click the Refresh button and increment the retry counter
+    Browser("Your Browser").Page("Your Page").Frame("Your Frame").WebElement("html tag:=button", "name:=Refresh").Click
+    retry = retry + 1
+Wend
