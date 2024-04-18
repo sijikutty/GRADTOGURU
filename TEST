@@ -1,13 +1,13 @@
-    frame.get_by_role("button", name="Add a New Value").click()
-    frame.get_by_label("Run Control ID").fill(run_ctrl_id)
-    frame.get_by_role("button", name="Add").click()
-
-    try:
-        # Checking if the Run Control ID altready exists
-        expect(frame.get_by_text("Search Results")).to_be_visible(timeout=2000)
-
-        required_section = frame.locator("table").filter(has_text="Search Results")
-        required_section.get_by_text(run_ctrl_id, exact=True).click()
-
-    except AssertionError as e:
-        print("Adding new Run Control ID")
+SystemUtil.Run "msedge.exe"
+Browser("iConnect - Home_2").Navigate "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&"
+Browser("iConnect - Home_2").Page("Oracle PeopleSoft Sign-in").WebEdit("userid").Set "PWTEST"
+Browser("iConnect - Home_2").Page("Oracle PeopleSoft Sign-in").WebEdit("pwd").Set "Pwtest@100"
+Browser("iConnect - Home_2").Page("Oracle PeopleSoft Sign-in").WebButton("To enable screen reader").Click
+Browser("iConnect - Home_2").Page("Homepage").Image("NavBar").Click
+Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").WebButton("PTNB$PTNUI_NB_MENU").Click
+Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("Reporting Tools").Click
+Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("PS/nVision").Click
+Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("PS/nVision Schedule Books").Click
+Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebEdit("PSNVSBOOK_RUN_CNTL_ID").Set "test1"
+Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebButton("Search").Click
+Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").FindTextBlock("No matching values were found").CheckExists True
