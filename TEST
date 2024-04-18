@@ -1,13 +1,37 @@
+' Launch the Edge browser
 SystemUtil.Run "msedge.exe"
+
+' Navigate to the desired URL
 Browser("iConnect - Home_2").Navigate "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&"
+
+' Perform login actions
 Browser("iConnect - Home_2").Page("Oracle PeopleSoft Sign-in").WebEdit("userid").Set "PWTEST"
 Browser("iConnect - Home_2").Page("Oracle PeopleSoft Sign-in").WebEdit("pwd").Set "Pwtest@100"
 Browser("iConnect - Home_2").Page("Oracle PeopleSoft Sign-in").WebButton("To enable screen reader").Click
+
+' Navigate to the desired page
 Browser("iConnect - Home_2").Page("Homepage").Image("NavBar").Click
 Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").WebButton("PTNB$PTNUI_NB_MENU").Click
 Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("Reporting Tools").Click
 Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("PS/nVision").Click
 Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("PS/nVision Schedule Books").Click
+
+' Set the value in the search field
 Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebEdit("PSNVSBOOK_RUN_CNTL_ID").Set "test1"
+
+' Click the search button
 Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebButton("Search").Click
-Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").FindTextBlock("No matching values were found").CheckExists True
+
+' Check if the text exists on the page
+Dim textExists
+textExists = Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Page("PS/nVision Schedule Books").WebElemet("text:=No matching values were found").Exist
+
+' Perform action based on text existence
+If textExists Then
+    ' Text exists, perform action
+    ' Add your action here
+    MsgBox "Text exists on the page"
+Else
+    ' Text does not exist
+    MsgBox "Text does not exist on the page"
+End If
