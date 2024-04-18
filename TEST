@@ -17,21 +17,11 @@ Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("PS/n
 Browser("iConnect - Home_2").Page("Homepage").Frame("psNavBarIFrame").Link("PS/nVision Schedule Books").Click
 
 ' Set the value in the search field
-Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebEdit("PSNVSBOOK_RUN_CNTL_ID").Set "test1"
+Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebEdit("PSNVSBOOK_RUN_CNTL_ID").Set "test7"
 
 ' Click the search button
 Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebButton("Search").Click
 
 ' Check if the text exists on the page
 Dim textExists
-textExists = Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Page("PS/nVision Schedule Books").WebElemet("text:=No matching values were found").Exist
-
-' Perform action based on text existence
-If textExists Then
-    ' Text exists, perform action
-    ' Add your action here
-    MsgBox "Text exists on the page"
-Else
-    ' Text does not exist
-    MsgBox "Text does not exist on the page"
-End If
+textExists =Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebElement("PTS_CRITTEXT_DISP").CheckProperty("innertext","No matching values were found.")
