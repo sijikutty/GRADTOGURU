@@ -1,32 +1,20 @@
-' Launch the browser and navigate to the webpage
-SystemUtil.Run "iexplore.exe", "https://example.com"
+' Specify the path of the Downloads folder under the C drive
+Dim downloadsFolderPath
+downloadsFolderPath = "C:\Users\YourUsername\Downloads" ' Replace YourUsername with your actual username
 
-' Wait for the browser to load
-Browser("title:=.*").Page("title:=.*").Sync
+' Specify the file name to open
+Dim fileName
+fileName = "vv.xlsm"
 
-' Click on the link to initiate the download
-Browser("title:=.*").Page("title:=.*").WebButton("name:=Requests: Run Form Run").Click
-' Get the path of the Downloads folder
-Dim downloadsFolder
-downloadsFolder = Environment("USERPROFILE") & "\Downloads"
-' Wait for the download to complete
-WaitForFileDownload "C:\Users\YourUsername\Downloads\" & GetFileNameFromURL("https://example.com/download/link")
+' Create a shell object
+Dim objShell
+Set objShell = CreateObject("WScript.Shell")
 
-' Open the downloaded file with Microsoft Excel
-SystemUtil.Run "excel.exe", "C:\Users\YourUsername\Downloads\" & GetFileNameFromURL("https://example.com/download/link")
+' Open the Downloads folder in File Explorer
+objShell.Run "explorer.exe " & downloadsFolderPath
 
-Function WaitForFileDownload(downloadPath)
-    Dim fileSystem, file
-    Set fileSystem = CreateObject("Scripting.FileSystemObject")
-    
-    ' Wait for the file to be downloaded
-    Do Until fileSystem.FileExists(downloadPath)
-        Wait 1 ' Adjust the wait time as needed
-    Loop
-End Function
+' Wait for a brief moment before attempting to open the file
+Wait 2 ' Adjust the wait time as needed
 
-Function GetFileNameFromURL(url)
-    Dim fileName
-    fileName = Mid(url, InStrRev(url, "/") + 1) ' Extracts the file name from the URL
-    GetFileNameFromURL = fileName
-End Function
+' Open the specific file (vv.xlsm) in Microsoft Excel
+objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fileName & """"
