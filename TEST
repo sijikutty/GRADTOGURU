@@ -1,26 +1,5 @@
-Dim retry
-retry = 0
-
-' Loop with a timeout of 1600 iterations
-While retry < 1600
-    ' Define the expected values
-    expected_values = Array("Success", "Error", "Warning", "No Success")
-
-    ' Check if the text content is one of the expected values
-    If Browser("Your Browser").Page("Your Page").Frame("Your Frame").WebElement("html tag:=yourTag").Exist(0) Then
-        ' Get the text content of the element
-        actual_value = Browser("Your Browser").Page("Your Page").Frame("Your Frame").WebElement("html tag:=yourTag").GetROProperty("innerText")
-        
-        ' Check if the actual value is in the expected values array
-        For Each value In expected_values
-            If InStr(actual_value, value) > 0 Then
-                ' If the actual value matches one of the expected values, exit the loop
-                Exit While
-            End If
-        Next
-    End If
-
-    ' If the expected value is not found, click the Refresh button and increment the retry counter
-    Browser("Your Browser").Page("Your Page").Frame("Your Frame").WebElement("html tag:=button", "name:=Refresh").Click
-    retry = retry + 1
-Wend
+Dim elementtext
+elementtext=Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").GetROProperty("innertext")
+If Not IsEmpty(elementText) Then
+    elementText = Replace(elementText, "Process Instance:", "", 1, 1)
+End If
