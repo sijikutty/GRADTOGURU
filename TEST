@@ -6,7 +6,9 @@ Browser("title:=.*").Page("title:=.*").Sync
 
 ' Click on the link to initiate the download
 Browser("title:=.*").Page("title:=.*").WebButton("name:=Requests: Run Form Run").Click
-
+' Get the path of the Downloads folder
+Dim downloadsFolder
+downloadsFolder = Environment("USERPROFILE") & "\Downloads"
 ' Wait for the download to complete
 WaitForFileDownload "C:\Users\YourUsername\Downloads\" & GetFileNameFromURL("https://example.com/download/link")
 
