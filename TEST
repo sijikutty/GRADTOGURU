@@ -1,5 +1,6 @@
-Dim elementtext
-elementtext=Browser("iConnect - Home_2").Page("PS/nVision Schedule Books").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").GetROProperty("innertext")
-If Not IsEmpty(elementText) Then
-    elementText = Replace(elementText, "Process Instance:", "", 1, 1)
-End If
+            with page.expect_download() as download_info:
+                page.get_by_role("link", name="Requests: Run Form Run").click()
+#
+                download = download_info.value
+                path=r"Result/"+ download.suggested_filename
+                download.save_as(path=r"Result/"+ download.suggested_filename) 
