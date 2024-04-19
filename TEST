@@ -1,6 +1,30 @@
-            with page.expect_download() as download_info:
-                page.get_by_role("link", name="Requests: Run Form Run").click()
-#
-                download = download_info.value
-                path=r"Result/"+ download.suggested_filename
-                download.save_as(path=r"Result/"+ download.suggested_filename) 
+' Launch the browser and navigate to the webpage
+SystemUtil.Run "iexplore.exe", "https://example.com"
+
+' Wait for the browser to load
+Browser("title:=.*").Page("title:=.*").Sync
+
+' Click on the link to initiate the download
+Browser("title:=.*").Page("title:=.*").WebButton("name:=Requests: Run Form Run").Click
+
+' Wait for the download to complete
+WaitForFileDownload "C:\Users\YourUsername\Downloads\" & GetFileNameFromURL("https://example.com/download/link")
+
+' Open the downloaded file with Microsoft Excel
+SystemUtil.Run "excel.exe", "C:\Users\YourUsername\Downloads\" & GetFileNameFromURL("https://example.com/download/link")
+
+Function WaitForFileDownload(downloadPath)
+    Dim fileSystem, file
+    Set fileSystem = CreateObject("Scripting.FileSystemObject")
+    
+    ' Wait for the file to be downloaded
+    Do Until fileSystem.FileExists(downloadPath)
+        Wait 1 ' Adjust the wait time as needed
+    Loop
+End Function
+
+Function GetFileNameFromURL(url)
+    Dim fileName
+    fileName = Mid(url, InStrRev(url, "/") + 1) ' Extracts the file name from the URL
+    GetFileNameFromURL = fileName
+End Function
