@@ -1,4 +1,3 @@
-' Open Excel file
 SystemUtil.Run "excel.exe", "C:\Users\SM05698\Downloads\LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm", "", "", 1
 
 ' Wait for Excel to open (you might need to adjust the sleep time)
@@ -7,6 +6,21 @@ Wait(2)
 ' Activate Excel window (assuming it's named "Excel_3")
 Window("Excel_3").Activate
 
-' Type "I45" into the name box and press Enter
-Window("Excel_3").WinEdit("Name Box").Set "I45"
-Window("Excel_3").WinEdit("Name Box").Type micReturn
+' Enter value into Name Box using VBA to navigate to cell I45
+Dim xlApp
+Set xlApp = GetObject(, "Excel.Application")
+xlApp.Run "NavigateToCellI45"
+
+Sub NavigateToCellI45()
+    Dim ws As Worksheet
+    Dim cell As Range
+    
+    ' Set reference to the worksheet
+    Set ws = ThisWorkbook.Sheets(1) ' Assuming it's the first sheet
+    
+    ' Access cell I45 (row 45, column 9)
+    Set cell = ws.Cells(45, 9)
+    
+    ' Activate the cell
+    cell.Activate
+End Sub
