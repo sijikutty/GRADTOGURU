@@ -30,6 +30,8 @@ time.sleep(1)
 excel_window.child_window(title="LFSTTB01_Life_STTB-HLA_2024-04-19").click_input()
 time.sleep(1)
 
+AttributeError: Neither GUI element (wrapper) nor wrapper method 'TypeKeys' were found (typo?)
+
 # Select Drill from menu
 excel_window.child_window(title="WinMenu").menu_select("Drill")
 
