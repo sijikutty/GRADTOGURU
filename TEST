@@ -1,9 +1,31 @@
+from pywinauto import Application
+import time
 
-SystemUtil.Run "C:\Users\SM05698\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer (2).lnk","","","OpenNewWindow"
-Window("File Explorer").WinTreeView("WinTreeView_2").Select "Quick access;Downloads"
-Window("Downloads_2").WinObject("WinObject_2").WinList("WinList").Activate 
-Window("Excel_2").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
-Window("Excel_2").WinObject("LFSTTB01_Life_STTB-HLA_2024-04-19").Click 1014,359
-Window("Excel_2").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
-Window("Excel_2").Window("Window").WinObject("Lower Ribbon").WinButton("nVisionDrill").Click
-Window("Excel_2").WinObject("Ribbon").WinMenu("WinMenu").Select "Drill"
+# Run File Explorer
+explorer_path = r"C:\Users\SM05698\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer (2).lnk"
+explorer_app = Application().start(explorer_path)
+time.sleep(2)  # Wait for File Explorer to open
+
+# Navigate to Downloads in File Explorer
+file_explorer_window = explorer_app.window(title="File Explorer")
+file_explorer_window.TreeView2.get_item(r"Quick access\Downloads").click()
+time.sleep(2)
+
+# Activate Excel Window
+excel_app = Application().connect(title="Excel_2")  # Assuming Excel window is already open
+excel_window = excel_app.window(title="Excel_2")
+excel_window.set_focus()
+time.sleep(1)
+
+# Select Add-ins tab in Excel
+excel_window.child_window(title="Ribbon Tabs").tabctrl.select("Add-ins")
+time.sleep(1)
+
+# Click on nVisionDrill button
+excel_window.child_window(title="LFSTTB01_Life_STTB-HLA_2024-04-19").click_input()
+time.sleep(1)
+
+# Select Drill from menu
+excel_window.child_window(title="WinMenu").menu_select("Drill")
+
+# Note: Adjust the sleep times as necessary based on your application's responsiveness.
