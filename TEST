@@ -1,27 +1,14 @@
-' Create an Excel application object
-Dim objExcel
-Set objExcel = CreateObject("Excel.Application")
-
-' Make Excel visible (optional)
-objExcel.Visible = True
-
-' Access the CommandBars collection to interact with the Ribbon
-Set ribbon = objExcel.CommandBars("Ribbon")
-
-' Access the controls within the Ribbon
-Set controls = ribbon.Controls
-
 ' Print details of each control in the Ribbon
 For Each ctrl In controls
     ' Check if the control is a Ribbon tab
     If ctrl.Type = msoControlPopup Then
         ' Print details of the Ribbon tab
-        MsgBox "Ribbon Tab: " & ctrl.Caption & ", ID: " & ctrl.ID
+        Print "Ribbon Tab: " & ctrl.Caption & ", ID: " & ctrl.ID
         ' Access the controls within the Ribbon tab
         Set tabControls = ctrl.Controls
         ' Print details of each control in the Ribbon tab
         For Each tabCtrl In tabControls
-            MsgBox "Control: " & tabCtrl.Caption & ", ID: " & tabCtrl.ID
+            Print "Control: " & tabCtrl.Caption & ", ID: " & tabCtrl.ID
         Next
     End If
 Next
