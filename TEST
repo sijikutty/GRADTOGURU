@@ -1,14 +1,7 @@
 ' Print details of each control in the Ribbon
-For Each ctrl In controls
-    ' Check if the control is a Ribbon tab
-    If ctrl.Type = msoControlPopup Then
-        ' Print details of the Ribbon tab
-        Print "Ribbon Tab: " & ctrl.Caption & ", ID: " & ctrl.ID
-        ' Access the controls within the Ribbon tab
-        Set tabControls = ctrl.Controls
-        ' Print details of each control in the Ribbon tab
-        For Each tabCtrl In tabControls
-            Print "Control: " & tabCtrl.Caption & ", ID: " & tabCtrl.ID
-        Next
-    End If
+For i = 1 To controls.Count
+    ' Get the control at the current index
+    Set ctrl = controls.Item(i)
+    ' Print details of the control
+    Print "Control: " & ctrl.Caption & ", ID: " & ctrl.ID
 Next
