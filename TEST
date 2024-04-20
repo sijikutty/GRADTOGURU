@@ -3,24 +3,17 @@ Dim objExcel
 Set objExcel = CreateObject("Excel.Application")
 
 ' Hide Excel application window (optional)
-objExcel.Visible = False
+objExcel.Visible = True
 
 ' Open the Excel file
 Dim wb
-Set wb = objExcel.Workbooks.Open("C:\Path\to\Your\File.xlsx") ' Replace with the path to your Excel file
+Set wb = objExcel.Workbooks.Open(downloadsFolderPath & "\" & fileName)
 
 ' Activate the workbook
 wb.Activate
 
-' Select cell I45
+' Select cell I45 in the active worksheet
 objExcel.ActiveSheet.Range("I45").Select
-
-' Unhide Excel application window (optional)
-' objExcel.Visible = True
-
-' Cleanup: Close the workbook and quit Excel
-wb.Close
-objExcel.Quit
 
 ' Release object references
 Set wb = Nothing
