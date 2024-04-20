@@ -1,11 +1,12 @@
-' Open File Explorer and navigate to the specified directory
-SystemUtil.Run "explorer.exe", "C:\Users", "", "", 1
-
-' Wait for File Explorer to open (you might need to adjust the sleep time)
-Wait(2)
 
 ' Open the Excel file in the specified directory
-SystemUtil.Run "excel.exe", "C:\Users\vv.xlsm", "", "", 1
+SystemUtil.Run "excel.exe", "C:\Users\SM05698\Downloads\LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm", "", "", 1
 
 ' Wait for Excel to open (you might need to adjust the sleep time)
 Wait(2)
+
+
+Window("Excel_3").WinObject("LFSTTB01_Life_STTB-HLA_2024-04-19.x").Click 1048,359
+Window("Excel_3").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
+Window("Excel_3").Window("Window").WinObject("Lower Ribbon").WinButton("nVisionDrill").Click
+Window("Excel_3").WinObject("Ribbon").WinMenu("WinMenu").Select "Drill"
