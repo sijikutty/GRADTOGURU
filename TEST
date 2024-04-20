@@ -5,9 +5,9 @@ Set objExcel = CreateObject("Excel.Application")
 ' Hide Excel application window (optional)
 objExcel.Visible = True
 
-' Open the Excel file
+' Open the Excel file with add-ins enabled
 Dim wb
-Set wb = objExcel.Workbooks.Open(downloadsFolderPath & "\" & fileName)
+Set wb = objExcel.Workbooks.Open(downloadsFolderPath & "\" & fileName, , False, , , , , , , True)
 
 ' Activate the workbook
 wb.Activate
