@@ -1,3 +1,9 @@
-Cannot identify the specified item of the Items View object. Confirm that the specified item is included in the object's item collection.
 
-Line (7): "Window("Downloads_2").WinObject("Items View").WinList("Items View").Select "LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm"". 
+SystemUtil.Run "C:\Users\SM05698\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer (2).lnk","","","OpenNewWindow"
+Window("File Explorer").WinTreeView("WinTreeView_2").Select "Quick access;Downloads"
+Window("Downloads_2").WinObject("WinObject_2").WinList("WinList").Activate 
+Window("Excel_2").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
+Window("Excel_2").WinObject("LFSTTB01_Life_STTB-HLA_2024-04-19").Click 1014,359
+Window("Excel_2").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
+Window("Excel_2").Window("Window").WinObject("Lower Ribbon").WinButton("nVisionDrill").Click
+Window("Excel_2").WinObject("Ribbon").WinMenu("WinMenu").Select "Drill"
