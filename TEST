@@ -8,6 +8,8 @@ command = """" & python_path & """ """ & script_path & """"
 shell.Run command, 0, True ' Run synchronously and wait for completion
 
 ' Check for errors
-If shell.ExitCode <> 0 Then
-    MsgBox "Error: Python script failed to execute. Exit code: " & shell.ExitCode
+On Error Resume Next
+If Err.Number <> 0 Then
+    MsgBox "Error: Python script failed to execute. Error number: " & Err.Number & vbCrLf & "Error description: " & Err.Description
 End If
+On Error GoTo 0
