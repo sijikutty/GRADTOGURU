@@ -1,6 +1,3 @@
-Dim downloadsFolderPath
-downloadsFolderPath = "C:\Users\SM05698\Downloads" ' Replace YourUsername with your actual username
+Cannot identify the specified item of the Items View object. Confirm that the specified item is included in the object's item collection.
 
-SystemUtil.Run "explorer.exe ", downloadsFolderPath
-
-Window("Downloads_2").WinObject("Items View").WinList("Items View").Select "LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm"
+Line (7): "Window("Downloads_2").WinObject("Items View").WinList("Items View").Select "LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm"". 
