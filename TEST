@@ -1,25 +1,13 @@
 ' Get a reference to the Excel window
-Set excelWindow = Window("regexpwndtitle:=Microsoft Excel.*")
+Set excelWindow = Window("nativeclass:=XLMAIN")
 
 If excelWindow.Exist(10) Then
-    ' Use descriptive programming to identify the Ribbon object
-    Set ribbon = excelWindow.WinObject("regexpwndclass:=Ribbon.*")
+    ' Retrieve the window title and class name
+    windowTitle = excelWindow.GetROProperty("title")
+    className = excelWindow.GetROProperty("nativeclass")
 
-    If Not ribbon.Exist(10) Then
-        MsgBox "Ribbon object not found."
-        Exit ' Exit the script block
-    End If
-
-    ' Use descriptive programming to identify the Ribbon Tabs
-    Set ribbonTabs = ribbon.WinTab("regexpwndclass:=Ribbon Tabs.*")
-
-    If Not ribbonTabs.Exist(10) Then
-        MsgBox "Ribbon Tabs object not found."
-        Exit ' Exit the script block
-    End If
-
-    ' Select "Add-ins" tab in Ribbon Tabs
-    ribbonTabs.Select "Add-ins"
+    ' Display the window title and class name in a message box
+    MsgBox "Excel Window Title: " & windowTitle & vbCrLf & "Class Name: " & className
 Else
     MsgBox "Excel window not found."
 End If
