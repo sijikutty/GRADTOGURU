@@ -1,26 +1,25 @@
-' Open Excel with the specific file (vv.xlsm)
-objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fullFileName & """", 1, True
-
-' Wait for Excel to open
-Wait 2 ' Adjust the wait time as needed
-
-' Access the Excel window using WinObject
+' Get a reference to the Excel window
 Set excelWindow = Window("regexpwndtitle:=Microsoft Excel.*")
 
-' Access the Ribbon within the Excel window using WinObject
-Set ribbon = excelWindow.WinObject("Ribbon")
+If excelWindow.Exist(10) Then
+    ' Use descriptive programming to identify the Ribbon object
+    Set ribbon = excelWindow.WinObject("regexpwndclass:=Ribbon.*")
 
-' Select the "Add-ins" tab in the Ribbon
-ribbon.WinTab("Name:=Add-ins").Select
+    If Not ribbon.Exist(10) Then
+        MsgBox "Ribbon object not found."
+        Exit Sub
+    End If
 
-' Access the Lower Ribbon within the Excel window using WinObject
-Set lowerRibbon = excelWindow.WinObject("Lower Ribbon")
+    ' Use descriptive programming to identify the Ribbon Tabs
+    Set ribbonTabs = ribbon.WinTab("regexpwndclass:=Ribbon Tabs.*")
 
-' Click the "nVisionDrill" button in the Lower Ribbon
-lowerRibbon.WinButton("Name:=nVisionDrill").Click
+    If Not ribbonTabs.Exist(10) Then
+        MsgBox "Ribbon Tabs object not found."
+        Exit Sub
+    End If
 
-' Access the Ribbon again to access the WinMenu
-Set ribbon = excelWindow.WinObject("Ribbon")
-
-' Select the "Drill" option from the WinMenu
-ribbon.WinMenu("Name:=WinMenu").Select "Drill"
+    ' Select "Add-ins" tab in Ribbon Tabs
+    ribbonTabs.Select "Add-ins"
+Else
+    MsgBox "Excel window not found."
+End If
