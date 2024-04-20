@@ -1,18 +1,3 @@
-' Open Excel with the specific file (vv.xlsm)
-objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fileName & """", 1, True
-
-' Wait for Excel to open
-Wait 2 ' Adjust the wait time as needed
-
-' Get a reference to the Excel application
-Dim objExcel
-Set objExcel = GetObject(, "Excel.Application")
-
-' Make Excel visible
-objExcel.Visible = True
-
-' Select cell I45 in the active worksheet
-objExcel.ActiveSheet.Range("I45").Select
-
-' Release object references
-Set objExcel = Nothing
+Window("Excel_2").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
+Window("Excel_2").Window("Window").WinObject("Lower Ribbon").WinButton("nVisionDrill").Click
+Window("Excel_2").WinObject("Ribbon").WinMenu("WinMenu").Select "Drill"
