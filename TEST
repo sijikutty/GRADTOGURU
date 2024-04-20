@@ -1,20 +1,22 @@
-' Specify the path of the Downloads folder under the C drive
-Dim downloadsFolderPath
-downloadsFolderPath = "C:\Users\YourUsername\Downloads" ' Replace YourUsername with your actual username
+' Get the current date
+Dim currentDate
+currentDate = Now
 
-' Specify the file name to open
-Dim fileName
-fileName = "vv.xlsm"
+' Format the current date as yyyy-mm-dd
+Dim formattedDate
+formattedDate = Year(currentDate) & "-" & Right("0" & Month(currentDate), 2) & "-" & Right("0" & Day(currentDate), 2)
 
-' Create a shell object
-Dim objShell
-Set objShell = CreateObject("WScript.Shell")
+' Specify the filename without the extension
+Dim fileNameWithoutExtension
+fileNameWithoutExtension = "vv_" & formattedDate
 
-' Open the Downloads folder in File Explorer
-objShell.Run "explorer.exe " & downloadsFolderPath
+' Specify the file extension
+Dim fileExtension
+fileExtension = ".xlsm"
 
-' Wait for a brief moment before attempting to open the file
-Wait 2 ' Adjust the wait time as needed
+' Concatenate the filename with the date and extension
+Dim fullFileName
+fullFileName = fileNameWithoutExtension & fileExtension
 
-' Open the specific file (vv.xlsm) in Microsoft Excel
-objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fileName & """"
+' Output the full filename
+MsgBox "Full filename: " & fullFileName
