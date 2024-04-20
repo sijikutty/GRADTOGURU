@@ -1,12 +1,12 @@
-
-' Open the Excel file in the specified directory
+' Open Excel file
 SystemUtil.Run "excel.exe", "C:\Users\SM05698\Downloads\LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm", "", "", 1
 
 ' Wait for Excel to open (you might need to adjust the sleep time)
 Wait(2)
 
+' Activate Excel window (assuming it's named "Excel_3")
+Window("Excel_3").Activate
 
-Window("Excel_3").WinObject("LFSTTB01_Life_STTB-HLA_2024-04-19.x").Click 1048,359
-Window("Excel_3").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
-Window("Excel_3").Window("Window").WinObject("Lower Ribbon").WinButton("nVisionDrill").Click
-Window("Excel_3").WinObject("Ribbon").WinMenu("WinMenu").Select "Drill"
+' Type "I45" into the name box and press Enter
+Window("Excel_3").WinEdit("Name Box").Set "I45"
+Window("Excel_3").WinEdit("Name Box").Type micReturn
