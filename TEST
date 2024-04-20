@@ -1,70 +1,26 @@
-' Specify the path of the Downloads folder under the C drive
-Dim downloadsFolderPath
-downloadsFolderPath = "C:\Users\SM05698\Downloads" ' Replace YourUsername with your actual username
-
-' Get the current date
-Dim currentDate
-currentDate = Now
-
-' Format the current date as yyyy-mm-dd
-Dim formattedDate
-formattedDate = Year(currentDate) & "-" & Right("0" & Month(currentDate), 2) & "-" & Right("0" & Day(currentDate), 2)
-
-' Specify the filename without the extension
-Dim fileNameWithoutExtension
-fileNameWithoutExtension = "LFSTTB01_Life_STTB-HLA_" & formattedDate
-
-' Specify the file extension
-Dim fileExtension
-fileExtension = ".xlsm"
-
-' Concatenate the filename with the date and extension
-Dim fullFileName
-fullFileName = fileNameWithoutExtension & fileExtension
-
-' Create a shell object
-Dim objShell
-Set objShell = CreateObject("WScript.Shell")
-
-' Open the Downloads folder in File Explorer
-objShell.Run "explorer.exe " & downloadsFolderPath
-
-' Wait for a brief moment before attempting to open the file
-Wait 2 ' Adjust the wait time as needed
-
-' Open the specific file (vv.xlsm) in Microsoft Excel
-objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fullFileName & """"
+' Open Excel with the specific file (vv.xlsm)
+objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fullFileName & """", 1, True
 
 ' Wait for Excel to open
 Wait 2 ' Adjust the wait time as needed
 
-' Get a reference to the Excel application
-Dim objExcel
-Set objExcel = GetObject(, "Excel.Application")
+' Access the Excel window using WinObject
+Set excelWindow = Window("regexpwndtitle:=Microsoft Excel.*")
 
-' Make Excel visible
-objExcel.Visible = True
+' Access the Ribbon within the Excel window using WinObject
+Set ribbon = excelWindow.WinObject("Ribbon")
 
-' Select cell I45 in the active worksheet
-objExcel.ActiveSheet.Range("I45").Select
+' Select the "Add-ins" tab in the Ribbon
+ribbon.WinTab("Name:=Add-ins").Select
 
+' Access the Lower Ribbon within the Excel window using WinObject
+Set lowerRibbon = excelWindow.WinObject("Lower Ribbon")
 
+' Click the "nVisionDrill" button in the Lower Ribbon
+lowerRibbon.WinButton("Name:=nVisionDrill").Click
 
+' Access the Ribbon again to access the WinMenu
+Set ribbon = excelWindow.WinObject("Ribbon")
 
-' Activate the Excel window by making it the foreground window
-objShell.AppActivate "Microsoft Excel"
-
-' Access the Excel Ribbon
-Set ribbon = objExcel.CommandBars("Ribbon")
-
-' Access the controls within the Ribbon
-Set controls = ribbon.Controls
-
-
-Window("Excel_2").WinObject("Ribbon").WinTab("Ribbon Tabs").Select "Add-ins"
-Window("Excel_2").Window("Window").WinObject("Lower Ribbon").WinButton("nVisionDrill").Click
-Window("Excel_2").WinObject("Ribbon").WinMenu("WinMenu").Select "Drill"
-
-
-
-
+' Select the "Drill" option from the WinMenu
+ribbon.WinMenu("Name:=WinMenu").Select "Drill"
