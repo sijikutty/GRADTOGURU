@@ -1,22 +1,27 @@
-' Get the current date
-Dim currentDate
-currentDate = Now
+' Create an Excel application object
+Dim objExcel
+Set objExcel = CreateObject("Excel.Application")
 
-' Format the current date as yyyy-mm-dd
-Dim formattedDate
-formattedDate = Year(currentDate) & "-" & Right("0" & Month(currentDate), 2) & "-" & Right("0" & Day(currentDate), 2)
+' Hide Excel application window (optional)
+objExcel.Visible = False
 
-' Specify the filename without the extension
-Dim fileNameWithoutExtension
-fileNameWithoutExtension = "vv_" & formattedDate
+' Open the Excel file
+Dim wb
+Set wb = objExcel.Workbooks.Open("C:\Path\to\Your\File.xlsx") ' Replace with the path to your Excel file
 
-' Specify the file extension
-Dim fileExtension
-fileExtension = ".xlsm"
+' Activate the workbook
+wb.Activate
 
-' Concatenate the filename with the date and extension
-Dim fullFileName
-fullFileName = fileNameWithoutExtension & fileExtension
+' Select cell I45
+objExcel.ActiveSheet.Range("I45").Select
 
-' Output the full filename
-MsgBox "Full filename: " & fullFileName
+' Unhide Excel application window (optional)
+' objExcel.Visible = True
+
+' Cleanup: Close the workbook and quit Excel
+wb.Close
+objExcel.Quit
+
+' Release object references
+Set wb = Nothing
+Set objExcel = Nothing
