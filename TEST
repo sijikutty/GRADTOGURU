@@ -1,13 +1,6 @@
-' Get a reference to the Excel window
-Set excelWindow = Window("nativeclass:=XLMAIN")
+Dim downloadsFolderPath
+downloadsFolderPath = "C:\Users\SM05698\Downloads" ' Replace YourUsername with your actual username
 
-If excelWindow.Exist(10) Then
-    ' Retrieve the window title and class name
-    windowTitle = excelWindow.GetROProperty("title")
-    className = excelWindow.GetROProperty("nativeclass")
+SystemUtil.Run "explorer.exe ", downloadsFolderPath
 
-    ' Display the window title and class name in a message box
-    MsgBox "Excel Window Title: " & windowTitle & vbCrLf & "Class Name: " & className
-Else
-    MsgBox "Excel window not found."
-End If
+Window("Downloads_2").WinObject("Items View").WinList("Items View").Select "LFSTTB01_Life_STTB-HLA_2024-04-19.xlsm"
