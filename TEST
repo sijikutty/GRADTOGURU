@@ -7,7 +7,7 @@ If excelWindow.Exist(10) Then
 
     If Not ribbon.Exist(10) Then
         MsgBox "Ribbon object not found."
-        Exit Sub
+        Exit ' Exit the script block
     End If
 
     ' Use descriptive programming to identify the Ribbon Tabs
@@ -15,7 +15,7 @@ If excelWindow.Exist(10) Then
 
     If Not ribbonTabs.Exist(10) Then
         MsgBox "Ribbon Tabs object not found."
-        Exit Sub
+        Exit ' Exit the script block
     End If
 
     ' Select "Add-ins" tab in Ribbon Tabs
