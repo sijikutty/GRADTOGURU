@@ -3,4 +3,11 @@ python_path = "C:\Python39\python.exe" ' Adjust the path to your Python interpre
 script_path = "C:\path\to\your\python_script.py" ' Adjust the path to your Python script
 
 ' Run the Python script
-SystemUtil.Run python_path, script_path, "", ""
+Set shell = CreateObject("WScript.Shell")
+command = """" & python_path & """ """ & script_path & """"
+shell.Run command, 0, True ' Run synchronously and wait for completion
+
+' Check for errors
+If shell.ExitCode <> 0 Then
+    MsgBox "Error: Python script failed to execute. Exit code: " & shell.ExitCode
+End If
