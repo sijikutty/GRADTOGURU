@@ -2,6 +2,6 @@
 For i = 1 To controls.Count
     ' Get the control at the current index
     Set ctrl = controls.Item(i)
-    ' Print details of the control
-    Print "Control: " & ctrl.Caption & ", ID: " & ctrl.ID
+    ' Output details of the control to the test results
+    Reporter.ReportEvent micDone, "Control Details", "Control: " & ctrl.Caption & ", ID: " & ctrl.ID
 Next
