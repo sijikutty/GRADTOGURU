@@ -1,18 +1,23 @@
-from pywinauto import Application
+import os
 import time
+from pywinauto import Application
 
-# Run File Explorer
+# Open File Explorer
 explorer_path = r"C:\Users\SM05698\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\File Explorer (2).lnk"
-explorer_app = Application().start(explorer_path)
+os.startfile(explorer_path)
 time.sleep(2)  # Wait for File Explorer to open
+
+# Connect to File Explorer window
+explorer_app = Application(backend="uia").connect(title="File Explorer")
 
 # Navigate to Downloads in File Explorer
 file_explorer_window = explorer_app.window(title="File Explorer")
-file_explorer_window.TreeView2.get_item(r"Quick access\Downloads").click()
+file_explorer_window.set_focus()
+file_explorer_window.TreeView.get_item(r"Quick access\Downloads").click_input(double=True)
 time.sleep(2)
 
 # Activate Excel Window
-excel_app = Application().connect(title="Excel_2")  # Assuming Excel window is already open
+excel_app = Application(backend="uia").connect(title="Excel_2")
 excel_window = excel_app.window(title="Excel_2")
 excel_window.set_focus()
 time.sleep(1)
