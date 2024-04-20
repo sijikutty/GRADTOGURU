@@ -1,39 +1,27 @@
-' Open Excel with the specific file (vv.xlsm)
-objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fileName & """", 1, True
-
-' Wait for Excel to open
-Wait 2 ' Adjust the wait time as needed
-
-' Get a reference to the Excel application
+' Create an Excel application object
 Dim objExcel
-Set objExcel = GetObject(, "Excel.Application")
+Set objExcel = CreateObject("Excel.Application")
 
-' Make Excel visible
+' Make Excel visible (optional)
 objExcel.Visible = True
 
-' Select cell I45 in the active worksheet
-objExcel.ActiveSheet.Range("I45").Select
-
-' Activate the Excel window by making it the foreground window
-objShell.AppActivate "Microsoft Excel"
-
-' Access the Excel Ribbon
+' Access the CommandBars collection to interact with the Ribbon
 Set ribbon = objExcel.CommandBars("Ribbon")
 
-' Select the "Add-ins" tab in the Ribbon
-ribbon.FindControl(, , "TabAddIns").Execute
+' Access the controls within the Ribbon
+Set controls = ribbon.Controls
 
-' Access the Lower Ribbon
-Set lowerRibbon = objExcel.CommandBars("Ribbon")
-
-' Click the "nVisionDrill" button in the Lower Ribbon
-lowerRibbon.FindControl(, , "nVisionDrill").Execute
-
-' Access the Ribbon again to access the WinMenu
-Set ribbon = objExcel.CommandBars("Ribbon")
-
-' Select the "Drill" option from the WinMenu
-ribbon.FindControl(, , "Drill").Execute
-
-' Release object references
-Set objExcel = Nothing
+' Print details of each control in the Ribbon
+For Each ctrl In controls
+    ' Check if the control is a Ribbon tab
+    If ctrl.Type = msoControlPopup Then
+        ' Print details of the Ribbon tab
+        MsgBox "Ribbon Tab: " & ctrl.Caption & ", ID: " & ctrl.ID
+        ' Access the controls within the Ribbon tab
+        Set tabControls = ctrl.Controls
+        ' Print details of each control in the Ribbon tab
+        For Each tabCtrl In tabControls
+            MsgBox "Control: " & tabCtrl.Caption & ", ID: " & tabCtrl.ID
+        Next
+    End If
+Next
