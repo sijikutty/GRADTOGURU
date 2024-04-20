@@ -1,15 +1,14 @@
-' Define the path to the Python interpreter and your Python script
-python_path = "C:\Python39\python.exe" ' Adjust the path to your Python interpreter
-script_path = "C:\path\to\your\python_script.py" ' Adjust the path to your Python script
+Set WshShell = CreateObject("WScript.Shell")
 
-' Run the Python script
-Set shell = CreateObject("WScript.Shell")
-command = """" & python_path & """ """ & script_path & """"
-shell.Run command, 0, True ' Run synchronously and wait for completion
+' Launch the Python script and capture the process ID
+pid = WshShell.Run("cmd.exe /c python dynamic_API.py", 0, True) ' 0 means hide the window, True means wait for completion
 
-' Check for errors
-On Error Resume Next
-If Err.Number <> 0 Then
-    MsgBox "Error: Python script failed to execute. Error number: " & Err.Number & vbCrLf & "Error description: " & Err.Description
+' Wait for the Python script to finish execution (adjust the sleep time as needed)
+WScript.Sleep(10000) ' Wait for 10 seconds (10000 milliseconds)
+
+' Check if the Python script executed successfully
+If pid = 0 Then
+    MsgBox "Python script executed successfully."
+Else
+    MsgBox "Error: Python script failed to execute. Return code: " & pid
 End If
-On Error GoTo 0
