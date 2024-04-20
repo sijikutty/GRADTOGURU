@@ -1,20 +1,18 @@
-' Create an Excel application object
+' Open Excel with the specific file (vv.xlsm)
+objShell.Run "excel.exe """ & downloadsFolderPath & "\" & fileName & """", 1, True
+
+' Wait for Excel to open
+Wait 2 ' Adjust the wait time as needed
+
+' Get a reference to the Excel application
 Dim objExcel
-Set objExcel = CreateObject("Excel.Application")
+Set objExcel = GetObject(, "Excel.Application")
 
-' Hide Excel application window (optional)
+' Make Excel visible
 objExcel.Visible = True
-
-' Open the Excel file with add-ins enabled
-Dim wb
-Set wb = objExcel.Workbooks.Open(downloadsFolderPath & "\" & fileName, , False, , , , , , , True)
-
-' Activate the workbook
-wb.Activate
 
 ' Select cell I45 in the active worksheet
 objExcel.ActiveSheet.Range("I45").Select
 
 ' Release object references
-Set wb = Nothing
 Set objExcel = Nothing
