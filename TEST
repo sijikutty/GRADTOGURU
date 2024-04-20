@@ -1,14 +1,11 @@
-Set WshShell = CreateObject("WScript.Shell")
+' Open File Explorer and navigate to the specified directory
+SystemUtil.Run "explorer.exe", "C:\Users", "", "", 1
 
-' Launch the Python script and capture the process ID
-pid = WshShell.Run("cmd.exe /c python dynamic_API.py", 0, True) ' 0 means hide the window, True means wait for completion
+' Wait for File Explorer to open (you might need to adjust the sleep time)
+Wait(2)
 
-' Wait for the Python script to finish execution (adjust the sleep time as needed)
-WScript.Sleep(10000) ' Wait for 10 seconds (10000 milliseconds)
+' Open the Excel file in the specified directory
+SystemUtil.Run "excel.exe", "C:\Users\vv.xlsm", "", "", 1
 
-' Check if the Python script executed successfully
-If pid = 0 Then
-    MsgBox "Python script executed successfully."
-Else
-    MsgBox "Error: Python script failed to execute. Return code: " & pid
-End If
+' Wait for Excel to open (you might need to adjust the sleep time)
+Wait(2)
