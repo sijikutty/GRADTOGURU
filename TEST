@@ -1,38 +1,6 @@
-import time
-from pathlib import Path
-from playwright.sync_api import sync_playwright
+    # Wait for the browser context to change (i.e., a new page opens for download)
+    browser_context = browser.wait_for_context()
+    new_page = browser_context.pages[-1]  # Get the last opened page
 
-# Path to the directory where the downloaded file will be saved
-download_directory = "/path/to/your/download/directory"
-
-# Define a function to handle download event
-def handle_download(download):
-    download.save_as(download_directory + "/" + download.suggested_filename)
-
-# Function to wait for a file to be downloaded
-def wait_for_download(page):
-    page.on("download", handle_download)
-    with page.expect_event("download") as download_info:
-        download_info.value
-
-with sync_playwright() as p:
-    browser = p.chromium.launch()
-    page = browser.new_page()
-
-    # Navigate to the page where the file download link/button is located
-    page.goto("https://example.com/download")
-
-    # Click on the download link/button (replace 'download_button_selector' with the appropriate selector for your element)
-    page.click("button#download_button")
-
-    # Wait for 10 minutes for the download to complete
-    time.sleep(600)
-
-    # Check if the file has been downloaded
-    downloaded_file_path = Path(download_directory) / "filename.ext"
-    if downloaded_file_path.exists():
-        print("File downloaded successfully!")
-    else:
-        print("File was not downloaded within 10 minutes.")
-
-    browser.close()
+    # Wait for the download to complete on the new page
+    wait_for_download(new_page)
