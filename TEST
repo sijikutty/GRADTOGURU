@@ -1,1 +1,1 @@
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent_2").WebCheckBox("PSOPRVERDFN_ACTIVE_FLAG$0").Check CheckPoint("PSOPRVERDFN_ACTIVE_FLAG$0_2")
+Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").Check CheckPoint("IB_MONITOR_AMM_STATUS$0")
