@@ -1,6 +1,1 @@
-    # Wait for the browser context to change (i.e., a new page opens for download)
-    browser_context = browser.wait_for_context()
-    new_page = browser_context.pages[-1]  # Get the last opened page
-
-    # Wait for the download to complete on the new page
-    wait_for_download(new_page)
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent_2").WebCheckBox("PSOPRVERDFN_ACTIVE_FLAG$0").Check CheckPoint("PSOPRVERDFN_ACTIVE_FLAG$0_2")
