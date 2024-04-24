@@ -1,116 +1,102 @@
-' Enable error handling to prevent script halting on errors
-On Error Resume Next
-
 ' Close existing instances of Microsoft Edge and Java Platform Launcher
 SystemUtil.CloseProcessByName("msedge.exe")
 SystemUtil.CloseProcessByName("jp2launcher.exe")
-
-' Run Microsoft Edge browser
 SystemUtil.Run "msedge.exe"
+'Browser("iConnect - Home").Page("iConnect - Home").Sync
+Browser("iConnect - Home").Navigate "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&"
+Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebEdit("userid").Set "PWTEST"
+Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebEdit("pwd").Set "Pwtest@100"
+Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebButton("To enable screen reader").Click
+Browser("iConnect - Home").Page("Homepage").Image("NavBar").Click
+Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").WebButton("PTNB$PTNUI_NB_MENU").Click
+Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("PeopleTools").Click
+Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("Integration Broker").Click
+Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("Integration Setup").Click
+Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("Service Operation Definitions").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").Image("Look up Service").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("modWin_0").Link("ACCOUNT_CHARTFIELD_SYNC").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").Image("Look up Service Operation").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("modWin_1").Link("ACCOUNT_CF_SYNC").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").WebElement("WebElement").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").Link("ACCOUNT_CF_SYNC").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent_2").WebCheckBox("PSOPRVERDFN_ACTIVE_FLAG$0").Set "OFF"
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent_2").WebButton("Save").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").WebButton("OK").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").WebButton("pthdr2navbar").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Image("PTNUI_MENU_ICN_1").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").WebMenu("Breadcrumbs").Select "Menu"
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Set Up Financials/Supply").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Common Definitions").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Design ChartFields").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Define Values").Click
+Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Define ChartField Value").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent").Link("Account").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit("GL_ACCT_ALL_VW_SETID").Set "SHARE"
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit("GL_ACCT_ALL_VW_ACCOUNT").Set "100000"
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Search").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Correct History").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit("GL_ACCOUNT_TBL_DESCR$0").Set "Bnd_TaxEx_PY_Tes_AUTOTEST14"
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Save").Click
+Browser("iConnect - Home").Page("Define ChartField Value").WebButton("pthdr2navbar").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").WebButton("PTNB$PTNUI_NB_MENU").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").WebMenu("Breadcrumbs").Select "Menu"
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Enterprise Components").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Integration Definitions").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Initiate Processes").Click
+Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Full Data Publish").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").Link("Show more options").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebList("PRCSRUNCNTL_RUN_CNTL_ID$op").Select "="
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("PRCSRUNCNTL_RUN_CNTL_ID").Set "test1"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebButton("Search").Click
 
-' Navigate to the specified URL
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("EO_PARM_FULL_REQUEST_ID$0").Set "TESTAUTO"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("EO_PARM_FULL_DESCR$0").Set "testing"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebRadioGroup("EO_PARM_FULL_PROCESS_FREQUENCY").Select "O"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("EO_PARM_FULL_IB_OPERATIONNAME$").Set "HF_ACCOUNT_CF_FULL_SYNC"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebButton("Save").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebButton("Run").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("modWin_0").WebCheckBox("PRCSRQSTDLG_WRK_SELECT_FLAG$1").Set "ON"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("modWin_0").WebButton("OK").Click
+Browser("iConnect - Home").Page("Full Data Publish").WebButton("pthdr2navbar").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Image("PTNUI_MENU_ICN_1").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").WebMenu("Breadcrumbs").Select "Menu"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("PeopleTools").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Integration Broker").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Service Operations Monitor").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Monitoring").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Monitor Asynchronous Services").Click
+Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebTabStrip("Monitor Overview Operation").Select "Operation Instances"
+'Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("win0divAMM_FILTER_IB_OPERATION_2").Click
+
+
+
+Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebEdit("AMM_FILTER_IB_OPERATIONNAME").Set "HF_ACCOUNT_CF_FULL_SYNC"
+Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebButton("Refresh").Click
+
+
+'Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").Check CheckPoint("IB_MONITOR_AMM_STATUS$0")
+'Browser("iConnect - Home").Page("Monitor Asynchronous Services").Sync
 Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-
-' Set username and password
 Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set "fitauto"
-Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set "Mango@2025"
-
-' Click on the Log In button
+Browser("iConnect - Home").Page("Login").WebEdit("passwordField").SetSecure "6626f303d6a46a06ba97dcdc586347bf274c077780e5f50b0893"
 Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+Browser("iConnect - Home").Page("Home").Link("Application Developer").Click
+Browser("iConnect - Home").Page("Home").Link("Flexfield").Click
+Browser("iConnect - Home").Page("Home").Link("Key").Click
+Browser("iConnect - Home").Page("Home").Link("Values").Click
 
-' Click on the "XXHIG Custom" link
-Browser("Home").Page("Home").Link("XXHIG Custom").Click
 
-' Click on the "Run Requests" link
-Browser("Home").Page("Home").Link("Run Requests").Click
 
-' Check if the Security Warning dialog exists
 If JavaDialog("Security Warning").Exist(10) Then
-    ' If it exists, set the checkbox and click on the Run button
-    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-    JavaDialog("Security Warning").JavaButton("Run").Click
+	JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+	JavaDialog("Security Warning").JavaButton("Run").Click
 End If
+OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Application").OpenDialog
+OracleListOfValues("Applications").Select "General Ledger"
+OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Segment").OpenDialog
+OracleListOfValues("Key Flexfield Segments").Select "Account"
+OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Value").OpenDialog
+OracleListOfValues("OracleListOfValues").Select "100000"
+OracleFormWindow("Find Key Flexfield Segment").OracleButton("Find").Click
 
-' Click on the OK button in the "Submit a New Request" form
-OracleFormWindow("Submit a New Request").OracleButton("OK").Click
 
-' Open the dialog for selecting a report
-OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
-
-' Select the "HIG Basic Validation Report" from the list of values
-OracleListOfValues("Reports").Select "HIG Basic Validation Report"
-
-' Open the dialog for selecting the source
-OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
-
-' Select "BAC" as the source from the list of values
-OracleListOfValues("Source").Select "BAC"
-
-' Enter the request ID
-OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter "456"
-
-' Click on the "Approve" button
-OracleFlexWindow("Parameters").Approve
-
-' Click on the "Submit" button in the "Submit Request" form
-OracleFormWindow("Submit Request").OracleButton("Submit").Click
-
-' Decline the Oracle notification with the title "Decision"
-OracleNotification("Decision").Decline
-
-' Click on the "Open" button in the "Navigator" form
-OracleFormWindow("Navigator").OracleButton("Open").Click
-
-' Click on the "Find" button in the "Find Requests" form
-OracleFormWindow("Find Requests").OracleButton("Find").Click
-
-' Click on the "View Details" button in the "Requests" form
-OracleFormWindow("Requests").OracleButton("View Details").Click
-
-' Click on the "OK" button in the "Request Detail" form
-OracleFormWindow("Request Detail").OracleButton("OK").Click
-
-' Close the Java window with the title "Oracle Applications -"
-JavaWindow("Oracle Applications -").Close
-
-' Disable error reporting temporarily
-On Error Resume Next
-
-' Disable reporting temporarily
-Reporter.Filter = rfDisableAll
-
-' Approve the Oracle notification with the title "Caution"
-OracleNotification("Caution").Approve
-
-' Enable reporting
-Reporter.Filter = rfEnableAll
-
-' Reset error handling
-On Error GoTo 0
-
-' Close the Microsoft Edge browser
-Browser("iConnect - Home").Close
-
-' Check if an error occurred
-If Err.Number <> 0 Then
-    ' If there was an error, close UFT application if it is still open
-    If Not SystemUtil.CloseProcessByName("UFT.exe") Then
-        ' Display error message if failed to close UFT
-        MsgBox "Failed to close UFT application!"
-    End If
-End If
-
-' Check if UFT error popup exists
-If Dialog("Error Popup").Exist(10) Then
-    ' Fetch error details from the popup
-    errorDetails = Dialog("Error Popup").GetROProperty("Text")
-    
-    ' Display error details in a message box
-    MsgBox "Error occurred: " & errorDetails
-    
-    ' Close the error popup
-    Dialog("Error Popup").Close
-End If
-
-' Clear any remaining errors
-Err.Clear
