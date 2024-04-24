@@ -1,12 +1,26 @@
-Dim status
-status = Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").GetROProperty("innertext")
+' Navigate to FAH
+Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
+Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set "fitauto"
+Browser("iConnect - Home").Page("Login").WebEdit("passwordField").SetSecure "6626f303d6a46a06ba97dcdc586347bf274c077780e5f50b0893"
+Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+Browser("iConnect - Home").Page("Home").Link("Application Developer").Click
+Browser("iConnect - Home").Page("Home").Link("Flexfield").Click
+Browser("iConnect - Home").Page("Home").Link("Key").Click
+Browser("iConnect - Home").Page("Home").Link("Values").Click
 
-' Check if the status is "DONE" and perform action accordingly
-If status = "DONE" Then
-    ' Perform your action here
-    ' For example:
-    ' Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").Click
-    ' Your action when status is "DONE"
-Else
-    ' Perform action when status is not "DONE"
+
+' Check if a JavaDialog with the title "Security Warning" exists
+If JavaDialog("Security Warning").Exist(10) Then
+    ' If it exists, set the checkbox and click the Run button
+    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+    JavaDialog("Security Warning").JavaButton("Run").Click
 End If
+
+' Perform actions on Oracle forms
+OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Application").OpenDialog
+OracleListOfValues("Applications").Select "General Ledger"
+OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Segment").OpenDialog
+OracleListOfValues("Key Flexfield Segments").Select "Account"
+OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Value").OpenDialog
+OracleListOfValues("OracleListOfValues").Select "100000"
+OracleFormWindow("Find Key Flexfield Segment").OracleButton("Find").Click
