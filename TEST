@@ -1,26 +1,42 @@
-' Navigate to FAH
-Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set "fitauto"
-Browser("iConnect - Home").Page("Login").WebEdit("passwordField").SetSecure "6626f303d6a46a06ba97dcdc586347bf274c077780e5f50b0893"
-Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-Browser("iConnect - Home").Page("Home").Link("Application Developer").Click
-Browser("iConnect - Home").Page("Home").Link("Flexfield").Click
-Browser("iConnect - Home").Page("Home").Link("Key").Click
-Browser("iConnect - Home").Page("Home").Link("Values").Click
+Dim precheckValue
+Dim precheckList
+precheckList = Array("success", "error")
 
+Do
+    ' Click on the refresh button
+    Browser(Browser).Page(Page).WebButton("Refresh").Click
+    
+    ' Get the current value of "ORDER PRECHECK"
+    precheckValue = Browser(Browser).Page(Page).Link("ORDER PRECHECK").GetROProperty("innertext")
+    
+    ' Check if the value is in the list of expected values
+    If IsInArray(precheckValue, precheckList) Then
+        Exit Do ' Exit the loop if the value is found
+    End If
+    
+    ' Wait for a brief moment before checking again
+    Wait(1)
+Loop
 
-' Check if a JavaDialog with the title "Security Warning" exists
-If JavaDialog("Security Warning").Exist(10) Then
-    ' If it exists, set the checkbox and click the Run button
-    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-    JavaDialog("Security Warning").JavaButton("Run").Click
-End If
+' Click on the "ORDER PRECHECK" link
+Browser(Browser).Page(Page).Link("ORDER PRECHECK").Click
 
-' Perform actions on Oracle forms
-OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Application").OpenDialog
-OracleListOfValues("Applications").Select "General Ledger"
-OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Segment").OpenDialog
-OracleListOfValues("Key Flexfield Segments").Select "Account"
-OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Value").OpenDialog
-OracleListOfValues("OracleListOfValues").Select "100000"
-OracleFormWindow("Find Key Flexfield Segment").OracleButton("Find").Click
+Function IsInArray(value, array)
+    Dim i
+    For i = LBound(array) To UBound(array)
+        If array(i) = value Then
+            IsInArray = True
+            Exit Function
+        End If
+    Next
+    IsInArray = False
+End Function
+
+Sub Wait(seconds)
+    ' Function to pause the script execution for the specified number of seconds
+    Dim endtime
+    endtime = Timer + seconds
+    Do While Timer < endtime
+        ' Do nothing, just wait
+    Loop
+End Sub
