@@ -1,23 +1,37 @@
+Dim runStatusValue As String
+Dim startTime As Double
+startTime = Timer ' Record the start time
+
 Do
     ' Click on the Refresh button
     Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
 
     ' Get the current value of "PMN_PRCSLIST_RUNSTATUSDESCR$0"
-    Dim runStatusValue
     runStatusValue = Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
-	'expected_values=['Success','Error','Warning','No Success']
-    ' Check if the value is "success" or "error"
-    If runStatusValue = "Error" or   If runStatusValue = "Warning" or  If runStatusValue = "No Success" Then
-    	
-    	        Exit Do ' Exit the loop if the condition is met
-    ElseIf runStatusValue = "Success" Then
-        	PerformAsyncServ
-    	        Exit Do ' Exit the loop if the condition is met
-    	        
-    Else  
-   
+
+    ' Check if the value is "Success"
+    If runStatusValue = "Success" Then
+        PerformAsyncServ ' Call the PerformAsyncServ subroutine
+        Exit Do ' Exit the loop if the condition is met
+    ElseIf runStatusValue = "No Success" Or runStatusValue = "Error" Or runStatusValue = "Warning" Then
+        ' Write to UFT result that it is not success and set verdict as failure
+        Reporter.ReportEvent micFail, "Status Check", "The run status is not success (" & runStatusValue & ")"
+        Exit Do ' Exit the loop if the condition is met
     End If
 
     ' Wait for a short duration before the next iteration (you can adjust the delay as needed)
     Wait(1) ' Wait for 1 second before rechecking
+
+    ' Check if 3 minutes have passed
+    If Timer - startTime >= 180 Then
+        ' Write to UFT result that it is not success and set verdict as failure
+        Reporter.ReportEvent micFail, "Status Check", "The run status did not change to success within 3 minutes"
+        Exit Do ' Exit the loop
+    End If
 Loop
+
+Sub PerformAsyncServ()
+    ' Your PerformAsyncServ subroutine implementation goes here
+    ' For example:
+    ' Browser("iConnect - Home").Page("YourPage").YourElement.Click
+End Sub
