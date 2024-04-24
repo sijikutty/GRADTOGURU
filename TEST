@@ -1,1 +1,2 @@
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
 Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
