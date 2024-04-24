@@ -1,109 +1,12 @@
-' Close existing instances of Microsoft Edge and Java Platform Launcher
-SystemUtil.CloseProcessByName("msedge.exe")
-SystemUtil.CloseProcessByName("jp2launcher.exe")
+Dim status
+status = Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").GetROProperty("innertext")
 
-' Run Microsoft Edge browser
-SystemUtil.Run "msedge.exe"
-
-' Navigate to the iConnect login page
-Browser("iConnect - Home").Navigate "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&"
-Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebEdit("userid").Set "PWTEST"
-Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebEdit("pwd").Set "Pwtest@100"
-Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebButton("To enable screen reader").Click
-Browser("iConnect - Home").Page("Homepage").Image("NavBar").Click
-
-' Navigate through various pages and perform actions
-Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").WebButton("PTNB$PTNUI_NB_MENU").Click
-Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("PeopleTools").Click
-Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("Integration Broker").Click
-Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("Integration Setup").Click
-Browser("iConnect - Home").Page("Homepage").Frame("psNavBarIFrame").Link("Service Operation Definitions").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").Image("Look up Service").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("modWin_0").Link("ACCOUNT_CHARTFIELD_SYNC").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").Image("Look up Service Operation").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("modWin_1").Link("ACCOUNT_CF_SYNC").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").WebElement("WebElement").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent").Link("ACCOUNT_CF_SYNC").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent_2").WebCheckBox("PSOPRVERDFN_ACTIVE_FLAG$0").Set "OFF"
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("TargetContent_2").WebButton("Save").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").WebButton("OK").Click
-
-'Chartfield value description modify
-Browser("iConnect - Home").Page("Service Operation Definitions").WebButton("pthdr2navbar").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Image("PTNUI_MENU_ICN_1").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").WebMenu("Breadcrumbs").Select "Menu"
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Set Up Financials/Supply").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Common Definitions").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Design ChartFields").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Define Values").Click
-Browser("iConnect - Home").Page("Service Operation Definitions").Frame("psNavBarIFrame").Link("Define ChartField Value").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent").Link("Account").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit("GL_ACCT_ALL_VW_SETID").Set "SHARE"
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit("GL_ACCT_ALL_VW_ACCOUNT").Set "100000"
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Search").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Correct History").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit("GL_ACCOUNT_TBL_DESCR$0").Set "Bnd_TaxEx_PY_Tes_AUTOTEST14"
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Save").Click
-
-'Full data Publish
-Browser("iConnect - Home").Page("Define ChartField Value").WebButton("pthdr2navbar").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").WebButton("PTNB$PTNUI_NB_MENU").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").WebMenu("Breadcrumbs").Select "Menu"
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Enterprise Components").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Integration Definitions").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Initiate Processes").Click
-Browser("iConnect - Home").Page("Define ChartField Value").Frame("psNavBarIFrame").Link("Full Data Publish").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").Link("Show more options").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebList("PRCSRUNCNTL_RUN_CNTL_ID$op").Select "="
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("PRCSRUNCNTL_RUN_CNTL_ID").Set "test1"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebButton("Search").Click
-
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("EO_PARM_FULL_REQUEST_ID$0").Set "TESTAUTO"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("EO_PARM_FULL_DESCR$0").Set "testing"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebRadioGroup("EO_PARM_FULL_PROCESS_FREQUENCY").Select "O"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebEdit("EO_PARM_FULL_IB_OPERATIONNAME$").Set "HF_ACCOUNT_CF_FULL_SYNC"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebButton("Save").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebButton("Run").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("modWin_0").WebCheckBox("PRCSRQSTDLG_WRK_SELECT_FLAG$1").Set "ON"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("modWin_0").WebButton("OK").Click
-
-'Monitor Asynchronous service
-Browser("iConnect - Home").Page("Full Data Publish").WebButton("pthdr2navbar").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Image("PTNUI_MENU_ICN_1").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").WebMenu("Breadcrumbs").Select "Menu"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("PeopleTools").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Integration Broker").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Service Operations Monitor").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Monitoring").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("psNavBarIFrame").Link("Monitor Asynchronous Services").Click
-Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebTabStrip("Monitor Overview Operation").Select "Operation Instances"
-Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebEdit("AMM_FILTER_IB_OPERATIONNAME").Set "HF_ACCOUNT_CF_FULL_SYNC"
-Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebButton("Refresh").Click
-Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").Click
-
-' Navigate to FAH
-Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set "fitauto"
-Browser("iConnect - Home").Page("Login").WebEdit("passwordField").SetSecure "6626f303d6a46a06ba97dcdc586347bf274c077780e5f50b0893"
-Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-Browser("iConnect - Home").Page("Home").Link("Application Developer").Click
-Browser("iConnect - Home").Page("Home").Link("Flexfield").Click
-Browser("iConnect - Home").Page("Home").Link("Key").Click
-Browser("iConnect - Home").Page("Home").Link("Values").Click
-
-
-' Check if a JavaDialog with the title "Security Warning" exists
-If JavaDialog("Security Warning").Exist(10) Then
-    ' If it exists, set the checkbox and click the Run button
-    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-    JavaDialog("Security Warning").JavaButton("Run").Click
+' Check if the status is "DONE" and perform action accordingly
+If status = "DONE" Then
+    ' Perform your action here
+    ' For example:
+    ' Browser("iConnect - Home").Page("Monitor Asynchronous Services").Frame("TargetContent").WebElement("IB_MONITOR_AMM_STATUS$0").Click
+    ' Your action when status is "DONE"
+Else
+    ' Perform action when status is not "DONE"
 End If
-
-' Perform actions on Oracle forms
-OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Application").OpenDialog
-OracleListOfValues("Applications").Select "General Ledger"
-OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Segment").OpenDialog
-OracleListOfValues("Key Flexfield Segments").Select "Account"
-OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Value").OpenDialog
-OracleListOfValues("OracleListOfValues").Select "100000"
-OracleFormWindow("Find Key Flexfield Segment").OracleButton("Find").Click
