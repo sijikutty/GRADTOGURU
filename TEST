@@ -1,42 +1,10 @@
-Dim precheckValue
-Dim precheckList
-precheckList = Array("success", "error")
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").Click
 
-Do
-    ' Click on the refresh button
-    Browser(Browser).Page(Page).WebButton("Refresh").Click
-    
-    ' Get the current value of "ORDER PRECHECK"
-    precheckValue = Browser(Browser).Page(Page).Link("ORDER PRECHECK").GetROProperty("innertext")
-    
-    ' Check if the value is in the list of expected values
-    If IsInArray(precheckValue, precheckList) Then
-        Exit Do ' Exit the loop if the value is found
-    End If
-    
-    ' Wait for a brief moment before checking again
-    Wait(1)
-Loop
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").Link("Process Monitor").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebEdit("PMN_FILTER_WRK_WS_OPRID").Set ""
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebEdit("PMN_FILTER_WRK_PT_FILTERVALUE").Set "1"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebList("PMN_FILTER_WRK_PT_FILTERUNIT").Select "Days"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebEdit("PMN_DERIVED_PRCSINSTANCE").Set "676008"
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
 
-' Click on the "ORDER PRECHECK" link
-Browser(Browser).Page(Page).Link("ORDER PRECHECK").Click
-
-Function IsInArray(value, array)
-    Dim i
-    For i = LBound(array) To UBound(array)
-        If array(i) = value Then
-            IsInArray = True
-            Exit Function
-        End If
-    Next
-    IsInArray = False
-End Function
-
-Sub Wait(seconds)
-    ' Function to pause the script execution for the specified number of seconds
-    Dim endtime
-    endtime = Timer + seconds
-    Do While Timer < endtime
-        ' Do nothing, just wait
-    Loop
-End Sub
