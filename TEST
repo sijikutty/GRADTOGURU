@@ -1,2 +1,99 @@
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
+Dim precheckValue
+Dim precheckList
+precheckList = Array("success", "error")
+
+Dim counter
+counter = 1 ' Initialize the counter variable
+
+Do While counter <= 200 ' Run the loop for 200 times
+    ' Click on the refresh button
+    Browser(Browser).Page(Page).WebButton("Refresh").Click
+    
+    ' Get the current value of "ORDER PRECHECK"
+    precheckValue = Browser(Browser).Page(Page).Link("ORDER PRECHECK").GetROProperty("innertext")
+    
+    ' Check if the value is in the list of expected values
+    If IsInArray(precheckValue, precheckList) Then
+        Exit Do ' Exit the loop if the value is found
+    End If
+    
+    ' Increment the counter
+    counter = counter + 1
+    
+    ' Wait for a brief moment before checking again
+    Wait(1)
+Loop
+
+' Click on the "ORDER PRECHECK" link
+Browser(Browser).Page(Page).Link("ORDER PRECHECK").Click
+
+Function IsInArray(value, array)
+    Dim i
+    For i = LBound(array) To UBound(array)
+        If array(i) = value Then
+            IsInArray = True
+            Exit Function
+        End If
+    Next
+    IsInArray = False
+End Function
+
+Sub Wait(seconds)
+    ' Function to pause the script execution for the specified number of seconds
+    Dim endtime
+    endtime = Timer + seconds
+    Do While Timer < endtime
+        ' Do nothing, just wait
+    Loop
+End Sub
+' Define an array containing the desired status values
+Dim statusArray(1)
+statusArray(0) = "success"
+statusArray(1) = "error"
+
+Do
+    ' Click on the Refresh button
+    Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
+    
+    ' Click on the WebElement
+    Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
+
+    ' Get the current value of "PMN_PRCSLIST_RUNSTATUSDESCR$0"
+    Dim runStatusValue
+    runStatusValue = Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
+
+    ' Check if the current status matches any value in the array
+    Dim statusMatch
+    statusMatch = False
+    For Each status In statusArray
+        If runStatusValue = status Then
+            statusMatch = True
+            Exit For ' Exit the loop if a match is found
+        End If
+    Next
+
+    ' Exit the loop if a match is found
+    If statusMatch Then Exit Do
+
+    ' Wait for a short duration before the next iteration (you can adjust the delay as needed)
+    Wait(1) ' Wait for 1 second before rechecking
+Loop
+Do
+    ' Click on the Refresh button
+    Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
+    
+    ' Click on the WebElement
+    Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
+
+    ' Get the current value of "PMN_PRCSLIST_RUNSTATUSDESCR$0"
+    Dim runStatusValue
+    runStatusValue = Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
+
+    ' Check if the value is "success" or "error"
+    If runStatusValue = "success" Or runStatusValue = "error" Then
+        Exit Do ' Exit the loop if the condition is met
+    End If
+
+    ' Wait for a short duration before the next iteration (you can adjust the delay as needed)
+    Wait(1) ' Wait for 1 second before rechecking
+Loop
