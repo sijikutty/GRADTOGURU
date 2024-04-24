@@ -91,24 +91,25 @@ On Error GoTo 0
 ' Close the Microsoft Edge browser
 Browser("iConnect - Home").Close
 
-' Close the UFT application if an error occurs and a popup is present
+' Check if an error occurred
 If Err.Number <> 0 Then
-    If Dialog("Error Popup").Exist(10) Then
-        ' Fetch error details from the popup
-        errorDetails = Dialog("Error Popup").GetROProperty("Text")
-        
-        ' Display error details in a message box
-        MsgBox "Error occurred: " & errorDetails
-        
-        ' Close the error popup
-        Dialog("Error Popup").Close
-        
-        ' Close UFT application
-        If Not SystemUtil.CloseProcessByName("UFT.exe") Then
-            ' Display error message if failed to close UFT
-            MsgBox "Failed to close UFT application!"
-        End If
+    ' If there was an error, close UFT application if it is still open
+    If Not SystemUtil.CloseProcessByName("UFT.exe") Then
+        ' Display error message if failed to close UFT
+        MsgBox "Failed to close UFT application!"
     End If
+End If
+
+' Check if UFT error popup exists
+If Dialog("Error Popup").Exist(10) Then
+    ' Fetch error details from the popup
+    errorDetails = Dialog("Error Popup").GetROProperty("Text")
+    
+    ' Display error details in a message box
+    MsgBox "Error occurred: " & errorDetails
+    
+    ' Close the error popup
+    Dialog("Error Popup").Close
 End If
 
 ' Clear any remaining errors
