@@ -1,17 +1,1 @@
-Dim processInstanceValue
-Dim prefixToRemove
-
-' Get the current value of "PRCSRQSTDLG_WRK_DESCR100"
-processInstanceValue = Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").GetROProperty("innertext")
-
-' Define the prefix to remove
-prefixToRemove = "Process Instance:"
-
-' Remove the prefix from the value
-processInstanceValue = Replace(processInstanceValue, prefixToRemove, "", 1, -1, vbTextCompare)
-
-' Trim any leading or trailing spaces
-processInstanceValue = Trim(processInstanceValue)
-
-' Click on the WebElement
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").Click
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
