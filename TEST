@@ -1,16 +1,10 @@
- Do
-    ' Click on the Refresh button
-    Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
-
-    ' Get the current value of "PMN_PRCSLIST_RUNSTATUSDESCR$0"
-    Dim runStatusValue
-    runStatusValue = Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
-	expected_values=['Success','Error','Warning','No Success']
-    ' Check if the value is "success" or "error"
-    If runStatusValue in expected_values Then
-        Exit Do ' Exit the loop if the condition is met
+    If runStatusValue = "Error" or   If runStatusValue = "Warning" or  If runStatusValue = "No Success" Then
+    	
+    	        Exit Do ' Exit the loop if the condition is met
+    ElseIf runStatusValue = "Success" Then
+        	PerformAsyncServ
+    	        Exit Do ' Exit the loop if the condition is met
+    	        
+    Else  
+   
     End If
-
-    ' Wait for a short duration before the next iteration (you can adjust the delay as needed)
-    Wait(1) ' Wait for 1 second before rechecking
-Loop
