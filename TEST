@@ -1,31 +1,41 @@
-import win32com, win32com.client
+SystemUtil.CloseProcessByName("msedge.exe")
+SystemUtil.CloseProcessByName("jp2launcher.exe")
+SystemUtil.Run "msedge.exe"
+Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
+Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set "fitauto"
+Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set "Mango@2025"
+Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+Browser("Home").Page("Home").Link("XXHIG Custom").Click
+Browser("Home").Page("Home").Link("Run Requests").Click
+If JavaDialog("Security Warning").Exist(10) Then
+	JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+	JavaDialog("Security Warning").JavaButton("Run").Click
+End If
+OracleFormWindow("Submit a New Request").OracleButton("OK").Click
+OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
+OracleListOfValues("Reports").Select "HIG Basic Validation Report"
+OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
+OracleListOfValues("Source").Select "BAC"
+OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter "456"
+OracleFlexWindow("Parameters").Approve
+OracleFormWindow("Submit Request").OracleButton("Submit").Click
+OracleNotification("Decision").Decline
+OracleFormWindow("Navigator").OracleButton("Open").Click
+OracleFormWindow("Find Requests").OracleButton("Find").Click
+OracleFormWindow("Requests").OracleButton("View Details").Click
+OracleFormWindow("Request Detail").OracleButton("OK").Click
+JavaWindow("Oracle Applications -").Close
+On Error Resume Next
+Reporter.Filter = rfDisableAll
+OracleNotification("Caution").Approve
+Reporter.Filter = rfEnableAll
+On Error GoTo 0
+Browser("iConnect - Home").Close
 
-uft = win32com.client.Dispatch("QuickTest.Application")
 
-# starts up uft
-uft.Launch() 
 
-# make the uft window visible
-uft.Visible = True
 
-# Open a test, replace the path 
-uft.Open(r"C:\Github\corp_corpit_ps_egl_test_automation\UFT\FAH Concurrent Program")
 
-# to open a uft test in Quality Center
-# uft.Open(r"[QualityCenter] Subject\FolderName\uftScript")
 
-# create a RunResultsOptions object
-qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
 
-# set the location to where the results will be save
-qtResultsOpt.ResultsLocation = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\FAH Concurrent Program\res"
 
-uft.Test.Run(qtResultsOpt)
-
-#print "Test has %s" %uft.Test.LastRunResults.Status
-
-# close the Test
-uft.Test.Close()
-
-# quit uft
-uft.Quit()
