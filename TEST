@@ -1,19 +1,17 @@
-Object required: '[string: "{
-  "fahusername": "]'
+' Include the JsonUtils function library
+ExecuteFile "path_to_your_function_library\JsonUtils"
 
-Function ReadJsonFromFile(jsonFilePath)
-    Dim jsonContents
-    Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()
-    
-    Dim parsedJson
-    Set parsedJson = JsonUtil.Parse(jsonContents)
-    
-    Dim username
-    username = parsedJson("username")
-    
-    Dim result(1)
-    Set result(0) = parsedJson
-    result(1) = username
-    
-    ReadJsonFromFile = result
-End Function
+' Replace "path_to_your_credentials_file\credentials.json" with the actual path to your credentials JSON file
+Dim jsonFilePath
+jsonFilePath = "path_to_your_credentials_file\credentials.json"
+
+' Read JSON from file and fetch username and password
+Dim result
+Set result = ReadJsonFromFile(jsonFilePath)
+
+' Extract username and password
+Dim username, password
+username = result("username")
+password = result("password")
+
+' Now you can use the username and password variables as needed
