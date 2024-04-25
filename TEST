@@ -1,7 +1,5 @@
-' Debugging: Display the keys of the parsed JSON object
-Dim keys, key
-keys = ""
-For Each key In parsedJson.Keys
-    keys = keys & key & vbCrLf
+' Debugging: Display the properties of the parsed JSON object
+Dim propertyName
+For Each propertyName In parsedJson
+    MsgBox "Property: " & propertyName & vbCrLf & "Value: " & parsedJson(propertyName)
 Next
-MsgBox "Keys in Parsed JSON:" & vbCrLf & keys
