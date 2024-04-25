@@ -1,6 +1,11 @@
-    Dim homeDir
-    homeDir = Environ("USERPROFILE")
-    
-    ' Construct the path to the JSON file
-    Dim jsonFilePath
-    jsonFilePath = homeDir & "\.secrets\credentials.json"
+' Create an instance of the Environment object
+Dim env
+Set env = CreateObject("WScript.Shell").Environment("Process")
+
+' Retrieve the user's profile directory (home directory)
+Dim homeDir
+homeDir = env("USERPROFILE")
+
+' Construct the path to the project folder within the home directory
+Dim projectFolderPath
+projectFolderPath = homeDir & "\Documents\UFT\MyTests"
