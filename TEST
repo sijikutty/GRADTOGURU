@@ -1,4 +1,12 @@
-{
-  "username": "your_username",
-  "password": "your_encoded_password"
-}
+Function ReadJsonFromFile(filePath)
+    Dim fso, jsonFile, jsonString
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    If fso.FileExists(filePath) Then
+        Set jsonFile = fso.OpenTextFile(filePath, 1)
+        jsonString = jsonFile.ReadAll
+        jsonFile.Close
+        ReadJsonFromFile = jsonString
+    Else
+        ReadJsonFromFile = ""
+    End If
+End Function
