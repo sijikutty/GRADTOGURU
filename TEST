@@ -1,2 +1,2 @@
-Dim runStatusValue As String
-Dim startTime As Double
+
+Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").Click
