@@ -1,9 +1,3 @@
-' Navigate to the specified URL
-Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-
-' Read data from the JSON file
-Set Dom = JSONUtil.Parse("C:\Users\SM05698\.secrets\credentials.json")
-
-' Iterate through each set of data in the JSON file
-fahusername = Dom("fahusername")
-fahpassword = Dom("fahpassword")
+homedir = os.path.expanduser('~')
+    keys = get_keys(homedir + "/.secret/keys.json") #must first create this folder and file with a Rally_API_Key in json
+    apikey = keys['Rally_API_Key']
