@@ -1,2 +1,10 @@
+' Click on the "View Details" button in the "Requests" form
+OracleFormWindow("Requests").OracleButton("View Details").Click
 
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").WebElement("PRCSRQSTDLG_WRK_DESCR100").Click
+
+OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+OracleFormWindow("Requests").OracleButton("View Details").Click
+AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
+AIUtil.FindTextBlock("Completed").CheckExists True
+
+OracleFormWindow("Request Detail").OracleButton("OK").Click
