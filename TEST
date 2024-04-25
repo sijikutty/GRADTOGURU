@@ -1,11 +1,2 @@
-' Trim any leading or trailing spaces
-processInstanceValue = Trim(processInstanceValue)
-
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent").Link("Process Monitor").Click
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebEdit("PMN_FILTER_WRK_WS_OPRID").Set ""
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebEdit("PMN_FILTER_WRK_PT_FILTERVALUE").Set "1"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebList("PMN_FILTER_WRK_PT_FILTERUNIT").Select "Days"
-Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebEdit("PMN_DERIVED_PRCSINSTANCE").Set processInstanceValue
-'Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebButton("Refresh").Click
-'Browser("iConnect - Home").Page("Full Data Publish").Frame("TargetContent_2").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").Click
 Dim runStatusValue As String
+Dim startTime As Double
