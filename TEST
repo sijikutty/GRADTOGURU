@@ -1,12 +1,16 @@
-Function ReadJsonFromFile(filePath)
-    Dim fso, jsonFile, jsonString
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    If fso.FileExists(filePath) Then
-        Set jsonFile = fso.OpenTextFile(filePath, 1)
-        jsonString = jsonFile.ReadAll
-        jsonFile.Close
-        ReadJsonFromFile = jsonString
-    Else
-        ReadJsonFromFile = ""
-    End If
-End Function
+Browser("Advantage Shopping").Page("Advantage Shopping").WebElement("Username").Click
+' Read data from the JSON file
+Set Dom = jsonutil.Parse("C:\Users\_ft_auto\Desktop\test.json")
+Set users = Dom.GetArray("users")
+' Iterate through each set of data in the JSON file
+For Each user in users
+    username = user.getValue("username")
+    password = user.getValue("password")
+    Browser("Advantage Shopping").Refresh
+    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("usernameRegisterPage").Set username
+    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("emailRegisterPage").Set "12345@163.com"
+    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("passwordRegisterPage").Set password
+    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("confirm_passwordRegisterPage").Set password
+    Browser("Advantage Shopping").Page("Advantage Shopping").WebCheckBox("i_agree").Set "ON" 
+    Browser("Advantage Shopping").Page("Advantage Shopping_2").WebButton("register_btnundefined").Check CheckPoint("register_btnundefined")
+Next
