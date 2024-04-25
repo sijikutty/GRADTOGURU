@@ -1,10 +1,13 @@
+Function ReadJsonFromFile(filePath)
+    Dim jsonString
+    jsonString = JSONUtil.Parse(FileSystemUtil.ReadFile(filePath))
+    ReadJsonFromFile = jsonString
+End Function
 Function GetCredentials(jsonFilePath)
-    Dim jsonString, jsonObject
-    jsonString = ReadJsonFromFile(jsonFilePath)
-    Set jsonObject = JSON.Parse(jsonString)
+    Dim jsonObject
+    jsonObject = ReadJsonFromFile(jsonFilePath)
     GetCredentials = jsonObject
 End Function
-
 ' Include the function library
 ExecuteFile "JsonUtils.vbs"
 
