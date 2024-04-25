@@ -23,13 +23,22 @@ If fso.FileExists(jsonFilePath) Then
     Dim parsedJson
     Set parsedJson = JsonUtil.Parse(jsonContents)
 
-    ' Extract username and password
-    Dim username, password
-    username = parsedJson("username")
-    password = parsedJson("password")
+    ' Check if the parsed JSON object is valid and contains the expected keys
+    If IsObject(parsedJson) Then
+        If parsedJson.Exists("username") And parsedJson.Exists("password") Then
+            ' Extract username and password
+            Dim username, password
+            username = parsedJson("username")
+            password = parsedJson("password")
 
-    ' Display the username and password
-    MsgBox "Username: " & username & vbCrLf & "Password: " & password
+            ' Display the username and password
+            MsgBox "Username: " & username & vbCrLf & "Password: " & password
+        Else
+            MsgBox "Error: Invalid JSON structure. 'username' and 'password' keys not found."
+        End If
+    Else
+        MsgBox "Error: Invalid JSON content."
+    End If
 Else
     MsgBox "Error: JSON file not found."
 End If
