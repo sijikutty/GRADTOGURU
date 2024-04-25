@@ -1,4 +1,9 @@
-    Dim jsonContents, parsedJson
+Object required: '[string: "{
+  "fahusername": "]'
+
+Line (10): "Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()".
+
+Dim jsonContents, parsedJson
     Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()
     Set parsedJson = JsonUtil.Parse(jsonContents)
     
