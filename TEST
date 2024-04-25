@@ -1,12 +1,14 @@
-    ' Ensure that the JSON content is not empty
-    If Trim(jsonContents) <> "" Then
-        Set parsedJson = JsonUtil.Parse(jsonContents)
-        If Not IsObject(parsedJson) Then
-            MsgBox "Error: Invalid JSON content in the file."
-            Exit Function
-        End If
-        Set ReadJsonFromFile = parsedJson
-    Else
-        MsgBox "Error: JSON file is empty."
-        Exit Function
-    End If
+' Replace "path_to_your_credentials_file\credentials.json" with the actual path to your credentials JSON file
+Dim jsonFilePath
+jsonFilePath = "path_to_your_credentials_file\credentials.json"
+
+' Read JSON from file and fetch username
+Dim result
+result = ReadJsonFromFile(jsonFilePath)
+
+' Extract username
+Dim username
+username = result("username")
+
+' Display the username
+MsgBox "Username: " & username
