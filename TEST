@@ -1,3 +1,6 @@
+Object required: '[string: "{
+  "fahusername": "]'
+
 Function ReadJsonFromFile(jsonFilePath)
     Dim jsonContents
     Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()
