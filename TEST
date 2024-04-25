@@ -1,3 +1,21 @@
-homedir = os.path.expanduser('~')
-    keys = get_keys(homedir + "/.secret/keys.json") #must first create this folder and file with a Rally_API_Key in json
-    apikey = keys['Rally_API_Key']
+Function GetCredentials(jsonFilePath)
+    Dim jsonString, jsonObject
+    jsonString = ReadJsonFromFile(jsonFilePath)
+    Set jsonObject = JSON.Parse(jsonString)
+    GetCredentials = jsonObject
+End Function
+
+' Include the function library
+ExecuteFile "JsonUtils.vbs"
+
+' Call the function to get credentials
+jsonFilePath = "path/to/credentials.json"
+credentials = GetCredentials(jsonFilePath)
+
+' Use the retrieved credentials
+username = credentials("username")
+password = credentials("password")
+
+' Use the username and password in your script (e.g., login)
+Browser("YourBrowser").Page("YourPage").WebEdit("username").Set username
+Browser("YourBrowser").Page("YourPage").WebEdit("password").Set password
