@@ -1,2 +1,154 @@
-AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
-AIUtil("text_box", "Phase").CheckExists True
+' Close existing instances of Microsoft Edge and Java Platform Launcher
+SystemUtil.CloseProcessByName("msedge.exe")
+SystemUtil.CloseProcessByName("jp2launcher.exe")
+
+' Run Microsoft Edge browser
+SystemUtil.Run "msedge.exe"
+
+' Navigate to the specified URL
+Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
+
+' Set username and password
+Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set "fitauto"
+Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set "Mango@2025"
+
+' Click on the Log In button
+Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+
+' Click on the "XXHIG Custom" link
+Browser("Home").Page("Home").Link("XXHIG Custom").Click
+
+' Click on the "Run Requests" link
+Browser("Home").Page("Home").Link("Run Requests").Click
+
+' Check if the Security Warning dialog exists
+If JavaDialog("Security Warning").Exist(10) Then
+    ' If it exists, set the checkbox and click on the Run button
+    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+    JavaDialog("Security Warning").JavaButton("Run").Click
+End If
+
+
+' Click on the OK button in the "Submit a New Request" form
+OracleFormWindow("Submit a New Request").OracleButton("OK").Click
+
+' Open the dialog for selecting a report
+OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
+
+' Select the "HIG Basic Validation Report" from the list of values
+OracleListOfValues("Reports").Select "HIG Basic Validation Report"
+
+' Open the dialog for selecting the source
+OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
+
+' Select "BAC" as the source from the list of values
+OracleListOfValues("Source").Select "BAC"
+
+' Enter the request ID
+OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter "456"
+
+' Click on the "Approve" button
+OracleFlexWindow("Parameters").Approve
+
+' Click on the "Submit" button in the "Submit Request" form
+OracleFormWindow("Submit Request").OracleButton("Submit").Click
+
+' Decline the Oracle notification with the title "Decision"
+OracleNotification("Decision").Decline
+
+' Click on the "Open" button in the "Navigator" form
+OracleFormWindow("Navigator").OracleButton("Open").Click
+
+' Click on the "Find" button in the "Find Requests" form
+OracleFormWindow("Find Requests").OracleButton("Find").Click
+
+' Function to click "View Details" button in "Requests" window
+Function ClickViewDetails()
+    OracleFormWindow("Requests").OracleButton("View Details").Click
+End Function
+' Function to check if "Completed" text block exists
+Function CheckCompleted()
+    
+	'AIUtil.SetContext Window("regexpwndtitle:=ofahd", "regexpwndclass:=SunAwtFrame", "is owned window:=False", "is child window:=False")
+	AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
+	'if AIUtil("text_box", "Phase").CheckExists(True) then
+	 If AIUtil.FindTextBlock("Completed").CheckExists(True) Then
+	        CheckCompleted = True
+	    Else
+	        CheckCompleted = False
+	    End If
+End Function
+' Function to click "OK" button in "Request Detail" window
+Function ClickOKButton()
+    OracleFormWindow("Request Detail").OracleButton("OK").Click
+End Function
+' Function to click "Refresh Data" button in "Requests" window
+Function ClickRefreshData()
+    OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+End Function
+
+' Function to write result to UFT One
+Function WriteToUFTOne(result)
+	If result="Test is success" Then
+		Reporter.ReportEvent micPass, "Test Result", result
+	Else
+	    Reporter.ReportEvent micFail, "Test Result", result
+	End  If
+End Function
+
+' Main function
+Sub Main()
+    ' Click "View Details" button
+    ClickViewDetails
+    
+    ' Check if "Completed" is found
+    If CheckCompleted Then
+        WriteToUFTOne "Test is success"
+    Else
+        ' Click "OK" button in "Request Detail" window
+        ClickOKButton
+        
+        ' Wait for 1 minute
+        Wait 60
+        
+        ' Click "Refresh Data" button
+        ClickRefreshData
+        
+        ' Wait for 1 more minute
+        Wait 60
+        
+        ' Click "View Details" button again
+        ClickViewDetails
+        
+        ' Check if "Completed" is found after waiting
+        If CheckCompleted Then
+            WriteToUFTOne "Test is success"
+        Else
+            WriteToUFTOne "Test failed"
+        End If
+    End If
+End Sub
+
+' Call the main function to start the test
+Main
+
+' Close the Java window with the title "Oracle Applications -"
+JavaWindow("Oracle Applications -").Close
+
+' Disable error reporting temporarily
+On Error Resume Next
+
+' Disable reporting temporarily
+Reporter.Filter = rfDisableAll
+
+' Approve the Oracle notification with the title "Caution"
+OracleNotification("Caution").Approve
+
+' Enable reporting
+Reporter.Filter = rfEnableAll
+
+' Reset error handling
+On Error GoTo 0
+
+' Close the Microsoft Edge browser
+Browser("iConnect - Home").Close
