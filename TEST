@@ -1,10 +1,64 @@
-' Click on the "View Details" button in the "Requests" form
-OracleFormWindow("Requests").OracleButton("View Details").Click
+' Function to click "View Details" button in "Requests" window
+Function ClickViewDetails()
+    OracleFormWindow("Requests").OracleButton("View Details").Click
+End Function
 
+' Function to check if "Completed" text block exists
+Function CheckCompleted()
+    If AIUtil.FindTextBlock("Completed").CheckExists Then
+        CheckCompleted = True
+    Else
+        CheckCompleted = False
+    End If
+End Function
 
-OracleFormWindow("Requests").OracleButton("Refresh Data").Click
-OracleFormWindow("Requests").OracleButton("View Details").Click
-AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
-AIUtil.FindTextBlock("Completed").CheckExists True
+' Function to click "OK" button in "Request Detail" window
+Function ClickOKButton()
+    OracleFormWindow("Request Detail").OracleButton("OK").Click
+End Function
 
-OracleFormWindow("Request Detail").OracleButton("OK").Click
+' Function to click "Refresh Data" button in "Requests" window
+Function ClickRefreshData()
+    OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+End Function
+
+' Function to write result to UFT One
+Function WriteToUFTOne(result)
+    Reporter.ReportEvent micPass, "Test Result", result
+End Function
+
+' Main function
+Sub Main()
+    ' Click "View Details" button
+    ClickViewDetails
+    
+    ' Check if "Completed" is found
+    If CheckCompleted Then
+        WriteToUFTOne "Test is success"
+    Else
+        ' Click "OK" button in "Request Detail" window
+        ClickOKButton
+        
+        ' Wait for 1 minute
+        Wait 60
+        
+        ' Click "Refresh Data" button
+        ClickRefreshData
+        
+        ' Wait for 1 more minute
+        Wait 60
+        
+        ' Click "View Details" button again
+        ClickViewDetails
+        
+        ' Check if "Completed" is found after waiting
+        If CheckCompleted Then
+            WriteToUFTOne "Test is success"
+        Else
+            WriteToUFTOne "Test failed"
+        End If
+    End If
+End Sub
+
+' Call the main function to start the test
+Main
