@@ -1,38 +1,4 @@
-' Create a dictionary object to hold your data
-Set jsonData = CreateObject("Scripting.Dictionary")
-
-' Populate the dictionary with sample data
-jsonData.Add "Name", "John Doe"
-jsonData.Add "Age", 30
-jsonData.Add "City", "New York"
-
-' Convert the dictionary to JSON format
-jsonString = JsonConverter.ConvertToJson(jsonData)
-
-' Specify the file path for the JSON file
-filePath = "C:\path\to\your\file.json"
-
-' Create a file system object
-Set fso = CreateObject("Scripting.FileSystemObject")
-
-' Check if the file already exists, if it does, delete it
-If fso.FileExists(filePath) Then
-    fso.DeleteFile(filePath)
-End If
-
-' Create a new JSON file
-Set jsonFile = fso.CreateTextFile(filePath, True)
-
-' Write the JSON string to the file
-jsonFile.Write jsonString
-
-' Close the file
-jsonFile.Close
-
-' Release objects from memory
-Set jsonData = Nothing
-Set fso = Nothing
-Set jsonFile = Nothing
-
-' Display a message indicating the JSON file has been created
-MsgBox "JSON file has been created at " & filePath
+{
+  "username": "your_username",
+  "password": "your_encoded_password"
+}
