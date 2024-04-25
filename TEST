@@ -1,24 +1,17 @@
-Function ReadJsonFromFile(filePath)
-    Dim jsonString
-    jsonString = JSONUtil.Parse(FileSystemUtil.ReadFile(filePath))
-    ReadJsonFromFile = jsonString
-End Function
-Function GetCredentials(jsonFilePath)
-    Dim jsonObject
-    jsonObject = ReadJsonFromFile(jsonFilePath)
-    GetCredentials = jsonObject
-End Function
-' Include the function library
-ExecuteFile "JsonUtils.vbs"
+Dim jsonFilePath
+jsonFilePath = "path_to_your_json_file.json" ' Replace this with the actual path to your JSON file
 
-' Call the function to get credentials
-jsonFilePath = "path/to/credentials.json"
-credentials = GetCredentials(jsonFilePath)
+' Read the JSON file contents into a string
+Dim jsonContents
+Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()
 
-' Use the retrieved credentials
-username = credentials("username")
-password = credentials("password")
+' Parse the JSON string using JsonUtil.Parse
+Dim parsedJson
+Set parsedJson = JsonUtil.Parse(jsonContents)
 
-' Use the username and password in your script (e.g., login)
-Browser("YourBrowser").Page("YourPage").WebEdit("username").Set username
-Browser("YourBrowser").Page("YourPage").WebEdit("password").Set password
+' Now you can access the JSON data using parsedJson
+' For example, if your JSON file contains an object with key "exampleKey", you can access its value like this:
+Dim exampleValue
+exampleValue = parsedJson("exampleKey")
+
+' Use exampleValue as needed
