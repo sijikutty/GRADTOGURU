@@ -28,7 +28,6 @@ If JavaDialog("Security Warning").Exist(10) Then
     JavaDialog("Security Warning").JavaButton("Run").Click
 End If
 
-
 ' Click on the OK button in the "Submit a New Request" form
 OracleFormWindow("Submit a New Request").OracleButton("OK").Click
 
@@ -66,22 +65,22 @@ OracleFormWindow("Find Requests").OracleButton("Find").Click
 Function ClickViewDetails()
     OracleFormWindow("Requests").OracleButton("View Details").Click
 End Function
+
 ' Function to check if "Completed" text block exists
 Function CheckCompleted()
-    
-	'AIUtil.SetContext Window("regexpwndtitle:=ofahd", "regexpwndclass:=SunAwtFrame", "is owned window:=False", "is child window:=False")
-	AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
-	'if AIUtil("text_box", "Phase").CheckExists(True) then
-	 If AIUtil.FindTextBlock("Completed").CheckExists(True) Then
-	        CheckCompleted = True
-	    Else
-	        CheckCompleted = False
-	    End If
+    AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
+    If AIUtil.FindTextBlock("Completed").CheckExists() Then
+        CheckCompleted = True
+    Else
+        CheckCompleted = False
+    End If
 End Function
+
 ' Function to click "OK" button in "Request Detail" window
 Function ClickOKButton()
     OracleFormWindow("Request Detail").OracleButton("OK").Click
 End Function
+
 ' Function to click "Refresh Data" button in "Requests" window
 Function ClickRefreshData()
     OracleFormWindow("Requests").OracleButton("Refresh Data").Click
@@ -89,11 +88,11 @@ End Function
 
 ' Function to write result to UFT One
 Function WriteToUFTOne(result)
-	If result="Test is success" Then
-		Reporter.ReportEvent micPass, "Test Result", result
-	Else
-	    Reporter.ReportEvent micFail, "Test Result", result
-	End  If
+    If result = "Test is success" Then
+        Reporter.ReportEvent micPass, "Test Result", result
+    Else
+        Reporter.ReportEvent micFail, "Test Result", result
+    End If
 End Function
 
 ' Main function
@@ -102,7 +101,7 @@ Sub Main()
     ClickViewDetails
     
     ' Check if "Completed" is found
-    If CheckCompleted Then
+    If CheckCompleted() Then
         WriteToUFTOne "Test is success"
     Else
         ' Click "OK" button in "Request Detail" window
@@ -121,7 +120,7 @@ Sub Main()
         ClickViewDetails
         
         ' Check if "Completed" is found after waiting
-        If CheckCompleted Then
+        If CheckCompleted() Then
             WriteToUFTOne "Test is success"
         Else
             WriteToUFTOne "Test failed"
