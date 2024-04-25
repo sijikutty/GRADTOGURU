@@ -1,26 +1,6 @@
-{
-"fahuser":[{
-      "username":"1",
-      "fahpassword":"1"
-    }],
-"psuser":[{
-      "psusername":"1",
-      "pspassword":"1@100"
-    }]
-}
-
-Set Dom = jsonutil.Parse("C:\Users\SM05698\.secrets\credentials.json")
-Set users = Dom.GetArray("fahuser")
-' Iterate through each set of data in the JSON file
-For Each user in users
-    username = user.getValue("fahusername")
-    password = user.getValue("fahpassword")
-    Msgbox username
-Next
-Set users = Dom.GetArray("psuser")
-' Iterate through each set of data in the JSON file
-For Each user in users
-    username = user.getValue("psusername")
-    password = user.getValue("pspassword")
-    Msgbox username
-Next
+    Dim homeDir
+    homeDir = Environ("USERPROFILE")
+    
+    ' Construct the path to the JSON file
+    Dim jsonFilePath
+    jsonFilePath = homeDir & "\.secrets\credentials.json"
