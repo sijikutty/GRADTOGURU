@@ -1,13 +1,26 @@
 {
-    "username": "remi.jullian",
-    "password": "Aa123"
+"fahuser":[{
+      "username":"1",
+      "fahpassword":"1"
+    }],
+"psuser":[{
+      "psusername":"1",
+      "pspassword":"1@100"
+    }]
 }
-' Parse the JSON file
-Set Dom = jsonutil.Parse("C:\Users\SM05698\.secrets\tt.json")
 
-' Extract username and password
-username = Dom.GetValue("username")
-password = Dom.GetValue("password")
-
-' Display the extracted username
-MsgBox "Username: " & username & vbCrLf & "Password: " & password
+Set Dom = jsonutil.Parse("C:\Users\SM05698\.secrets\credentials.json")
+Set users = Dom.GetArray("fahuser")
+' Iterate through each set of data in the JSON file
+For Each user in users
+    username = user.getValue("fahusername")
+    password = user.getValue("fahpassword")
+    Msgbox username
+Next
+Set users = Dom.GetArray("psuser")
+' Iterate through each set of data in the JSON file
+For Each user in users
+    username = user.getValue("psusername")
+    password = user.getValue("pspassword")
+    Msgbox username
+Next
