@@ -1,19 +1,12 @@
+Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
+
 ' Read data from the JSON file
-Set Dom = JSONUtil.Parse("C:\Users\_ft_auto\Desktop\test.json")
-If Not Dom Is Nothing Then
-    ' Get the username and password from the JSON data
-    username = Dom("username")
-    password = Dom("password")
-    
-    ' Use the username and password in your test
-    Browser("Advantage Shopping").Refresh
-    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("usernameRegisterPage").Set username
-    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("emailRegisterPage").Set "12345@163.com"
-    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("passwordRegisterPage").Set password
-    Browser("Advantage Shopping").Page("Advantage Shopping").WebEdit("confirm_passwordRegisterPage").Set password
-    Browser("Advantage Shopping").Page("Advantage Shopping").WebCheckBox("i_agree").Set "ON" 
-    Browser("Advantage Shopping").Page("Advantage Shopping_2").WebButton("register_btnundefined").Check CheckPoint("register_btnundefined")
-Else
-    MsgBox "JSON file is empty or not found!"
-    ' Handle the case where JSON file is empty or not found
-End If
+Set Dom = jsonutil.Parse("C:\Users\SM05698\.secrets\credentials.json")
+
+' Iterate through each set of data in the JSON file
+  fahusername = Dom("fahusername")
+  fahpassword = Dom("fahpassword")
+
+' Set username and password
+Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
+Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
