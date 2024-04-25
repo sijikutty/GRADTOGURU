@@ -1,3 +1,7 @@
+' Parse the JSON string
+Dim parsedJson
+Set parsedJson = JsonUtil.Parse(jsonContents)
+
 ' Debugging: Print the structure of the parsed JSON object
 PrintJsonStructure parsedJson
 
