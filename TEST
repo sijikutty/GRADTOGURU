@@ -1,12 +1,9 @@
+' Navigate to the specified URL
 Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
 
 ' Read data from the JSON file
-Set Dom = jsonutil.Parse("C:\Users\SM05698\.secrets\credentials.json")
+Set Dom = JSONUtil.Parse("C:\Users\SM05698\.secrets\credentials.json")
 
 ' Iterate through each set of data in the JSON file
-  fahusername = Dom("fahusername")
-  fahpassword = Dom("fahpassword")
-
-' Set username and password
-Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
-Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
+fahusername = Dom("fahusername")
+fahpassword = Dom("fahpassword")
