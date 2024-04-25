@@ -1,22 +1,23 @@
-' Parse the JSON string
-Dim parsedJson
-Set parsedJson = JsonUtil.Parse(jsonContents)
+Set Dom = jsonutil.Parse("C:\Users\SM05698\.secrets\tt.json")
+Set users = Dom.GetArray("users")
+' Iterate through each set of data in the JSON file
+For Each user in users
+    username = user.getValue("username")
+    password = user.getValue("password")
+    Msgbox username
+Next
 
-' Debugging: Print the structure of the parsed JSON object
-PrintJsonStructure parsedJson
-
-Sub PrintJsonStructure(obj, Optional depth)
-    If IsObject(obj) Then
-        Dim key
-        For Each key In obj
-            Dim value
-            value = obj(key)
-            Dim indent
-            indent = String(depth * 2, " ")
-            MsgBox indent & key & ": " & TypeName(value)
-            If IsObject(value) Then
-                PrintJsonStructure value, depth + 1
-            End If
-        Next
-    End If
-End Sub
+{
+"users":[{
+      "username":"remi.jullian",
+      "password":"Aa123"
+    },
+    {
+      "username":"remi.jullian",
+      "password":"Aa1234"
+    },
+    {
+      "username":"remi.jullian",
+      "password":"Aa1235"
+    }]
+}
