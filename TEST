@@ -1,17 +1,21 @@
+Function ReadJsonFromFile(jsonFilePath)
+    Dim jsonContents
+    Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()
+    
+    Dim parsedJson
+    Set parsedJson = JsonUtil.Parse(jsonContents)
+    
+    Set ReadJsonFromFile = parsedJson
+End Function
+' Include the JsonUtils function library
+ExecuteFile "path_to_your_function_library\JsonUtils"
+
+' Replace "path_to_your_json_file.json" with the actual path to your JSON file
 Dim jsonFilePath
-jsonFilePath = "path_to_your_json_file.json" ' Replace this with the actual path to your JSON file
+jsonFilePath = "path_to_your_json_file.json"
 
-' Read the JSON file contents into a string
-Dim jsonContents
-Set jsonContents = CreateObject("Scripting.FileSystemObject").OpenTextFile(jsonFilePath).ReadAll()
+' Read JSON from file
+Dim json
+Set json = ReadJsonFromFile(jsonFilePath)
 
-' Parse the JSON string using JsonUtil.Parse
-Dim parsedJson
-Set parsedJson = JsonUtil.Parse(jsonContents)
-
-' Now you can access the JSON data using parsedJson
-' For example, if your JSON file contains an object with key "exampleKey", you can access its value like this:
-Dim exampleValue
-exampleValue = parsedJson("exampleKey")
-
-' Use exampleValue as needed
+' Now you can use the json object as needed
