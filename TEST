@@ -1,27 +1,10 @@
-Function Credentials()
-	' Create an instance of the Environment object
-	Dim env
-	Set env = CreateObject("WScript.Shell").Environment("Process")
-	' Retrieve the user's profile directory (home directory)
-	Dim homeDir
-	homeDir = env("USERPROFILE")
-	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-	Set users = Dom.GetArray("fahuser")
-	For Each user in users
-	    fahusername = user.getValue("fahusername")
-	    fahpassword = user.getValue("fahpassword")
-	    Exit For
-	Next
-End Function
-
-Function fahLaunch()
-	'Wait till browser loads Completely
-	Browser("iConnect - Home").Page("iConnect - Home").Sync
-	' Navigate to the specified URL
-	Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-	' Set username and password
-	Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
-	Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
-	' Click on the Log In button
-	Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-End Function
+{
+"fahuser":[{
+      "fahusername":"fitauto",
+      "fahpassword":"Mango@2025"
+    }],
+"psuser":[{
+      "psusername":"PWTEST",
+      "pspassword":"Pwtest@100"
+    }]
+}
