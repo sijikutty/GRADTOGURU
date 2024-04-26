@@ -1,3 +1,5 @@
+MsgBox "Current function: " & GetCallingFunctionName()
+
 On Error Resume Next
 
 DoStep1
