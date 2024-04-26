@@ -1,82 +1,8 @@
-' Close existing instances of Microsoft Edge and Java Platform Launcher
-SystemUtil.CloseProcessByName("msedge.exe")
-SystemUtil.CloseProcessByName("jp2launcher.exe")
-
-'Run Microsoft Edge browser
-SystemUtil.Run "msedge.exe"
-
-' Function to handle browser navigation and login
-Function NavigateAndLogin(username, password)
-    ' Wait till browser loads Completely
-    Browser("iConnect - Home").Page("iConnect - Home").Sync
-
-    ' Navigate to the specified URL
-    Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-
-    ' Set username and password
-    Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set username
-    Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set password
-
-    ' Click on the Log In button
-    Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-End Function
-
-' Function to handle navigating to the specified page
-Function NavigateToPage(pageName)
-    ' Click on the specified link
-    Browser("iConnect - Home").Page("Home").Link(pageName).Click
-End Function
-
-' Function to handle Java security warning dialog
-Function HandleJavaSecurityWarning()
-    If JavaDialog("Security Warning").Exist(10) Then
-        JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-        JavaDialog("Security Warning").JavaButton("Run").Click
-    End If
-End Function
-
-' Function to handle Oracle notifications
-Function HandleOracleNotification(notificationTitle)
-    If OracleNotification(notificationTitle).Exist(10) Then
-        OracleNotification(notificationTitle).Approve
-    End If
-End Function
-
-' Main function
-Sub Main()
-    ' Set up error handling
-    On Error Resume Next
-
-    ' Perform navigation and login
-    NavigateAndLogin fahusername, fahpassword
-
-    ' Handle Java security warning
-    HandleJavaSecurityWarning
-
-    ' Navigate to the specified page
-    NavigateToPage "XXHIG Custom"
-
-    ' Navigate to "Run Requests" page
-    NavigateToPage "Run Requests"
-
-    ' Check if the script encountered an error
+' Check if the script encountered an error
     If Err.Number <> 0 Then
         WriteToUFTOne "Test failed"
         Exit Sub
     End If
 
-    ' Continue with other actions...
-    ' ...
-
-    ' Handle Oracle notifications
-    HandleOracleNotification "Caution"
-
-    ' Close the browser
-    Browser("iConnect - Home").Close
-
     ' Reset error handling
     On Error GoTo 0
-End Sub
-
-' Call the main function to start the test
-Main
