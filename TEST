@@ -1,3 +1,3 @@
-pytest C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui
-ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]
-pytest: error: unrecognized arguments: --headed --slowmo --order-dependencies C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui
+pytest -k "test_gui" C:\Github\corp_corpit_ps_egl_test_automation\smoketest
+pytest C:\Github\corp_corpit_ps_egl_test_automation\smoketest
+pytest --headed --slowmo --order-dependencies C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui
