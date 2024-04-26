@@ -1,8 +1,7 @@
 ' Check if the script encountered an error
-    If Err.Number <> 0 Then
-        WriteToUFTOne "Test failed"
-        Exit Sub
-    End If
-
-    ' Reset error handling
-    On Error GoTo 0
+If Err.Number <> 0 Then
+    Dim errorMessage
+    errorMessage = "Error " & Err.Number & ": " & Err.Description
+    WriteToUFTOne errorMessage
+    Exit Sub
+End If
