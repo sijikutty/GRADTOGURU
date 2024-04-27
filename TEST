@@ -1,10 +1,146 @@
-{
-"fahuser":[{
-      "fahusername":"fitauto",
-      "fahpassword":"Mango@2025"
-    }],
-"psuser":[{
-      "psusername":"PWTEST",
-      "pspassword":"Pwtest@100"
-    }]
-}
+
+Function Launch()
+	' Close existing instances of Microsoft Edge and Java Platform Launcher
+	SystemUtil.CloseProcessByName("msedge.exe")
+	SystemUtil.CloseProcessByName("jp2launcher.exe")
+	'Run Microsoft Edge browser
+	SystemUtil.Run "msedge.exe"
+End Function
+Function Credentials()
+	Errorhandling
+	' Create an instance of the Environment object
+	Dim env
+	Set env = CreateObject("WScript.Shell").Environment("Process")
+	' Retrieve the user's profile directory (home directory)
+	Dim homeDir
+	homeDir = env("USERPROFILE")
+	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+	Set users = Dom.GetArray("fahuser")
+	For Each user in users
+	    fahusername = user.getValue("fahusername")
+	    fahpassword = user.getValue("fahpassword")
+	    Exit For
+	Next
+	fahLaunch fahusername,fahpassword
+End Function
+Function fahLaunch(fahusername,fahpassword)
+	Errorhandling
+	'Wait till browser loads Completely
+	Browser("iConnect - Home").Page("iConnect - Home").Sync
+	' Navigate to the specified URL
+	Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
+	' Set username and password
+	Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
+	Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
+	' Click on the Log In button
+	Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+End Function
+Function fahRunRequest()
+	Errorhandling
+	Browser("iConnect - Home").Page("Home").Link("XXHIG Custom").Click
+	Browser("iConnect - Home").Page("Home").Link("Run Requests").Click	
+
+	
+	' Check if the Security Warning dialog exists
+	If JavaDialog("Security Warning").Exist(10) Then
+	    ' If it exists, set the checkbox and click on the Run button
+	    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+	    JavaDialog("Security Warning").JavaButton("Run").Click
+	End If
+	' Click on the OK button in the "Submit a New Request" form
+	OracleFormWindow("Submit a New Request").OracleButton("OK").Click
+	' Open the dialog for selecting a report
+	OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
+	OracleListOfValues("Reports").Select "HIG Basic Validation Report"
+	OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
+	OracleListOfValues("Source").Select "BAC"
+	OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter "456"
+	OracleFlexWindow("Parameters").Approve
+	OracleFormWindow("Submit Request").OracleButton("Submit").Click
+	OracleNotification("Decision").Decline
+	' Click on the "Open" button in the "Navigator" form
+	OracleFormWindow("Navigator").OracleButton("Open").Click
+	' Click on the "Find" button in the "Find Requests" form
+	OracleFormWindow("Find Requests").OracleButton("Find").Click
+End Function
+Function CheckCompleted()
+	Errorhandling
+    AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
+    If AIUtil.FindTextBlock("Completed").CheckExists(True) Then
+        CheckCompleted = True
+    Else
+        CheckCompleted = False
+    End If
+End Function
+Function ViewRunDetails()
+	Errorhandling
+    OracleFormWindow("Requests").OracleButton("View Details").Click
+    If CheckCompleted() Then
+        WriteToUFTOne "Test is success"
+    Else
+        OracleFormWindow("Request Detail").OracleButton("OK").Click
+        Wait 60
+        OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+        OracleFormWindow("Requests").OracleButton("View Details").Click
+        If CheckCompleted() Then
+            WriteToUFTOne "Test is success"
+        Else
+            WriteToUFTOne "Test failed"
+        End If
+    End If
+End Function    
+Function WriteToUFTOne(result)
+    If result = "Test is success" Then
+        Reporter.ReportEvent micPass, "Test Result", result
+    Else
+        Reporter.ReportEvent micFail, "Test Result", result
+    End If
+End Function
+Function Errorhandling()
+	If Err.Number <> 0 Then
+	  WScript.Echo "Error in Launch: " & Err.Description
+	  WriteToUFTOne "Test failed"
+	  Err.Clear
+	  WScript.End
+	  SystemUtil.CloseProcessByName("msedge.exe")
+	  SystemUtil.CloseProcessByName("jp2launcher.exe")
+	  ExitTest 
+	End If
+End Function
+Function CloseWindows()
+		Errorhandling
+	' Close the Java window with the title "Oracle Applications -"
+	JavaWindow("Oracle Applications -").Close
+	
+	' Disable error reporting temporarily
+	On Error Resume Next
+	
+	' Disable reporting temporarily
+	Reporter.Filter = rfDisableAll
+	
+	' Approve the Oracle notification with the title "Caution"
+	OracleNotification("Caution").Approve
+	
+	' Enable reporting
+	Reporter.Filter = rfEnableAll
+		
+	' Reset error handling
+	On Error GoTo 0
+	
+	' Close the Microsoft Edge browser
+	Browser("iConnect - Home").Close
+End Function
+' Main function
+Sub Main()
+    On Error Resume Next
+    Launch
+    Credentials
+    'fahlaunch fahusername,fahpassword
+    fahRunRequest
+    ViewRunDetails
+    CloseWindows
+    Errorhandling
+End Sub
+
+' Call the main function to start the test
+Main
