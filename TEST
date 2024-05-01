@@ -3,23 +3,29 @@ import win32com.client
 # Path to the Excel file
 excel_file_path = "path/to/your/excel/file.xlsx"
 
-# Name of the macro button
-macro_button_name = "YourMacroButtonName"
-
 # Create an instance of Excel application
 excel_app = win32com.client.Dispatch("Excel.Application")
 
 # Open the Excel file
 wb = excel_app.Workbooks.Open(excel_file_path)
 
-# Specify the sheet name if needed
-# sheet = wb.Sheets("Sheet1")
+# List to store macro button names
+macro_button_names = []
 
-# Find the macro button by its name
-macro_button = wb.Application.ActiveSheet.Buttons(macro_button_name)
+# Loop through each worksheet in the workbook
+for sheet in wb.Sheets:
+    # Loop through each shape (including buttons) in the sheet
+    for shape in sheet.Shapes:
+        # Check if the shape is a button
+        if shape.Type == 12:  # Type 12 corresponds to a form control button
+            # Add the name of the button to the list
+            macro_button_names.append(shape.Name)
 
-# Click on the macro button
-macro_button.Click()
+# Print the list of macro button names
+print("Macro Button Names:")
+for name in macro_button_names:
+    print(name)
 
 # Close the Excel file
 wb.Close()
+excel_app.Quit()
