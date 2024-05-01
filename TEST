@@ -1,40 +1,25 @@
-SELECT A.PUBNODE, A.QUEUENAME, A.EXTOPERATIONNAME
-FROM PSAPMSGPUBHDR A
-WHERE A.STATUSSTRING = ‘ERROR’
-AND A.PUBLISHTIMESTAMP > TO_TIMESTAMP(‘2009-08-17-08.00.00.000000’,‘YYYY-MM-DD-HH24.MI.SS.FF’)
-UNION
-SELECT B.PUBNODE, B.QUEUENAME, B.IB_OPERATIONNAME
-FROM PSAPMSGPUBCON B
-WHERE B.STATUSSTRING = ‘ERROR’
-AND ( B.PUBNODE <> ‘PSFT_IM’
-OR B.SUBNODE <> ‘PSFT_IM’)
-AND B.PUBLISHTIMESTAMP > TO_TIMESTAMP(‘2009-08-17-08.00.00.000000’,‘YYYY-MM-DD-HH24.MI.SS.FF’)
-UNION
-SELECT C.PUBNODE, C.QUEUENAME, C.IB_OPERATIONNAME
-FROM PSAPMSGSUBCON C
-WHERE C.STATUSSTRING = ‘ERROR’
-AND C.PUBLISHTIMESTAMP > TO_TIMESTAMP(‘2009-08-17-08.00.00.000000’,‘YYYY-MM-DD-HH24.MI.SS.FF’)
-UNION
-SELECT D.PUBNODE, D.QUEUENAME, D.EXTOPERATIONNAME
-FROM PSAPMSGPUBHDR D
-WHERE ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((D.CREATEDTTM) AS DATE)) * 1440, 0) > 10
-AND D.STATUSSTRING = ‘NEW’
-UNION
-SELECT F.PRCSNAME, F.RUNSTATUS, F.DISTSTATUS
-FROM PSPRCSRQST F
-WHERE F.DISTSTATUS = ‘4’
-AND ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((F.ENDDTTM) AS DATE)) * 1440, 0) BETWEEN 10 AND 1000
-UNION
-SELECT G.PUBNODE, G.QUEUENAME, G.IB_OPERATIONNAME
-FROM PSAPMSGPUBCON G
-WHERE ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((G.CREATEDTTM) AS DATE)) * 1440, 0) > 10
-AND G.STATUSSTRING = ‘NEW’
-UNION
-SELECT H.IB_OPERATIONNAME, H.PUBNODE, H.QUEUENAME
-FROM PSAPMSGSUBCON H
-WHERE ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((H.CREATEDTTM) AS DATE)) * 1440, 0) > 10
-AND H.STATUSSTRING = ‘NEW’
+import win32com.client
 
-I have modified delivered XML Publisher packages to send an email to the distribution list only if there was data on report. This was needed to save user time, if no data on report no need to open the report.
-The above query is run via XMLP framework every hour and sends our IT an email if something was stuck.
-You write your own app engine calling this Query (or running a similar SQL) to achieve this.
+# Path to the Excel file
+excel_file_path = "path/to/your/excel/file.xlsx"
+
+# Name of the macro button
+macro_button_name = "YourMacroButtonName"
+
+# Create an instance of Excel application
+excel_app = win32com.client.Dispatch("Excel.Application")
+
+# Open the Excel file
+wb = excel_app.Workbooks.Open(excel_file_path)
+
+# Specify the sheet name if needed
+# sheet = wb.Sheets("Sheet1")
+
+# Find the macro button by its name
+macro_button = wb.Application.ActiveSheet.Buttons(macro_button_name)
+
+# Click on the macro button
+macro_button.Click()
+
+# Close the Excel file
+wb.Close()
