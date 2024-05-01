@@ -1,110 +1,40 @@
-' Function to launch the Microsoft Edge browser
-Function Launch()
-    ' Close existing instances of Microsoft Edge and Java Platform Launcher
-    SystemUtil.CloseProcessByName("msedge.exe")
-    SystemUtil.CloseProcessByName("jp2launcher.exe")
-    ' Run Microsoft Edge browser
-    SystemUtil.Run "msedge.exe"
-End Function
+SELECT A.PUBNODE, A.QUEUENAME, A.EXTOPERATIONNAME
+FROM PSAPMSGPUBHDR A
+WHERE A.STATUSSTRING = ‘ERROR’
+AND A.PUBLISHTIMESTAMP > TO_TIMESTAMP(‘2009-08-17-08.00.00.000000’,‘YYYY-MM-DD-HH24.MI.SS.FF’)
+UNION
+SELECT B.PUBNODE, B.QUEUENAME, B.IB_OPERATIONNAME
+FROM PSAPMSGPUBCON B
+WHERE B.STATUSSTRING = ‘ERROR’
+AND ( B.PUBNODE <> ‘PSFT_IM’
+OR B.SUBNODE <> ‘PSFT_IM’)
+AND B.PUBLISHTIMESTAMP > TO_TIMESTAMP(‘2009-08-17-08.00.00.000000’,‘YYYY-MM-DD-HH24.MI.SS.FF’)
+UNION
+SELECT C.PUBNODE, C.QUEUENAME, C.IB_OPERATIONNAME
+FROM PSAPMSGSUBCON C
+WHERE C.STATUSSTRING = ‘ERROR’
+AND C.PUBLISHTIMESTAMP > TO_TIMESTAMP(‘2009-08-17-08.00.00.000000’,‘YYYY-MM-DD-HH24.MI.SS.FF’)
+UNION
+SELECT D.PUBNODE, D.QUEUENAME, D.EXTOPERATIONNAME
+FROM PSAPMSGPUBHDR D
+WHERE ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((D.CREATEDTTM) AS DATE)) * 1440, 0) > 10
+AND D.STATUSSTRING = ‘NEW’
+UNION
+SELECT F.PRCSNAME, F.RUNSTATUS, F.DISTSTATUS
+FROM PSPRCSRQST F
+WHERE F.DISTSTATUS = ‘4’
+AND ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((F.ENDDTTM) AS DATE)) * 1440, 0) BETWEEN 10 AND 1000
+UNION
+SELECT G.PUBNODE, G.QUEUENAME, G.IB_OPERATIONNAME
+FROM PSAPMSGPUBCON G
+WHERE ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((G.CREATEDTTM) AS DATE)) * 1440, 0) > 10
+AND G.STATUSSTRING = ‘NEW’
+UNION
+SELECT H.IB_OPERATIONNAME, H.PUBNODE, H.QUEUENAME
+FROM PSAPMSGSUBCON H
+WHERE ROUND((CAST((CAST(SYSTIMESTAMP AS TIMESTAMP)) AS DATE) - CAST((H.CREATEDTTM) AS DATE)) * 1440, 0) > 10
+AND H.STATUSSTRING = ‘NEW’
 
-' Function to retrieve credentials from a JSON file and launch the application
-Function Credentials()
-    ErrorHandling
-    ' Retrieve the user's profile directory (home directory)
-    Dim homeDir
-    homeDir = CreateObject("WScript.Shell").Environment("Process")("USERPROFILE")
-    ' Parse the credentials from the JSON file
-    Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-    Set users = Dom.GetArray("fahuser")
-    For Each user in users
-        fahusername = user.getValue("fahusername")
-        fahpassword = user.getValue("fahpassword")
-        Exit For
-    Next
-    ' Launch the application with the retrieved credentials
-    fahLaunch fahusername, fahpassword
-End Function
-
-' Function to launch the application with the provided credentials
-Function fahLaunch(fahusername, fahpassword)
-    ErrorHandling
-    ' Wait till browser loads completely
-    Browser("iConnect - Home").Page("iConnect - Home").Sync
-    ' Navigate to the specified URL
-    Browser("iConnect - Home").Navigate "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp"
-    ' Set username and password
-    Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
-    Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
-    ' Click on the Log In button
-    Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-End Function
-
-' Function to run a request in the application
-Function fahRunRequest()
-    ErrorHandling
-    ' Navigate to the desired page
-    Browser("iConnect - Home").Page("Home").Link("XXHIG Custom").Click
-    Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
-    ' Handle Security Warning dialog if it appears
-    If JavaDialog("Security Warning").Exist(10) Then
-        JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-        JavaDialog("Security Warning").JavaButton("Run").Click
-    End If
-    ' Perform actions to run the request
-    ' ...
-End Function
-
-' Function to check if a request is completed
-Function CheckCompleted()
-    ErrorHandling
-    ' Check if the request is completed
-    ' ...
-End Function
-
-' Function to view run details and report test results
-Function ViewRunDetails()
-    ErrorHandling
-    ' View run details and report test results
-    ' ...
-End Function
-
-' Function to write test results to UFT One
-Function WriteToUFTOne(result)
-    If result = "Test is success" Then
-        Reporter.ReportEvent micPass, "Test Result", result
-    Else
-        Reporter.ReportEvent micFail, "Test Result", result
-    End If
-End Function
-
-' Function for error handling
-Function ErrorHandling()
-    If Err.Number <> 0 Then
-        ' Handle errors
-        ' ...
-        ' Clean up and exit
-        ' ...
-    End If
-End Function
-
-' Function to close application windows and browsers
-Function CloseWindows()
-    ErrorHandling
-    ' Close application windows and browsers
-    ' ...
-End Function
-
-' Main subroutine to run the test
-Sub Main()
-    On Error Resume Next
-    ' Perform test steps
-    Launch
-    Credentials
-    fahRunRequest
-    ViewRunDetails
-    CloseWindows
-    ErrorHandling
-End Sub
-
-' Call the main subroutine to start the test
-Main
+I have modified delivered XML Publisher packages to send an email to the distribution list only if there was data on report. This was needed to save user time, if no data on report no need to open the report.
+The above query is run via XMLP framework every hour and sends our IT an email if something was stuck.
+You write your own app engine calling this Query (or running a similar SQL) to achieve this.
