@@ -1,43 +1,19 @@
-import win32com.client
+' Create FileSystemObject
+Set objFSO = CreateObject("Scripting.FileSystemObject")
 
-# Path to the Excel file
-excel_file_path = "path/to/your/excel/file.xlsx"
+' Define the path to the Excel file
+filePath = "C:\Path\To\Your\File.xlsx"
 
-# Create an instance of Excel application
-excel_app = win32com.client.Dispatch("Excel.Application")
-
-# Open the Excel file
-wb = excel_app.Workbooks.Open(excel_file_path)
-
-# List to store form control button names
-form_control_button_names = []
-
-# List to store command button names
-command_button_names = []
-
-# Loop through each worksheet in the workbook
-for sheet in wb.Sheets:
-    # Loop through each shape (including buttons) in the sheet
-    for shape in sheet.Shapes:
-        # Check if the shape is a form control button
-        if shape.Type == 8:  # Type 8 corresponds to a form control button
-            # Add the name of the form control button to the list
-            form_control_button_names.append(shape.Name)
-        # Check if the shape is a command button (ActiveX control)
-        elif shape.Type == 12:  # Type 12 corresponds to an ActiveX control
-            # Add the name of the command button to the list
-            command_button_names.append(shape.Name)
-
-# Print the list of form control button names
-print("Form Control Button Names:")
-for name in form_control_button_names:
-    print(name)
-
-# Print the list of command button names
-print("\nCommand Button Names:")
-for name in command_button_names:
-    print(name)
-
-# Close the Excel file
-wb.Close()
-excel_app.Quit()
+' Check if the file exists
+If objFSO.FileExists(filePath) Then
+    ' Create Excel Application Object
+    Set objExcel = CreateObject("Excel.Application")
+    
+    ' Make Excel visible
+    objExcel.Visible = True
+    
+    ' Open the workbook
+    Set objWorkbook = objExcel.Workbooks.Open(filePath)
+Else
+    MsgBox "File not found!"
+End If
