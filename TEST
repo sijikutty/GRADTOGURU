@@ -1,19 +1,5 @@
-' Create FileSystemObject
-Set objFSO = CreateObject("Scripting.FileSystemObject")
-
 ' Define the path to the Excel file
-filePath = "C:\Path\To\Your\File.xlsx"
+excelFilePath = "C:\Path\To\Your\File.xlsx"
 
-' Check if the file exists
-If objFSO.FileExists(filePath) Then
-    ' Create Excel Application Object
-    Set objExcel = CreateObject("Excel.Application")
-    
-    ' Make Excel visible
-    objExcel.Visible = True
-    
-    ' Open the workbook
-    Set objWorkbook = objExcel.Workbooks.Open(filePath)
-Else
-    MsgBox "File not found!"
-End If
+' Open Excel from the specified location
+SystemUtil.Run "excel.exe", excelFilePath
