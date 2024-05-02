@@ -1,3 +1,20 @@
-AIUtil("text_box", "Description").Select
+' Create AIUtil object
+Set aiUtil = CreateObject("Mercury.ObjectRepositoryUtil")
 
-AIUtil("text_box", "Description").Type "Automate2"
+' Find the text box using AIUtil
+Set textBox = aiUtil.FindObject("text_box", "Description")
+
+' Click on the text box to give it focus
+textBox.Click
+
+' Get the current text in the text box
+currentText = textBox.GetText
+
+' Get the length of the current text
+textLength = Len(currentText)
+
+' Select the existing text in the text box
+textBox.SetSelection 0, textLength
+
+' Replace the selected text with the new content
+textBox.Type "Automate2"
