@@ -1,20 +1,15 @@
-' Create AIUtil object
-Set aiUtil = CreateObject("Mercury.ObjectRepositoryUtil")
+SystemUtil.CloseProcessByName("excel.exe")
+excelFilePath = "C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm"
+SystemUtil.Run "excel.exe", excelFilePath
 
-' Find the text box using AIUtil
-Set textBox = aiUtil.FindObject("text_box", "Description")
-
-' Click on the text box to give it focus
-textBox.Click
-
-' Get the current text in the text box
-currentText = textBox.GetText
-
-' Get the length of the current text
-textLength = Len(currentText)
-
-' Select the existing text in the text box
-textBox.SetSelection 0, textLength
-
-' Replace the selected text with the new content
-textBox.Type "Automate2"
+AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "Maximized:=True", "is owned window:=False", "is child window:=False")
+AIUtil("button", "Edit sheet").Click
+AIUtil.FindTextBlock("Basic Import").Click
+AIUtil("button", "OK").Click
+AIUtil("home").Click
+AIUtil.FindTextBlock("Import Now").Click
+AIUtil.FindTextBlock("Basic Import").Click
+AIUtil("text_box", "User ID").Type "PWTEST"
+AIUtil("text_box", "Password").Type "Pwtest@100"
+AIUtil("button", "OK").Click
+AIUtil.FindTextBlock("Imported 0 journals").CheckExists True
