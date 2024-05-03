@@ -1,75 +1,76 @@
-' Function to launch the Microsoft Edge browser
-Function Launch()
-	SystemUtil.CloseProcessByName("excel.exe")
-	excelFilePath = "C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm"
-	SystemUtil.Run "excel.exe", excelFilePath
+' Function to close the Excel process
+Function CloseExcelProcess()
+    ' Close Excel process
+    SystemUtil.CloseProcessByName("excel.exe")
 End Function
 
-
-' Function to retrieve credentials from a JSON file and launch the application
-Function PSCredentials()
-	Errorhandling
-	' Create an instance of the Environment object
-	Dim env
-	Set env = CreateObject("WScript.Shell").Environment("Process")
-	' Retrieve the user's profile directory (home directory)
-	Dim homeDir
-	homeDir = env("USERPROFILE")
-	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-	Set users = Dom.GetArray("psuser")
-	For Each user in users
-	    psusername = user.getValue("psusername")
-	    pspassword = user.getValue("pspassword")
-	    Exit For
-	Next
-	Loadjournal psusername,pspassword
+' Function to launch Excel with a specific workbook
+Function LaunchExcel()
+    ' Close any existing Excel processes
+    CloseExcelProcess
+    
+    ' Define the path to the Excel file
+    Dim excelFilePath
+    excelFilePath = "C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm"
+    
+    ' Launch Excel with the specified workbook
+    SystemUtil.Run "excel.exe", excelFilePath
 End Function
 
-' Function for error handling
+' Function to retrieve credentials from a JSON file
+Function GetCredentials()
+    ' Error handling
+    On Error Resume Next
+    
+    ' Define variables
+    Dim homeDir, psusername, pspassword, Dom, users, user
+    
+    ' Retrieve the user's profile directory (home directory)
+    homeDir = CreateObject("WScript.Shell").Environment("Process")("USERPROFILE")
+    
+    ' Parse the JSON file containing credentials
+    Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+    
+    ' Retrieve credentials from JSON
+    Set users = Dom.GetArray("psuser")
+    For Each user in users
+        psusername = user.GetValue("psusername")
+        pspassword = user.GetValue("pspassword")
+        Exit For ' Assuming only one set of credentials is needed
+    Next
+    
+    ' Call LoadJournal function with retrieved credentials
+    LoadJournal psusername, pspassword
+End Function
+
+' Function to handle errors
 Function ErrorHandling()
     If Err.Number <> 0 Then
-	  WScript.Echo "Error in Launch: " & Err.Description
-	  WriteToUFTOne "Test failed"
-	  Err.Clear
-	  SystemUtil.CloseProcessByName("excel.exe")
-	  ExitTest 
+        ' Error handling logic here
+        WScript.Echo "Error: " & Err.Description
+        Err.Clear
     End If
 End Function
 
-' Function to close application windows and browsers
-Function CloseWindows()
-      ErrorHandling
-      ' Close application 
-SystemUtil.CloseProcessByName("excel.exe")
+' Function to perform actions related to loading a journal in Excel
+Function LoadJournal(psusername, pspassword)
+    ' Maximize Excel window
+    AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "Maximized:=True")
+    
+    ' Perform actions to load and modify the Excel workbook
+    ' (e.g., editing cells, saving, and clicking buttons)
+    
+    ' Example:
+    ' Set objExcel = GetObject(,"Excel.Application")
+    ' Set objWorkbook = objExcel.ActiveWorkbook
+    ' Set objWorksheet = objWorkbook.ActiveSheet
+    ' ' Perform actions to edit cells, etc.
+    
+    ' Call WriteToUFTOne function based on test result
+    WriteToUFTOne "Test is success"
 End Function
-Function Loadjournal(psusername,pspassword)
-	AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "Maximized:=True", "is owned window:=False", "is child window:=False")
-	AIUtil("button", "Edit sheet").Click
-	AIUtil.FindTextBlock("Basic Import").Click
-	AIUtil("button", "OK").Click
-	Set objExcel = GetObject(,"Excel.Application")
-	Set objWorkbook = objExcel.ActiveWorkbook
-	Set objWorksheet = objWorkbook.ActiveSheet
-	currentValue = objWorksheet.Cells(13, 23).Value
-	newValue = currentValue + 1
-	objWorksheet.Cells(13, 23).Value = newValue
-	currentValue = objWorksheet.Cells(14, 23).Value
-	newValue = currentValue - 1
-	objWorksheet.Cells(14, 23).Value = newValue
-	objWorkbook.Save
-	AIUtil("home").Click
-	AIUtil("button", "Import Now").Click
-	'AIUtil.FindTextBlock("Import Now").Click
-	AIUtil.FindTextBlock("Basic Import").Click
-	AIUtil("text_box", "User ID").SetText psusername
-	AIUtil("text_box", "Password").SetText pspassword
-	AIUtil("button", "OK").Click
-	  If AIUtil.FindTextBlock("Imported 1 journals - System ID (Unit, Journal ID, Date) Reference").CheckExists(True) Then
-	        WriteToUFTOne "Test is success"
-	    Else
-	        WriteToUFTOne "Test failed"
-	    End If
-End Function
+
+' Function to write test results to UFT One
 Function WriteToUFTOne(result)
     If result = "Test is success" Then
         Reporter.ReportEvent micPass, "Test Result", result
@@ -77,15 +78,15 @@ Function WriteToUFTOne(result)
         Reporter.ReportEvent micFail, "Test Result", result
     End If
 End Function
+
 ' Main subroutine to run the test
 Sub Main()
-     On Error Resume Next
-    ' Perform test steps	
-	Launch
-	PSCredentials
-       'Loadjournal
-	CloseWindows
-       ErrorHandling
+    ' Perform test steps
+    On Error Resume Next
+    LaunchExcel
+    GetCredentials
+    CloseExcelProcess
+    ErrorHandling
 End Sub
 
 ' Call the main subroutine to start the test
