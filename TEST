@@ -22,8 +22,14 @@ End If
 ' Get the active worksheet
 Set objWorksheet = objWorkbook.ActiveSheet
 
-' Edit cell B12
-objWorksheet.Cells(12, 2).Value = "New Value"
+' Get the value of cell W13
+currentValue = objWorksheet.Cells(13, 23).Value
+
+' Add 1 to the current value
+newValue = currentValue + 1
+
+' Set the new value to cell W13
+objWorksheet.Cells(13, 23).Value = newValue
 
 ' Save the workbook
 objWorkbook.Save
