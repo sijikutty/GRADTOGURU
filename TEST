@@ -1,15 +1,32 @@
-SystemUtil.CloseProcessByName("excel.exe")
-excelFilePath = "C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm"
-SystemUtil.Run "excel.exe", excelFilePath
+' Wait for Excel to open
+Wait(5)
 
-AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "Maximized:=True", "is owned window:=False", "is child window:=False")
-AIUtil("button", "Edit sheet").Click
-AIUtil.FindTextBlock("Basic Import").Click
-AIUtil("button", "OK").Click
-AIUtil("home").Click
-AIUtil.FindTextBlock("Import Now").Click
-AIUtil.FindTextBlock("Basic Import").Click
-AIUtil("text_box", "User ID").Type "PWTEST"
-AIUtil("text_box", "Password").Type "Pwtest@100"
-AIUtil("button", "OK").Click
-AIUtil.FindTextBlock("Imported 0 journals").CheckExists True
+' Get the Excel Application object
+Set objExcel = GetObject(,"Excel.Application")
+
+' If Excel is not found, exit the script
+If objExcel Is Nothing Then
+    MsgBox "Excel is not open.", vbExclamation
+    Exit Test
+End If
+
+' Get the active workbook
+Set objWorkbook = objExcel.ActiveWorkbook
+
+' If no workbook is open, exit the script
+If objWorkbook Is Nothing Then
+    MsgBox "No workbook is open in Excel.", vbExclamation
+    Exit Test
+End If
+
+' Get the active worksheet
+Set objWorksheet = objWorkbook.ActiveSheet
+
+' Edit cell B12
+objWorksheet.Cells(12, 2).Value = "New Value"
+
+' Save the workbook
+objWorkbook.Save
+
+' Close Excel
+objExcel.Quit
