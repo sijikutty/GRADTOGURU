@@ -1,93 +1,10 @@
-' Function to close the Excel process
-Function CloseExcelProcess()
-    ' Close Excel process
-    SystemUtil.CloseProcessByName("excel.exe")
-End Function
+' Wait for Excel to open
+While Not Window("regexpwndtitle:=.*Excel").Exist
+    Wait 1
+Wend
 
-' Function to launch Excel with a specific workbook
-Function LaunchExcel()
-    ' Close any existing Excel processes
-    CloseExcelProcess
-    
-    ' Define the path to the Excel file
-    Dim excelFilePath
-    excelFilePath = "C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm"
-    
-    ' Launch Excel with the specified workbook
-    SystemUtil.Run "excel.exe", excelFilePath
-End Function
+' Get the Excel window handle (HWND)
+hwnd = Window("regexpwndtitle:=.*Excel").GetROProperty("hwnd")
 
-' Function to retrieve credentials from a JSON file
-Function GetCredentials()
-    ' Error handling
-    On Error Resume Next
-    
-    ' Define variables
-    Dim homeDir, psusername, pspassword, Dom, users, user
-    
-    ' Retrieve the user's profile directory (home directory)
-    homeDir = CreateObject("WScript.Shell").Environment("Process")("USERPROFILE")
-    
-    ' Parse the JSON file containing credentials
-    Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-    
-    ' Retrieve credentials from JSON
-    Set users = Dom.GetArray("psuser")
-    For Each user in users
-        psusername = user.GetValue("psusername")
-        pspassword = user.GetValue("pspassword")
-        Exit For ' Assuming only one set of credentials is needed
-    Next
-    
-    ' Call LoadJournal function with retrieved credentials
-    LoadJournal psusername, pspassword
-End Function
-
-' Function to handle errors
-Function ErrorHandling()
-    If Err.Number <> 0 Then
-        ' Error handling logic here
-        WScript.Echo "Error: " & Err.Description
-        Err.Clear
-    End If
-End Function
-
-' Function to perform actions related to loading a journal in Excel
-Function LoadJournal(psusername, pspassword)
-    ' Maximize Excel window
-    AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "Maximized:=True")
-    
-    ' Perform actions to load and modify the Excel workbook
-    ' (e.g., editing cells, saving, and clicking buttons)
-    
-    ' Example:
-    ' Set objExcel = GetObject(,"Excel.Application")
-    ' Set objWorkbook = objExcel.ActiveWorkbook
-    ' Set objWorksheet = objWorkbook.ActiveSheet
-    ' ' Perform actions to edit cells, etc.
-    
-    ' Call WriteToUFTOne function based on test result
-    WriteToUFTOne "Test is success"
-End Function
-
-' Function to write test results to UFT One
-Function WriteToUFTOne(result)
-    If result = "Test is success" Then
-        Reporter.ReportEvent micPass, "Test Result", result
-    Else
-        Reporter.ReportEvent micFail, "Test Result", result
-    End If
-End Function
-
-' Main subroutine to run the test
-Sub Main()
-    ' Perform test steps
-    On Error Resume Next
-    LaunchExcel
-    GetCredentials
-    CloseExcelProcess
-    ErrorHandling
-End Sub
-
-' Call the main subroutine to start the test
-Main
+' Maximize the Excel window using Windows API
+ShowWindow hwnd, SW_MAXIMIZE
