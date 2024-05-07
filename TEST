@@ -1,22 +1,26 @@
-' Subroutine to set up a connection with Rally server
-Sub SetupRallyConnection(server, user, api_key, workspace, project)
+' RallyIntegration.vbs
+
+' Function to fetch TestCase from Rally
+Function GetTestCase(rally, tc_number)
     On Error Resume Next
-    Dim rally
+    Dim query_criteria, response, tc
     
-    ' Create Rally object
-    Set rally = CreateObject("Rally.RestApi")
+    ' Construct the query criteria
+    query_criteria = "FormattedID = '" & tc_number & "'"
     
-    ' Connect to Rally server
-    rallyUrl = "https://" & server
-    rally.Authenticate user, api_key
-    rally.Workspace = workspace
-    rally.Project = project
+    ' Send request to fetch TestCase
+    response = rally.get("TestCase", , query_criteria)
     
-    ' Check if connection is successful
-    If Err.Number <> 0 Then
-        MsgBox "Failed to establish connection to Rally."
+    ' Check if response is valid
+    If IsObject(response) Then
+        ' Iterate through the response
+        For Each tc In response
+            ' Return the first TestCase object found
+            Set GetTestCase = tc
+            Exit Function
+        Next
     End If
     
-    ' Return the Rally object
-    Set SetupRallyConnection = rally
-End Sub
+    ' If no TestCase found, return False
+    Set GetTestCase = Nothing
+End Function
