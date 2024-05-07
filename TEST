@@ -1,3 +1,5 @@
+' RallyIntegration.vbs
+
 ' Function to update test case result in Rally
 Function UpdateRallyTestCaseResult(testCaseID, verdict, comments)
     ' Construct Rally API URL
@@ -22,23 +24,3 @@ Function UpdateRallyTestCaseResult(testCaseID, verdict, comments)
         UpdateRallyTestCaseResult = False
     End If
 End Function
-
-' Sample test results (replace with your actual data)
-testResults = Array( _
-    Array("TC123", "Pass", "Test passed successfully"), _
-    Array("TC456", "Fail", "Test failed due to assertion error") _
-)
-
-' Update test case results in Rally
-For Each result In testResults
-    testCaseID = result(0)
-    verdict = result(1)
-    comments = result(2)
-    
-    ' Update test case result in Rally
-    If UpdateRallyTestCaseResult(testCaseID, verdict, comments) Then
-        MsgBox "Test case " & testCaseID & " updated successfully in Rally."
-    Else
-        MsgBox "Failed to update test case " & testCaseID & " in Rally."
-    End If
-Next
