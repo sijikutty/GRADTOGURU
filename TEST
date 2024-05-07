@@ -1,47 +1,42 @@
-' RallyIntegration.vbs
+def update_rally(page, request, testcase):
+    ''' This fixture updates rally after the completion of each test'''
 
-' Function to create TestCaseResult in Rally
-Function CreateTestCaseResult(rallyPayload, screenshot)
-    On Error Resume Next
-    Dim rallyDet, rally, testcase, wksp, tcrInfo, tcr
-    
-    ' Extract Rally details from payload
-    Set rallyDet = rallyPayload("Rally")
-    
-    ' Set up connection with Rally
-    Set rally = SetupRallyConnection(rallyDet("server"), rallyDet("user"), rallyDet("apikey"), rallyDet("workspace"), rallyDet("project"))
-    
-    If Not IsEmpty(rally) Then
-        ' Fetch TestCase from Rally
-        Set testcase = GetTestCase(rally, rallyDet("Tcid"))
-        
-        If Not IsEmpty(testcase) Then
-            ' Get Workspace reference
-            Set wksp = rally.getWorkspace()
-            
-            ' Construct TestCaseResult information
-            Set tcrInfo = CreateObject("Scripting.Dictionary")
-            tcrInfo.Add "Workspace", wksp.ref
-            tcrInfo.Add "TestCase", testcase.ref
-            tcrInfo.Add "Build", rallyDet("build")
-            tcrInfo.Add "Date", rallyDet("run_date")
-            tcrInfo.Add "Verdict", rallyDet("verdict")
-            tcrInfo.Add "Notes", rallyDet("notes")
-            
-            ' Create TestCaseResult in Rally
-            Set tcr = rally.create("TestCaseResult", tcrInfo)
-            
-            If Not IsEmpty(tcr) Then
-                ' If TestCaseResult created successfully, attach screenshot
-                Call AttachScreenshot(rally, tcr, screenshot, "image/png")
-                Set CreateTestCaseResult = tcr
-            Else
-                MsgBox "Failed to create Test Result in Rally."
-            End If
-        Else
-            MsgBox "Failed to fetch TestCase from Rally."
-        End If
-    Else
-        MsgBox "Failed to establish connection to Rally."
-    End If
-End Function
+    yield
+
+    # Taking screenshot of the test
+    screenshot_path = f"Result\{request.function.__name__}.png"
+    page.screenshot(path=screenshot_path)
+
+    notes = ""
+
+    # Setting verdict and notes based on the test outcome 
+    if request.node.rep_call.passed:
+        verdict = "Pass"
+
+    elif request.node.rep_call.failed:
+        verdict = "Fail"
+
+        # Getting the exception message to add to rally
+        notes = request.node.rep_call.longrepr.reprcrash.message
+
+
+    # Generating rally payload
+    payload = {  
+        "key": testcase['key'],
+
+        "Rally": {
+            "server"    : testcase["rally"]["server"],
+            "user"      : testcase["rally"]["user"],
+            "apikey"	: testcase["rally"]["apikey"],
+            "workspace" : testcase["rally"]["workspace"], 
+            "project"   : testcase["rally"]["project"],
+            "Tcid"      : testcase["key"].split("-")[-1].strip(),
+            "build"     : f"{testcase['env']}-Automated Run", 
+            "run_date"  : datetime.now().isoformat(), 
+            "verdict"   : verdict,
+            "notes"     : f"The testcase has {verdict}ed. {notes}"
+        }
+    } 
+
+    # Creating testcase result in rally
+    tcr = create_TCResult(payload, screenshot=screenshot_path)
