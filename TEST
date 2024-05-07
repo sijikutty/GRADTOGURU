@@ -1,11 +1,44 @@
-Set rallyPayload = CreateObject("Scripting.Dictionary")
-    rallyPayload.Add "server", testcase("rally")("server")
-    rallyPayload.Add "user", testcase("rally")("user")
-    rallyPayload.Add "apikey", testcase("rally")("apikey")
-    rallyPayload.Add "workspace", testcase("rally")("workspace")
-    rallyPayload.Add "project", testcase("rally")("project")
-    rallyPayload.Add "Tcid", Split(testcase("key"), "-")(UBound(Split(testcase("key"), "-"))) ' Extracting TCID
-    rallyPayload.Add "build", testcase("env") & "-Automated Run"
-    rallyPayload.Add "run_date", Now
-    rallyPayload.Add "verdict", verdict
-    rallyPayload.Add "notes", "The testcase has " & verdict & "ed. " & notes
+Dim fs, outFile, jsonContent, jsonData
+
+' Sample data
+Dim server, user, apikey, projectWorkspace
+server = "example.com"
+user = "username"
+apikey = "your_api_key"
+projectWorkspace = "project_folder"
+
+' Create a dictionary to hold the data
+Set jsonContent = CreateObject("Scripting.Dictionary")
+jsonContent.Add "server", server
+jsonContent.Add "user", user
+jsonContent.Add "apikey", apikey
+jsonContent.Add "projectWorkspace", projectWorkspace
+
+' Convert dictionary to JSON-like string
+jsonData = "{"
+For Each key In jsonContent.Keys
+    jsonData = jsonData & """" & key & """:""" & jsonContent(key) & ""","
+Next
+jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+jsonData = jsonData & "}"
+
+' Specify the file path
+filePath = "C:\path\to\data.json"
+
+' Create FileSystemObject
+Set fs = CreateObject("Scripting.FileSystemObject")
+
+' Create or overwrite the file
+Set outFile = fs.CreateTextFile(filePath, True)
+
+' Write JSON content to the file
+outFile.WriteLine(jsonData)
+
+' Close the file
+outFile.Close
+
+' Release objects
+Set outFile = Nothing
+Set fs = Nothing
+
+WScript.Echo "Data written to JSON file successfully."
