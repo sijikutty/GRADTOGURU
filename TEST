@@ -1,102 +1,22 @@
-from pyral import Rally, RallyRESTAPIError
-
-import base64
-import os
-
-
-def setup_rally_connection(server, user, api_key, workspace, project):
-    '''
-    This function setup a connection with rally server and returns the connection oject.
-    '''
-    try:
-        # setup rally connection
-        rally = Rally(server=server, user=user, apikey=api_key, workspace=workspace, project=project)
-
-        if not rally:
-            raise RallyRESTAPIError()
-        
-        return rally
-
-    except Exception as e:
-        raise Exception("Failed to establish connection to rally.", e)
+' Subroutine to set up a connection with Rally server
+Sub SetupRallyConnection(server, user, api_key, workspace, project)
+    On Error Resume Next
+    Dim rally
     
+    ' Create Rally object
+    Set rally = CreateObject("Rally.RestApi")
     
-def get_testcase(rally, tc_number=None):
-    '''
-    Returns TestCase object if valid else return False.
-    '''
-    query_criteria = f"FormattedID = {tc_number}"
-    response = rally.get('TestCase', fetch=True, query=query_criteria)
-
-    for tc in response:
-        return tc
-    else:
-        return False
+    ' Connect to Rally server
+    rallyUrl = "https://" & server
+    rally.Authenticate user, api_key
+    rally.Workspace = workspace
+    rally.Project = project
     
-
-def create_TCResult(rally_payload, screenshot):
-
-    rally_det = rally_payload["Rally"]
+    ' Check if connection is successful
+    If Err.Number <> 0 Then
+        MsgBox "Failed to establish connection to Rally."
+    End If
     
-    try:
-        rally = setup_rally_connection(server = rally_det['server'], 
-                                       user = rally_det['user'], 
-                                       api_key = rally_det['apikey'], 
-                                       workspace = rally_det['workspace'], 
-                                       project = rally_det['project'])
-        print(rally)
-        
-        testcase = get_testcase(rally, tc_number=rally_det['Tcid']) 
-        print(testcase)
-
-        wksp = rally.getWorkspace()
-        print(wksp)
-        
-        tcr_info = {"Workspace" : wksp.ref, 
-                    "TestCase"  : testcase.ref, 
-                    "Build"     : rally_det["build"], 
-                    "Date"      : rally_det["run_date"], 
-                    "Verdict"   : rally_det["verdict"], 
-                    "Notes"     : rally_det["notes"] }
-        
-        tcr = rally.create('TestCaseResult', tcr_info)
-
-        if tcr:
-            attach_screenshot(rally, tcr, screenshot, content_type='image/png')
-            return tcr
-        else:
-            raise RallyRESTAPIError('Failed to create Test Result in Rally.')
-            
-    except Exception as e:
-        return e
-    
-
-def attach_screenshot(rally, tc_result, file, content_type):
-    try:
-        file_size = os.path.getsize(file)
-
-        contents = ''
-        with open(file, 'rb') as png_file:
-            contents = base64.b64encode(png_file.read()).decode('utf-8')
-
-        # create an AttachmentContent item
-        attachment_cont = rally.create('AttachmentContent', {"Content" : contents}, project=None)
-
-        if not attachment_cont:
-            raise RallyRESTAPIError(f'Unable to create AttachmentContent for {file}')
-        
-        attachment_info = { "Name"              :  "screenshot.png",
-                            "Content"           :  attachment_cont.ref,
-                            "ContentType"       :  content_type,
-                            "Size"              :  file_size, 
-                            "TestCaseResult"    :  tc_result.ref
-                        }
-
-        # and finally, create the Attachment
-        attachment = rally.create('Attachment', attachment_info, project=None)
-
-        if not attachment:
-            raise RallyRESTAPIError(f'Unable to add screenshot as attachment in the Rally Test Case.')
-        
-    except RallyRESTAPIError as e:
-        raise Exception(e)
+    ' Return the Rally object
+    Set SetupRallyConnection = rally
+End Sub
