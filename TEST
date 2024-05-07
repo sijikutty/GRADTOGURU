@@ -1,1 +1,11 @@
-SystemUtil.Run "cmd.exe", "/c start msedge.exe --start-maximized", "", "", 1
+Set rallyPayload = CreateObject("Scripting.Dictionary")
+    rallyPayload.Add "server", testcase("rally")("server")
+    rallyPayload.Add "user", testcase("rally")("user")
+    rallyPayload.Add "apikey", testcase("rally")("apikey")
+    rallyPayload.Add "workspace", testcase("rally")("workspace")
+    rallyPayload.Add "project", testcase("rally")("project")
+    rallyPayload.Add "Tcid", Split(testcase("key"), "-")(UBound(Split(testcase("key"), "-"))) ' Extracting TCID
+    rallyPayload.Add "build", testcase("env") & "-Automated Run"
+    rallyPayload.Add "run_date", Now
+    rallyPayload.Add "verdict", verdict
+    rallyPayload.Add "notes", "The testcase has " & verdict & "ed. " & notes
