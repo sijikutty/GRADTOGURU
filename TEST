@@ -1,5 +1,44 @@
-' Get the Excel window
-Set excelWindow = Window("regexpwndtitle:=Microsoft Excel")
+' Function to update test case result in Rally
+Function UpdateRallyTestCaseResult(testCaseID, verdict, comments)
+    ' Construct Rally API URL
+    rallyURL = "https://rally1.rallydev.com/slm/webservice/v2.0/testcaseresult"
+    
+    ' Construct HTTP request headers
+    Set objHTTP = CreateObject("WinHttp.WinHttpRequest.5.1")
+    objHTTP.Open "POST", rallyURL, False
+    objHTTP.setRequestHeader "ZSESSIONID", "your_api_key"
+    objHTTP.setRequestHeader "Content-Type", "application/json"
+    
+    ' Construct JSON payload
+    payload = "{""TestCase"": """ & testCaseID & """, ""Verdict"": """ & verdict & """, ""Notes"": """ & comments & """}"
+    
+    ' Send HTTP request
+    objHTTP.send payload
+    
+    ' Check response status
+    If objHTTP.status = 200 Then
+        UpdateRallyTestCaseResult = True
+    Else
+        UpdateRallyTestCaseResult = False
+    End If
+End Function
 
-' Maximize the Excel window
-excelWindow.WindowState = micMaximized
+' Sample test results (replace with your actual data)
+testResults = Array( _
+    Array("TC123", "Pass", "Test passed successfully"), _
+    Array("TC456", "Fail", "Test failed due to assertion error") _
+)
+
+' Update test case results in Rally
+For Each result In testResults
+    testCaseID = result(0)
+    verdict = result(1)
+    comments = result(2)
+    
+    ' Update test case result in Rally
+    If UpdateRallyTestCaseResult(testCaseID, verdict, comments) Then
+        MsgBox "Test case " & testCaseID & " updated successfully in Rally."
+    Else
+        MsgBox "Failed to update test case " & testCaseID & " in Rally."
+    End If
+Next
