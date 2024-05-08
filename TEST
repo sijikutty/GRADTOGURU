@@ -1,45 +1,47 @@
-{    
-    "testcases" : [
-        {
-            "key"       : "Smoketest GUI - TC32531",
-            "env"       : "Dev",
-            "runflag"   : "Y",
-            "scenario"  : "test_PS_login",
-            "testdata"  : 
-            {
-                "ps_url"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG",
-                "cred_path" : "C:/Users/{homedir}/.secret/ps_cred.xml"
-            }
-        },
+Dim fs, jsonFile, jsonData, jsonObject
 
-        {
-            "key"       : "Smoketest GUI - TC32535",
-            "env"       : "Dev",
-            "runflag"   : "Y",
-            "scenario"  : "test_ae_program",
-            "testdata"  : 
-            {
-                "program_name"   : "Simple AE test program",
-                "run_control_id" : "test1",
-                "server"         : "PSUNX"
-            }
-        },
+' File path to the JSON file
+jsonFilePath = "C:\path\to\testcases.json"
 
-        {
-            "key"       : "Smoketest GUI - TC32541",
-            "env"       : "Dev",
-            "runflag"   : "Y",
-            "scenario"  : "test_load_Journal",
-            "testdata"  : 
-            {
-                "program_name"   : "Load Journal to Template",
-                "run_control_id" : "test1",
-                "server"         : "PSUNX",
-                "file_path"      :"C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm",
-                "credentials_json":"\.secret\credentials.json",
-                "Sheet_name":"Basic Import"
-            }
-        }
+' Test scenario name
+testScenario = "test_load_Journal"
 
-                  ]
-}
+' Create FileSystemObject
+Set fs = CreateObject("Scripting.FileSystemObject")
+
+' Open the JSON file for reading
+Set jsonFile = fs.OpenTextFile(jsonFilePath)
+
+' Read the JSON content
+jsonData = jsonFile.ReadAll
+
+' Close the JSON file
+jsonFile.Close
+
+' Convert JSON string to a dictionary object
+Set jsonObject = JSONParse(jsonData)
+
+' Iterate over the testcases array to find the matching scenario
+For Each testcase In jsonObject("testcases")
+    If testcase("scenario") = testScenario Then
+        ' Found the matching test scenario
+        server = testcase("testdata")("server")
+        Sheet_name = testcase("testdata")("Sheet_name")
+        
+        ' Do something with the fetched values
+        MsgBox "Server: " & server & vbCrLf & "Sheet Name: " & Sheet_name
+        
+        Exit For ' Exit the loop once found
+    End If
+Next
+
+Function JSONParse(jsonString)
+    Dim objJSON
+    Set objJSON = CreateObject("Scripting.Dictionary")
+    With CreateObject("MSScriptControl.ScriptControl")
+        .Language = "JScript"
+        .AddCode "function parse(json) {return JSON.parse(json);}"
+        Set objJSON = .Run("parse", jsonString)
+    End With
+    Set JSONParse = objJSON
+End Function
