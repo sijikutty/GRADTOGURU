@@ -1,2 +1,1 @@
-5/8/2024 5:33:36 PM
-2024-04-24T12:57:55.729026
+formatted_datetime = FormatDateTime(current_datetime, vbISO8601)
