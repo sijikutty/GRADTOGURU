@@ -2,13 +2,13 @@
 current_datetime = Now
 
 ' Format the date and time
-formatted_datetime = Format(current_datetime, "yyyy-mm-ddTHH:nn:ss")
+formatted_datetime = FormatDateTime(current_datetime, vbISO8601) ' Get the ISO 8601 format
 
 ' Get the microseconds part
 microseconds = Right(FormatNumber((current_datetime - Int(current_datetime)) * 1000000, 6), 6)
 
 ' Concatenate microseconds to the formatted string
-formatted_datetime_with_microseconds = formatted_datetime & "." & microseconds
+formatted_datetime_with_microseconds = Left(formatted_datetime, Len(formatted_datetime) - 1) & "." & microseconds ' Remove the last character (which is "Z") and add microseconds
 
 ' Display the formatted date and time with microseconds
 MsgBox formatted_datetime_with_microseconds
