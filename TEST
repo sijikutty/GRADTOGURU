@@ -1,44 +1,45 @@
-Dim fs, outFile, jsonContent, jsonData
+{    
+    "testcases" : [
+        {
+            "key"       : "Smoketest GUI - TC32531",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_PS_login",
+            "testdata"  : 
+            {
+                "ps_url"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG",
+                "cred_path" : "C:/Users/{homedir}/.secret/ps_cred.xml"
+            }
+        },
 
-' Sample data
-Dim server, user, apikey, projectWorkspace
-server = "example.com"
-user = "username"
-apikey = "your_api_key"
-projectWorkspace = "project_folder"
+        {
+            "key"       : "Smoketest GUI - TC32535",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_ae_program",
+            "testdata"  : 
+            {
+                "program_name"   : "Simple AE test program",
+                "run_control_id" : "test1",
+                "server"         : "PSUNX"
+            }
+        },
 
-' Create a dictionary to hold the data
-Set jsonContent = CreateObject("Scripting.Dictionary")
-jsonContent.Add "server", server
-jsonContent.Add "user", user
-jsonContent.Add "apikey", apikey
-jsonContent.Add "projectWorkspace", projectWorkspace
+        {
+            "key"       : "Smoketest GUI - TC32541",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_load_Journal",
+            "testdata"  : 
+            {
+                "program_name"   : "Load Journal to Template",
+                "run_control_id" : "test1",
+                "server"         : "PSUNX",
+                "file_path"      :"C:\Github\corp_corpit_ps_egl_test_automation\Load_Journal\JRNL1_WS_PT_860_FGL2D.xlsm",
+                "credentials_json":"\.secret\credentials.json",
+                "Sheet_name":"Basic Import"
+            }
+        }
 
-' Convert dictionary to JSON-like string
-jsonData = "{"
-For Each key In jsonContent.Keys
-    jsonData = jsonData & """" & key & """:""" & jsonContent(key) & ""","
-Next
-jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
-jsonData = jsonData & "}"
-
-' Specify the file path
-filePath = "C:\path\to\data.json"
-
-' Create FileSystemObject
-Set fs = CreateObject("Scripting.FileSystemObject")
-
-' Create or overwrite the file
-Set outFile = fs.CreateTextFile(filePath, True)
-
-' Write JSON content to the file
-outFile.WriteLine(jsonData)
-
-' Close the file
-outFile.Close
-
-' Release objects
-Set outFile = Nothing
-Set fs = Nothing
-
-WScript.Echo "Data written to JSON file successfully."
+                  ]
+}
