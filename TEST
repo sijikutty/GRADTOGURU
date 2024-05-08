@@ -1,22 +1,33 @@
-	Set jsonContent = CreateObject("Scripting.Dictionary")
-	jsonContent.Add "key",TCName
-	        'jsonContent.Add "Rally"
-	      '  jsonContent.Add ": {"
-	jsonContent.Add "server", server
-	jsonContent.Add "user", user
-	jsonContent.Add "apikey", apikey
-	jsonContent.Add "workspace", workspace
-	jsonContent.Add "project", project
-	jsonContent.Add "Tcid", TCID
-	jsonContent.Add "build",(envr & "-Automated Run")
-	jsonContent.Add "run_date", formatted_datetime_with_microseconds
-		jsonContent.Add "verdict", verdict
-		jsonContent.Add "notes", result
-	
-	' Convert dictionary to JSON-like string
-	jsonData = "{"
-	For Each key In jsonContent.Keys
-	    jsonData = jsonData & """" & key & """:""" & jsonContent(key) & ""","
-	Next
-	jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
-	jsonData = jsonData & "}}"
+Set jsonContent = CreateObject("Scripting.Dictionary")
+jsonContent.Add "key", TCName
+jsonContent.Add "Rally", CreateObject("Scripting.Dictionary") ' Adding "Rally" as a nested dictionary
+
+' Adding key-value pairs inside the "Rally" dictionary
+Set rallyContent = jsonContent("Rally")
+rallyContent.Add "server", server
+rallyContent.Add "user", user
+rallyContent.Add "apikey", apikey
+rallyContent.Add "workspace", workspace
+rallyContent.Add "project", project
+rallyContent.Add "Tcid", TCID
+rallyContent.Add "build", (envr & "-Automated Run")
+rallyContent.Add "run_date", formatted_datetime_with_microseconds
+rallyContent.Add "verdict", verdict
+rallyContent.Add "notes", result
+
+' Convert dictionary to JSON-like string
+jsonData = "{"
+For Each key In jsonContent.Keys
+    If key = "Rally" Then
+        jsonData = jsonData & """Rally"":{"
+        For Each innerKey In rallyContent.Keys
+            jsonData = jsonData & """" & innerKey & """:""" & rallyContent(innerKey) & ""","
+        Next
+        jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+        jsonData = jsonData & "},"
+    Else
+        jsonData = jsonData & """" & key & """:""" & jsonContent(key) & ""","
+    End If
+Next
+jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+jsonData = jsonData & "}}"
