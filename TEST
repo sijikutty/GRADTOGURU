@@ -1,4 +1,4 @@
-Dim fs, jsonFile, jsonData, jsonObject
+Dim jsonUtil, jsonFilePath, jsonData, jsonObject, testScenario, testcase, server, Sheet_name
 
 ' File path to the JSON file
 jsonFilePath = "C:\path\to\testcases.json"
@@ -6,20 +6,14 @@ jsonFilePath = "C:\path\to\testcases.json"
 ' Test scenario name
 testScenario = "test_load_Journal"
 
-' Create FileSystemObject
-Set fs = CreateObject("Scripting.FileSystemObject")
+' Create JSONUtil object
+Set jsonUtil = CreateObject("Mercury.JsonUtil")
 
-' Open the JSON file for reading
-Set jsonFile = fs.OpenTextFile(jsonFilePath)
+' Read JSON data from file
+jsonData = jsonUtil.ReadFile(jsonFilePath)
 
-' Read the JSON content
-jsonData = jsonFile.ReadAll
-
-' Close the JSON file
-jsonFile.Close
-
-' Convert JSON string to a dictionary object
-Set jsonObject = JSONParse(jsonData)
+' Parse JSON data
+Set jsonObject = jsonUtil.ParseJson(jsonData)
 
 ' Iterate over the testcases array to find the matching scenario
 For Each testcase In jsonObject("testcases")
@@ -34,14 +28,3 @@ For Each testcase In jsonObject("testcases")
         Exit For ' Exit the loop once found
     End If
 Next
-
-Function JSONParse(jsonString)
-    Dim objJSON
-    Set objJSON = CreateObject("Scripting.Dictionary")
-    With CreateObject("MSScriptControl.ScriptControl")
-        .Language = "JScript"
-        .AddCode "function parse(json) {return JSON.parse(json);}"
-        Set objJSON = .Run("parse", jsonString)
-    End With
-    Set JSONParse = objJSON
-End Function
