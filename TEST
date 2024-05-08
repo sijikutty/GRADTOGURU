@@ -1,14 +1,22 @@
-' Get the current date and time
-current_datetime = Now
-
-' Format the date and time to a string
-formatted_datetime = Year(current_datetime) & "-" & Right("0" & Month(current_datetime), 2) & "-" & Right("0" & Day(current_datetime), 2) & "T" & Right("0" & Hour(current_datetime), 2) & ":" & Right("0" & Minute(current_datetime), 2) & ":" & Right("0" & Second(current_datetime), 2)
-
-' Get the microseconds part
-microseconds = Right(FormatNumber((current_datetime - Int(current_datetime)) * 1000000, 6), 6)
-
-' Concatenate microseconds to the formatted string
-formatted_datetime_with_microseconds = formatted_datetime & "." & microseconds
-
-' Display the formatted date and time with microseconds
-MsgBox formatted_datetime_with_microseconds
+	Set jsonContent = CreateObject("Scripting.Dictionary")
+	jsonContent.Add "key",TCName
+	        'jsonContent.Add "Rally"
+	      '  jsonContent.Add ": {"
+	jsonContent.Add "server", server
+	jsonContent.Add "user", user
+	jsonContent.Add "apikey", apikey
+	jsonContent.Add "workspace", workspace
+	jsonContent.Add "project", project
+	jsonContent.Add "Tcid", TCID
+	jsonContent.Add "build",(envr & "-Automated Run")
+	jsonContent.Add "run_date", formatted_datetime_with_microseconds
+		jsonContent.Add "verdict", verdict
+		jsonContent.Add "notes", result
+	
+	' Convert dictionary to JSON-like string
+	jsonData = "{"
+	For Each key In jsonContent.Keys
+	    jsonData = jsonData & """" & key & """:""" & jsonContent(key) & ""","
+	Next
+	jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+	jsonData = jsonData & "}}"
