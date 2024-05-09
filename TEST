@@ -1,21 +1,17 @@
 ' Define paths and arguments
-pythonExePath = "C:\Program Files\Python311\python.exe" ' Enclose in double quotes
-'pythonExePath = "\" & """pythonExePath\" & """" ' Enclose in double quotes
-scriptPath = "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py" ' Enclose in double quotes
-filePath = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json" ' Enclose in double quotes
-s3bucket = "app-5208-dev-ue1-shared-s3-1"
-s3filename = "Testing/rallyinput/rally_tc_results.json"
-kk=" "
-'vv="""" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
-'MsgBox vv
-'vv= """" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
-vv="""" & pythonExePath & """" & kk & """" & scriptPath & """" & kk & """" & filePath & """" & kk & """" & s3bucket & """" & kk & """" & s3filename & """"
+pythonExePath = """C:\Program Files\Python311\python.exe""" ' Enclose in double quotes
+scriptPath = """C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py""" ' Enclose in double quotes
+filePath = """C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json""" ' Enclose in double quotes
+s3bucket = """app-5208-dev-ue1-shared-s3-1"""
+s3filename = """Testing/rallyinput/rally_tc_results.json"""
+
+' Construct the command to execute the Python script with arguments
+vv = pythonExePath & " " & scriptPath & " " & filePath & " " & s3bucket & " " & s3filename
+
 ' Run the command using SystemUtil.Run
 Dim WshShell, oExec, output, errorOutput, returnCode
 Set WshShell = CreateObject("WScript.Shell")
-Set oExec = WshShell.Exec("cmd /c " &vv)
-'Set oExec=WshShell.Exec("cmd.exe /c """ & vv & """")
-'Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """")
+Set oExec = WshShell.Exec("cmd /c " & vv)
 
 ' Read the output and error output
 output = oExec.StdOut.ReadAll()
