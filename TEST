@@ -1,1 +1,7 @@
-{"hi":{"server":"rally1.rallydev.com","user":"siji.mallisserykalam@thehartford.com","apikey":"_lLETAuRTnC0Nth0Nvcz6iQHOvKr0EaFigCvGXr7r4","workspace":"Corporate IT","project":"IT Finance IGNITE","Tcid":"11","build":"dev-Automated Run","run_date":"2024-05-08T20:00:25.685182","verdict":"Pass","notes":"Pass"}}
+jsonData = "{"
+jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
+For Each key In rallyContent.Keys
+    jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
+Next
+jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+jsonData = jsonData & "}"
