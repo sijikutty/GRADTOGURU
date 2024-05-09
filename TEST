@@ -5,17 +5,43 @@ filePath = """C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json"""
 s3bucket = """app-5208-dev-ue1-shared-s3-1"""
 s3filename = """Testing/rallyinput/rally_tc_results.json"""
 
+' Define file paths for output and error streams
+outputFile = "C:\output.txt"
+errorFile = "C:\error.txt"
+
 ' Create WshShell object
 Dim WshShell
 Set WshShell = CreateObject("WScript.Shell")
 
-' Execute each part of the command separately
+' Execute each part of the command separately and redirect output and error streams to files
 Dim pythonCommand, scriptCommand, fileCommand, s3bucketCommand, s3filenameCommand
-pythonCommand = "cmd /c " & pythonExePath
-scriptCommand = "cmd /c " & scriptPath
-fileCommand = "cmd /c " & filePath
-s3bucketCommand = "cmd /c " & s3bucket
-s3filenameCommand = "cmd /c " & s3filename
+pythonCommand = "cmd /c " & pythonExePath & " > " & outputFile
+scriptCommand = "cmd /c " & scriptPath & " > " & outputFile
+fileCommand = "cmd /c " & filePath & " > " & outputFile
+s3bucketCommand = "cmd /c " & s3bucket & " > " & outputFile
+s3filenameCommand = "cmd /c " & s3filename & " > " & outputFile
 
 ' Execute Python script with arguments
 WshShell.Run pythonCommand & " " & scriptCommand & " " & fileCommand & " " & s3bucketCommand & " " & s3filenameCommand
+
+' Wait for the command to finish executing
+Do While WshShell.Status <> 1
+    WScript.Sleep 100
+Loop
+
+' Read the content of output and error files
+Dim fso, outputFileContent, errorFileContent
+Set fso = CreateObject("Scripting.FileSystemObject")
+If fso.FileExists(outputFile) Then
+    Set outputFileContent = fso.OpenTextFile(outputFile, 1)
+    outputContent = outputFileContent.ReadAll()
+    outputFileContent.Close()
+End If
+If fso.FileExists(errorFile) Then
+    Set errorFileContent = fso.OpenTextFile(errorFile, 1)
+    errorContent = errorFileContent.ReadAll()
+    errorFileContent.Close()
+End If
+
+' Display output and error content
+MsgBox "Output: " & vbCrLf & outputContent & vbCrLf & "Error Output: " & vbCrLf & errorContent
