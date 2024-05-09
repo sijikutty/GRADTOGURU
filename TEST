@@ -27,3 +27,22 @@ if __name__ == '__main__':
     # Upload the file and print the response
     response = upload_file(temp_file, s3bucket, s3_pathname)
     print(response)
+
+-------------
+' Construct the command string
+    Dim command
+    command = """" & pythonExePath & """ """ & scriptPath & """ """ & tempFile & """ """ & s3bucket & """ """ & s3filename & """"
+    
+    ' Execute the command using SystemUtil.Run
+    Dim output
+    Dim success
+    success = SystemUtil.Run(command, 1, True)
+    
+    ' Check if the Python script executed successfully
+    If success Then
+        MsgBox "Python script executed successfully."
+    Else
+        MsgBox "Failed to execute Python script."
+    End If
+    
+    ' Your existing code...
