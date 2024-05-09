@@ -123,3 +123,41 @@ Function WriteRallyJson(TCName,TCID,verdict,result)
 	
 	'WScript.Echo "Data written to JSON file successfully."
 End Function
+---
+import boto3 
+from botocore.exceptions import ClientError
+import json
+import sys
+
+def upload_file(payload, bucket, s3_filename):
+    #print(sys.argv[1])
+    # Writing JSON payload to a file
+    #temp_file = r"Result\rallyTCresults.json"
+    temp_file = r"C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallyTCresults.json"
+    with open(temp_file, 'w') as file:
+        json.dump(payload, file)
+
+    # Uploading the file to S3
+    try:
+        session = boto3.Session(profile_name='dev')
+        s3_client = session.client('s3')
+
+        response = s3_client.upload_file(temp_file, bucket, s3_filename)
+        print(response)
+
+    except ClientError as e:
+        print(e)
+        return False
+    
+    return True
+
+if __name__ == '__main__':
+    # Getting command line arguments
+    print(sys.argv[1])
+    json_payload = json.loads(sys.argv[1])
+    s3bucket = sys.argv[2]
+    s3_pathname = sys.argv[3]
+    sys.stdout.close()
+    response = upload_file(json_payload, s3bucket, s3_pathname)
+    print(response)
+    
