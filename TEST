@@ -1,59 +1,26 @@
-' Import required libraries
-Imports System
-Imports Amazon
-Imports Amazon.S3
-Imports Amazon.S3.Transfer
+import boto3 
+from botocore.exceptions import ClientError
+import sys
 
-' Define function to upload file to S3
-Function UploadFileToS3(bucketName, s3Filename, tempFilePath)
-    On Error Resume Next ' Enable error handling
-    UploadFileToS3 = False ' Default return value to indicate failure
+def upload_file(temp_file, bucket, s3_filename):
+    try:
+        session = boto3.Session(profile_name='dev')
+        s3_client = session.client('s3')
 
-    ' Create an Amazon S3 client
-    Dim client
-    Set client = CreateObject("Amazon.S3.AmazonS3Client")
-    client.Config.RegionEndpoint = RegionEndpoint.USEast1 ' Specify your region
+        response = s3_client.upload_file(temp_file, bucket, s3_filename)
+        print(response)
 
-    If Err.Number <> 0 Then
-        MsgBox "Error creating S3 client: " & Err.Description
-        Exit Function
-    End If
+    except ClientError as e:
+        print(e)
+        return False
+    
+    return True
 
-    ' Upload the file to S3
-    Dim transferUtility
-    Set transferUtility = New TransferUtility(client)
-    transferUtility.Upload(tempFilePath, bucketName, s3Filename)
+if __name__ == '__main__':
+    # Getting command line arguments
+    temp_file = "C:/VV/tempFile.json"  # Path to your existing tempfile
+    s3bucket = sys.argv[1]
+    s3_pathname = sys.argv[2]
 
-    If Err.Number <> 0 Then
-        MsgBox "Error uploading file to S3: " & Err.Description
-    Else
-        UploadFileToS3 = True ' Set return value to indicate success
-    End If
-End Function
-
-' Main script
-Sub Main()
-    ' Define S3 bucket and S3 filename
-    Dim s3Bucket
-    s3Bucket = "your-s3-bucket-name"
-    Dim s3Filename
-    s3Filename = "path/to/rallyTCresults.json"
-
-    ' Define the path to the existing temp file
-    Dim tempFilePath
-    tempFilePath = "C:\VV\tempFile.json"
-
-    ' Call function to upload file to S3
-    Dim uploadResult
-    uploadResult = UploadFileToS3(s3Bucket, s3Filename, tempFilePath)
-
-    ' Print upload result
-    If uploadResult Then
-        MsgBox "File uploaded successfully."
-    Else
-        MsgBox "Failed to upload file."
-    End If
-End Sub
-
-' Call the main script
-Main()
+    response = upload_file(temp_file, s3bucket, s3_pathname)
+    print(response)
