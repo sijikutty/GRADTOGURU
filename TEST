@@ -1,1 +1,1 @@
-vv= """" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
+"""" & k & """ """ & """" & PP & """ """ & """" & KK & """"
