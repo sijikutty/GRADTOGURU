@@ -1,10 +1,6 @@
-Set WshShell = CreateObject("WScript.Shell")
-
-' Execute the command and capture the process exit code
-returnCode = WshShell.Run("cmd.exe /c python dynamic_API.py", 0, True)
-
-' Wait for 10 seconds (if needed)
-wait(10)
-
-' Display the process exit code in a message box
-MsgBox returnCode
+' Read and display the output for debugging
+Set fs = CreateObject("Scripting.FileSystemObject")
+Set outputFile = fs.OpenTextFile("output.txt", 1)
+output = outputFile.ReadAll
+outputFile.Close
+MsgBox "Output: " & output
