@@ -1,34 +1,60 @@
-import boto3 
-from botocore.exceptions import ClientError
-import json
-import sys
+' Import required libraries
+Imports System
+Imports System.IO
+Imports Newtonsoft.Json
+Imports Amazon
+Imports Amazon.S3
+Imports Amazon.S3.Transfer
 
-def upload_file(payload, bucket, s3_filename):
+' Define function to upload file to S3
+Function UploadFileToS3(payload, bucketName, s3Filename)
+    Try
+        ' Serialize payload to JSON and write to a temporary file
+        Dim tempFile As String = "Result\rallyTCresults.json"
+        File.WriteAllText(tempFile, JsonConvert.SerializeObject(payload))
 
-    # Writing JSON payload to a file
-    temp_file = r"Result\rallyTCresults.json"
-    with open(temp_file, 'w') as file:
-        json.dump(payload, file)
+        ' Create an Amazon S3 client
+        Dim region As RegionEndpoint = RegionEndpoint.USEast1 ' Specify your region
+        Dim client As AmazonS3Client = New AmazonS3Client(region)
 
-    # Uploading the file to S3
-    try:
-        session = boto3.Session(profile_name='dev')
-        s3_client = session.client('s3')
+        ' Upload the file to S3
+        Dim request As TransferUtilityUploadRequest = New TransferUtilityUploadRequest()
+        request.BucketName = bucketName
+        request.FilePath = tempFile
+        request.Key = s3Filename
+        Dim utility As TransferUtility = New TransferUtility(client)
+        utility.Upload(request)
 
-        response = s3_client.upload_file(temp_file, bucket, s3_filename)
-        print(response)
+        ' Clean up temporary file
+        File.Delete(tempFile)
 
-    except ClientError as e:
-        print(e)
-        return False
-    
-    return True
+        ' Return success
+        Return True
 
-if __name__ == '__main__':
-    # Getting command line arguments
-    json_payload = json.loads(sys.argv[1])
-    s3bucket = sys.argv[2]
-    s3_pathname = sys.argv[3]
+    Catch ex As Exception
+        ' Handle exceptions
+        Console.WriteLine("Error: " & ex.Message)
+        Return False
+    End Try
+End Function
 
-    response = upload_file(json_payload, s3bucket, s3_pathname)
-    print(response)
+' Main script
+Sub Main()
+    ' Define JSON payload, S3 bucket, and S3 filename
+    Dim jsonPayload As Object ' Define your JSON payload here
+    Dim s3Bucket As String = "your-s3-bucket-name"
+    Dim s3Filename As String = "path/to/rallyTCresults.json"
+
+    ' Call function to upload file to S3
+    Dim uploadResult As Boolean = UploadFileToS3(jsonPayload, s3Bucket, s3Filename)
+
+    ' Print upload result
+    If uploadResult Then
+        Console.WriteLine("File uploaded successfully.")
+    Else
+        Console.WriteLine("Failed to upload file.")
+    End If
+End Sub
+
+' Call the main script
+Main()
