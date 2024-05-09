@@ -6,31 +6,29 @@ Imports Amazon.S3.Transfer
 
 ' Define function to upload file to S3
 Function UploadFileToS3(bucketName, s3Filename, tempFilePath)
-    Try
-        ' Create an Amazon S3 client
-        Dim region
-        Set region = RegionEndpoint.USEast1 ' Specify your region
-        Dim client
-        Set client = New AmazonS3Client(region)
+    On Error Resume Next ' Enable error handling
+    UploadFileToS3 = False ' Default return value to indicate failure
 
-        ' Upload the file to S3
-        Dim request
-        Set request = New TransferUtilityUploadRequest()
-        request.BucketName = bucketName
-        request.FilePath = tempFilePath
-        request.Key = s3Filename
-        Dim utility
-        Set utility = New TransferUtility(client)
-        utility.Upload(request)
+    ' Create an Amazon S3 client
+    Dim client
+    Set client = CreateObject("Amazon.S3.AmazonS3Client")
+    client.Config.RegionEndpoint = RegionEndpoint.USEast1 ' Specify your region
 
-        ' Return success
-        UploadFileToS3 = True
+    If Err.Number <> 0 Then
+        MsgBox "Error creating S3 client: " & Err.Description
+        Exit Function
+    End If
 
-    Catch ex
-        ' Handle exceptions
-        UploadFileToS3 = False
-        MsgBox "Error: " & ex.Message
-    End Try
+    ' Upload the file to S3
+    Dim transferUtility
+    Set transferUtility = New TransferUtility(client)
+    transferUtility.Upload(tempFilePath, bucketName, s3Filename)
+
+    If Err.Number <> 0 Then
+        MsgBox "Error uploading file to S3: " & Err.Description
+    Else
+        UploadFileToS3 = True ' Set return value to indicate success
+    End If
 End Function
 
 ' Main script
