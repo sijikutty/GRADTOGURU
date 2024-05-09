@@ -1,1 +1,17 @@
-, "", output
+Dim output, errorOutput
+Dim returnCode
+
+' Execute the Python script
+returnCode = SystemUtil.Run("python", "your_script.py", "", output, errorOutput)
+
+' Check if the process failed (return code <> 0)
+If returnCode <> 0 Then
+    ' Display standard output and standard error output
+    MsgBox "Python script failed with return code: " & returnCode & vbCrLf & _
+           "Standard Output:" & vbCrLf & output & vbCrLf & _
+           "Standard Error Output:" & vbCrLf & errorOutput
+Else
+    ' Display standard output if the process succeeded
+    MsgBox "Python script executed successfully." & vbCrLf & _
+           "Standard Output:" & vbCrLf & output
+End If
