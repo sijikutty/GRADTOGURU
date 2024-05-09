@@ -1,2 +1,14 @@
-' Properly escape double quotes in JSON data
-jsonData = Replace(jsonData, """", "\""")
+	Set jsonContent = CreateObject("Scripting.Dictionary")
+	jsonContent.Add "key",TCName
+	Set rallyContent = CreateObject("Scripting.Dictionary")
+	rallyContent.Add "server", server
+	rallyContent.Add "user", user
+	rallyContent.Add "apikey", apikey
+	rallyContent.Add "workspace", workspace
+	rallyContent.Add "project", project
+	rallyContent.Add "Tcid", TCID
+	rallyContent.Add "build",(envr & "-Automated Run")
+	rallyContent.Add "run_date", formatted_datetime_with_microseconds
+	rallyContent.Add "verdict", verdict
+	rallyContent.Add "notes", result
+Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & jsonData & """ """ & s3bucket & """ """ & s3filename & """")
