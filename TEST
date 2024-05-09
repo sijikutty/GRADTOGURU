@@ -11,4 +11,34 @@
 	rallyContent.Add "run_date", formatted_datetime_with_microseconds
 	rallyContent.Add "verdict", verdict
 	rallyContent.Add "notes", result
-Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & jsonData & """ """ & s3bucket & """ """ & s3filename & """")
+		
+	' Properly escape double quotes in JSON data
+	'jsonData = Replace(jsonData, """", "\""")
+	
+
+	jsonData = "{"
+	'jsonData = ""{""
+	jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
+	jsonData = jsonData & """Rally"":{"
+	'jsonData = jsonData & """Rally"":"""{""
+	For Each key In rallyContent.Keys
+	    jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
+	Next
+	jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+	jsonData = jsonData & "}}"
+	'jsonData = jsonData & ""}}""
+	
+	'SystemUtil.Run "python", "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py" & jsonData & " " & s3bucket & " " & s3filename, "", output
+	'Msgbox output
+	jsonData=""""&jsonData&""""
+	Msgbox jsonData
+	
+	Dim pythonExePath
+	pythonExePath = "C:\Program Files\Python311\python.exe"  ' Specify the full path to the Python executable
+	scriptpath="C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"
+	Dim WshShell, oExec, output, errorOutput
+	Dim returnCode
+	
+	Set WshShell = CreateObject("WScript.Shell")
+	'Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & jsonData & " " & s3bucket & " " & s3filename)  ' Use the full path to the Python executable
+	Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & jsonData & """ """ & s3bucket & """ """ & s3filename & """")
