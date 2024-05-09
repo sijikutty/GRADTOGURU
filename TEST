@@ -5,25 +5,17 @@ filePath = """C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json"""
 s3bucket = """app-5208-dev-ue1-shared-s3-1"""
 s3filename = """Testing/rallyinput/rally_tc_results.json"""
 
-' Construct the command to execute the Python script with arguments
-vv = pythonExePath & " " & scriptPath & " " & filePath & " " & s3bucket & " " & s3filename
-
-' Run the command using SystemUtil.Run
-Dim WshShell, oExec, output, errorOutput, returnCode
+' Create WshShell object
+Dim WshShell
 Set WshShell = CreateObject("WScript.Shell")
-Set oExec = WshShell.Exec("cmd /c " & vv)
 
-' Read the output and error output
-output = oExec.StdOut.ReadAll()
-errorOutput = oExec.StdErr.ReadAll()
-returnCode = oExec.ExitCode
+' Execute each part of the command separately
+Dim pythonCommand, scriptCommand, fileCommand, s3bucketCommand, s3filenameCommand
+pythonCommand = "cmd /c " & pythonExePath
+scriptCommand = "cmd /c " & scriptPath
+fileCommand = "cmd /c " & filePath
+s3bucketCommand = "cmd /c " & s3bucket
+s3filenameCommand = "cmd /c " & s3filename
 
-' Check return code and display messages
-If returnCode <> 0 Then
-    MsgBox "Python script failed with return code: " & returnCode & vbCrLf & _
-           "Standard Output:" & vbCrLf & output & vbCrLf & _
-           "Standard Error Output:" & vbCrLf & errorOutput
-Else
-    MsgBox "Python script executed successfully." & vbCrLf & _
-           "Standard Output:" & vbCrLf & output
-End If
+' Execute Python script with arguments
+WshShell.Run pythonCommand & " " & scriptCommand & " " & fileCommand & " " & s3bucketCommand & " " & s3filenameCommand
