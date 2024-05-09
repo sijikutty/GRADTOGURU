@@ -1,4 +1,10 @@
-	pythonExePath = "C:\Program Files\Python311\python.exe"  ' Specify the full path to the Python executable
-	scriptpath="C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"
-	'SystemUtil.Run pythonExePath, "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py" & jsonData & " " & s3bucket & " " & s3filename, "", output
-	  SystemUtil.Run pythonExePath, scriptpath & jsonData & " " & s3bucket & " " & s3filename, ""
+Set WshShell = CreateObject("WScript.Shell")
+
+' Execute the command and capture the process exit code
+returnCode = WshShell.Run("cmd.exe /c python dynamic_API.py", 0, True)
+
+' Wait for 10 seconds (if needed)
+wait(10)
+
+' Display the process exit code in a message box
+MsgBox returnCode
