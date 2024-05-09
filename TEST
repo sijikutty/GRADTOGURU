@@ -1,8 +1,13 @@
-Dim output, errorOutput
+Dim WshShell, oExec, output, errorOutput
 Dim returnCode
 
-' Execute the Python script
-returnCode = SystemUtil.Run("python", "your_script.py", "", output, errorOutput)
+Set WshShell = CreateObject("WScript.Shell")
+Set oExec = WshShell.Exec("python your_script.py")
+
+output = oExec.StdOut.ReadAll()
+errorOutput = oExec.StdErr.ReadAll()
+
+returnCode = oExec.ExitCode
 
 ' Check if the process failed (return code <> 0)
 If returnCode <> 0 Then
