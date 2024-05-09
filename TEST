@@ -1,16 +1,6 @@
-' UFT Script
-Dim objShell
-Set objShell = CreateObject("WScript.Shell")
+Dim arg1, arg2, arg3
+arg1 = "value1"
+arg2 = "value2"
+arg3 = "value3"
 
-' Specify the path to the Python interpreter and the Python script
-python_script = "C:\Python\python.exe"  ' Change this to your Python executable path
-script_path = "C:\Path\To\Your\Script\my_script.py"  ' Change this to your Python script path
-
-' Construct the command to run the Python script
-command = python_script & " " & script_path
-
-' Execute the command
-objShell.Run command, 1, True
-
-' Clean up
-Set objShell = Nothing
+SystemUtil.Run "python", "c:\vv\kk.py " & arg1 & " " & arg2 & " " & arg3
