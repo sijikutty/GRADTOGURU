@@ -1,1 +1,1 @@
-Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & arg1 & """ """ & arg2 & """ """ & arg3 & """")
+Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & jsonData & """ """ & s3bucket & """ """ & s3filename & """")
