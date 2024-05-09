@@ -1,37 +1,125 @@
-import boto3 
-from botocore.exceptions import ClientError
-import json
-import sys
+Function WriteRallyJson(TCName,TCID,verdict,result)
+	Dim fs, outFile, jsonContent, jsonData
+	'Time format
+	' Get the current date and time
+	current_datetime = Now
+	
+	' Format the date and time to a string
+	formatted_datetime = Year(current_datetime) & "-" & Right("0" & Month(current_datetime), 2) & "-" & Right("0" & Day(current_datetime), 2) & "T" & Right("0" & Hour(current_datetime), 2) & ":" & Right("0" & Minute(current_datetime), 2) & ":" & Right("0" & Second(current_datetime), 2)
+	
+	' Get the microseconds part
+	microseconds = Right(FormatNumber((current_datetime - Int(current_datetime)) * 1000000, 6), 6)
+	
+	' Concatenate microseconds to the formatted string
+	formatted_datetime_with_microseconds = formatted_datetime & "." & microseconds
+	' Create an instance of the Environment object
 
-def upload_file(payload, bucket, s3_filename):
-    #print(sys.argv[1])
-    # Writing JSON payload to a file
-    #temp_file = r"Result\rallyTCresults.json"
-    #temp_file = r"Result\rallyTCresults.json"
-    temp_file = "rallyTCresults.json"
-    with open(temp_file, 'w') as file:
-        json.dump(payload, file)
+	Dim env
+	Set env = CreateObject("WScript.Shell").Environment("Process")
+	' Retrieve the user's profile directory (home directory)
+	Dim homeDir
+	homeDir = env("USERPROFILE")
+	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+	Set rally = Dom.GetArray("rally")
+	For Each object in rally
+	    server = object.getValue("server")
+	    user = object.getValue("user")
+	    apikey = object.getValue("apikey")
+	    workspace = object.getValue("workspace")
+	    project = object.getValue("project")
+	    envr = object.getValue("envr")
+		s3bucket= object.getValue("s3bucket")
+		s3filename= object.getValue("outputfile")
+	    Exit For
+	Next
 
-    # Uploading the file to S3
-    try:
-        session = boto3.Session(profile_name='dev')
-        s3_client = session.client('s3')
+	Set jsonContent = CreateObject("Scripting.Dictionary")
+	jsonContent.Add "key",TCName
+	Set rallyContent = CreateObject("Scripting.Dictionary")
+	rallyContent.Add "server", server
+	rallyContent.Add "user", user
+	rallyContent.Add "apikey", apikey
+	rallyContent.Add "workspace", workspace
+	rallyContent.Add "project", project
+	rallyContent.Add "Tcid", TCID
+	rallyContent.Add "build",(envr & "-Automated Run")
+	rallyContent.Add "run_date", formatted_datetime_with_microseconds
+	rallyContent.Add "verdict", verdict
+	rallyContent.Add "notes", result
+		
+	' Properly escape double quotes in JSON data
+	'jsonData = Replace(jsonData, """", "\""")
+	
 
-        response = s3_client.upload_file(temp_file, bucket, s3_filename)
-        print(response)
+	jsonData = "{"
+	'jsonData = ""{""
+	jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
+	jsonData = jsonData & """Rally"":{"
+	'jsonData = jsonData & """Rally"":"""{""
+	For Each key In rallyContent.Keys
+	    jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
+	Next
+	jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+	jsonData = jsonData & "}}"
+	'jsonData = jsonData & ""}}""
+	
+	'SystemUtil.Run "python", "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py" & jsonData & " " & s3bucket & " " & s3filename, "", output
+	'Msgbox output
+	'jsonData=""""&jsonData&""""
+	jsonData= Replace(jsonData, """", "\" & """")
+	
+	
+	Msgbox jsonData
+	
+	Dim pythonExePath
+	pythonExePath = "C:\Program Files\Python311\python.exe"  ' Specify the full path to the Python executable
+	scriptpath="C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"
+	Dim WshShell, oExec, output, errorOutput
+	Dim returnCode
+	
+	Set WshShell = CreateObject("WScript.Shell")
+	'Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & jsonData & " " & s3bucket & " " & s3filename)  ' Use the full path to the Python executable
+	Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & jsonData & """ """ & s3bucket & """ """ & s3filename & """")
+	Msgbox "eshell1"
+	output = oExec.StdOut.ReadAll()
+	Msgbox "eshell2"
+	errorOutput = oExec.StdErr.ReadAll()
+	Msgbox "eshell3"
+	
+	returnCode = oExec.ExitCode
+	Msgbox "eshell4"
+	' Check if the process failed (return code <> 0)
+	If returnCode <> 0 Then
+		Msgbox "eshell5"
+	    ' Display standard output and standard error output
+	    MsgBox "Python script failed with return code: " & returnCode & vbCrLf & _
+	           "Standard Output:" & vbCrLf & output & vbCrLf & _
+	           "Standard Error Output:" & vbCrLf & errorOutput
+	Else
+	    ' Display standard output if the process succeeded
+	    MsgBox "Python script executed successfully." & vbCrLf & _
+	           "Standard Output:" & vbCrLf & output
+	End If
 
-    except ClientError as e:
-        print(e)
-        return False
-    
-    return True
 
-if __name__ == '__main__':
-    # Getting command line arguments
-    print(sys.argv[1])
-    json_payload = json.loads(sys.argv[1])
-    s3bucket = sys.argv[2]
-    s3_pathname = sys.argv[3]
-
-    response = upload_file(json_payload, s3bucket, s3_pathname)
-    print(response)
+	' Specify the file path
+	filePath = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json"
+	
+	' Create FileSystemObject
+	Set fs = CreateObject("Scripting.FileSystemObject")
+	
+	' Create or overwrite the file
+	Set outFile = fs.CreateTextFile(filePath, True)
+	
+	' Write JSON content to the file
+	outFile.WriteLine(jsonData)
+	
+	' Close the file
+	outFile.Close
+	
+	' Release objects
+	Set outFile = Nothing
+	Set fs = Nothing
+	
+	'WScript.Echo "Data written to JSON file successfully."
+End Function
