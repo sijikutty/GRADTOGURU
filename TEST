@@ -1,26 +1,16 @@
-import boto3 
-from botocore.exceptions import ClientError
-import sys
+' UFT Script
+Dim objShell
+Set objShell = CreateObject("WScript.Shell")
 
-def upload_file(temp_file, bucket, s3_filename):
-    try:
-        session = boto3.Session(profile_name='dev')
-        s3_client = session.client('s3')
+' Specify the path to the Python interpreter and the Python script
+python_script = "C:\Python\python.exe"  ' Change this to your Python executable path
+script_path = "C:\Path\To\Your\Script\my_script.py"  ' Change this to your Python script path
 
-        response = s3_client.upload_file(temp_file, bucket, s3_filename)
-        print(response)
+' Construct the command to run the Python script
+command = python_script & " " & script_path
 
-    except ClientError as e:
-        print(e)
-        return False
-    
-    return True
+' Execute the command
+objShell.Run command, 1, True
 
-if __name__ == '__main__':
-    # Getting command line arguments
-    temp_file = "C:/VV/tempFile.json"  # Path to your existing tempfile
-    s3bucket = sys.argv[1]
-    s3_pathname = sys.argv[2]
-
-    response = upload_file(temp_file, s3bucket, s3_pathname)
-    print(response)
+' Clean up
+Set objShell = Nothing
