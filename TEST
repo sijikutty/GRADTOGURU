@@ -1,1 +1,2 @@
-jsonContent.Add """" & "key" & """", TCName
+' Properly escape double quotes in JSON data
+jsonData = Replace(jsonData, """", "\""")
