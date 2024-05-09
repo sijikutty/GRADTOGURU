@@ -1,6 +1,1 @@
-Dim arg1, arg2, arg3
-arg1 = "value1"
-arg2 = "value2"
-arg3 = "value3"
-
-SystemUtil.Run "python", "c:\vv\kk.py " & arg1 & " " & arg2 & " " & arg3
+, "", output
