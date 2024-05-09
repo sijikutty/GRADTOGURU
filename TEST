@@ -1,8 +1,11 @@
+Dim pythonExePath
+pythonExePath = "C:\Path\To\Python\python.exe"  ' Specify the full path to the Python executable
+
 Dim WshShell, oExec, output, errorOutput
 Dim returnCode
 
 Set WshShell = CreateObject("WScript.Shell")
-Set oExec = WshShell.Exec("python your_script.py")
+Set oExec = WshShell.Exec("""" & pythonExePath & """ your_script.py")  ' Use the full path to the Python executable
 
 output = oExec.StdOut.ReadAll()
 errorOutput = oExec.StdErr.ReadAll()
