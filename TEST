@@ -1,1 +1,5 @@
-	SystemUtil.Run pythonExePath,scriptPath&""" """ & filePath & """ """ & s3bucket & """ """ & s3filename 
+' Construct the command to execute the Python script with arguments
+command = """" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
+
+' Run the command using SystemUtil.Run
+SystemUtil.Run "cmd", "/c " & command
