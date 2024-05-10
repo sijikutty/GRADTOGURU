@@ -67,4 +67,53 @@ Function fahRunRequest()
     '...
 End Function
 
-' Function t
+' Function to check if a request is completed
+Function CheckCompleted()
+    ' Error handling subroutine call
+    ErrorHandling
+    ' Check if the request is completed
+    '...
+End Function
+
+' Function to view run details and report test results
+Function ViewRunDetails()
+    ' Error handling subroutine call
+    ErrorHandling
+    ' View run details and report test results
+    '...
+End Function
+
+' Function to write test results to UFT One and Rally
+Function WriteToUFTOne(result)
+    ' Error handling subroutine call
+    ErrorHandling
+    ' Write test results to UFT One and Rally
+    '...
+End Function
+
+' Function for error handling
+Function ErrorHandling()
+    ' Check for errors and handle them
+    '...
+End Function
+
+' Function to close application windows and browsers
+Function CloseWindows()
+    ' Error handling subroutine call
+    ErrorHandling
+    ' Close application windows and browsers
+    '...
+End Function
+
+' Main subroutine to run the test
+Sub Main()
+    ' Perform test steps
+    Launch
+    Credentials
+    fahRunRequest
+    ViewRunDetails
+    CloseWindows
+End Sub
+
+' Call the main subroutine to start the test
+Main
