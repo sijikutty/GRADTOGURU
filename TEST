@@ -1,23 +1,8 @@
 Dim json_file_path, bucket_name, s3_file_name, python_script_path
-	json_file_path = filePath  ' Set the JSON file path
-	bucket_name = s3bucket                   ' Set the S3 bucket name
-	s3_file_name = s3filename             ' Set the S3 filename
-	python_script_path = "C:\Program Files\Python311\python.exe"  ' Set the path to your Python script
-	
-	' Execute the Python script using SystemUtil.Run
-	'command="""" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
-	'SystemUtil.Run pythonExePath,scriptPath& """ """ & filePath & """ """ & s3bucket & """ """ & s3filename
-	'Set oExec = WshShell.Exec("""" & pythonExePath & """ """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """")
-Dim WshShell, execString, scriptPath, pythonExePath, filePath, s3bucket, s3filename, output, errorOutput, returnCode
-scriptPath = """C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py""" ' Enclose in double quotes
-filePath = """C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json""" ' Enclose in double quotes
-s3bucket = """app-5208-dev-ue1-shared-s3-1"""
-s3filename = """Testing/rallyinput/rally_tc_results.json"""
-
-' Create WshShell object
-Set WshShell = CreateObject("WScript.Shell")
+json_file_path = filePath ' Set the JSON file path
+bucket_name = s3bucket ' Set the S3 bucket name
+s3_file_name = s3filename ' Set the S3 filename
+python_script_path = """C:\Program Files\Python311\python.exe""" ' Python executable path
 
 ' Set the command string
-'execString = pythonExePath & " " & """" & scriptPath & """" & " " & """" & filePath & """" & " " & """" & s3bucket & """" & " " & """" & s3filename & """"
-'execString = pythonExePath & " """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
-execString = python_script_path & " " & scriptPath & " " & filePath & " " & s3bucket & " " & s3filename
+execString = python_script_path & " " & """" & json_file_path & """" & " " & """" & bucket_name & """" & " " & """" & s3_file_name & """"
