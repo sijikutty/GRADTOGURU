@@ -1,1 +1,1 @@
-botocore.exceptions.SSLError: SSL validation failed for https://app-5208-dev-ue1-shared-s3-1.s3.amazonaws.com/Testing/rallyinput/rally_tc_results.json [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:992)
+
