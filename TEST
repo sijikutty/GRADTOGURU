@@ -1,11 +1,28 @@
+Set wshShell = CreateObject("WScript.Shell")
+
+' Path to Python executable
+pythonPath = "C:\Python\python.exe"
+
+' Command to execute
+execString = " your_python_script.py"
+
 ' Output file to capture both output and error
 outputFile = "C:\Temp\output.txt"
 
 ' Run the Python script and capture both output and error streams to the same file
 wshShell.Run pythonPath & execString & " > " & outputFile & " 2>&1", 0, True
 
-' Read the content of the output file
+' Wait for the output file to be created
 Set fso = CreateObject("Scripting.FileSystemObject")
+maxWait = 10 ' Maximum number of seconds to wait
+waitInterval = 1 ' Check interval in seconds
+Waited = 0
+Do While Not fso.FileExists(outputFile) And Waited < maxWait
+    WScript.Sleep waitInterval * 1000 ' Convert seconds to milliseconds
+    Waited = Waited + waitInterval
+Loop
+
+' Read the content of the output file
 If fso.FileExists(outputFile) Then
     Set fileStream = fso.OpenTextFile(outputFile, 1)
     output = fileStream.ReadAll()
