@@ -1,119 +1,39 @@
-' Function to launch the Microsoft Edge browser
-Function Launch()
-    ' Close existing instances of Microsoft Edge and Java Platform Launcher
-    SystemUtil.CloseProcessByName("msedge.exe")
-    SystemUtil.CloseProcessByName("jp2launcher.exe")
-    ' Run Microsoft Edge browser
-    SystemUtil.Run "msedge.exe"
-    ' Import data from Excel
-    DataTable.Import("C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx") 
-End Function
+import boto3
 
-' Function to retrieve credentials from a JSON file and launch the application
-Function Credentials()
-    ' Error handling subroutine call
-    ErrorHandling
-    ' Create an instance of the Environment object
-    Dim env
-    Set env = CreateObject("WScript.Shell").Environment("Process")
-    ' Retrieve the user's profile directory (home directory)
-    Dim homeDir
-    homeDir = env("USERPROFILE")
-    ' Parse credentials from JSON file
-    Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-    Set users = Dom.GetArray("fahuser")
-    For Each user in users
-        fahusername = user.getValue("fahusername")
-        fahpassword = user.getValue("fahpassword")
-        Exit For
-    Next
-    ' Launch application with credentials
-    fahLaunch fahusername,fahpassword
-End Function
+def download_json_from_s3(bucket_name, file_key, local_path):
+    """
+    Download a JSON file from an Amazon S3 bucket to a local path.
 
-' Function to launch the application with the provided credentials
-Function fahLaunch(fahusername, fahpassword)
-    ' Error handling subroutine call
-    ErrorHandling
-    ' Navigate to the specified URL
-    Browser("iConnect - Home").Navigate Datatable.Value("fahlink")
-    ' Set username and password
-    Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
-    Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
-    ' Click on the Log In button
-    Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-    ' Wait until browser loads completely
-    Browser("iConnect - Home").Page("iConnect - Home").Sync
-End Function
+    Args:
+    - bucket_name (str): The name of the S3 bucket.
+    - file_key (str): The key (path) of the JSON file within the bucket.
+    - local_path (str): The local path where the file will be saved.
 
-' Function to run a request in the application
-Function fahRunRequest()
-    ' Error handling subroutine call
-    ErrorHandling
-    ' Navigate to the requested page
-    Browser("iConnect - Home").Page("Home").Link("XXHIG Custom").Click
-    Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
+    Returns:
+    - bool: True if successful, False otherwise.
+    """
+    try:
+        # Create an S3 client
+        s3 = boto3.client('s3')
 
-    'Wait(30)
-    ' Check if the Security Warning dialog exists
-    If JavaDialog("Security Warning").Exist(30) Then
-        ' If it exists, set the checkbox and click on the Run button
-        JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-        JavaDialog("Security Warning").JavaButton("Run").Click
-    End If
-    ' Click on the OK button in the "Submit a New Request" form
-    OracleFormWindow("Submit a New Request").OracleButton("OK").Click
-    ' Perform necessary actions to run the request
-    '...
-End Function
+        # Download the JSON file
+        s3.download_file(bucket_name, file_key, local_path)
 
-' Function to check if a request is completed
-Function CheckCompleted()
-    ' Error handling subroutine call
-    ErrorHandling
-    ' Check if the request is completed
-    '...
-End Function
+        return True
+    except Exception as e:
+        print(f"Error downloading JSON file from S3: {e}")
+        return False
 
-' Function to view run details and report test results
-Function ViewRunDetails()
-    ' Error handling subroutine call
-    ErrorHandling
-    ' View run details and report test results
-    '...
-End Function
+if __name__ == "__main__":
+    # Specify the S3 bucket name, file key, and local path
+    bucket_name = 'your-bucket'
+    file_key = 'path/to/your/file.json'
+    local_path = 'local/path/to/save/file.json'
 
-' Function to write test results to UFT One and Rally
-Function WriteToUFTOne(result)
-    ' Error handling subroutine call
-    ErrorHandling
-    ' Write test results to UFT One and Rally
-    '...
-End Function
+    # Download the JSON file from S3
+    success = download_json_from_s3(bucket_name, file_key, local_path)
 
-' Function for error handling
-Function ErrorHandling()
-    ' Check for errors and handle them
-    '...
-End Function
-
-' Function to close application windows and browsers
-Function CloseWindows()
-    ' Error handling subroutine call
-    ErrorHandling
-    ' Close application windows and browsers
-    '...
-End Function
-
-' Main subroutine to run the test
-Sub Main()
-    ' Perform test steps
-    Launch
-    Credentials
-    fahRunRequest
-    ViewRunDetails
-    CloseWindows
-End Sub
-
-' Call the main subroutine to start the test
-Main
+    if success:
+        print("JSON file downloaded successfully.")
+    else:
+        print("Failed to download JSON file from S3.")
