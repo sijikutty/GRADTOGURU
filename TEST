@@ -1,5 +1,5 @@
+Dim WshShell, execString, scriptPath, pythonExePath, filePath, s3bucket, s3filename, output, errorOutput, returnCode
 
-Dim   WshShell, execString,  scriptPath,pythonExePath,filePath,s3bucket,s3filename
 ' Define paths and arguments
 pythonExePath = """C:\Program Files\Python311\python.exe""" ' Enclose in double quotes
 scriptPath = "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py" ' Enclose in double quotes
@@ -7,9 +7,26 @@ filePath = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json" ' E
 s3bucket = "app-5208-dev-ue1-shared-s3-1"
 s3filename = "Testing/rallyinput/rally_tc_results.json"
 
+' Create WshShell object
 Set WshShell = CreateObject("WScript.Shell")
-execString = scriptPath &" "& filePath &" "& s3bucket &" "& s3filename
-WshShell.Run pythonExePath & execString
-wait(80) ' slow down to see shell
 
+' Set the command string
+execString = """" & pythonExePath & """" & " " & """" & scriptPath & """" & " " & """" & filePath & """" & " " & """" & s3bucket & """" & " " & """" & s3filename & """"
 
+' Run the Python script
+Set oExec = WshShell.Exec(execString)
+
+' Capture output and error
+output = oExec.StdOut.ReadAll()
+errorOutput = oExec.StdErr.ReadAll()
+returnCode = oExec.ExitCode
+
+' Check return code and display messages
+If returnCode <> 0 Then
+    MsgBox "Python script failed with return code: " & returnCode & vbCrLf & _
+           "Standard Output:" & vbCrLf & output & vbCrLf & _
+           "Standard Error Output:" & vbCrLf & errorOutput
+Else
+    MsgBox "Python script executed successfully." & vbCrLf & _
+           "Standard Output:" & vbCrLf & output
+End If
