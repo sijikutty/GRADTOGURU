@@ -1,1 +1,25 @@
-wshShell.Run pythonPath & execString
+Set wshShell = CreateObject("WScript.Shell")
+
+' Path to Python executable
+pythonPath = "C:\Python\python.exe"
+
+' Command to execute
+execString = " your_python_script.py"
+
+' Temporary file to capture output
+tempFile = "C:\Temp\output.txt"
+
+' Run the Python script and capture output to temporary file
+wshShell.Run pythonPath & execString & " > " & tempFile, 0, True
+
+' Read output from temporary file
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set outputFile = fso.OpenTextFile(tempFile, 1)
+output = outputFile.ReadAll()
+outputFile.Close
+
+' Display output in a message box
+MsgBox output
+
+' Delete temporary file
+fso.DeleteFile tempFile
