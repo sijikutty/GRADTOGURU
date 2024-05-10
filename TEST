@@ -1,10 +1,31 @@
-Dim   WshShell, execString,  scriptPath,pythonExePath
+Dim WshShell, execString, scriptPath, pythonExePath, outputFile, output, errorOutput, returnCode
+
 ' Define paths and arguments
 pythonExePath = """C:\Program Files\Python311\python.exe""" ' Enclose in double quotes
-scriptPath="C:\Github\corp_corpit_ps_egl_test_automation\Smoketest_FGL2D\Load_Journal_template.py"
+scriptPath = "C:\Github\corp_corpit_ps_egl_test_automation\Smoketest_FGL2D\Load_Journal_template.py"
+outputFile = "C:\Temp\output.txt"
+
+' Create WshShell object
 Set WshShell = CreateObject("WScript.Shell")
-execString = scriptPath
-WshShell.Run pythonPath & execString
-wait(3) ' slow down to see shell
 
+' Set the command string
+execString = """" & pythonExePath & """" & " " & """" & scriptPath & """ > """ & outputFile & """ 2>&1"
 
+' Run the Python script
+WshShell.Run execString, 0, True
+
+' Read output and error from the file
+Set fso = CreateObject("Scripting.FileSystemObject")
+If fso.FileExists(outputFile) Then
+    Set outputFile = fso.OpenTextFile(outputFile, 1)
+    output = outputFile.ReadAll()
+    outputFile.Close
+
+    ' Display output in a message box
+    MsgBox output
+Else
+    MsgBox "Output file not found."
+End If
+
+' Delete the output file
+fso.DeleteFile outputFile
