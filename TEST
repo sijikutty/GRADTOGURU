@@ -1,8 +1,19 @@
-Dim json_file_path, bucket_name, s3_file_name, python_script_path
-json_file_path = filePath ' Set the JSON file path
-bucket_name = s3bucket ' Set the S3 bucket name
-s3_file_name = s3filename ' Set the S3 filename
-python_script_path = """C:\Program Files\Python311\python.exe""" ' Python executable path
 
-' Set the command string
-execString = python_script_path & " " & """" & json_file_path & """" & " " & """" & bucket_name & """" & " " & """" & s3_file_name & """"
+Function UploadtoS3()
+	' UFT Script
+	Dim objShell
+	Set objShell = CreateObject("WScript.Shell")
+	
+	' Specify the path to the Python interpreter and the Python script
+	python_script = "C:\Program Files\Python39\python.exe"  ' Change this to your Python executable path
+	script_path = "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"  ' Change this to your Python script path
+	
+	' Construct the command to run the Python script
+	command = python_script & " " & script_path
+	Msgbox python_script & " " & script_path
+	' Execute the command
+	'run	objShell.Run command, 1, True
+	
+	' Clean up
+	Set objShell = Nothing
+End Function
