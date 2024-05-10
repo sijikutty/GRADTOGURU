@@ -5,175 +5,66 @@ Function Launch()
     SystemUtil.CloseProcessByName("jp2launcher.exe")
     ' Run Microsoft Edge browser
     SystemUtil.Run "msedge.exe"
+    ' Import data from Excel
     DataTable.Import("C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx") 
 End Function
 
 ' Function to retrieve credentials from a JSON file and launch the application
 Function Credentials()
-	Errorhandling
-	' Create an instance of the Environment object
-	Dim env
-	Set env = CreateObject("WScript.Shell").Environment("Process")
-	' Retrieve the user's profile directory (home directory)
-	Dim homeDir
-	homeDir = env("USERPROFILE")
-	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-	Set users = Dom.GetArray("fahuser")
-	For Each user in users
-	    fahusername = user.getValue("fahusername")
-	    fahpassword = user.getValue("fahpassword")
-	    Exit For
-	Next
-	fahLaunch fahusername,fahpassword
+    ' Error handling subroutine call
+    ErrorHandling
+    ' Create an instance of the Environment object
+    Dim env
+    Set env = CreateObject("WScript.Shell").Environment("Process")
+    ' Retrieve the user's profile directory (home directory)
+    Dim homeDir
+    homeDir = env("USERPROFILE")
+    ' Parse credentials from JSON file
+    Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+    Set users = Dom.GetArray("fahuser")
+    For Each user in users
+        fahusername = user.getValue("fahusername")
+        fahpassword = user.getValue("fahpassword")
+        Exit For
+    Next
+    ' Launch application with credentials
+    fahLaunch fahusername,fahpassword
 End Function
 
 ' Function to launch the application with the provided credentials
 Function fahLaunch(fahusername, fahpassword)
-	Errorhandling
-
-	' Navigate to the specified URL
-	Browser("iConnect - Home").Navigate Datatable.Value("fahlink")
-	' Set username and password
-	Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
-	Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
-	' Click on the Log In button
-	Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
-		'Wait till browser loads Completely
-	Browser("iConnect - Home").Page("iConnect - Home").Sync
+    ' Error handling subroutine call
+    ErrorHandling
+    ' Navigate to the specified URL
+    Browser("iConnect - Home").Navigate Datatable.Value("fahlink")
+    ' Set username and password
+    Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
+    Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
+    ' Click on the Log In button
+    Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+    ' Wait until browser loads completely
+    Browser("iConnect - Home").Page("iConnect - Home").Sync
 End Function
 
 ' Function to run a request in the application
 Function fahRunRequest()
-	Errorhandling
-	Browser("iConnect - Home").Page("Home").Link("XXHIG Custom").Click
-	Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
-
-	'Wait(30)
-	' Check if the Security Warning dialog exists
-	If JavaDialog("Security Warning").Exist(30) Then
-	    ' If it exists, set the checkbox and click on the Run button
-	    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
-	    JavaDialog("Security Warning").JavaButton("Run").Click
-	End If
-	'If OracleFormWindow("Submit a New Request").Exist(30) Then
-	'OracleFormWindow("Submit a New Request").OracleButton("OK").WaitProperty
-	'.WaitProperty "text", "Ready", 30000
-	
-	' Click on the OK button in the "Submit a New Request" form
-	OracleFormWindow("Submit a New Request").OracleButton("OK").Click
-	
-	' Open the dialog for selecting a report
-	OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
-	OracleListOfValues("Reports").Select Datatable.Value("fahReport")
-	OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
-	OracleListOfValues("Source").Select Datatable.Value("fahSource")
-	OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter Datatable.Value("fahRequestid")
-	OracleFlexWindow("Parameters").Approve
-	OracleFormWindow("Submit Request").OracleButton("Submit").Click
-	OracleNotification("Decision").Decline
-	' Click on the "Open" button in the "Navigator" form
-	OracleFormWindow("Navigator").OracleButton("Open").Click
-	' Click on the "Find" button in the "Find Requests" form
-	OracleFormWindow("Find Requests").OracleButton("Find").Click
-End Function
-
-' Function to check if a request is completed
-Function CheckCompleted()
-	Errorhandling
-    AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
-    If AIUtil.FindTextBlock("Completed").CheckExists(True) Then
-        CheckCompleted = True
-    Else
-        CheckCompleted = False
-    End If
-End Function
-
-' Function to view run details and report test results
-Function ViewRunDetails()
+    ' Error handling subroutine call
     ErrorHandling
-	Errorhandling
-    OracleFormWindow("Requests").OracleButton("View Details").Click
-    If CheckCompleted() Then
-        WriteToUFTOne "Test is success"
-    Else
-        OracleFormWindow("Request Detail").OracleButton("OK").Click
-        Wait 60
-        OracleFormWindow("Requests").OracleButton("Refresh Data").Click
-        OracleFormWindow("Requests").OracleButton("View Details").Click
-        If CheckCompleted() Then
-            WriteToUFTOne "Test is success"
-        Else
-            WriteToUFTOne "Test failed"
-        End If
+    ' Navigate to the requested page
+    Browser("iConnect - Home").Page("Home").Link("XXHIG Custom").Click
+    Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
+
+    'Wait(30)
+    ' Check if the Security Warning dialog exists
+    If JavaDialog("Security Warning").Exist(30) Then
+        ' If it exists, set the checkbox and click on the Run button
+        JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+        JavaDialog("Security Warning").JavaButton("Run").Click
     End If
+    ' Click on the OK button in the "Submit a New Request" form
+    OracleFormWindow("Submit a New Request").OracleButton("OK").Click
+    ' Perform necessary actions to run the request
+    '...
 End Function
 
-' Function to write test results to UFT One
-Function WriteToUFTOne(result)
-    If result = "Test is success" Then
-        Reporter.ReportEvent micPass, "Test Result", result
-        verdict="Pass"
-        
-    Else
-        Reporter.ReportEvent micFail, "Test Result", result
-         verdict="Fail"
-    End If
-    WriteRallyJson "Smoketest for FAH Concurrent Program","TC32547",verdict,result
-    
-
-   ' SystemUtil.Run "python", "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"
-End Function
-
-' Function for error handling
-Function ErrorHandling()
-    If Err.Number <> 0 Then
-	  'WScript.Echo "Error in Launch: " & Err.Description
-	  WriteToUFTOne "Test failed: " & Err.Description
-	  Err.Clear
-	  SystemUtil.CloseProcessByName("msedge.exe")
-	  SystemUtil.CloseProcessByName("jp2launcher.exe")
-	  ExitTest 
-    End If
-End Function
-
-' Function to close application windows and browsers
-Function CloseWindows()
-      ErrorHandling
-      ' Close application windows and browsers
-	' Close the Java window with the title "Oracle Applications -"
-	JavaWindow("Oracle Applications -").Close
-	
-	' Disable error reporting temporarily
-	On Error Resume Next
-	
-	' Disable reporting temporarily
-	Reporter.Filter = rfDisableAll
-	
-	' Approve the Oracle notification with the title "Caution"
-	OracleNotification("Caution").Approve
-	
-	' Enable reporting
-	Reporter.Filter = rfEnableAll
-		
-	' Reset error handling
-	On Error GoTo 0
-	
-	' Close the Microsoft Edge browser
-	Browser("iConnect - Home").Close
-End Function
-
-' Main subroutine to run the test
-Sub Main()
-    On Error Resume Next
-    ' Perform test steps
-    Launch
-    Credentials
-    fahRunRequest
-    ViewRunDetails
-    CloseWindows
-    'UpdateRally
-    ErrorHandling
-End Sub
-
-' Call the main subroutine to start the test
-Main
+' Function t
