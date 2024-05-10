@@ -1,1 +1,2 @@
-execString = pythonExePath & " """ & scriptPath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
+' Set the command string
+execString = pythonExePath & " " & scriptPath & " " & filePath & " " & s3bucket & " " & s3filename
