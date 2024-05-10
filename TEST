@@ -1,25 +1,21 @@
-Set wshShell = CreateObject("WScript.Shell")
+' Output file to capture both output and error
+outputFile = "C:\Temp\output.txt"
 
-' Path to Python executable
-pythonPath = "C:\Python\python.exe"
+' Run the Python script and capture both output and error streams to the same file
+wshShell.Run pythonPath & execString & " > " & outputFile & " 2>&1", 0, True
 
-' Command to execute
-execString = " your_python_script.py"
-
-' Temporary file to capture output
-tempFile = "C:\Temp\output.txt"
-
-' Run the Python script and capture output to temporary file
-wshShell.Run pythonPath & execString & " > " & tempFile, 0, True
-
-' Read output from temporary file
+' Read the content of the output file
 Set fso = CreateObject("Scripting.FileSystemObject")
-Set outputFile = fso.OpenTextFile(tempFile, 1)
-output = outputFile.ReadAll()
-outputFile.Close
+If fso.FileExists(outputFile) Then
+    Set fileStream = fso.OpenTextFile(outputFile, 1)
+    output = fileStream.ReadAll()
+    fileStream.Close
 
-' Display output in a message box
-MsgBox output
+    ' Display output in a message box
+    MsgBox output
 
-' Delete temporary file
-fso.DeleteFile tempFile
+    ' Delete the output file
+    fso.DeleteFile outputFile
+Else
+    MsgBox "Output file not found."
+End If
