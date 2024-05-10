@@ -1,38 +1,32 @@
-Set wshShell = CreateObject("WScript.Shell")
+' Define paths and arguments
+pythonExePath = """C:\Program Files\Python311\python.exe""" ' Enclose in double quotes
+'scriptPath = "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py" ' Enclose in double quotes
+filePath = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json" ' Enclose in double quotes
+s3bucket = "app-5208-dev-ue1-shared-s3-1"
+s3filename = "Testing/rallyinput/rally_tc_results.json"
+' Temporary file to capture output
+tempFile = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\output.txt"
 
-' Path to Python executable
-pythonPath = "C:\Python\python.exe"
+Dim WshShell, oExec, output, errorOutput, returnCode
+Set WshShell = CreateObject("WScript.Shell")
+scriptPath="C:\Github\corp_corpit_ps_egl_test_automation\Smoketest_FGL2D\Load_Journal_template.py"
+'execString = scriptPath &" "& filePath &" "& s3bucket &" "& s3filename
+execString = scriptPath
+'wshShell.Run pythonPath & execString
 
-' Command to execute
-execString = " your_python_script.py"
-
-' Output file to capture both output and error
 outputFile = "C:\Temp\output.txt"
 
-' Run the Python script and capture both output and error streams to the same file
-wshShell.Run pythonPath & execString & " > " & outputFile & " 2>&1", 0, True
+Set oExec = WshShell.Exec(pythonPath & execString )
+output = oExec.StdOut.ReadAll()
+errorOutput = oExec.StdErr.ReadAll()
+returnCode = oExec.ExitCode
 
-' Wait for the output file to be created
-Set fso = CreateObject("Scripting.FileSystemObject")
-maxWait = 10 ' Maximum number of seconds to wait
-waitInterval = 1 ' Check interval in seconds
-Waited = 0
-Do While Not fso.FileExists(outputFile) And Waited < maxWait
-    WScript.Sleep waitInterval * 1000 ' Convert seconds to milliseconds
-    Waited = Waited + waitInterval
-Loop
-
-' Read the content of the output file
-If fso.FileExists(outputFile) Then
-    Set fileStream = fso.OpenTextFile(outputFile, 1)
-    output = fileStream.ReadAll()
-    fileStream.Close
-
-    ' Display output in a message box
-    MsgBox output
-
-    ' Delete the output file
-    fso.DeleteFile outputFile
+' Check return code and display messages
+If returnCode <> 0 Then
+    MsgBox "Python script failed with return code: " & returnCode & vbCrLf & _
+           "Standard Output:" & vbCrLf & output & vbCrLf & _
+           "Standard Error Output:" & vbCrLf & errorOutput
 Else
-    MsgBox "Output file not found."
+    MsgBox "Python script executed successfully." & vbCrLf & _
+           "Standard Output:" & vbCrLf & output
 End If
