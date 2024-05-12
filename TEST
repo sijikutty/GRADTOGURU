@@ -1,39 +1,26 @@
-import boto3
+' Create a function to load environment variables from JSON
+Function LoadEnvironmentVariablesFromJSON(jsonFilePath)
+    Dim fso, jsonFile, jsonString, jsonObject
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    ' Open the JSON file
+    Set jsonFile = fso.OpenTextFile(jsonFilePath)
+    
+    ' Read the contents of the JSON file
+    jsonString = jsonFile.ReadAll
+    
+    ' Close the file
+    jsonFile.Close
+    
+    ' Parse the JSON string to a JSON object
+    Set jsonObject = JsonConverter.ParseJson(jsonString)
+    
+    ' Iterate through each property in the JSON object
+    For Each property In jsonObject
+        ' Set the environment variable
+        Environment.Value(property) = jsonObject(property)
+    Next
+End Function
 
-def download_json_from_s3(bucket_name, file_key, local_path):
-    """
-    Download a JSON file from an Amazon S3 bucket to a local path.
-
-    Args:
-    - bucket_name (str): The name of the S3 bucket.
-    - file_key (str): The key (path) of the JSON file within the bucket.
-    - local_path (str): The local path where the file will be saved.
-
-    Returns:
-    - bool: True if successful, False otherwise.
-    """
-    try:
-        # Create an S3 client
-        s3 = boto3.client('s3')
-
-        # Download the JSON file
-        s3.download_file(bucket_name, file_key, local_path)
-
-        return True
-    except Exception as e:
-        print(f"Error downloading JSON file from S3: {e}")
-        return False
-
-if __name__ == "__main__":
-    # Specify the S3 bucket name, file key, and local path
-    bucket_name = 'your-bucket'
-    file_key = 'path/to/your/file.json'
-    local_path = 'local/path/to/save/file.json'
-
-    # Download the JSON file from S3
-    success = download_json_from_s3(bucket_name, file_key, local_path)
-
-    if success:
-        print("JSON file downloaded successfully.")
-    else:
-        print("Failed to download JSON file from S3.")
+' Call the function to load environment variables before each test
+LoadEnvironmentVariablesFromJSON "path/to/your/environment_variables.json"
