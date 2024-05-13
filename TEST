@@ -1,133 +1,46 @@
-Public cfdescr
+Dim qtApp 'As QuickTest.Application ' Declare the Application object variable
+Dim qtTest 'As QuickTest.Test ' Declare a Test object variable
+Dim qtResultsOpt 'As QuickTest.RunResultsOptions ' Declare a Run Results Options object variable
 
-' Function to launch the Microsoft Edge browser
-Function Launch()
-    ' Close existing instances of Microsoft Edge and Java Platform Launcher
-    SystemUtil.CloseProcessByName("msedge.exe")
-    SystemUtil.CloseProcessByName("jp2launcher.exe")
-    ' Run Microsoft Edge browser
-    SystemUtil.Run "msedge.exe"
-    
-    ' Import data from Excel
-    Datatable.Importsheet "C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx","Chartfieldsync2","Global"
+' Function to initialize UFT application
+Function InitializeUFT()
+    ' Create the QuickTest Professional application object
+    Set qtApp = CreateObject("QuickTest.Application")
+    ' Start QuickTest
+    qtApp.Launch
+    ' Make the QuickTest application visible
+    qtApp.Visible = True
 End Function
 
-' Function to retrieve credentials from a JSON file and launch the PeopleSoft application
-Function PSCredentials()
-    Errorhandling
-    
-    ' Retrieve credentials from JSON file
-    Dim env
-    Set env = CreateObject("WScript.Shell").Environment("Process")
-    Dim homeDir
-    homeDir = env("USERPROFILE")
-    Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-    Set users = Dom.GetArray("psuser")
-    For Each user in users
-        psusername = user.getValue("psusername")
-        pspassword = user.getValue("pspassword")
-        Exit For
-    Next
-    ' Launch PeopleSoft application with credentials
-    psLaunch psusername,pspassword
-End Function
-
-' Function to launch the PeopleSoft application with provided credentials
-Function psLaunch(psusername, pspassword)
-    Errorhandling
-    'Wait till browser loads Completely
-    Browser("iConnect - Home").Page("iConnect - Home").Sync
-    ' Navigate to the specified URL
-    Browser("iConnect - Home").Navigate Datatable.Value("pslink")
-    ' Set username and password
-    Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebEdit("userid").Set psusername
-    Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebEdit("pwd").Set pspassword
-    ' Click to log in
-    Browser("iConnect - Home").Page("Oracle PeopleSoft Sign-in").WebButton("To enable screen reader").Click
-End Function
-
-' Function to set up service operations
-Function Serviceoperationsetup()
-    Errorhandling
-    ' Navigate through various pages and perform actions
-    Browser("iConnect - Home").Page("Homepage").Image("NavBar").Click
-    ' Code continues...
-End Function
-
-' Function to modify Risk code Description
-Function RiskcodeDescrModify()
-    ErrorHandling
-    'Chartfield value description modify
-    ' Code continues...
-End function
-
-' Function to perform full data publish
-Function Fulldatapublish()
-    ErrorHandling
-    'Full data Publish
-    ' Code continues...
-End function
-
-' Function to monitor the process status
-Function Processmonitor()
-    ErrorHandling
-    ' Monitor the process status
-    ' Code continues...
-End function
-
-' Function to perform asynchronous service
-Function PerformAsyncServ()
-    ErrorHandling
-    ' Perform asynchronous service
-    ' Code continues...
-End Function
-
-' Function to retrieve credentials from a JSON file and launch the Financial Accounting Hub (FAH) application
-Function fahCredentials()
-    Errorhandling
-    ' Retrieve credentials from JSON file
-    ' Code continues...
-End Function
-
-' Function to launch the FAH application with provided credentials
-Function fahLaunch(fahusername, fahpassword)
-    Errorhandling
-    'Wait till browser loads Completely
-    ' Code continues...
-End Function
-
-' Subroutine to perform Oracle actions
-Function PerformOracleActions()
-    ErrorHandling
-    ' Perform Oracle actions
-    ' Code continues...
-End Function
-
-' Function to write test results to UFT
-Function WriteToUFTOne(result)
-    ' Write test results to UFT
-    ' Code continues...
-End Function
-
-' Function for error handling
-Function ErrorHandling()
-    ' Error handling logic
-    ' Code continues...
-End Function
-
-' Function to close application windows and browsers
-Function CloseWindows()
-    ErrorHandling
-    ' Close application windows and browsers
-    ' Code continues...
-End Function
-
-' Main subroutine to run the test
-Sub Main()
-    On Error Resume Next
-    ' Perform test steps
-    ' Code continues...
+' Subroutine to run UFT test
+Sub RunUFTTest(testPath)
+    ' Open the test
+    Set qtTest = qtApp.OpenTest(testPath, True)
+    ' Run the test
+    qtTest.Run
+    ' Wait for the test to complete
+    Do While qtTest.IsRunning
+        WScript.Sleep 1000
+    Loop
+    ' Get the test results
+    Set qtResultsOpt = CreateObject("QuickTest.RunResultsOptions")
+    qtResultsOpt.ResultsLocation = "C:\Results\" ' Specify the folder to save results
+    qtTest.Close
 End Sub
 
-' Call the main subroutine to start the test
+' Main subroutine to run all tests
+Sub Main()
+    ' Initialize UFT application
+    InitializeUFT
+    ' Run the first test
+    RunUFTTest "C:\Tests\Test1"
+    ' Run the second test
+    RunUFTTest "C:\Tests\Test2"
+    ' Run the third test
+    RunUFTTest "C:\Tests\Test3"
+    ' Close UFT application
+    qtApp.Quit
+End Sub
+
+' Call the main subroutine to start running tests
 Main
