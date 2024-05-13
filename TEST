@@ -1,26 +1,101 @@
-' Create a function to load environment variables from JSON
-Function LoadEnvironmentVariablesFromJSON(jsonFilePath)
-    Dim fso, jsonFile, jsonString, jsonObject
-    Set fso = CreateObject("Scripting.FileSystemObject")
+Function WriteRallyJson(TCName, TCID, verdict, result)
+	Datatable.Importsheet "C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx","COMMON","Global"
+    ' Get current date and time
+    current_datetime = Now
     
-    ' Open the JSON file
-    Set jsonFile = fso.OpenTextFile(jsonFilePath)
+    ' Format the date and time
+    formatted_datetime = Year(current_datetime) & "-" & Right("0" & Month(current_datetime), 2) & "-" & Right("0" & Day(current_datetime), 2) & "T" & Right("0" & Hour(current_datetime), 2) & ":" & Right("0" & Minute(current_datetime), 2) & ":" & Right("0" & Second(current_datetime), 2)
     
-    ' Read the contents of the JSON file
-    jsonString = jsonFile.ReadAll
+    ' Get microseconds part
+    microseconds = Right(FormatNumber((current_datetime - Int(current_datetime)) * 1000000, 6), 6)
+    
+    ' Concatenate microseconds to the formatted string
+    formatted_datetime_with_microseconds = formatted_datetime & "." & microseconds
+    
+    ' Create an instance of the Environment object
+   ' Dim env
+   ' Set env = CreateObject("WScript.Shell").Environment("Process")
+    
+    ' Retrieve user's profile directory
+    'Dim homeDir
+    'homeDir = env("USERPROFILE")
+    
+    ' Parse credentials from JSON file
+    'Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+    'Set rally = Dom.GetArray("rally")
+    
+    ' Retrieve values from JSON
+   ' For Each object in rally
+        server = Datatable.Value("server")
+        user = Datatable.Value("user")
+        apikey = Datatable.Value("apikey")
+        workspace = Datatable.Value("workspace")
+        project = Datatable.Value("project")
+        envr = Datatable.Value("envr")
+        s3bucket= Datatable.Value("s3bucket")
+        s3filename= Datatable.Value("outputfile")
+       ' Exit For
+   ' Next
+
+    ' Create JSON content
+    Dim jsonContent, rallyContent
+    Set jsonContent = CreateObject("Scripting.Dictionary")
+    jsonContent.Add "key", TCName
+    
+    Set rallyContent = CreateObject("Scripting.Dictionary")
+    rallyContent.Add "server", server
+    rallyContent.Add "user", user
+    rallyContent.Add "apikey", apikey
+    rallyContent.Add "workspace", workspace
+    rallyContent.Add "project", project
+    rallyContent.Add "Tcid", TCID
+    rallyContent.Add "build", (envr & "-Automated Run")
+    rallyContent.Add "run_date", formatted_datetime_with_microseconds
+    rallyContent.Add "verdict", verdict
+    rallyContent.Add "notes", result
+
+    ' Create JSON string
+    Dim jsonData
+    jsonData = "{"
+    jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
+    jsonData = jsonData & """Rally"":{"
+    For Each key In rallyContent.Keys
+        jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
+    Next
+    jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+    jsonData = jsonData & "}}"
+
+    ' Specify Python executable path and script path
+    Dim pythonExePath, scriptpath
+    'pythonExePath = """C:\Program Files\Python311\python.exe"""  ' Specify the full path to the Python executable
+    pythonExePath ="""" &Datatable.value("pythonexe")&""""
+   ' scriptpath = "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"
+	scriptpath=Datatable.value("upldtos3pypath")
+	
+    ' Set file path for JSON data
+    Dim filePath
+   ' filePath = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json"
+    filepath=Datatable.value("rallyjson")
+    ' Create FileSystemObject
+    Dim fs, outFile
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    
+    ' Create or overwrite the file
+    Set outFile = fs.CreateTextFile(filePath, True)
+    
+    ' Write JSON content to the file
+    outFile.WriteLine(jsonData)
     
     ' Close the file
-    jsonFile.Close
+    outFile.Close
     
-    ' Parse the JSON string to a JSON object
-    Set jsonObject = JsonConverter.ParseJson(jsonString)
+    ' Run the Python script
+    Dim execString, WshShell, oExec
+    execString = pythonExePath & " """ & scriptpath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
+   'Msgbox execString
+    ' Create WshShell object
+    Set WshShell = CreateObject("WScript.Shell")
     
-    ' Iterate through each property in the JSON object
-    For Each property In jsonObject
-        ' Set the environment variable
-        Environment.Value(property) = jsonObject(property)
-    Next
+    ' Execute the command using SystemUtil.Run
+    Set oExec = WshShell.Exec(execString)
 End Function
-
-' Call the function to load environment variables before each test
-LoadEnvironmentVariablesFromJSON "path/to/your/environment_variables.json"
