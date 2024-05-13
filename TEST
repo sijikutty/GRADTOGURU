@@ -1,5 +1,7 @@
 Function WriteRallyJson(TCName, TCID, verdict, result)
-	Datatable.Importsheet "C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx","COMMON","Global"
+    ' Import data from Excel sheet
+    Datatable.Importsheet "C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx","COMMON","Global"
+    
     ' Get current date and time
     current_datetime = Now
     
@@ -12,30 +14,15 @@ Function WriteRallyJson(TCName, TCID, verdict, result)
     ' Concatenate microseconds to the formatted string
     formatted_datetime_with_microseconds = formatted_datetime & "." & microseconds
     
-    ' Create an instance of the Environment object
-   ' Dim env
-   ' Set env = CreateObject("WScript.Shell").Environment("Process")
-    
-    ' Retrieve user's profile directory
-    'Dim homeDir
-    'homeDir = env("USERPROFILE")
-    
-    ' Parse credentials from JSON file
-    'Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
-    'Set rally = Dom.GetArray("rally")
-    
-    ' Retrieve values from JSON
-   ' For Each object in rally
-        server = Datatable.Value("server")
-        user = Datatable.Value("user")
-        apikey = Datatable.Value("apikey")
-        workspace = Datatable.Value("workspace")
-        project = Datatable.Value("project")
-        envr = Datatable.Value("envr")
-        s3bucket= Datatable.Value("s3bucket")
-        s3filename= Datatable.Value("outputfile")
-       ' Exit For
-   ' Next
+    ' Retrieve values from Excel sheet
+    server = Datatable.Value("server")
+    user = Datatable.Value("user")
+    apikey = Datatable.Value("apikey")
+    workspace = Datatable.Value("workspace")
+    project = Datatable.Value("project")
+    envr = Datatable.Value("envr")
+    s3bucket = Datatable.Value("s3bucket")
+    s3filename = Datatable.Value("outputfile")
 
     ' Create JSON content
     Dim jsonContent, rallyContent
@@ -65,17 +52,15 @@ Function WriteRallyJson(TCName, TCID, verdict, result)
     jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
     jsonData = jsonData & "}}"
 
-    ' Specify Python executable path and script path
+    ' Retrieve Python executable and script paths from Excel sheet
     Dim pythonExePath, scriptpath
-    'pythonExePath = """C:\Program Files\Python311\python.exe"""  ' Specify the full path to the Python executable
-    pythonExePath ="""" &Datatable.value("pythonexe")&""""
-   ' scriptpath = "C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\uploadtos3.py"
-	scriptpath=Datatable.value("upldtos3pypath")
+    pythonExePath = """" & Datatable.Value("pythonexe") & """"
+    scriptpath = Datatable.Value("upldtos3pypath")
 	
     ' Set file path for JSON data
     Dim filePath
-   ' filePath = "C:\Github\corp_corpit_ps_egl_test_automation\UFT\rallydata.json"
-    filepath=Datatable.value("rallyjson")
+    filePath = Datatable.Value("rallyjson")
+    
     ' Create FileSystemObject
     Dim fs, outFile
     Set fs = CreateObject("Scripting.FileSystemObject")
@@ -92,10 +77,10 @@ Function WriteRallyJson(TCName, TCID, verdict, result)
     ' Run the Python script
     Dim execString, WshShell, oExec
     execString = pythonExePath & " """ & scriptpath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
-   'Msgbox execString
+    
     ' Create WshShell object
     Set WshShell = CreateObject("WScript.Shell")
     
     ' Execute the command using SystemUtil.Run
     Set oExec = WshShell.Exec(execString)
-End Function
+End Function  
