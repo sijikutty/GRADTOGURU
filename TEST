@@ -1,34 +1,30 @@
-' Counter variable for the loop
-Dim i
+	    OracleFormWindow("Requests").OracleButton("View Details").Click
+	 ' Counter variable for the loop
+	Dim i
+	
+	' Loop 60 times
+	For i = 1 To 60
 
-' Flag to track if the test is successful
-Dim testSuccess
-testSuccess = False
-
-' Loop 60 times
-For i = 1 To 60
-    ' Click on "View Details" button
-    OracleFormWindow("Requests").OracleButton("View Details").Click
-
-    ' Check if the request is completed
-    If CheckCompleted() Then
-        testSuccess = True
-        Exit For ' Exit the loop if the test is successful
-    End If
-
-    ' Click on "OK" button in the "Request Detail" window
-    OracleFormWindow("Request Detail").OracleButton("OK").Click
-
-    ' Refresh data
-    OracleFormWindow("Requests").OracleButton("Refresh Data").Click
-
-    ' Click on "View Details" button again
-    OracleFormWindow("Requests").OracleButton("View Details").Click
-Next
-
-' Check the test status
-If testSuccess Then
-    WriteToUFTOne "Test is success"
-Else
-    WriteToUFTOne "Test failed"
-End If
+	
+	    ' Check if the request is completed
+	    If CheckCompleted() Then
+	        WriteToUFTOne "Test is success"
+	        Exit For ' Exit the loop if the test is successful
+	    End If
+	
+	    ' Click on "OK" button in the "Request Detail" window
+	    OracleFormWindow("Request Detail").OracleButton("OK").Click
+	
+	    ' Refresh data
+	    OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+	
+	    ' Click on "View Details" button again
+	    OracleFormWindow("Requests").OracleButton("View Details").Click
+	Next
+	
+	' Check the test status
+	If CheckCompleted() Then
+	    WriteToUFTOne "Test is success"
+	Else
+	    WriteToUFTOne "Test failed"
+	End If
