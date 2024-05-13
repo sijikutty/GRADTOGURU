@@ -1,46 +1,20 @@
-Dim qtApp 'As QuickTest.Application ' Declare the Application object variable
-Dim qtTest 'As QuickTest.Test ' Declare a Test object variable
-Dim qtResultsOpt 'As QuickTest.RunResultsOptions ' Declare a Run Results Options object variable
-
-' Function to initialize UFT application
-Function InitializeUFT()
-    ' Create the QuickTest Professional application object
-    Set qtApp = CreateObject("QuickTest.Application")
-    ' Start QuickTest
-    qtApp.Launch
-    ' Make the QuickTest application visible
-    qtApp.Visible = True
-End Function
-
-' Subroutine to run UFT test
-Sub RunUFTTest(testPath)
-    ' Open the test
-    Set qtTest = qtApp.OpenTest(testPath, True)
-    ' Run the test
-    qtTest.Run
-    ' Wait for the test to complete
-    Do While qtTest.IsRunning
-        WScript.Sleep 1000
-    Loop
-    ' Get the test results
-    Set qtResultsOpt = CreateObject("QuickTest.RunResultsOptions")
-    qtResultsOpt.ResultsLocation = "C:\Results\" ' Specify the folder to save results
-    qtTest.Close
-End Sub
-
-' Main subroutine to run all tests
-Sub Main()
-    ' Initialize UFT application
-    InitializeUFT
-    ' Run the first test
-    RunUFTTest "C:\Tests\Test1"
-    ' Run the second test
-    RunUFTTest "C:\Tests\Test2"
-    ' Run the third test
-    RunUFTTest "C:\Tests\Test3"
-    ' Close UFT application
-    qtApp.Quit
-End Sub
-
-' Call the main subroutine to start running tests
-Main
+    OracleFormWindow("Requests").OracleButton("View Details").Click
+    If CheckCompleted() Then
+        WriteToUFTOne "Test is success"
+    Else
+    	i=1
+    	For i = 1 To 60
+    		      OracleFormWindow("Request Detail").OracleButton("OK").Click
+		        'Wait 60
+		        OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+		        OracleFormWindow("Requests").OracleButton("View Details").Click
+		        
+		        If CheckCompleted() Then
+		            WriteToUFTOne "Test is success"
+		            Exit For
+		        Else
+		            WriteToUFTOne "Test failed"
+		        End If
+    	Next
+  
+    End If
