@@ -1,20 +1,282 @@
-Dim oShell, cmd, pythonExePath
+' Function to launch the Microsoft Edge browser
+Function Launch()
+    ' Close existing instances of Microsoft Edge and Java Platform Launcher
+    SystemUtil.CloseProcessByName("msedge.exe")
+    SystemUtil.CloseProcessByName("jp2launcher.exe")
+    Dim mode_Maximized
+     mode_Maximized = 3 'Open in maximized mode
+    ' Run Microsoft Edge browser
+   SystemUtil.Run "msedge.exe", "", , ,mode_Maximized
+    ' Import data from Excel
+    Datatable.Importsheet "C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx","FAH_CONCURRENT","Global"
+End Function
 
-Set oShell = CreateObject("WScript.Shell")
+' Function to retrieve credentials from a JSON file and launch the application
+Function Credentials()
+	Errorhandling
+	' Create an instance of the Environment object
+	Dim env
+	Set env = CreateObject("WScript.Shell").Environment("Process")
+	' Retrieve the user's profile directory (home directory)
+	Dim homeDir
+	homeDir = env("USERPROFILE")
+	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+	Set users = Dom.GetArray("fahuser")
+	For Each user in users
+	    fahusername = user.getValue("fahusername")
+	    fahpassword = user.getValue("fahpassword")
+	    Exit For
+	Next
+	fahLaunch fahusername,fahpassword
+End Function
 
-' Command to get the path of python.exe
-cmd = "where python"
+' Function to launch the application with the provided credentials
+Function fahLaunch(fahusername, fahpassword)
+	Errorhandling
 
-' Execute the command and capture the output
-pythonExePath = oShell.Exec(cmd).StdOut.ReadAll()
+	' Navigate to the specified URL
+	Browser("iConnect - Home").Navigate Datatable.Value("fahlink")
+	' Set username and password
+	Browser("iConnect - Home").Page("Login").WebEdit("usernameField").Set fahusername
+	Browser("iConnect - Home").Page("Login").WebEdit("passwordField").Set fahpassword
+	' Click on the Log In button
+	Browser("iConnect - Home").Page("Login").WebButton("Log In").Click
+		'Wait till browser loads Completely
+	Browser("iConnect - Home").Page("iConnect - Home").Sync
+End Function
 
-' Remove any leading or trailing whitespace or line breaks
-pythonExePath = Trim(pythonExePath)
+' Function to run a request in the application
+Function fahRunRequest()
+	Errorhandling
+	Browser("iConnect - Home").Page("Home").Link("XXHIG Custom").Click
+	Browser("iConnect - Home").Page("Home").Link("Run Requests").Click
 
-If pythonExePath <> "" Then
-    MsgBox "Python executable found at: " & pythonExePath
-Else
-    MsgBox "Python executable not found."
-End If
+	' Check if the Security Warning dialog exists
+	If JavaDialog("Security Warning").Exist(30) Then
+	    ' If it exists, set the checkbox and click on the Run button
+	    JavaDialog("Security Warning").JavaCheckBox("I accept the risk and").Set "ON"
+	    JavaDialog("Security Warning").JavaButton("Run").Click
+	End If
+	
+	' Click on the OK button in the "Submit a New Request" form
+	OracleFormWindow("Submit a New Request").OracleButton("OK").Click
+	
+	' Open the dialog for selecting a report
+	OracleFormWindow("Submit Request").OracleTextField("Run this Request|Name").OpenDialog
+	OracleListOfValues("Reports").Select Datatable.Value("fahReport")
+	OracleFlexWindow("Parameters").OracleTextField("Source").OpenDialog
+	OracleListOfValues("Source").Select Datatable.Value("fahSource")
+	OracleFlexWindow("Parameters").OracleTextField("Request Id").Enter Datatable.Value("fahRequestid")
+	OracleFlexWindow("Parameters").Approve
+	OracleFormWindow("Submit Request").OracleButton("Submit").Click
+	OracleNotification("Decision").Decline
+	' Click on the "Open" button in the "Navigator" form
+	OracleFormWindow("Navigator").OracleButton("Open").Click
+	' Click on the "Find" button in the "Find Requests" form
+	OracleFormWindow("Find Requests").OracleButton("Find").Click
+End Function
 
-Set oShell = Nothing
+' Function to check if a request is completed
+Function CheckCompleted()
+	Errorhandling
+    AIUtil.SetContext OracleApplications("micclass:=OracleApplications")
+    	' Disable reporting temporarily
+	Reporter.Filter = rfDisableAll
+    If AIUtil.FindTextBlock("Completed").CheckExists(True) Then
+        CheckCompleted = True
+    Else
+        CheckCompleted = False
+    End If
+	Reporter.Filter = rfEnableAll
+End Function
+
+' Function to view run details and report test results
+Function ViewRunDetails()
+    ErrorHandling
+	    ' Click on "View Details" button
+	    OracleFormWindow("Requests").OracleButton("View Details").Click
+	 ' Counter variable for the loop
+	Dim i
+	Dim testSuccess
+	testSuccess=False
+	' Loop 60 times
+	For i = 1 To 60
+	    ' Check if the request is completed
+	    If CheckCompleted() Then
+	        'WriteToUFTOne "Test is success"
+	        testSuccess=True
+	        Exit For ' Exit the loop if the test is successful
+	    End If
+	
+	    ' Click on "OK" button in the "Request Detail" window
+	    OracleFormWindow("Request Detail").OracleButton("OK").Click
+	
+	    ' Refresh data
+	    OracleFormWindow("Requests").OracleButton("Refresh Data").Click
+	
+	    ' Click on "View Details" button again
+	    OracleFormWindow("Requests").OracleButton("View Details").Click
+	Next
+	
+	' Check the test status
+	If testSuccess=True Then
+	    WriteToUFTOne "Test is success"
+	Else
+	    WriteToUFTOne "Test failed"
+	End If
+End Function
+
+' Function to write test results to UFT One
+Function WriteToUFTOne(result)
+    If result = "Test is success" Then
+        Reporter.ReportEvent micPass, "Test Result", result
+        verdict="Pass"
+        
+    Else
+        Reporter.ReportEvent micFail, "Test Result", result
+         verdict="Fail"
+    End If
+    WriteRallyJson "Smoketest for FAH Concurrent Program","TC32547",verdict,result
+
+End Function
+
+' Function for error handling
+Function ErrorHandling()
+    If Err.Number <> 0 Then
+	  'WScript.Echo "Error in Launch: " & Err.Description
+	  WriteToUFTOne "Test failed: " & Err.Description
+	  Err.Clear
+	  SystemUtil.CloseProcessByName("msedge.exe")
+	  SystemUtil.CloseProcessByName("jp2launcher.exe")
+	  ExitTest 
+    End If
+End Function
+
+' Function to close application windows and browsers
+Function CloseWindows()
+      ErrorHandling
+      ' Close application windows and browsers
+	' Close the Java window with the title "Oracle Applications -"
+	JavaWindow("Oracle Applications -").Close
+	
+	' Disable error reporting temporarily
+	On Error Resume Next
+	
+	' Disable reporting temporarily
+	Reporter.Filter = rfDisableAll
+	
+	' Approve the Oracle notification with the title "Caution"
+	OracleNotification("Caution").Approve
+	
+	' Enable reporting
+	Reporter.Filter = rfEnableAll
+		
+	' Reset error handling
+	On Error GoTo 0
+	
+	' Close the Microsoft Edge browser
+	Browser("iConnect - Home").Close
+End Function
+
+' Main subroutine to run the test
+Sub Main()
+    On Error Resume Next
+    ' Perform test steps
+    Launch
+    Credentials
+    fahRunRequest
+    ViewRunDetails
+    CloseWindows
+    ErrorHandling
+End Sub
+
+' Call the main subroutine to start the test
+Main
+---
+Function WriteRallyJson(TCName, TCID, verdict, result)
+    ' Import data from Excel sheet
+    Datatable.Importsheet "C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Input.xlsx","COMMON","Global"
+    
+    ' Get current date and time
+    current_datetime = Now
+    
+    ' Format the date and time
+    formatted_datetime = Year(current_datetime) & "-" & Right("0" & Month(current_datetime), 2) & "-" & Right("0" & Day(current_datetime), 2) & "T" & Right("0" & Hour(current_datetime), 2) & ":" & Right("0" & Minute(current_datetime), 2) & ":" & Right("0" & Second(current_datetime), 2)
+    
+    ' Get microseconds part
+    microseconds = Right(FormatNumber((current_datetime - Int(current_datetime)) * 1000000, 6), 6)
+    
+    ' Concatenate microseconds to the formatted string
+    formatted_datetime_with_microseconds = formatted_datetime & "." & microseconds
+    
+    ' Retrieve values from Excel sheet
+    server = Datatable.Value("server")
+    user = Datatable.Value("user")
+    apikey = Datatable.Value("apikey")
+    workspace = Datatable.Value("workspace")
+    project = Datatable.Value("project")
+    envr = Datatable.Value("envr")
+    s3bucket = Datatable.Value("s3bucket")
+    s3filename = Datatable.Value("outputfile")
+
+    ' Create JSON content
+    Dim jsonContent, rallyContent
+    Set jsonContent = CreateObject("Scripting.Dictionary")
+    jsonContent.Add "key", TCName
+    
+    Set rallyContent = CreateObject("Scripting.Dictionary")
+    rallyContent.Add "server", server
+    rallyContent.Add "user", user
+    rallyContent.Add "apikey", apikey
+    rallyContent.Add "workspace", workspace
+    rallyContent.Add "project", project
+    rallyContent.Add "Tcid", TCID
+    rallyContent.Add "build", (envr & "-Automated Run")
+    rallyContent.Add "run_date", formatted_datetime_with_microseconds
+    rallyContent.Add "verdict", verdict
+    rallyContent.Add "notes", result
+
+    ' Create JSON string
+    Dim jsonData
+    jsonData = "{"
+    jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
+    jsonData = jsonData & """Rally"":{"
+    For Each key In rallyContent.Keys
+        jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
+    Next
+    jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+    jsonData = jsonData & "}}"
+
+    ' Retrieve Python executable and script paths from Excel sheet
+    Dim pythonExePath, scriptpath
+    pythonExePath = """" & Datatable.Value("pythonexe") & """"
+    scriptpath = Datatable.Value("upldtos3pypath")
+	
+    ' Set file path for JSON data
+    Dim filePath
+    filePath = Datatable.Value("rallyjson")
+    
+    ' Create FileSystemObject
+    Dim fs, outFile
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    
+    ' Create or overwrite the file
+    Set outFile = fs.CreateTextFile(filePath, True)
+    
+    ' Write JSON content to the file
+    outFile.WriteLine(jsonData)
+    
+    ' Close the file
+    outFile.Close
+    
+    ' Run the Python script
+    Dim execString, WshShell, oExec
+    execString = pythonExePath & " """ & scriptpath & """ """ & filePath & """ """ & s3bucket & """ """ & s3filename & """"
+    
+    ' Create WshShell object
+    Set WshShell = CreateObject("WScript.Shell")
+    
+    ' Execute the command using SystemUtil.Run
+    Set oExec = WshShell.Exec(execString)
+    
+End Function  
