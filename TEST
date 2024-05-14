@@ -1,7 +1,20 @@
-Dim mode_Maximized, mode_Minimized
-mode_Maximized = 3 'Open in maximized mode
-mode_Minimized = 2 'Open in minimized mode
- 
-'Open browser in maximized and minimized mode
-SystemUtil.Run "iexplore.exe", "http://www.automationrepository.com", , ,mode_Maximized
-SystemUtil.Run "iexplore.exe", "http://www.automationrepository.com", , ,mode_Minimized
+Dim oShell, cmd, pythonExePath
+
+Set oShell = CreateObject("WScript.Shell")
+
+' Command to get the path of python.exe
+cmd = "where python"
+
+' Execute the command and capture the output
+pythonExePath = oShell.Exec(cmd).StdOut.ReadAll()
+
+' Remove any leading or trailing whitespace or line breaks
+pythonExePath = Trim(pythonExePath)
+
+If pythonExePath <> "" Then
+    MsgBox "Python executable found at: " & pythonExePath
+Else
+    MsgBox "Python executable not found."
+End If
+
+Set oShell = Nothing
