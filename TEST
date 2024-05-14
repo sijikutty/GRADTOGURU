@@ -1,30 +1,7 @@
-	    OracleFormWindow("Requests").OracleButton("View Details").Click
-	 ' Counter variable for the loop
-	Dim i
-	
-	' Loop 60 times
-	For i = 1 To 60
-
-	
-	    ' Check if the request is completed
-	    If CheckCompleted() Then
-	        WriteToUFTOne "Test is success"
-	        Exit For ' Exit the loop if the test is successful
-	    End If
-	
-	    ' Click on "OK" button in the "Request Detail" window
-	    OracleFormWindow("Request Detail").OracleButton("OK").Click
-	
-	    ' Refresh data
-	    OracleFormWindow("Requests").OracleButton("Refresh Data").Click
-	
-	    ' Click on "View Details" button again
-	    OracleFormWindow("Requests").OracleButton("View Details").Click
-	Next
-	
-	' Check the test status
-	If CheckCompleted() Then
-	    WriteToUFTOne "Test is success"
-	Else
-	    WriteToUFTOne "Test failed"
-	End If
+Dim mode_Maximized, mode_Minimized
+mode_Maximized = 3 'Open in maximized mode
+mode_Minimized = 2 'Open in minimized mode
+ 
+'Open browser in maximized and minimized mode
+SystemUtil.Run "iexplore.exe", "http://www.automationrepository.com", , ,mode_Maximized
+SystemUtil.Run "iexplore.exe", "http://www.automationrepository.com", , ,mode_Minimized
