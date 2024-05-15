@@ -1,5 +1,61 @@
-pytest test_gui\
-ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]
-pytest: error: unrecognized arguments: --headed --slowmo --order-dependencies test_gui\
-  inifile: C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui\pytest.ini  
-  rootdir: C:\Github\corp_corpit_ps_egl_test_automation\smoketest\test_gui
+import boto3
+import sys
+import json
+from botocore.exceptions import ClientError
+
+def upload_to_s3(json_file_path, bucket_name, s3_file_name):
+    try:
+        session = boto3.Session(profile_name='dev')
+        s3_client = session.client('s3')
+
+        response = s3_client.upload_file(json_file_path, bucket_name, s3_file_name)
+        print(response)
+
+    except ClientError as e:
+        print(e)
+        return False
+     
+    return True
+    
+
+if __name__ == "__main__":
+    # Get JSON file path, bucket name, and S3 filename from command line arguments
+    json_file_path = sys.argv[1]
+    bucket_name = sys.argv[2]
+    s3_file_name = sys.argv[3]
+
+    # Upload JSON data to S3
+    upload_to_s3(json_file_path, bucket_name, s3_file_name)
+
+------------------------------------------------------------------
+import boto3
+import json
+from botocore.exceptions import ClientError
+from datetime import datetime
+
+#def get_testcase(s3bucket, filename):
+def get_testcase():
+
+    try:
+        # Getting the testcase file content
+        s3_client = boto3.client("s3")
+        
+        # Getting the file
+        response = s3_client.get_object(Bucket="app-5208-dev-ue1-shared-s3-1", Key="Testing/Data/testcase.json")
+
+        # Reading the file content
+        file_content = None        
+        file_content = response['Body'].read().decode('utf-8')
+
+        # Converting to JSON
+        json_content = json.loads(file_content)
+        print (json_content)
+        return json_content
+    
+    except ClientError as err:
+        print(err)
+
+get_testcase()
+
+    raise NoCredentialsError()
+botocore.exceptions.NoCredentialsError: Unable to locate credentials
