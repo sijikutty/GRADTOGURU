@@ -1,17 +1,16 @@
-import boto3
-import json
-from botocore.exceptions import ClientError
-
-def get_testcase():
+@pytest.fixture(scope="function", autouse=True)
+def get_testcasejson():
     try:
         # Create a session with the 'dev' profile
         session = boto3.Session(profile_name='dev')
         
         # Create an S3 client using the session
         s3_client = session.client("s3")
-        
+        rally_s3 = 'app-5208-dev-ue1-shared-s3-1'
+        rally_filename = 'Testing/Data/PSTesting/testcase.json'
+
         # Getting the file
-        response = s3_client.get_object(Bucket="app-5208-dev-ue1-shared-s3-1", Key="Testing/Data/testcase.json")
+        response = s3_client.get_object(Bucket=rally_s3, Key=rally_filename)
 
         # Reading the file content
         file_content = response['Body'].read().decode('utf-8')
@@ -23,5 +22,3 @@ def get_testcase():
     
     except ClientError as err:
         print(err)
-
-get_testcase()
