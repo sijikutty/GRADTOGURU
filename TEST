@@ -22,3 +22,47 @@ def get_testcasejson():
     
     except ClientError as err:
         print(err)
+--------------
+from automation_utils import get_testdata
+import win32com, win32com.client
+import pytest
+
+@pytest.mark.order(-1)
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(get_testcasejson,testcase):
+
+    #testdata = testcase["testdata"]
+    try:
+            qtp = win32com.client.Dispatch("QuickTest.Application")
+
+            # starts up QTP
+            qtp.Launch() 
+
+            # make the QTP window visible
+            qtp.Visible = True
+
+            # Open a test, replace the path 
+            qtp.Open(r"C:\Github\corp_corpit_ps_egl_test_automation\UFT\FAH_Concurrent_Program")
+
+            # to open a QTP test in Quality Center
+            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+
+            # create a RunResultsOptions object
+            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+
+            # set the location to where the results will be save
+            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+
+            qtp.Test.Run(qtResultsOpt)
+
+            #print %qtp.Test.LastRunResults.Status
+
+            # close the Test
+            qtp.Test.Close()
+
+            # quit QTP
+            qtp.Quit()
+            print("Login Success!")
+
+    except AssertionError:
+        raise Exception("FAH Concurrent Program Failed.")
