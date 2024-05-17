@@ -1,34 +1,29 @@
-from automation_utils import get_testdata
-import pytest
-import subprocess
+            qtp = win32com.client.Dispatch("QuickTest.Application")
 
-@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
-def test_FAH_Concurrent(testcase):
+            # starts up QTP
+            qtp.Launch() 
 
-    testdata = testcase["testdata"]
-    test_path = testdata["test_path"]
-    fah_url = testdata["fah_url"]
-    
-    print("Running UFT test:", test_path)
-    
-    try:
-        # Construct the command to run the UFT test using UFT executable
-        command = [r"C:\Program Files (x86)\Micro Focus\UFT One\bin\UFT.exe", "/Test", test_path]
+            # make the QTP window visible
+            qtp.Visible = True
 
-        # Execute the command
-        result = subprocess.run(command, capture_output=True, text=True)
+            # Open a test, replace the path 
+            qtp.Open(r"C:\Github\corp_corpit_ps_egl_test_automation\UFT\FAH_Concurrent_Program")
 
-        # Print stdout and stderr
-        print("Standard Output:")
-        print(result.stdout)
-        
-        print("Standard Error:")
-        print(result.stderr)
-        
-        # Check return code
-        if result.returncode != 0:
-            raise Exception("UFT Test Failed.")
-        
-    except Exception as e:
-        print("Error executing UFT test:", e)
-        raise
+            # to open a QTP test in Quality Center
+            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+
+            # create a RunResultsOptions object
+            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+
+            # set the location to where the results will be save
+            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+
+           ## qtp.Test.Run(qtResultsOpt)
+
+            #print %qtp.Test.LastRunResults.Status
+
+            # close the Test
+            qtp.Test.Close()
+
+            # quit QTP
+            qtp.Quit()
