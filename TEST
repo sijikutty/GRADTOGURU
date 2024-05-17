@@ -1,26 +1,59 @@
-import win32com.client
+from automation_utils import get_testdata
+import win32com, win32com.client
+import pytest
 
-# Create a QTP/UFT object
-qtp = win32com.client.Dispatch("QuickTest.Application")
+##@pytest.mark.dependency(depends=["fah_login"])
 
-# Start QTP/UFT
-qtp.Launch()
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
 
-# Make QTP/UFT window visible
-qtp.Visible = True
+    testdata = testcase["testdata"]
+    test_path = testdata["test_path"]
+    fah_url = testdata["fah_url"]
+    print (test_path)
+    try:
+            qtp = win32com.client.Dispatch("QuickTest.Application")
 
-# Open a test (replace the path with your test path)
-test_path = r"C:\path\to\your\test"
-qtp.Open(test_path)
+            # starts up QTP
+            qtp.Launch() 
 
-# Define parameters
-parameters = {"param1": "value1", "param2": "value2"}
+            # make the QTP window visible
+            qtp.Visible = True
 
-# Run the test with parameters
-qtp.Test.Run(parameters)
-------
-' VBScript code within UFT test
-param1_value = Parameter("param1").Value
-param2_value = Parameter("param2").Value
+            # Open a test, replace the path 
+            qtp.Open(test_path)
 
-' Use the parameter values in your test script
+            # to open a QTP test in Quality Center
+            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+
+            # create a RunResultsOptions object
+            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+
+            # set the location to where the results will be save
+            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+
+                    # Define parameters
+            parameters = {"fah_url": fah_url}
+
+            # Run the test with parameters
+            #qtp.Test.Run(parameters)
+
+            qtp.Test.Run(qtResultsOpt)
+
+            #print %qtp.Test.LastRunResults.Status
+
+            # close the Test
+            qtp.Test.Close()
+
+            # quit QTP
+            qtp.Quit()
+            print("Login Success!")
+
+    except AssertionError:
+        raise Exception("FAH Concurrent Program Failed.")
+--------
+FAILED smoketest\test_gui\test_FAH_Concurrent.py::test_FAH_Concurrent[chromium-testcase0] - TypeError: The Python instance can not be converted to a COM object if i use                     # Define parameters
+            parameters = {"fah_url": fah_url}
+
+            # Run the test with parameters
+            qtp.Test.Run(parameters)   but running if i give qtp.Test.Run(qtResultsOpt)
