@@ -1,10 +1,42 @@
+from automation_utils import get_testdata
+import pytest
 import subprocess
 
-# Path to the UFT test
-uft_test_path = r"C:\VV\my_uft_test"
+##@pytest.mark.dependency(depends=["fah_login"])
 
-# Construct the command to run the UFT test using cscript
-command = ["cscript", "/nologo", r"C:\Program Files (x86)\HP\Unified Functional Testing\bin\UFTRun.vbs", "/Test", uft_test_path]
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
 
-# Execute the command
-subprocess.run(command)
+    testdata = testcase["testdata"]
+    test_path = testdata["test_path"]
+    fah_url = testdata["fah_url"]
+    
+    print("Running script with parameters: cscript /nologo", test_path, fah_url)
+    
+    try:
+
+        # Path to the UFT test
+        
+        # Construct the command to run the UFT test using cscript
+        command = ["cscript", "/nologo", r"C:\Program Files (x86)\Micro Focus\UFT One\bin\UFT.exe", "/Test", test_path]
+
+        # Execute the command
+        result =subprocess.run(command)
+        # Run the subprocess and capture output
+        #result = subprocess.run(["cscript", "/nologo", test_path, fah_url], capture_output=True, text=True, check=True)
+        
+        # Print stdout and stderr
+        print("Standard Output:")
+        print(result.stdout)
+        
+        print("Standard Error:")
+        print(result.stderr)
+        
+    except subprocess.CalledProcessError as e:
+        # If subprocess exits with non-zero return code
+        print("Error executing subprocess:")
+        print("Return code:", e.returncode)
+        print("Error message:", e.stderr)
+        raise Exception("FAH Concurrent Program Failed.")
+------------
+Input Error: There is no script engine for file extension ".exe".
