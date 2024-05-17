@@ -1,51 +1,62 @@
-from automation_utils import get_testdata
-import win32com, win32com.client
+import win32com.client
+import psutil  # You need to install psutil library using `pip install psutil`
 import pytest
 
-##@pytest.mark.dependency(depends=["fah_login"])
+from automation_utils import get_testdata
+
+def close_qtp():
+    """Close any existing instances of QuickTest Professional (QTP)."""
+    for process in psutil.process_iter():
+        if process.name() == "QTPro.exe":
+            process.terminate()
+
+def is_qtp_running():
+    """Check if QuickTest Professional (QTP) is already running."""
+    for process in psutil.process_iter():
+        if process.name() == "QTPro.exe":
+            return True
+    return False
 
 @pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
 def test_FAH_Concurrent(testcase):
-
     testdata = testcase["testdata"]
     test_path = testdata["test_path"]
     fah_url = testdata["fah_url"]
-    print (test_path)
+    print(test_path)
+    
     try:
-            qtp = win32com.client.Dispatch("QuickTest.Application")
+        # Close any existing instances of QTP
+        close_qtp()
 
-            # starts up QTP
-            qtp.Launch() 
+        qtp = win32com.client.Dispatch("QuickTest.Application")
 
-            # make the QTP window visible
-            qtp.Visible = True
+        # starts up QTP
+        qtp.Launch() 
 
-            # Open a test, replace the path 
-            qtp.Open(test_path)
+        # make the QTP window visible
+        qtp.Visible = True
 
-            # to open a QTP test in Quality Center
-            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+        # Open a test, replace the path 
+        qtp.Open(test_path)
 
-            # create a RunResultsOptions object
-            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+        # create a RunResultsOptions object
+        qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
 
-            # set the location to where the results will be save
-            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+        # set the location to where the results will be saved
+        #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
 
-            qtp.Test.DataTable.GlobalSheet("fah_url") = fah_url
-            # Run the test with parameters
-            #qtp.Test.Run(parameters)
+        # Set the value of the parameter in the Data Table
+        qtp.Test.DataTable.GlobalSheet("fah_url").Set(fah_url)
 
-            qtp.Test.Run(qtResultsOpt)
+        # Run the test with parameters
+        qtp.Test.Run(qtResultsOpt)
 
-            #print %qtp.Test.LastRunResults.Status
+        # close the Test
+        qtp.Test.Close()
 
-            # close the Test
-            qtp.Test.Close()
-
-            # quit QTP
-            qtp.Quit()
-            print("Login Success!")
+        # quit QTP
+        qtp.Quit()
+        print("Login Success!")
 
     except AssertionError:
         raise Exception("FAH Concurrent Program Failed.")
