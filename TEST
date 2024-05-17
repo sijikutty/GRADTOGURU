@@ -65,3 +65,6 @@ def get_testdata(tc_scenario):
             testdata.append(testcase)
 
     return testdata
+--------
+print ("hi" & test_path & fah_url)
+E       TypeError: unsupported operand type(s) for &: 'str' and 'str'
