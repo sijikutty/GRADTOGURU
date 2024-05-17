@@ -1,3 +1,26 @@
+from automation_utils import get_testdata
+import win32com, win32com.client
+import pytest
+import subprocess
+
+##@pytest.mark.dependency(depends=["fah_login"])
+
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
+
+    testdata = testcase["testdata"]
+    test_path = testdata["test_path"]
+    fah_url = testdata["fah_url"]
+    print ("hi" + test_path + fah_url)
+    try:
+           #subprocess.run("cscript",test_path,fah_url)
+        ##subprocess.run(["cscript", "/nologo", test_path, fah_url], check=True)
+        subprocess.run(["cscript", "/nologo", r"C:\Github\corp_corpit_ps_egl_test_automation\UFT\FAH_Concurrent_Program", fah_url], check=True)
+        
+
+    except AssertionError:
+        raise Exception("FAH Concurrent Program Failed.")
+------------
 input = None, capture_output = False, timeout = None, check = True
 popenargs = (['cscript', '/nologo', 'C:\\Github\\corp_corpit_ps_egl_test_automation\\UFT\\FAH_Concurrent_Program', 
 'http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp'],)
