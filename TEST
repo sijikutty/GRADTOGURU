@@ -1,29 +1,26 @@
-            qtp = win32com.client.Dispatch("QuickTest.Application")
+import win32com.client
 
-            # starts up QTP
-            qtp.Launch() 
+# Create a QTP/UFT object
+qtp = win32com.client.Dispatch("QuickTest.Application")
 
-            # make the QTP window visible
-            qtp.Visible = True
+# Start QTP/UFT
+qtp.Launch()
 
-            # Open a test, replace the path 
-            qtp.Open(r"C:\Github\corp_corpit_ps_egl_test_automation\UFT\FAH_Concurrent_Program")
+# Make QTP/UFT window visible
+qtp.Visible = True
 
-            # to open a QTP test in Quality Center
-            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+# Open a test (replace the path with your test path)
+test_path = r"C:\path\to\your\test"
+qtp.Open(test_path)
 
-            # create a RunResultsOptions object
-            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+# Define parameters
+parameters = {"param1": "value1", "param2": "value2"}
 
-            # set the location to where the results will be save
-            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+# Run the test with parameters
+qtp.Test.Run(parameters)
+------
+' VBScript code within UFT test
+param1_value = Parameter("param1").Value
+param2_value = Parameter("param2").Value
 
-           ## qtp.Test.Run(qtResultsOpt)
-
-            #print %qtp.Test.LastRunResults.Status
-
-            # close the Test
-            qtp.Test.Close()
-
-            # quit QTP
-            qtp.Quit()
+' Use the parameter values in your test script
