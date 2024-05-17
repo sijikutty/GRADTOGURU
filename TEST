@@ -1,2 +1,10 @@
-stdout = 'Input Error: There is no file extension in "C:\\Github\\corp_corpit_ps_egl_test_automation\\UFT\\FAH_Concurrent_Program".\n'
-stderr = '', retcode = 1
+import subprocess
+
+# Path to the UFT test
+uft_test_path = r"C:\VV\my_uft_test"
+
+# Construct the command to run the UFT test using cscript
+command = ["cscript", "/nologo", r"C:\Program Files (x86)\HP\Unified Functional Testing\bin\UFTRun.vbs", "/Test", uft_test_path]
+
+# Execute the command
+subprocess.run(command)
