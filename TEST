@@ -1,4 +1,4 @@
-qtp.Test.SetParameter("fah_url", fah_url)
+qtp.Test.DataTable.Value("fah_url", "Global") = fah_url_value
 
-' Fetch parameter value
-fah_url_value = Parameter("fah_url").Value
+' Use parameter value
+Browser("myBrowser").Navigate DataTable.Value("fah_url", "Global")
