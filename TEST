@@ -2,8 +2,6 @@ from automation_utils import get_testdata
 import pytest
 import subprocess
 
-##@pytest.mark.dependency(depends=["fah_login"])
-
 @pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
 def test_FAH_Concurrent(testcase):
 
@@ -11,20 +9,15 @@ def test_FAH_Concurrent(testcase):
     test_path = testdata["test_path"]
     fah_url = testdata["fah_url"]
     
-    print("Running script with parameters: cscript /nologo", test_path, fah_url)
+    print("Running UFT test:", test_path)
     
     try:
-
-        # Path to the UFT test
-        
-        # Construct the command to run the UFT test using cscript
-        command = ["cscript", "/nologo", r"C:\Program Files (x86)\Micro Focus\UFT One\bin\UFT.exe", "/Test", test_path]
+        # Construct the command to run the UFT test using UFT executable
+        command = [r"C:\Program Files (x86)\Micro Focus\UFT One\bin\UFT.exe", "/Test", test_path]
 
         # Execute the command
-        result =subprocess.run(command)
-        # Run the subprocess and capture output
-        #result = subprocess.run(["cscript", "/nologo", test_path, fah_url], capture_output=True, text=True, check=True)
-        
+        result = subprocess.run(command, capture_output=True, text=True)
+
         # Print stdout and stderr
         print("Standard Output:")
         print(result.stdout)
@@ -32,11 +25,10 @@ def test_FAH_Concurrent(testcase):
         print("Standard Error:")
         print(result.stderr)
         
-    except subprocess.CalledProcessError as e:
-        # If subprocess exits with non-zero return code
-        print("Error executing subprocess:")
-        print("Return code:", e.returncode)
-        print("Error message:", e.stderr)
-        raise Exception("FAH Concurrent Program Failed.")
-------------
-Input Error: There is no script engine for file extension ".exe".
+        # Check return code
+        if result.returncode != 0:
+            raise Exception("UFT Test Failed.")
+        
+    except Exception as e:
+        print("Error executing UFT test:", e)
+        raise
