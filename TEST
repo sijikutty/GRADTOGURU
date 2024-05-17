@@ -1,4 +1,51 @@
-qtp.Test.DataTable.Value("fah_url", "Global") = fah_url_value
+from automation_utils import get_testdata
+import win32com, win32com.client
+import pytest
 
-' Use parameter value
-Browser("myBrowser").Navigate DataTable.Value("fah_url", "Global")
+##@pytest.mark.dependency(depends=["fah_login"])
+
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
+
+    testdata = testcase["testdata"]
+    test_path = testdata["test_path"]
+    fah_url = testdata["fah_url"]
+    print (test_path)
+    try:
+            qtp = win32com.client.Dispatch("QuickTest.Application")
+
+            # starts up QTP
+            qtp.Launch() 
+
+            # make the QTP window visible
+            qtp.Visible = True
+
+            # Open a test, replace the path 
+            qtp.Open(test_path)
+
+            # to open a QTP test in Quality Center
+            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+
+            # create a RunResultsOptions object
+            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+
+            # set the location to where the results will be save
+            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+
+            qtp.Test.DataTable.GlobalSheet("fah_url") = fah_url
+            # Run the test with parameters
+            #qtp.Test.Run(parameters)
+
+            qtp.Test.Run(qtResultsOpt)
+
+            #print %qtp.Test.LastRunResults.Status
+
+            # close the Test
+            qtp.Test.Close()
+
+            # quit QTP
+            qtp.Quit()
+            print("Login Success!")
+
+    except AssertionError:
+        raise Exception("FAH Concurrent Program Failed.")
