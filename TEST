@@ -12,8 +12,8 @@ def add_data_to_qtp_data_table(column_names, data):
     
     # Check if the sheet already exists
     sheet_exists = False
-    for sheet_name in data_table.GetSheetNames():
-        if sheet_name == "Sheet1":
+    for param in data_table.GetParameters():
+        if param.Name == "Sheet1":
             sheet_exists = True
             break
     
