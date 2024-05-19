@@ -1,1 +1,6 @@
-UnboundLocalError: cannot access local variable 'column_names' where it is not associated with a value
+    # Check if the sheet already exists
+    sheet_exists = False
+    for param_index in range(1, data_table.GetSheetCount() + 1):
+        if data_table.GetSheet(param_index).Name == "Sheet1":
+            sheet_exists = True
+            break
