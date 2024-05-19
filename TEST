@@ -1,4 +1,5 @@
     # Add data to the default Data Table
     data_table.SetCurrentRow(1)  # Set the current row to the first row
     for col_index, value in enumerate(data):
-        data_table.Value("", col_index + 1) = value
+        data_table.SetCurrentColumn(col_index + 1)  # Set the current column
+        data_table.Value(col_index + 1) = value  # Set the cell value
