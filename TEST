@@ -1,6 +1,9 @@
-    # Check if the sheet already exists
-    sheet_exists = False
-    for param_index in range(1, data_table.GetSheetCount() + 1):
-        if data_table.GetSheet(param_index).Name == "Sheet1":
-            sheet_exists = True
-            break
+# Add column names to the Data Table
+    for col_index, col_name in enumerate(column_names):
+        data_table.SetCurrentRow(1)
+        data_table.SetHeader col_index + 1, col_name
+    
+    # Add data to the Data Table
+    for col_index, value in enumerate(data):
+        data_table.SetCurrentRow(1)
+        data_table.Value(col_index + 1, 1) = value
