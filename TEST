@@ -52,7 +52,7 @@ def test_FAH_Concurrent(testcase):
             
             # Add data to the default Data Table
             data_table.SetCurrentRow(1)  # Set the current row to the first row
-            data_table.Value(1)=fah_url
+            data_table.Set(fah_url)
             #for col_index, value in enumerate(data_to_add):
             #    data_table.SetCurrentColumn(col_index + 1)  # Set the current column
             #    data_table.Value(col_index + 1) = value  # Set the cell value
@@ -79,3 +79,5 @@ def test_FAH_Concurrent(testcase):
 
     except AssertionError:
         raise Exception("FAH Concurrent Program Failed.")
+
+pywintypes.com_error: (-2146233083, 'OLE error 0x80131505', None, None)
