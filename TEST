@@ -1,6 +1,1 @@
-    # Check if the sheet already exists
-    sheet_exists = False
-    for col_index in range(1, len(column_names) + 1):
-        if data_table.GetParameter(col_index).Name == "Sheet1":
-            sheet_exists = True
-            break
+UnboundLocalError: cannot access local variable 'column_names' where it is not associated with a value
