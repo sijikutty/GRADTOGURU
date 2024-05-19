@@ -1,1 +1,7 @@
-data_table.Value("fahlink","Global") = fah_url
+    # Get the number of columns in the sheet
+    num_cols = sheet.GetParameterCount()
+    
+    # Print parameter names
+    for j in range(1, num_cols + 1):
+        parameter_name = sheet.GetParameter(j)
+        print(parameter_name)
