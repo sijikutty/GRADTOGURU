@@ -1,62 +1,40 @@
 import win32com.client
-import psutil  # You need to install psutil library using `pip install psutil`
-import pytest
 
-from automation_utils import get_testdata
-
-def close_qtp():
-    """Close any existing instances of QuickTest Professional (QTP)."""
-    for process in psutil.process_iter():
-        if process.name() == "QTPro.exe":
-            process.terminate()
-
-def is_qtp_running():
-    """Check if QuickTest Professional (QTP) is already running."""
-    for process in psutil.process_iter():
-        if process.name() == "QTPro.exe":
-            return True
-    return False
-
-@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
-def test_FAH_Concurrent(testcase):
-    testdata = testcase["testdata"]
-    test_path = testdata["test_path"]
-    fah_url = testdata["fah_url"]
-    print(test_path)
+def add_data_to_qtp_data_table(column_names, data):
+    # Create an instance of the QTP Application object
+    qtp_app = win32com.client.Dispatch("QuickTest.Application")
     
-    try:
-        # Close any existing instances of QTP
-        close_qtp()
+    # Open the test script containing the data table
+    qtp_app.Open("C:\\path\\to\\your\\script\\script_name")
+    
+    # Get the Data Table object
+    data_table = qtp_app.Test.DataTable
+    
+    # Add a new sheet to the Data Table
+    data_table.AddSheet("Sheet1")
+    
+    # Add column names to the Data Table
+    for col_index, col_name in enumerate(column_names):
+        data_table.SetCurrentRow(1)
+        data_table.AddParameter(col_name, "")
+    
+    # Add data to the Data Table
+    for col_index, value in enumerate(data):
+        data_table.SetCurrentRow(1)
+        data_table.SetCellData("Sheet1", col_index + 1, value)
 
-        qtp = win32com.client.Dispatch("QuickTest.Application")
+    # Save the changes
+    qtp_app.Test.Save
 
-        # starts up QTP
-        qtp.Launch() 
+    # Close QTP
+    qtp_app.Quit()
 
-        # make the QTP window visible
-        qtp.Visible = True
-
-        # Open a test, replace the path 
-        qtp.Open(test_path)
-
-        # create a RunResultsOptions object
-        qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
-
-        # set the location to where the results will be saved
-        #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
-
-        # Set the value of the parameter in the Data Table
-        qtp.Test.DataTable.GlobalSheet("fah_url").Set(fah_url)
-
-        # Run the test with parameters
-        qtp.Test.Run(qtResultsOpt)
-
-        # close the Test
-        qtp.Test.Close()
-
-        # quit QTP
-        qtp.Quit()
-        print("Login Success!")
-
-    except AssertionError:
-        raise Exception("FAH Concurrent Program Failed.")
+if __name__ == "__main__":
+    # Column names for the Data Table
+    column_names = ["Name", "Age", "City"]
+    
+    # Data to be added to the Data Table (single row)
+    data_to_add = ["John", "30", "New York"]
+    
+    # Add data to the QTP Data Table
+    add_data_to_qtp_data_table(column_names, data_to_add)
