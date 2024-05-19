@@ -10,6 +10,18 @@ def add_data_to_qtp_data_table(column_names, data):
     # Get the Data Table object
     data_table = qtp_app.Test.DataTable
     
+    # Check if the sheet already exists
+    sheet_exists = False
+    for sheet_name in data_table.GetSheetNames():
+        if sheet_name == "Sheet1":
+            sheet_exists = True
+            break
+    
+    # If sheet exists, clear its contents
+    if sheet_exists:
+        data_table.SetCurrentRow(1)
+        data_table.DeleteSheet("Sheet1")
+    
     # Add a new sheet to the Data Table
     data_table.AddSheet("Sheet1")
     
