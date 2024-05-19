@@ -1,29 +1,4 @@
-import win32com.client
-
-def pass_data_to_default_data_table(data):
-    # Create an instance of the QTP Application object
-    qtp_app = win32com.client.Dispatch("QuickTest.Application")
-    
-    # Open the test script containing the default Data Table
-    qtp_app.Open("C:\\path\\to\\your\\script\\script_name")
-
-    # Get the Data Table object (default Data Table)
-    data_table = qtp_app.Test.DataTable
-    
     # Add data to the default Data Table
+    data_table.SetCurrentRow(1)  # Set the current row to the first row
     for col_index, value in enumerate(data):
-        data_table.SetCurrentRow(1)  # Set the current row to the first row
-        data_table.SetCellData("", col_index + 1, value)
-
-    # Save the changes
-    qtp_app.Test.Save
-
-    # Close QTP
-    qtp_app.Quit()
-
-if __name__ == "__main__":
-    # Data to be added to the Data Table (single row)
-    data_to_add = ["John", "30", "New York"]
-    
-    # Pass data to the default Data Table in QTP/UFT
-    pass_data_to_default_data_table(data_to_add)
+        data_table.Value("", col_index + 1) = value
