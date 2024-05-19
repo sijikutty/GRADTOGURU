@@ -1,52 +1,6 @@
-import win32com.client
-
-def add_data_to_qtp_data_table(column_names, data):
-    # Create an instance of the QTP Application object
-    qtp_app = win32com.client.Dispatch("QuickTest.Application")
-    
-    # Open the test script containing the data table
-    qtp_app.Open("C:\\path\\to\\your\\script\\script_name")
-    
-    # Get the Data Table object
-    data_table = qtp_app.Test.DataTable
-    
     # Check if the sheet already exists
     sheet_exists = False
-    for param in data_table.GetParameters():
-        if param.Name == "Sheet1":
+    for col_index in range(1, len(column_names) + 1):
+        if data_table.GetParameter(col_index).Name == "Sheet1":
             sheet_exists = True
             break
-    
-    # If sheet exists, clear its contents
-    if sheet_exists:
-        data_table.SetCurrentRow(1)
-        data_table.DeleteSheet("Sheet1")
-    
-    # Add a new sheet to the Data Table
-    data_table.AddSheet("Sheet1")
-    
-    # Add column names to the Data Table
-    for col_index, col_name in enumerate(column_names):
-        data_table.SetCurrentRow(1)
-        data_table.AddParameter(col_name, "")
-    
-    # Add data to the Data Table
-    for col_index, value in enumerate(data):
-        data_table.SetCurrentRow(1)
-        data_table.SetCellData("Sheet1", col_index + 1, value)
-
-    # Save the changes
-    qtp_app.Test.Save
-
-    # Close QTP
-    qtp_app.Quit()
-
-if __name__ == "__main__":
-    # Column names for the Data Table
-    column_names = ["Name", "Age", "City"]
-    
-    # Data to be added to the Data Table (single row)
-    data_to_add = ["John", "30", "New York"]
-    
-    # Add data to the QTP Data Table
-    add_data_to_qtp_data_table(column_names, data_to_add)
