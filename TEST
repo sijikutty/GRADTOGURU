@@ -1,4 +1,4 @@
-    # Add data to the Data Table
-    data_table.SetCurrentRow(1)  # Set the current row to the first data row
-    for col_index, value in enumerate(data):
-        data_table.SetCellData("Sheet1", col_index + 1, value)
+    # Add column names to the Data Table
+    for col_index, col_name in enumerate(column_names):
+        data_table.SetCurrentRow(1)
+        data_table.AddParameter(col_name, "")
