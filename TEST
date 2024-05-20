@@ -1,9 +1,19 @@
-    parameters = parameter_definitions.GetParameters()
+' Retrieve the parameters collection defined for the test.
+Set pDefColl = qtApp.Test.ParameterDefinitions
+cnt = pDefColl.Count
+Indx = 1
 
-    # Print parameter names
-    if parameters:
-        print("Available parameters in the test:")
-        for parameter in parameters:
-            print(parameter.Name)
-    else:
-        print("No parameters are defined in the test.")
+' Display the names and values of each of the parameters in the collection.
+While Indx <= cnt
+    Set pDef = pDefColl.Item(Indx)
+    MsgBox "Param name: " & pDef.Name & "; Type: " & pDef.Type & "; InOut: " & pDef.InOut & "; Description: " _
+        & pDef.Description & "Default value: " & pDef.DefaultValue
+    Indx = Indx + 1
+Wend
+
+Set rtParams = pDefColl.GetParameters() ' Retrieve the Parameters collection defined for the test.
+
+Set rtParam = rtParams.Item("InParam1") ' Retrieve a specific parameter.
+rtParam.Value = "Hello" ' Change the parameter value.
+
+qtApp.Test.Run , True, rtParams ' Run the test with changed parameters.
