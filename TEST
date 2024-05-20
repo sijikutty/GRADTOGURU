@@ -1,40 +1,130 @@
-import win32com.client
+from automation_utils import get_testdata
+import win32com, win32com.client
+import pytest
+import psutil
 
-# Create an instance of the UFT application
-qtApp = win32com.client.Dispatch("QuickTest.Application")
+##@pytest.mark.dependency(depends=["fah_login"])
 
-# Start UFT One
-qtApp.Launch()
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
+    # Close any existing instances of QTP
+    """Close any existing instances of QuickTest Professional (QTP)."""
+    for process in psutil.process_iter():
+        if process.name() == "UFT.exe":
+            process.terminate()
+    testdata = testcase["testdata"]
+    test_path = testdata["test_path"]
+    fah_url = testdata["fah_url"]
+    fahReport = testdata["fahReport"]
+    fahSource = testdata["fahSource"]
+    fahRequestid = testdata["fahRequestid"]
+    print (test_path)
+    try:
+            
+            qtp = win32com.client.Dispatch("QuickTest.Application")
 
-# Make the UFT One application visible
-qtApp.Visible = True
+            # starts up QTP
+            qtp.Launch() 
 
-# Open the test
-qtApp.Open("D:\\Tests\\MyTest")
+            # make the QTP window visible
+            qtp.Visible = True
 
-# Retrieve the parameters collection defined for the test
-pDefColl = qtApp.Test.ParameterDefinitions
+            # Open a test, replace the path 
+            qtp.Open(test_path)
 
-# Display the names and values of each of the parameters in the collection
-for Indx in range(1, pDefColl.Count + 1):
-    pDef = pDefColl.Item(Indx)
-    print("Param name:", pDef.Name)
-    print("Type:", pDef.Type)
-    print("InOut:", pDef.InOut)
-    print("Description:", pDef.Description)
-    print("Default value:", pDef.DefaultValue)
+            # to open a QTP test in Quality Center
+            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
 
-# Retrieve the Parameters collection defined for the test
-rtParams = pDefColl.GetParameters()
+            # create a RunResultsOptions object
+            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
 
-# Retrieve a specific parameter
-rtParam = rtParams.Item("InParam1")
+            # Get the Data Table object
+           ## data_table = qtp.Test.DataTable
+            # Column names for the Data Table
+            column_names = ["fahlink", "fahReport", "fahSource", "fahRequestid"]
+            
+            # Data to be added to the Data Table (single row)
+            data_to_add = [fah_url, fahReport, fahSource, fahRequestid]
 
-# Change the parameter value
-rtParam.Value = "Hello"
+            
+            # Get the Data Table object (default Data Table)
+            data_table = qtp.Test.DataTable
+            #qtp.Test.Environment.Value("JenkinsFlag") = "N"
+            params=qtp.Test.ParameterDefinitions.GetParameters()
+            #param1=params.Item("fahlink")
+            #param1.value="hello"
+                # Print parameter details
 
-# Run the test with changed parameters
-qtApp.Test.Run(True, True, rtParams)
+            # Retrieve the parameters collection defined for the test
+            pDefColl = qtp.Test.ParameterDefinitions
+            print ("count",pDefColl.Count)
+            # Display the names and values of each of the parameters in the collection
+            for Indx in range(1, pDefColl.Count + 1):
+                pDef = pDefColl.Item(Indx)
+                print("hellosiji")
+                print("Param name:", pDef.Name)
+                print("Type:", pDef.Type)
+                print("InOut:", pDef.InOut)
+                print("Description:", pDef.Description)
+                print("Default value:", pDef.DefaultValue)
 
-# Display the value of an output parameter after the test runs
-print(rtParams.Item("OutParam1").Value)
+
+            # Print parameter names
+            if params:
+                print("Available parameters in the test:")
+                for parameter in params:
+                    print("hellos")
+                    print(parameter.Name)
+            else:
+                print("No parameters are defined in the test.")
+                print()  # Print an empty line between parameters
+            #parameter1="par1"
+            #params.Item(par1).Value=
+            # Add data to the default Data Table
+            #data_table.SetCurrentRow(1)  # Set the current row to the first row
+                # Get the number of columns in the sheet
+            sheet=data_table.GetSheet("Global")
+            num_cols = sheet.GetParameterCount
+            print("hi" , num_cols)
+            parameter_name = sheet.GetParameter("fahlink")
+            print("hello" , parameter_name)
+            qtp.Test.Environment.value
+            # Print parameter names
+            #for j in range(1, num_cols + 1):
+             #   parameter_name = sheet.GetParameter(j)
+             #   print(parameter_name)
+            #data_table.SetCurrentColumn(1)
+            #print(data_table.value("fahlink"))
+            #qtp.Test.Parameter("fahlink").value=fah_url
+            #data_table.Set(fah_url)
+            #global_sheet=data_table.GetSheet("Global")
+            #global_sheet.Set(fah_url)
+            #cell=data_table.GetCell(1,1)
+            #cell.value=fah_url
+            #data_table.Set("Global",1,fah_url)
+            #for col_index, value in enumerate(data_to_add):
+            #    data_table.SetCurrentColumn(col_index + 1)  # Set the current column
+            #    data_table.Value(col_index + 1) = value  # Set the cell value
+
+            # Save the changes
+            qtp.Test.Save
+            # set the location to where the results will be save
+            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+
+            ##qtp.Test.DataTable.GlobalSheet("fah_url").Set (fah_url)
+            # Run the test with parameters
+            #qtp.Test.Run(parameters)
+
+            qtp.Test.Run(qtResultsOpt,True)
+
+            #print %qtp.Test.LastRunResults.Status
+
+            # close the Test
+            qtp.Test.Close()
+
+            # quit QTP
+            qtp.Quit()
+            print("Login Success!")
+
+    except AssertionError:
+        raise Exception("FAH Concurrent Program Failed.")
