@@ -1,36 +1,19 @@
-Dim WshShell
-Set WshShell = CreateObject("WScript.Shell")
+import pandas as pd
 
-' Define the path to the Python interpreter
-Dim pythonExe
-pythonExe = "C:\path\to\python.exe"
+# Your JSON data (replace this with your actual JSON data)
+json_data = [
+    {"name": "John", "age": 30, "city": "New York"},
+    {"name": "Alice", "age": 25, "city": "Los Angeles"},
+    {"name": "Bob", "age": 35, "city": "Chicago"}
+]
 
-' Define the path to the Python script
-Dim pythonScriptPath
-pythonScriptPath = "C:\path\to\vv.py"
+# Convert JSON data to DataFrame
+df = pd.DataFrame(json_data)
 
-' Define the function name to call
-Dim functionName
-functionName = "testcase"
+# Specify the path for the Excel file
+excel_file_path = "output.xlsx"
 
-' Define any arguments to pass to the function
-Dim functionArgs
-functionArgs = "arg1 arg2"
+# Write DataFrame to Excel
+df.to_excel(excel_file_path, index=False)
 
-' Construct the command to execute
-Dim command
-command = pythonExe & " " & pythonScriptPath & " " & functionName & " " & functionArgs
-
-' Execute the command
-Dim objExec
-Set objExec = WshShell.Exec(command)
-
-' Wait for the command to finish executing
-Do While objExec.Status = 0
-    WScript.Sleep 100
-Loop
-
-' Retrieve and display the command output
-Dim output
-output = objExec.StdOut.ReadAll()
-MsgBox output
+print("Excel file created successfully:", excel_file_path)
