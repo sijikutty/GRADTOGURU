@@ -1,64 +1,53 @@
 from automation_utils import get_testdata
-import win32com, win32com.client
+import win32com.client
 import pytest
 import psutil
-from pywinauto.application import Application
 import time
-
-##@pytest.mark.dependency(depends=["fah_login"])
 
 @pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
 def test_FAH_Concurrent(testcase):
-    # Close any existing instances of QTP
-    """Close any existing instances of QuickTest Professional (QTP)."""
+    # Close any existing instances of UFT
     for process in psutil.process_iter():
         if process.name() == "UFT.exe":
             process.terminate()
+
     testdata = testcase["testdata"]
     test_path = testdata["test_path"]
     fah_url = testdata["fah_url"]
     fahReport = testdata["fahReport"]
     fahSource = testdata["fahSource"]
     fahRequestid = testdata["fahRequestid"]
-    print (test_path)
+
     try:
-            
-            qtp = win32com.client.Dispatch("QuickTest.Application")
+        # Create an instance of UFT
+        uft = win32com.client.Dispatch("QuickTest.Application")
 
-            # starts up QTP
-            qtp.Launch() 
+        # Start UFT
+        uft.Launch()
 
-            # make the QTP window visible
-            qtp.Visible = True
+        # Make the UFT window visible
+        uft.Visible = True
 
-            # Open a test, replace the path 
-            qtp.Open(test_path)
-           
+        # Open a test
+        uft.Open(test_path)
 
-            # create a RunResultsOptions object
-            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+        # Create a RunResultsOptions object
+        uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
 
-           
+        # Save the changes
+        uft.Test.Save()
 
-            # Save the changes
-            qtp.Test.Save
-            # set the location to where the results will be save
-            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
+        # Run the test with parameters
+        uft.Test.Run(uftResultsOpt, True)
 
-            ##qtp.Test.DataTable.GlobalSheet("fah_url").Set (fah_url)
-            # Run the test with parameters
-            #qtp.Test.Run(parameters)
+        # Close the test
+        uft.Test.Close()
 
-            qtp.Test.Run(qtResultsOpt,True)
+        # Quit UFT
+        uft.Quit()
 
-            #print %qtp.Test.LastRunResults.Status
-
-            # close the Test
-            qtp.Test.Close()
-
-            # quit QTP
-            qtp.Quit()
-            print("Login Success!")
+        print("Script execution success!")
 
     except AssertionError:
-        raise Exception("FAH Concurrent Program Failed.")
+        raise Exception("Script execution failed.")
+
