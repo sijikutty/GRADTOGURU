@@ -1,163 +1,64 @@
 from automation_utils import get_testdata
-import win32com, win32com.client
+import win32com.client as win32
 import pytest
 import psutil
 from pywinauto.application import Application
 import time
 
-##@pytest.mark.dependency(depends=["fah_login"])
-
 @pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
 def test_FAH_Concurrent(testcase):
     # Close any existing instances of QTP
-    """Close any existing instances of QuickTest Professional (QTP)."""
     for process in psutil.process_iter():
         if process.name() == "UFT.exe":
             process.terminate()
+
     testdata = testcase["testdata"]
     test_path = testdata["test_path"]
     fah_url = testdata["fah_url"]
     fahReport = testdata["fahReport"]
     fahSource = testdata["fahSource"]
     fahRequestid = testdata["fahRequestid"]
-    print (test_path)
+
     try:
-            
-            qtp = win32com.client.Dispatch("QuickTest.Application")
+        # Start QTP
+        qtp = win32.Dispatch("QuickTest.Application")
+        qtp.Launch()
+        qtp.Visible = True
 
-            # starts up QTP
-            qtp.Launch() 
+        # Open the test
+        qtp.Open(test_path)
+        time.sleep(10)  # Wait for the test to open
 
-            # make the QTP window visible
-            qtp.Visible = True
+        # Activate QTP window
+        qtp_window = Application().connect(title_re=".*QuickTest Professional.*")
+        qtp_window = qtp_window.window(title_re=".*QuickTest Professional.*")
 
-            # Open a test, replace the path 
-            qtp.Open(test_path)
+        # Open the Data Table
+        qtp_window.MenuSelect("Design->Data Table")
+        time.sleep(5)  # Wait for the Data Table to open
 
-            # to open a QTP test in Quality Center
-            # qtp.Open(r"[QualityCenter] Subject\FolderName\QTPScript")
+        # Add a new row
+        data_table = qtp_window.child_window(title="DataTable_0", control_type="Table")
+        data_table.click_input(double=True)  # Double-click to add a new row
 
-            # create a RunResultsOptions object
-            qtResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+        # Set values in cells using pywinauto
+        cell_1 = data_table.child_window(title="A1", control_type="Edit")
+        cell_1.set_text(fah_url)
 
-            # Get the Data Table object
-           ## data_table = qtp.Test.DataTable
-            # Column names for the Data Table
-            column_names = ["fahlink", "fahReport", "fahSource", "fahRequestid"]
-            
-            # Data to be added to the Data Table (single row)
-            data_to_add = [fah_url, fahReport, fahSource, fahRequestid]
+        cell_2 = data_table.child_window(title="B1", control_type="Edit")
+        cell_2.set_text(fahReport)
 
-            
-            # Get the Data Table object (default Data Table)
-            data_table = qtp.Test.DataTable
+        cell_3 = data_table.child_window(title="C1", control_type="Edit")
+        cell_3.set_text(fahSource)
 
-            
-            print ("Row count: " ,  qtp.Test.DataTable.GetSheet("Global").GetRowCount)
-            print ("Column count: " , qtp.Test.DataTable.GetSheet("Global").GetParameterCount)
+        cell_4 = data_table.child_window(title="D1", control_type="Edit")
+        cell_4.set_text(fahRequestid)
 
-            # Get the Data Table object (default Data Table)
-            data_table = qtp.Test.DataTable
+        # Save changes
+        qtp_window.MenuSelect("File->Save")
 
-            # Add a new row by setting the values for each parameter (column)
-            data_table.GetSheet("Global").SetCurrentRow(1)  # Set the current row to the first row
-            #data_table = uft_window.child_window(title="DataTable_0", control_type="Table")
-                        # Set values in each cell
-            cell_1 = data_table.child_window(title="A1", control_type="Edit")
-            cell_1.set_text("Value1")
-
-            cell_2 = data_table.child_window(title="B1", control_type="Edit")
-            cell_2.set_text("Value2")
-            # Set values for each parameter (column) in the current row
-            #data_table.SetParameter("fahlink", "hi")
-            #data_table.SetParameter("fahReport", "hi")
-            #data_table.SetParameter("fahSource", "hi")
-            #data_table.SetParameter("fahRequestid", "hi")
-            #data_table.SetCell("fahlink", "hi")
-            #data_table.SetCell("fahReport", "hi")
-            #data_table.SetCell("fahSource", "hi")
-            #data_table.SetCell("fahRequestid", "hi")
-            #data_table.Set("fahlink", "hi")
-            #data_table.Set("fahReport", "hi")
-            #data_table.Set("fahSource", "hi")
-            #data_table.Set("fahRequestid", "hi")
-
-            #qtp.Test.Environment.Value("JenkinsFlag") = "N"
-            params=qtp.Test.ParameterDefinitions.GetParameters()
-            #param1=params.Item("fahlink")
-            #param1.value="hello"
-                # Print parameter details
-
-            # Retrieve the parameters collection defined for the test
-            pDefColl = qtp.Test.ParameterDefinitions
-            print ("count",pDefColl.Count)
-            # Display the names and values of each of the parameters in the collection
-            for Indx in range(1, pDefColl.Count + 1):
-                pDef = pDefColl.Item(Indx)
-                print("hellosiji")
-                print("Param name:", pDef.Name)
-                print("Type:", pDef.Type)
-                print("InOut:", pDef.InOut)
-                print("Description:", pDef.Description)
-                print("Default value:", pDef.DefaultValue)
-
-
-            # Print parameter names
-            if params:
-                print("Available parameters in the test:")
-                for parameter in params:
-                    print("hellos")
-                    print(parameter.Name)
-            else:
-                print("No parameters are defined in the test.")
-                print()  # Print an empty line between parameters
-            #parameter1="par1"
-            #params.Item(par1).Value=
-            # Add data to the default Data Table
-            #data_table.SetCurrentRow(1)  # Set the current row to the first row
-                # Get the number of columns in the sheet
-            sheet=data_table.GetSheet("Global")
-            num_cols = sheet.GetParameterCount
-            print("hi" , num_cols)
-            parameter_name = sheet.GetParameter("fahlink")
-            print("hello" , parameter_name)
-            qtp.Test.Environment.value
-            # Print parameter names
-            #for j in range(1, num_cols + 1):
-             #   parameter_name = sheet.GetParameter(j)
-             #   print(parameter_name)
-            #data_table.SetCurrentColumn(1)
-            #print(data_table.value("fahlink"))
-            #qtp.Test.Parameter("fahlink").value=fah_url
-            #data_table.Set(fah_url)
-            #global_sheet=data_table.GetSheet("Global")
-            #global_sheet.Set(fah_url)
-            #cell=data_table.GetCell(1,1)
-            #cell.value=fah_url
-            #data_table.Set("Global",1,fah_url)
-            #for col_index, value in enumerate(data_to_add):
-            #    data_table.SetCurrentColumn(col_index + 1)  # Set the current column
-            #    data_table.Value(col_index + 1) = value  # Set the cell value
-
-            # Save the changes
-            qtp.Test.Save
-            # set the location to where the results will be save
-            #qtResultsOpt.ResultsLocation = "C:\Test\test1\res"
-
-            ##qtp.Test.DataTable.GlobalSheet("fah_url").Set (fah_url)
-            # Run the test with parameters
-            #qtp.Test.Run(parameters)
-
-            qtp.Test.Run(qtResultsOpt,True)
-
-            #print %qtp.Test.LastRunResults.Status
-
-            # close the Test
-            qtp.Test.Close()
-
-            # quit QTP
-            qtp.Quit()
-            print("Login Success!")
-
-    except AssertionError:
-        raise Exception("FAH Concurrent Program Failed.")
+        # Close QTP
+        qtp.Test.Close()
+        qtp.Quit()
+    except Exception as e:
+        raise Exception(f"An error occurred: {str(e)}")
