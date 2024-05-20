@@ -1,53 +1,14 @@
-from automation_utils import get_testdata
-import win32com.client
-import pytest
-import psutil
-import time
+Dim pythonScriptPath
+pythonScriptPath = "C:\path\to\vv.py"
 
-@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
-def test_FAH_Concurrent(testcase):
-    # Close any existing instances of UFT
-    for process in psutil.process_iter():
-        if process.name() == "UFT.exe":
-            process.terminate()
+Dim pythonFunctionName
+pythonFunctionName = "testcase"
 
-    testdata = testcase["testdata"]
-    test_path = testdata["test_path"]
-    fah_url = testdata["fah_url"]
-    fahReport = testdata["fahReport"]
-    fahSource = testdata["fahSource"]
-    fahRequestid = testdata["fahRequestid"]
+Dim pythonArgs
+pythonArgs = "arg1, arg2"  ' Provide any arguments as needed
 
-    try:
-        # Create an instance of UFT
-        uft = win32com.client.Dispatch("QuickTest.Application")
+' Create Python runtime object
+Set python = CreateObject("Python.Runtime")
 
-        # Start UFT
-        uft.Launch()
-
-        # Make the UFT window visible
-        uft.Visible = True
-
-        # Open a test
-        uft.Open(test_path)
-
-        # Create a RunResultsOptions object
-        uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
-
-        # Save the changes
-        uft.Test.Save()
-
-        # Run the test with parameters
-        uft.Test.Run(uftResultsOpt, True)
-
-        # Close the test
-        uft.Test.Close()
-
-        # Quit UFT
-        uft.Quit()
-
-        print("Script execution success!")
-
-    except AssertionError:
-        raise Exception("Script execution failed.")
-
+' Call the Python function
+python.RunPythonScript pythonScriptPath, pythonFunctionName, pythonArgs
