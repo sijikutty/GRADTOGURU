@@ -1,19 +1,40 @@
-' Retrieve the parameters collection defined for the test.
-Set pDefColl = qtApp.Test.ParameterDefinitions
-cnt = pDefColl.Count
-Indx = 1
+import win32com.client
 
-' Display the names and values of each of the parameters in the collection.
-While Indx <= cnt
-    Set pDef = pDefColl.Item(Indx)
-    MsgBox "Param name: " & pDef.Name & "; Type: " & pDef.Type & "; InOut: " & pDef.InOut & "; Description: " _
-        & pDef.Description & "Default value: " & pDef.DefaultValue
-    Indx = Indx + 1
-Wend
+# Create an instance of the UFT application
+qtApp = win32com.client.Dispatch("QuickTest.Application")
 
-Set rtParams = pDefColl.GetParameters() ' Retrieve the Parameters collection defined for the test.
+# Start UFT One
+qtApp.Launch()
 
-Set rtParam = rtParams.Item("InParam1") ' Retrieve a specific parameter.
-rtParam.Value = "Hello" ' Change the parameter value.
+# Make the UFT One application visible
+qtApp.Visible = True
 
-qtApp.Test.Run , True, rtParams ' Run the test with changed parameters.
+# Open the test
+qtApp.Open("D:\\Tests\\MyTest")
+
+# Retrieve the parameters collection defined for the test
+pDefColl = qtApp.Test.ParameterDefinitions
+
+# Display the names and values of each of the parameters in the collection
+for Indx in range(1, pDefColl.Count + 1):
+    pDef = pDefColl.Item(Indx)
+    print("Param name:", pDef.Name)
+    print("Type:", pDef.Type)
+    print("InOut:", pDef.InOut)
+    print("Description:", pDef.Description)
+    print("Default value:", pDef.DefaultValue)
+
+# Retrieve the Parameters collection defined for the test
+rtParams = pDefColl.GetParameters()
+
+# Retrieve a specific parameter
+rtParam = rtParams.Item("InParam1")
+
+# Change the parameter value
+rtParam.Value = "Hello"
+
+# Run the test with changed parameters
+qtApp.Test.Run(True, True, rtParams)
+
+# Display the value of an output parameter after the test runs
+print(rtParams.Item("OutParam1").Value)
