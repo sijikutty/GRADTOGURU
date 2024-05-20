@@ -1,6 +1,9 @@
-            # Get the Data Table object (default Data Table)
-            data_table = qtp.Test.DataTable
+# Get the "Global" sheet
+global_sheet = data_table.GetSheet("Global")
 
-            
-            print ("Row count: " ,  qtp.Test.DataTable.GetSheet("Global").GetRowCount)
-            print ("Column count: " , qtp.Test.DataTable.GetSheet("Global").GetParameterCount)
+# Add a new row
+global_sheet.AddRow()
+
+# Set values in the new row
+global_sheet.SetCell(1, "YourValue1")  # Column index starts from 1
+global_sheet.SetCell(2, "YourValue2")
