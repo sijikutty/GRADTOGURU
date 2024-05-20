@@ -1,1 +1,5 @@
-qtp_window.menu_select("View->Data Table")
+# Find the test name element
+test_name_element = qtp_window.window(class_name="Qt5QWindowIcon", title="Your Test Name")
+
+# Double click on the test name element
+test_name_element.double_click_input()
