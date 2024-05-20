@@ -1,6 +1,6 @@
-Dim dt
-Set dt = DataTable
-MsgBox "Row count: " & dt.GetSheet("Global").GetRowCount
-Dim dt
-Set dt = DataTable
-MsgBox "Column count: " & dt.GetSheet("Global").GetParameterCount
+            # Get the Data Table object (default Data Table)
+            data_table = qtp.Test.DataTable
+
+            
+            print ("Row count: " ,  qtp.Test.DataTable.GetSheet("Global").GetRowCount)
+            print ("Column count: " , qtp.Test.DataTable.GetSheet("Global").GetParameterCount)
