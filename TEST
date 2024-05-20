@@ -1,18 +1,47 @@
-# Get the Data Table object (default Data Table)
-data_table = qtp.Test.DataTable
+from pywinauto.application import Application
+import time
 
-# Add parameters (columns) to the sheet if needed
-# For example, if you want to add columns "Param1", "Param2", "Param3", "Param4"
-data_table.GetSheet("Global").AddParameter("Param1")
-data_table.GetSheet("Global").AddParameter("Param2")
-data_table.GetSheet("Global").AddParameter("Param3")
-data_table.GetSheet("Global").AddParameter("Param4")
+# Open UFT
+app = Application().Start("UFT.exe")
 
-# Add a new row by setting the values for each parameter (column)
-data_table.GetSheet("Global").SetCurrentRow(1)  # Set the current row to the first row
+# Wait for UFT to open
+time.sleep(10)  # Adjust the delay based on your system's speed
 
-# Set values for each parameter (column) in the current row
-data_table.SetParameter("Param1", "Value1")
-data_table.SetParameter("Param2", "Value2")
-data_table.SetParameter("Param3", "Value3")
-data_table.SetParameter("Param4", "Value4")
+# Connect to the UFT window
+uft_window = app.window(title_re=".*QuickTest Professional.*")
+
+# Open the test file
+uft_window.MenuSelect("File->Open Test...")
+uft_window.OpenTestEdit.SetText("C:\\Your\\Test\\Path\\YourTestFile")
+uft_window.OpenTestEdit.TypeKeys("{ENTER}")
+
+# Wait for the test to open
+time.sleep(10)  # Adjust the delay based on your system's speed
+
+# Activate the UFT window
+uft_window.SetFocus()
+
+# Open the Data Table
+uft_window.MenuSelect("Design->Data Table")
+
+# Wait for the Data Table to open
+time.sleep(5)  # Adjust the delay based on your system's speed
+
+# Add a new row
+data_table = uft_window.child_window(title="DataTable_0", control_type="Table")
+data_table.click_input(double=True)  # Double-click to add a new row
+
+# Set values in each cell
+cell_1 = data_table.child_window(title="A1", control_type="Edit")
+cell_1.set_text("Value1")
+
+cell_2 = data_table.child_window(title="B1", control_type="Edit")
+cell_2.set_text("Value2")
+
+# Repeat this process for other cells
+
+# Save the changes
+uft_window.MenuSelect("File->Save")
+
+# Close UFT
+uft_window.Close()
