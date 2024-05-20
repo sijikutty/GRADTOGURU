@@ -1,9 +1,18 @@
-# Get the "Global" sheet
-global_sheet = data_table.GetSheet("Global")
+# Get the Data Table object (default Data Table)
+data_table = qtp.Test.DataTable
 
-# Add a new row
-global_sheet.AddRow()
+# Add parameters (columns) to the sheet if needed
+# For example, if you want to add columns "Param1", "Param2", "Param3", "Param4"
+data_table.GetSheet("Global").AddParameter("Param1")
+data_table.GetSheet("Global").AddParameter("Param2")
+data_table.GetSheet("Global").AddParameter("Param3")
+data_table.GetSheet("Global").AddParameter("Param4")
 
-# Set values in the new row
-global_sheet.SetCell(1, "YourValue1")  # Column index starts from 1
-global_sheet.SetCell(2, "YourValue2")
+# Add a new row by setting the values for each parameter (column)
+data_table.GetSheet("Global").SetCurrentRow(1)  # Set the current row to the first row
+
+# Set values for each parameter (column) in the current row
+data_table.SetParameter("Param1", "Value1")
+data_table.SetParameter("Param2", "Value2")
+data_table.SetParameter("Param3", "Value3")
+data_table.SetParameter("Param4", "Value4")
