@@ -1,14 +1,36 @@
+Dim WshShell
+Set WshShell = CreateObject("WScript.Shell")
+
+' Define the path to the Python interpreter
+Dim pythonExe
+pythonExe = "C:\path\to\python.exe"
+
+' Define the path to the Python script
 Dim pythonScriptPath
 pythonScriptPath = "C:\path\to\vv.py"
 
-Dim pythonFunctionName
-pythonFunctionName = "testcase"
+' Define the function name to call
+Dim functionName
+functionName = "testcase"
 
-Dim pythonArgs
-pythonArgs = "arg1, arg2"  ' Provide any arguments as needed
+' Define any arguments to pass to the function
+Dim functionArgs
+functionArgs = "arg1 arg2"
 
-' Create Python runtime object
-Set python = CreateObject("Python.Runtime")
+' Construct the command to execute
+Dim command
+command = pythonExe & " " & pythonScriptPath & " " & functionName & " " & functionArgs
 
-' Call the Python function
-python.RunPythonScript pythonScriptPath, pythonFunctionName, pythonArgs
+' Execute the command
+Dim objExec
+Set objExec = WshShell.Exec(command)
+
+' Wait for the command to finish executing
+Do While objExec.Status = 0
+    WScript.Sleep 100
+Loop
+
+' Retrieve and display the command output
+Dim output
+output = objExec.StdOut.ReadAll()
+MsgBox output
