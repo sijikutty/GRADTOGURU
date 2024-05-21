@@ -1,1 +1,448 @@
-Reporter.ReportEvent micFail, verdict, result
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<Results version="1.0">
+<ReportNode type="testrun">
+<ReportNode type="Iteration">
+<ReportNode type="Action">
+<ReportNode type="Step">
+<Data>
+<Name>SystemUtil.Run "msedge.exe",3</Name>
+<StartTime>2024-05-21 12:39:37</StartTime>
+<Result>Done</Result>
+<Extension>
+<IconKey>3d7d51849a8c46bf9184e30445a75e24</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<DeviceInfo/>
+</Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+<Name>iConnect - Home.Navigate</Name>
+<Description>Navigate to http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp<br>Target Frame: _top<br>Post Data: <br>HTTP Headers: </Description>
+<StartTime>2024-05-21 12:39:57</StartTime>
+<Result>Done</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+</Path>
+<Operation>Navigate</Operation>
+<OperationData>
+<![CDATA[ Navigate to http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp<br>Target Frame: _top<br>Post Data: <br>HTTP Headers: ]]>
+</OperationData>
+</TestObject>
+<IconKey>a2446bde3b184766af8829b614c64385</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<DeviceInfo/>
+</Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+<Name>passwordField.Set</Name>
+<Description>"Mango@2025"</Description>
+<StartTime>2024-05-21 12:39:58</StartTime>
+<Result>Done</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Page</Type>
+<Name>
+<![CDATA[ Login ]]>
+</Name>
+</Object>
+<Object>
+<Type>WebEdit</Type>
+<Name>
+<![CDATA[ passwordField ]]>
+</Name>
+</Object>
+</Path>
+<Operation>Set</Operation>
+<OperationData>
+<![CDATA[ "Mango@2025" ]]>
+</OperationData>
+<Properties>
+<Property>
+<Name>
+<![CDATA[ type ]]>
+</Name>
+<Value>
+<![CDATA[ password ]]>
+</Value>
+</Property>
+<Property>
+<Name>
+<![CDATA[ name ]]>
+</Name>
+<Value>
+<![CDATA[ passwordField ]]>
+</Value>
+</Property>
+<Property>
+<Name>
+<![CDATA[ html tag ]]>
+</Name>
+<Value>
+<![CDATA[ INPUT ]]>
+</Value>
+</Property>
+</Properties>
+</TestObject>
+<IconKey>1f7461b3a5a84f19945c0c410bd46534</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<DeviceInfo/>
+</Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+<Name>Log In.Click</Name>
+<Description/>
+<StartTime>2024-05-21 12:39:59</StartTime>
+<Result>Done</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Page</Type>
+<Name>
+<![CDATA[ Login ]]>
+</Name>
+</Object>
+<Object>
+<Type>WebButton</Type>
+<Name>
+<![CDATA[ Log In ]]>
+</Name>
+</Object>
+</Path>
+<Operation>Click</Operation>
+<Properties>
+<Property>
+<Name>
+<![CDATA[ type ]]>
+</Name>
+<Value>
+<![CDATA[ submit ]]>
+</Value>
+</Property>
+<Property>
+<Name>
+<![CDATA[ name ]]>
+</Name>
+<Value>
+<![CDATA[ Log In ]]>
+</Value>
+</Property>
+<Property>
+<Name>
+<![CDATA[ html tag ]]>
+</Name>
+<Value>
+<![CDATA[ BUTTON ]]>
+</Value>
+</Property>
+</Properties>
+</TestObject>
+<IconKey>746cf56f8bf34d59830584525dd70bca</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<DeviceInfo/>
+</Data>
+</ReportNode>
+<Data>
+<Name>Login</Name>
+<Description>Page</Description>
+<StartTime>2024-05-21 12:39:58</StartTime>
+<Duration>2</Duration>
+<Result>Done</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Page</Type>
+<Name>
+<![CDATA[ Login ]]>
+</Name>
+</Object>
+</Path>
+<OperationData>
+<![CDATA[ Page ]]>
+</OperationData>
+</TestObject>
+<IconKey>2bab023c3eb44711a69138f3d7d74d6d</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+</Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<ReportNode type="Step">
+<Data>
+<Name>XXHIG Custom</Name>
+<Description>Cannot&nbsp;identify&nbsp;the&nbsp;object&nbsp;"XXHIG&nbsp;Custom"&nbsp;(of&nbsp;class&nbsp;Link).<br/>Verify&nbsp;that&nbsp;this&nbsp;object's&nbsp;properties&nbsp;match&nbsp;an&nbsp;object&nbsp;currently&nbsp;displayed&nbsp;in&nbsp;your&nbsp;application.<br/><br/>Object's physical description:<br>Mercury Class = Link<br>Html Tag = A<br>_xpath = //LI/A[normalize-space()="XXHIG Custom"]<br>|Visible = -1<br>Text = XXHIG Custom<br>Name = XXHIG Custom<br>Html Id = <br>Href = http://p2808hldebz002.thehartford.com:8005/OA_HTML/OA.jsp?OAFunc=OANEWHOMEPAGE#dummyAnchor1<br>DHTML Class = <br>acc_name = <br></Description>
+<StartTime>2024-05-21 12:40:29</StartTime>
+<Result>Warning</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Page</Type>
+<Name>
+<![CDATA[ Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Link</Type>
+<Name>
+<![CDATA[ XXHIG Custom ]]>
+</Name>
+</Object>
+</Path>
+<OperationData>
+<![CDATA[ Cannot&nbsp;identify&nbsp;the&nbsp;object&nbsp;"XXHIG&nbsp;Custom"&nbsp;(of&nbsp;class&nbsp;Link).<br/>Verify&nbsp;that&nbsp;this&nbsp;object's&nbsp;properties&nbsp;match&nbsp;an&nbsp;object&nbsp;currently&nbsp;displayed&nbsp;in&nbsp;your&nbsp;application. ]]>
+</OperationData>
+<Properties>
+<Property>
+<Name>
+<![CDATA[ text ]]>
+</Name>
+<Value>
+<![CDATA[ XXHIG Custom ]]>
+</Value>
+</Property>
+<Property>
+<Name>
+<![CDATA[ html tag ]]>
+</Name>
+<Value>
+<![CDATA[ A ]]>
+</Value>
+</Property>
+</Properties>
+</TestObject>
+<IconKey>1a43b0b5eef249ed8d6e0b1be594e354</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+<NodeType>Run Error</NodeType>
+</Extension>
+<DeviceInfo/>
+</Data>
+</ReportNode>
+<Data>
+<Name>iConnect - Home.Sync</Name>
+<Description/>
+<StartTime>2024-05-21 12:40:00</StartTime>
+<Duration>36</Duration>
+<Result>Warning</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Page</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+</Path>
+<Operation>Sync</Operation>
+</TestObject>
+<IconKey>2bab023c3eb44711a69138f3d7d74d6d</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<DeviceInfo/>
+</Data>
+</ReportNode>
+<Data>
+<Name>iConnect - Home</Name>
+<Description>Page</Description>
+<StartTime>2024-05-21 12:40:00</StartTime>
+<Duration>36</Duration>
+<Result>Warning</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+<Object>
+<Type>Page</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+</Path>
+<OperationData>
+<![CDATA[ Page ]]>
+</OperationData>
+</TestObject>
+<IconKey>2bab023c3eb44711a69138f3d7d74d6d</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+</Data>
+</ReportNode>
+<Data>
+<Name>iConnect - Home</Name>
+<Description><table><tr><td><span style="text-align : left; font-size : 12px; ">Local Browser</span></td></tr></table></Description>
+<StartTime>2024-05-21 12:39:57</StartTime>
+<Duration>39</Duration>
+<Result>Warning</Result>
+<Extension>
+<TestObject>
+<Repository>C:\Github\corp_corpit_ps_egl_test_automation\UFT\PS_FAH_Repository.tsr</Repository>
+<Path>
+<Object>
+<Type>Browser</Type>
+<Name>
+<![CDATA[ iConnect - Home ]]>
+</Name>
+</Object>
+</Path>
+<OperationData>
+<![CDATA[ <table><tr><td><span style="text-align : left; font-size : 12px; ">Local Browser</span></td></tr></table> ]]>
+</OperationData>
+</TestObject>
+<IconKey>a2446bde3b184766af8829b614c64385</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+</Data>
+</ReportNode>
+<ReportNode type="User">
+<Data>
+<Name>Fail</Name>
+<Description>Test failed: Cannot identify the object "XXHIG Custom" (of class Link). Verify that this object's properties match an object currently displayed in your application.</Description>
+<StartTime>2024-05-21 12:40:36</StartTime>
+<Result>Failed</Result>
+<Extension>
+<IconKey>2b45e43dcb64481fb36c17fc9b0862b4</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+<IsPlainTextStepInfo>True</IsPlainTextStepInfo>
+</Extension>
+</Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+<Name>Stop Run</Name>
+<Description>Run stopped by user.</Description>
+<StartTime>2024-05-21 12:40:43</StartTime>
+<Result>Information</Result>
+<Extension>
+<IconKey>b68940e40f244d5dbdc51aede40019cd</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+</Data>
+</ReportNode>
+<Data>
+<Name>Action1</Name>
+<Description/>
+<StartTime>2024-05-21 12:39:27</StartTime>
+<Duration>76</Duration>
+<Result>Failed</Result>
+<InputParameters/>
+<Extension>
+<IconKey>dc73cc21979647259db5110ef55ea838</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+</Data>
+</ReportNode>
+<Data>
+<Name>Action0</Name>
+<Description/>
+<StartTime>2024-05-21 12:39:26</StartTime>
+<Duration>77</Duration>
+<Result>Failed</Result>
+<Extension>
+<IconKey>0e55c7890c0d4afaa682a18474f38d90</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<Index>1</Index>
+<TestedApplications/>
+</Data>
+</ReportNode>
+<Data>
+<Name>FAH_Concurrent_Program</Name>
+<ToolName>Micro Focus UFT One</ToolName>
+<ToolVersion>2022</ToolVersion>
+<ToolVersionStringLiteral>2022</ToolVersionStringLiteral>
+<Description/>
+<StartTime>2024-05-21 12:39:23</StartTime>
+<Duration>80</Duration>
+<Result>Failed</Result>
+<InputParameters/>
+<Extension>
+<IconKey>f20a5b542c484fb1ac541256b6fbbeef</IconKey>
+<IsPlainTextNodeName>True</IsPlainTextNodeName>
+</Extension>
+<Environment>
+<Timezone>-04:00:00</Timezone>
+<Locale>English (United States)</Locale>
+<User>AD1\SM05698</User>
+<CpuInfo>AMD Ryzen 5 PRO 5650U with Radeon Graphics </CpuInfo>
+<NumberOfCores>12</NumberOfCores>
+<TotalMemory>15681</TotalMemory>
+<HostName>ad1.prod\5CG2092DP1</HostName>
+<OSInfo>Windows 10 22H2 (x64)</OSInfo>
+</Environment>
+<TestedApplications/>
+<Links>
+<Link type="DataTable" reference="Default.xlsx" displayname="Default Data Table"/>
+</Links>
+</Data>
+</ReportNode>
+<GeneralInfo>
+<ResultName>Res2</ResultName>
+<RunStartTime>2024-05-21 12:39:23</RunStartTime>
+<Timezone>-04:00:00</Timezone>
+<OrchestrationToolName>Micro Focus UFT One</OrchestrationToolName>
+<OrchestrationToolVersion>2022</OrchestrationToolVersion>
+<OrchestrationToolVersionStringLiteral>2022</OrchestrationToolVersionStringLiteral>
+</GeneralInfo>
+</Results>
