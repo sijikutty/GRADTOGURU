@@ -1,2 +1,7 @@
-    # Access the result reported by UFT
-    result = test.LastRunResults.Details.Results("MyResult").Data
+try:
+        tree = ET.parse(xml_file_path)
+        root = tree.getroot()
+
+        for node in root.iter("node"):  # Assuming "node" is the XML element containing the result data
+            if node.attrib.get("name") == "Fail":
+                description = node.find("description").text
