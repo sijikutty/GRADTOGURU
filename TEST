@@ -1,2 +1,2 @@
-# Set the result location to C:/
-uft.Options.Run.ResultsLocation = "C:/"
+    # Access the result reported by UFT
+    result = test.LastRunResults.Details.Results("MyResult").Data
