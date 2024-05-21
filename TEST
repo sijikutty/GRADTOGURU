@@ -1,18 +1,95 @@
-rally is not accepting the json:
-{
-    "key": "Smoketest GUI - TC32547",
-    "Rally": {
-        "server": "rally1.rallydev.com",
-        "user": "ashmina.ashraf@thehartford.com",
-        "apikey": "_GF7EBmFT9WUS4D1rSX0zMV0Jnss3EX3s8vfsYt3cuo",
-        "workspace": "Corporate IT",
-        "project": "IT Finance IGNITE",
-        "Tcid": "TC32547",
-        "build": "Dev-Automated Run",
-        "run_date": "2024-05-21T16:59:37.918736",
-        "verdict": "Fail",
-        "notes": "The testcase has Failed. Exception: Test failed: Cannot identify the object XXHIG Custom (of class Link).Verify that this object's properties match an object currently displayed in your application."
-    }
-}
+from automation_utils import get_testdata
+import win32com.client
+import pytest
+import psutil
+import time
+import pandas as pd
+import openpyxl
+import xml.etree.ElementTree as ET
 
-{"key": "Smoketest GUI - TC32547", "Rally": {"server": "rally1.rallydev.com", "user": "ashmina.ashraf@thehartford.com", "apikey": "_GF7EBmFT9WUS4D1rSX0zMV0Jnss3EX3s8vfsYt3cuo", "workspace": "Corporate IT", "project": "IT Finance IGNITE", "Tcid": "TC32547", "build": "Dev-Automated Run", "run_date": "2024-05-21T16:59:37.918736", "verdict": "Fail", "notes": "The testcase has Failed. Exception: Test failed: Cannot identify the object XXHIG Custom (of class Link).Verify that this object's properties match an object currently displayed in your application."}}
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
+    # Close any existing instances of UFT
+    for process in psutil.process_iter():
+        if process.name() == "UFT.exe":
+            process.terminate()
+    testdata = testcase["testdata"]
+    # Convert JSON data to DataFrame
+    df = pd.DataFrame([testdata])
+
+    # Specify the path for the Excel file
+    excel_file_path = r"Result/tcjson.xlsx"
+
+    # Write DataFrame to Excel
+    df.to_excel(excel_file_path, index=False)
+
+
+    test_path = testdata["test_path"]
+
+    try:
+        # Create an instance of UFT
+        uft = win32com.client.Dispatch("QuickTest.Application")
+
+        # Start UFT
+        uft.Launch()
+
+        # Make the UFT window visible
+        uft.Visible = True
+        
+        # Set the result location 
+        #uft.Options.Run.ResultsLocation = r"Result/FAH_Concurrent"
+
+        # Open a test
+        uft.Open(test_path)
+
+        # Create a RunResultsOptions object
+        #qtResultsOpt = CreateObject("QuickTest.RunResultsOptions") ' Create the Run Results Options object
+        #qtResultsOpt.ResultsLocation = "C:\Tests\Test1\Res1"
+        uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+        
+
+
+
+        # Save the changes
+        uft.Test.Save()
+
+        # Run the test with parameters
+        uft.Test.Run(uftResultsOpt, True)
+            # Get the result from UFT script
+        ##verdict = uft.Test.LastRunResults.verdict
+        ##result = uft.Test.LastRunResults.result
+        verdict = uft.Test.LastRunResults.Status
+        result = uft.Test.LastRunResults.LastError
+        resultpath=uft.Test.LastRunResults.Path+"/Report/run_results.xml"
+        print("resultpath",resultpath)
+        tree = ET.parse(resultpath)
+        root = tree.getroot()
+
+
+        for node in root.iter("ReportNode"):
+            if node.attrib.get("type") == "User" and node.find("Data/Name").text == "Fail":
+                description = node.find("Data/Description").text
+                print("description",description)
+        print("verdict",verdict)
+        print("result",result)
+        
+        
+        # Check if verdict is not "Passed"
+        if verdict != "Passed":
+            
+            #raise Exception(f"Test execution failed with verdict: {verdict} {description}")
+            description = description.replace('"', "").replace('\n', "").replace("'", "")
+            raise Exception(f"{description}")
+
+        print("Script execution success!")
+
+    except AssertionError:
+        raise Exception("Script execution failed.")
+    
+    finally:
+        # Close the test
+        uft.Test.Close()
+
+        # Quit UFT
+        uft.Quit()
+
