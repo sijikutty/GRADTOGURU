@@ -1,3 +1,66 @@
-    reporter = uft_app.Reporter
-    status = reporter.ReporterWindow.LastRunSummary.Status
-    details = reporter.ReporterWindow.LastRunSummary.Details
+from automation_utils import get_testdata
+import win32com.client
+import pytest
+import psutil
+import time
+import pandas as pd
+import openpyxl
+
+@pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
+def test_FAH_Concurrent(testcase):
+    # Close any existing instances of UFT
+    for process in psutil.process_iter():
+        if process.name() == "UFT.exe":
+            process.terminate()
+    testdata = testcase["testdata"]
+    # Convert JSON data to DataFrame
+    df = pd.DataFrame([testdata])
+
+    # Specify the path for the Excel file
+    excel_file_path = r"Result/tcjson.xlsx"
+
+    # Write DataFrame to Excel
+    df.to_excel(excel_file_path, index=False)
+
+
+    test_path = testdata["test_path"]
+
+    try:
+        # Create an instance of UFT
+        uft = win32com.client.Dispatch("QuickTest.Application")
+
+        # Start UFT
+        uft.Launch()
+
+        # Make the UFT window visible
+        uft.Visible = True
+
+        # Open a test
+        uft.Open(test_path)
+
+        # Create a RunResultsOptions object
+        uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+
+        # Save the changes
+        uft.Test.Save()
+
+        # Run the test with parameters
+        uft.Test.Run(uftResultsOpt, True)
+            # Get the result from UFT script
+        ##verdict = uft.Test.LastRunResults.verdict
+        ##result = uft.Test.LastRunResults.result
+        verdict = uft.Test.LastRunResults.Status
+        result = uft.Test.LastRunResults.LastError
+        print("verdict",verdict)
+        print("result",result)
+   
+        # Close the test
+        uft.Test.Close()
+
+        # Quit UFT
+        uft.Quit()
+
+        print("Script execution success!")
+
+    except AssertionError:
+        raise Exception("Script execution failed.")
