@@ -7,13 +7,17 @@ import pandas as pd
 import openpyxl
 import xml.etree.ElementTree as ET
 
+# Test function
 @pytest.mark.parametrize("testcase", get_testdata("test_fah_concurrent"))
 def test_FAH_Concurrent(testcase):
     # Close any existing instances of UFT
     for process in psutil.process_iter():
         if process.name() == "UFT.exe":
             process.terminate()
+    
+    # Retrieve test data
     testdata = testcase["testdata"]
+    
     # Convert JSON data to DataFrame
     df = pd.DataFrame([testdata])
 
@@ -23,68 +27,65 @@ def test_FAH_Concurrent(testcase):
     # Write DataFrame to Excel
     df.to_excel(excel_file_path, index=False)
 
-
     test_path = testdata["test_path"]
 
     try:
         # Create an instance of UFT
         uft = win32com.client.Dispatch("QuickTest.Application")
 
-        # Start UFT
+        # Start UFT and make the window visible
         uft.Launch()
-
-        # Make the UFT window visible
         uft.Visible = True
         
-        # Set the result location 
-        #uft.Options.Run.ResultsLocation = r"Result/FAH_Concurrent"
-
-        # Open a test
+        # Open the test
         uft.Open(test_path)
 
         # Create a RunResultsOptions object
-        #qtResultsOpt = CreateObject("QuickTest.RunResultsOptions") ' Create the Run Results Options object
-        #qtResultsOpt.ResultsLocation = "C:\Tests\Test1\Res1"
         uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
-        
-
-
 
         # Save the changes
         uft.Test.Save()
 
         # Run the test with parameters
         uft.Test.Run(uftResultsOpt, True)
-            # Get the result from UFT script
-        ##verdict = uft.Test.LastRunResults.verdict
-        ##result = uft.Test.LastRunResults.result
-        verdict = uft.Test.LastRunResults.Status
-        result = uft.Test.LastRunResults.LastError
-        resultpath=uft.Test.LastRunResults.Path+"/Report/run_results.xml"
-        print("resultpath",resultpath)
+
+        # Get the result path from UFT script
+        resultpath = uft.Test.LastRunResults.Path + "/Report/run_results.xml"
+        print("Result Path:", resultpath)
+        
+        # Parse the XML file
         tree = ET.parse(resultpath)
         root = tree.getroot()
 
-
+        # Iterate through XML nodes to find failure description
+        description = None
         for node in root.iter("ReportNode"):
             if node.attrib.get("type") == "User" and node.find("Data/Name").text == "Fail":
                 description = node.find("Data/Description").text
-                print("description",description)
-        print("verdict",verdict)
-        print("result",result)
-        
+                print("Failure Description:", description)
+                break
+
+        # Get the verdict and result from UFT script
+        verdict = uft.Test.LastRunResults.Status
+        result = uft.Test.LastRunResults.LastError
+
+        print("Verdict:", verdict)
+        print("Result:", result)
         
         # Check if verdict is not "Passed"
         if verdict != "Passed":
-            
-            #raise Exception(f"Test execution failed with verdict: {verdict} {description}")
-            description = description.replace('"', "").replace('\n', "").replace("'", "")
-            raise Exception(f"{description}")
+            if description:
+                # Clean up description
+                description = description.replace('"', "").replace('\n', "").replace("'", "")
+                raise Exception(description)
+            else:
+                raise Exception("Test execution failed.")
 
         print("Script execution success!")
 
-    except AssertionError:
-        raise Exception("Script execution failed.")
+    except Exception as e:
+        print("Error:", e)
+        raise e
     
     finally:
         # Close the test
@@ -92,4 +93,3 @@ def test_FAH_Concurrent(testcase):
 
         # Quit UFT
         uft.Quit()
-
