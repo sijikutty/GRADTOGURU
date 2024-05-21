@@ -1,17 +1,3 @@
-import win32com.client
-
-def call_uft_script():
-    uft_app = win32com.client.Dispatch("QuickTest.Application")
-    uft_test = uft_app.Test
-    uft_test.Open("path_to_your_uft_script")
-    uft_test.Run()
-    # Get the result from UFT script
-    result = uft_test.ResultFields.Value("Verdict")
-    details = uft_test.ResultFields.Value("Details")
-    uft_test.Close()
-    return result, details
-
-# Example usage
-verdict, result_details = call_uft_script()
-print("Verdict:", verdict)
-print("Details:", result_details)
+    reporter = uft_app.Reporter
+    status = reporter.ReporterWindow.LastRunSummary.Status
+    details = reporter.ReporterWindow.LastRunSummary.Details
