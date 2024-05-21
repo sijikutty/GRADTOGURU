@@ -1,26 +1,2 @@
-import xml.etree.ElementTree as ET
-
-def parse_xml(xml_file):
-    error_descriptions = []
-
-    # Parse the XML file
-    tree = ET.parse(xml_file)
-    root = tree.getroot()
-
-    # Find the relevant ReportNode element with type="User"
-    user_node = root.find(".//ReportNode[@type='User']")
-
-    # Extract the description under <Name>Fail
-    if user_node is not None:
-        fail_node = user_node.find(".//Data[Name='Fail']")
-        if fail_node is not None:
-            description = fail_node.find("Description").text
-            error_descriptions.append(description)
-
-    return error_descriptions
-
-# Example usage
-xml_file_path = "C:/VV/VV.XML"
-error_descriptions = parse_xml(xml_file_path)
-for error_description in error_descriptions:
-    print("Error Description:", error_description)
+# Set the result location to C:/
+uft.Options.Run.ResultsLocation = "C:/"
