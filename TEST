@@ -1,7 +1,19 @@
-try:
+import xml.etree.ElementTree as ET
+
+def print_xml_structure(xml_file_path):
+    try:
         tree = ET.parse(xml_file_path)
         root = tree.getroot()
 
-        for node in root.iter("node"):  # Assuming "node" is the XML element containing the result data
-            if node.attrib.get("name") == "Fail":
-                description = node.find("description").text
+        # Print the XML structure
+        for elem in root.iter():
+            print(elem.tag, elem.attrib)
+
+    except ET.ParseError as e:
+        print("Error parsing XML:", e)
+    except Exception as e:
+        print("Error:", e)
+
+if __name__ == "__main__":
+    xml_file_path = "C:/Res1/Report/run_results.xml"
+    print_xml_structure(xml_file_path)
