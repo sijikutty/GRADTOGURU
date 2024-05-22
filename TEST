@@ -1,1 +1,2 @@
-
+# Get the value of the 'verdict' key
+verdict = data['Rally']['verdict']
