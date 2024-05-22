@@ -1,11 +1,8 @@
-from automation_utils import get_testdata
 import win32com.client
 import pytest
 import psutil
 import time
 import pandas as pd
-import openpyxl
-import xml.etree.ElementTree as ET
 import json
 import os
 
@@ -19,17 +16,18 @@ def test_FAH_Concurrent(testcase):
     
     # Retrieve test data
     testdata = testcase["testdata"]
-    if os.path.exists(r"Result/tcjson.xlsx"):
-    # Delete the file
-        os.remove(r"Result/tcjson.xlsx")
-    if os.path.exists(r"Result/uftres.json"):
-    # Delete the file
-        os.remove(r"Result/uftres.json")
+    
+    # Delete the Excel and JSON files if they exist
+    if os.path.exists("Result/tcjson.xlsx"):
+        os.remove("Result/tcjson.xlsx")
+    if os.path.exists("Result/uftres.json"):
+        os.remove("Result/uftres.json")
+    
     # Convert JSON data to DataFrame
     df = pd.DataFrame([testdata])
 
     # Specify the path for the Excel file
-    excel_file_path = r"Result/tcjson.xlsx"
+    excel_file_path = "Result/tcjson.xlsx"
 
     # Write DataFrame to Excel
     df.to_excel(excel_file_path, index=False)
@@ -57,23 +55,20 @@ def test_FAH_Concurrent(testcase):
         uft.Test.Run(uftResultsOpt, True)
 
         # Get the result path from UFT script
-        resultpath = r"Result/uftres.json"
+        resultpath = "Result/uftres.json"
 
         with open(resultpath, 'r') as json_file:
-        # Load JSON data from the file
+            # Load JSON data from the file
             data = json.load(json_file)
         
-        # Get the value of 'userid' from the JSON data
-            verdict = data['Rally']['verdict']
-            result = data['Rally']['notes']
+        # Get the verdict and result from the JSON data
+        verdict = data['Rally']['verdict']
+        result = data['Rally']['notes']
 
-      
         # Check if verdict is not "Passed"
         if verdict != "Passed":
             if result:
-                # Clean up description
-                #result = result.replace('"', "").replace('\n', "").replace("'", "")
-
+                # Raise an exception with the result
                 raise Exception(result)
             
         print("Script execution success!")
