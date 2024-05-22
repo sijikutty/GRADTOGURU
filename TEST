@@ -1,5 +1,6 @@
- Pytest calls UFT test script
- UFT results with verdict written to temp json location
-Pytest reads temp json and pass or fails UFT test, then
-Pytest pass or fails based on the verdict
-rally_tc_results placed on S3 for Rally ingestion
+    with open(file_path, 'r') as json_file:
+        # Load JSON data from the file
+        data = json.load(json_file)
+        
+        # Get the value of 'userid' from the JSON data
+        userid = data.get('userid')
