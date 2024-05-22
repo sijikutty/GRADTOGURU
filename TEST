@@ -1,6 +1,1 @@
-    with open(file_path, 'r') as json_file:
-        # Load JSON data from the file
-        data = json.load(json_file)
-        
-        # Get the value of 'userid' from the JSON data
-        userid = data.get('userid')
+result = result.replace('"', "").replace('\n', "").replace("'", "")
