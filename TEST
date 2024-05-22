@@ -1,1 +1,1 @@
-result = Replace(Replace(Replace(result, """", ""), vbCrLf, ""), "'", "")
+, vbCrLf, " "), vbLf, " ")
