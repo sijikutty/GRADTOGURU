@@ -1,29 +1,3 @@
-Dim objFSO, objFile
-Dim filePath, fileContent
-
-' Specify the file path
-filePath = "C:\path\to\your\file.txt"
-
-' Create a File System Object
-Set objFSO = CreateObject("Scripting.FileSystemObject")
-
-' Check if the file exists
-If objFSO.FileExists(filePath) Then
-    ' Open the file for reading
-    Set objFile = objFSO.OpenTextFile(filePath, 1) ' 1: ForReading
-    
-    ' Read the entire content of the file
-    fileContent = objFile.ReadAll
-    
-    ' Close the file
-    objFile.Close
-    
-    ' Display the content of the file
-    MsgBox fileContent
-Else
-    MsgBox "File not found: " & filePath
-End If
-
-' Clean up objects
-Set objFile = Nothing
-Set objFSO = Nothing
+        if os.path.exists(file_path):
+            # Delete the file
+            os.remove(file_path)
