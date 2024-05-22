@@ -1,3 +1,1 @@
-        if os.path.exists(file_path):
-            # Delete the file
-            os.remove(file_path)
+{"key":"Smoketest for FAH Concurrent Program","Rally":{"Tcid":"TC32547","verdict":"Fail","notes":"Test failed Cannot identify the object XXHIG Custom (of class Link). Verify that this objects properties match an object currently displayed in your application."}}
