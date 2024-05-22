@@ -1,1 +1,1 @@
-result = result.replace('"', "").replace('\n', "").replace("'", "")
+result = Replace(Replace(Replace(result, """", ""), vbCrLf, ""), "'", "")
