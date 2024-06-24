@@ -1,1 +1,9 @@
+def get_secrets(secretID):
+    session = boto3.Session(profile_name="dev")
 
+    secretmanagerclient = session.client("secretsmanager", region_name="us-east-1")
+
+    response = secretmanagerclient.get_secret_value(SecretId=secretID)
+    secret = json.loads(response['SecretString'])
+
+    return secret
