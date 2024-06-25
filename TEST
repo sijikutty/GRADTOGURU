@@ -1,4 +1,3 @@
-import os
-
-home_directory = os.path.expanduser('~')
-print("Home Directory:", home_directory)
+	Dim homeDir
+	homeDir = env("USERPROFILE")
+	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
