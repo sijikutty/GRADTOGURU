@@ -1,26 +1,4 @@
-import json
+import os
 
-# Define your data
-data = {
-    "fahuser": [
-        {
-            "fahusername": "a",
-            "fahpassword": "af@2025"
-        }
-    ],
-    "psuser": [
-        {
-            "psusername": "b",
-            "pspassword": "b@100"
-        }
-    ]
-}
-
-# File path where you want to save the JSON file
-json_file_path = "user_credentials.json"
-
-# Write JSON data to file
-with open(json_file_path, 'w') as json_file:
-    json.dump(data, json_file, indent=4)
-
-print(f"User credentials saved to {json_file_path}")
+home_directory = os.path.expanduser('~')
+print("Home Directory:", home_directory)
