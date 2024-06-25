@@ -1,17 +1,10 @@
-import json
-
-# Example data (replace with your actual user credentials)
-user_credentials = {
-    "user1": "password1",
-    "user2": "password2",
-    "user3": "password3"
+{
+"fahuser":[{
+      "fahusername":"a",
+      "fahpassword":"af@2025"
+    }],
+"psuser":[{
+      "psusername":"b",
+      "pspassword":"b@100"
+    }]
 }
-
-# File path where you want to save the JSON file
-json_file_path = "user_credentials.json"
-
-# Write JSON data to file
-with open(json_file_path, 'w') as json_file:
-    json.dump(user_credentials, json_file, indent=4)
-
-print(f"User credentials saved to {json_file_path}")
