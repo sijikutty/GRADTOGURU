@@ -1,3 +1,35 @@
-	Dim homeDir
-	homeDir = env("USERPROFILE")
-	Set Dom = jsonutil.Parse(homeDir & "\.secret\credentials.json")
+import os
+import json
+
+# Data to write to JSON file
+data = {
+    "fahuser": [
+        {
+            "fahusername": "a",
+            "fahpassword": "af@2025"
+        }
+    ],
+    "psuser": [
+        {
+            "psusername": "b",
+            "pspassword": "b@100"
+        }
+    ]
+}
+
+# Directory where JSON file will be located
+directory = os.path.expanduser('~')  # Example: current user's home directory
+
+# Ensure the directory exists, create if not
+os.makedirs(os.path.join(directory, '.secret'), exist_ok=True)
+
+# Path to the JSON file
+json_file_path = os.path.join(directory, '.secret', 'credentials.json')
+
+# Write JSON data to file
+try:
+    with open(json_file_path, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+    print(f"Data written to {json_file_path}")
+except Exception as e:
+    print(f"Error writing JSON file: {e}")
