@@ -1,23 +1,17 @@
-Dim objShell
-Set objShell = CreateObject("WScript.Shell")
+import json
 
-' Path to the Python executable
-pythonExe = "C:\Path\to\python.exe"
+# Example data (replace with your actual user credentials)
+user_credentials = {
+    "user1": "password1",
+    "user2": "password2",
+    "user3": "password3"
+}
 
-' Path to the Python script
-pythonScript = "C:\Path\to\get_secrets.py"
+# File path where you want to save the JSON file
+json_file_path = "user_credentials.json"
 
-' Secret ID to fetch (adjust as needed)
-secretID = "your-secret-id"
+# Write JSON data to file
+with open(json_file_path, 'w') as json_file:
+    json.dump(user_credentials, json_file, indent=4)
 
-' Command to execute the Python script with arguments
-command = pythonExe & " " & pythonScript & " get_secrets " & secretID
-
-' Execute the command
-Set objExec = objShell.Exec(command)
-
-' Read the output (if any)
-output = objExec.StdOut.ReadAll()
-
-' Display output (optional)
-MsgBox output
+print(f"User credentials saved to {json_file_path}")
