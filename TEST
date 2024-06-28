@@ -1,30 +1,5 @@
-code1
-    fahsecrets = get_secrets(testdata["fahsecretID"])
-    #pssecrets = get_secrets(testdata["pssecretID"])
-    data = {
-        "fahuser": [
-            {
-                "fahusername": fahsecrets['User'],
-                "fahpassword": fahsecrets['Password']
-            }
-        ]
-    }
-
-code2:
-    # Credentials
-    secrets = get_secrets(testdata["secretID"])
-    data = {
-        "psuser": [
-            {
-                "psusername": secrets['User'],
-                "pspassword": secrets['Password']
-            }
-        ]
-    }
-
-code3:
-
-    # Credentials
+code1:
+ # Credentials
     fahsecrets = get_secrets(testdata["fahsecretID"])
     pssecrets = get_secrets(testdata["pssecretID"])
     data = {
@@ -41,3 +16,34 @@ code3:
             }
         ]
     }
+
+    # Directory where JSON file will be located
+    directory = os.path.expanduser('~')  # Example: current user's home directory
+
+    # Ensure the directory exists, create if not
+    os.makedirs(os.path.join(directory, '.secret'), exist_ok=True)
+
+    # Path to the JSON file
+    cred_json_file_path = os.path.join(directory, '.secret', 'credentials.json')
+
+
+code2:
+
+    fahsecrets = get_secrets(testdata["fahsecretID"])
+    data = {
+        "fahuser": [
+            {
+                "fahusername": fahsecrets['User'],
+                "fahpassword": fahsecrets['Password']
+            }
+        ]
+    }
+
+    # Directory where JSON file will be located
+    directory = os.path.expanduser('~')  # Example: current user's home directory
+
+    # Ensure the directory exists, create if not
+    os.makedirs(os.path.join(directory, '.secret'), exist_ok=True)
+
+    # Path to the JSON file
+    cred_json_file_path = os.path.join(directory, '.secret', 'credentials.json')
