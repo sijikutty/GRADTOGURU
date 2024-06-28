@@ -27,12 +27,8 @@ def construct_credentials(testdata):
 
     return data
 
-def save_credentials(testdata):
-    # Test path retrieval
-    test_path = testdata["test_path"]
-
-    # Construct credentials data
-    data = construct_credentials(testdata)
+def save_credentials(data):
+    # Function to save credentials data to JSON file
 
     # Directory where JSON file will be located
     directory = os.path.expanduser('~')  # Example: current user's home directory
@@ -56,4 +52,8 @@ testdata = {
     # Add other required fields as per your script's needs
 }
 
-save_credentials(testdata)
+# Construct credentials data
+credentials_data = construct_credentials(testdata)
+
+# Save credentials data to JSON file
+save_credentials(credentials_data)
