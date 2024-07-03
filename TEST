@@ -10,14 +10,19 @@ def get_first_row_text():
         
         # Wait for the frame to load
         frame = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
-        await frame.wait_for_load_state("networkidle")
-
-        # Get the first row of the table
-        first_row_text = await frame.eval_on_selector("tbody tr:first-child td", "element => element.textContent")
+        frame.wait_for_load_state("networkidle")
         
-        print("Text from the first row:", first_row_text.strip())
+        # Find the first row of the table
+        first_row = frame.query_selector("tbody tr:first-child")
+        
+        # If first row is found, get the text of the first cell
+        if first_row:
+            first_cell_text = first_row.query_selector("td").inner_text.strip()
+            print("Text from the first row:", first_cell_text)
+        else:
+            print("First row not found.")
 
-        await browser.close()
+        browser.close()
 
 # Run the function to fetch the first row text
 get_first_row_text()
