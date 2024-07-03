@@ -1,19 +1,9 @@
-code:
-    logframe = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
-    # Get the first row of the table
-    first_row = logframe.locator("tbody tr:first-child")
+# Get the first row of the table
+            first_row = frame.locator("tbody tr:first-child")
+            
+            # Get the text from the first cell in the first row
+            first_cell = first_row.locator("td").nth(0)  # Select the first cell
+            first_cell_text = first_cell.inner_text().strip()
 
-    # Get the text from the first cell in the first row
-    first_cell_text = first_row.locator("td").inner_text()
-
--------------
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]").locator("tbody tr:first-child").locator("td") resolved to 9 elements:
-    1) <td>…</td> aka get_by_role("cell", name="Action Go").nth(2)
-    2) <td>…</td> aka get_by_role("cell", name="Action Go").nth(3)
-    3) <td>…</td> aka locator("[id=\"nestedDetailPageSuffix\\:logsTable\\:logTypeGroup\"] td").filter(has_text="ActionStandard OutputError")
-    4) <td nowrap="" class="af_selectOneChoice_label">…</td> aka locator("[id=\"nestedDetailPageSuffix\\:logsTable\\:logActions__xc_\"] td").filter(has_text="Action")
-    5) <td nowrap="" valign="top" class="AFContentCell">…</td> aka locator("td").filter(has_text=re.compile(r"^Standard OutputError OutputAgent Log$"))
-    6) <td></td> aka locator("[id=\"nestedDetailPageSuffix\\:logsTable\\:logActions__xc_\"]").get_by_role("cell").nth(2)
-    7) <td class="AFComponentMessageCell">…</td> aka locator("[id=\"nestedDetailPageSuffix\\:logsTable\\:logActions__xc_\"]").get_by_role("cell").nth(3)
-    8) <td>…</td> aka locator("[id=\"nestedDetailPageSuffix\\:logsTable\\:logTypeGroup\"]").get_by_role("cell", name="Go")
-    9) <td width="100%"></td> aka locator("[id=\"nestedDetailPageSuffix\\:logsTable\"] > table > tbody > tr > td > .af_table_control-bar-top > tbody > tr > td:nth-child(2)")
+            print("Text from the first cell in the first row:", first_cell_text)
+        
