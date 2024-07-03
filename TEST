@@ -4,25 +4,25 @@ def get_first_row_text():
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
-        
-        # Navigate to your page or perform necessary actions to reach the frame
-        page.goto("https://example.com")
-        
-        # Wait for the frame to load
-        frame = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
-        frame.wait_for_load_state("networkidle")
-        
-        # Find the first row of the table
-        first_row = frame.query_selector("tbody tr:first-child")
-        
-        # If first row is found, get the text of the first cell
-        if first_row:
-            first_cell_text = first_row.query_selector("td").inner_text.strip()
-            print("Text from the first row:", first_cell_text)
-        else:
-            print("First row not found.")
 
-        browser.close()
+        try:
+            # Navigate to your page or perform necessary actions to reach the frame
+            page.goto("https://example.com")
+            
+            # Wait for the frame to load
+            frame = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
+            frame.wait_for_load_state("networkidle")
+
+            # Get the first row of the table
+            first_row = frame.locator("tbody tr:first-child")
+
+            # Get the text from the first cell in the first row
+            first_cell_text = first_row.locator("td").inner_text.strip()
+
+            print("Text from the first row:", first_cell_text)
+        
+        finally:
+            browser.close()
 
 # Run the function to fetch the first row text
 get_first_row_text()
