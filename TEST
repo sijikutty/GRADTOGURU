@@ -15,37 +15,31 @@ def run(playwright: Playwright) -> None:
     frame.locator("[id=\"jobResultTable\\:eventId\"]").select_option("1")
     frame.locator("[id=\"jobResultTable\\:sendEventButton\"]").click()
     frame.frame_locator("iframe[name=\"_blank\"]").get_by_role("button", name="Yes").click()
-    #frame.get_by_role("link", name="7kaad2cmx_mxms_ldg_wkfl_load").click()
     frame.get_by_role("button", name="Refresh").click()
 
     logframe = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
-  # Wait for the frame to load
 
-
-    # Get the first row of the table
-    #first_row = logframe.locator("tbody tr:first-child")
+    # Get the second row of the table (assuming you want the second row)
     Log_row = logframe.locator("tbody tr:nth-child(2)")
             
-    # Get the text from the first cell in the first row
-    #Job_status = Log_row.locator("td").nth(6)  # Select the first cell
-    #first_cell_text = Job_status.inner_text().strip()
-    Job_status = Log_row.locator("td").nth(6).inner_text().strip()
-    # Wait for Run status to be Success/Not Success/Warning/Error for approx 10min.
+    # Get the text from the sixth cell in the second row
+    Job_status = Log_row.locator("td:nth-child(6)").inner_text().strip()
+
+    # Wait for Run status to be Success/Not Success/Warning/Error for approximately 10 minutes.
     retry = 0
     while retry < 600:
-        expected_values=['SUCCESS','FAILURE']
+        expected_values = ['SUCCESS', 'FAILURE']
 
-        if Job_status() in expected_values:
+        if Job_status in expected_values:
             break
-
         else:
             frame.get_by_role("button", name="Refresh").click()
             retry += 1
 
-    if Job_status().upper() != "SUCCESS":
-        raise Exception(f"Job Status : {Job_status.text_content()}")
+    if Job_status.upper() != "SUCCESS":
+        raise Exception(f"Job Status : {Job_status}")
     else:
-        return Job_status()
+        return Job_status
 
     # ---------------------
     context.close()
@@ -54,7 +48,3 @@ def run(playwright: Playwright) -> None:
 
 with sync_playwright() as playwright:
     run(playwright)
---------------
-if Job_status() in expected_values:
-       ^^^^^^^^^^^^
-TypeError: 'str' object is not callable
