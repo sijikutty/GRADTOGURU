@@ -10,7 +10,7 @@ directory_to_enter = 'ora'  # The directory you want to enter
 def list_directories(ssh_client, current_directory):
     # Send the command to list files and directories in the current directory
     ssh_shell.send(f'cd {current_directory}\n')
-    ssh_shell.send('ls -l\n')
+    ssh_shell.send('ls -l -d */\n')  # List only directories (ending with '/')
 
     # Wait for the command to execute
     while not ssh_shell.recv_ready():
@@ -18,13 +18,18 @@ def list_directories(ssh_client, current_directory):
 
     # Read and print the output of the command
     output = ssh_shell.recv(65535).decode()
-    print(f"Contents of '{current_directory}' directory:\n{output}")
 
-    # Find directories in the output and recursively list their contents
-    for line in output.splitlines():
-        if line.startswith('d'):
-            subdir_name = line.split()[-1]
-            list_directories(ssh_client, f"{current_directory}/{subdir_name}")
+    # Extract directory names from the output
+    dir_names = [line.split()[0].strip('/') for line in output.splitlines()]
+
+    # Print the directory names
+    print(f"Subdirectories in '{current_directory}':")
+    for dir_name in dir_names:
+        print(dir_name)
+
+    # Recursively list contents of each subdirectory
+    for dir_name in dir_names:
+        list_directories(ssh_client, f"{current_directory}/{dir_name}")
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
