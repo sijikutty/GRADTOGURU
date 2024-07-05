@@ -4,29 +4,21 @@ import paramiko
 hostname = 'example.com'
 username = 'your_username'
 password = 'your_password'
-target_directory = '/fit/data/in'  # Replace with the directory you want to search
+target_directory = '/fit/data/in'  # Replace with the directory you want to check
 
-# Function to list subdirectories recursively
-def list_subdirectories_recursive(ssh_client, directory):
+# Function to check if a directory exists recursively
+def check_directory_exists(ssh_client, directory):
     try:
         sftp = ssh_client.open_sftp()
-        dir_list = sftp.listdir_attr(directory)
-
-        subdirectories = []
-
-        for item in dir_list:
-            if stat.S_ISDIR(item.st_mode):
-                subdirectories.append(item.filename)
-                subdirectories.extend(list_subdirectories_recursive(ssh_client, f"{directory}/{item.filename}"))
-
-        return subdirectories
+        sftp.chdir(directory)
+        return True
 
     except FileNotFoundError:
-        return []
+        return False
 
     except Exception as e:
-        print(f"Error listing directories in {directory}: {str(e)}")
-        return []
+        print(f"Error checking directory {directory}: {str(e)}")
+        return False
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -36,15 +28,11 @@ try:
     # Connect to the SSH server using password authentication
     ssh_client.connect(hostname=hostname, username=username, password=password)
 
-    # List subdirectories recursively starting from the target directory
-    subdirectories = list_subdirectories_recursive(ssh_client, target_directory)
-    
-    if subdirectories:
-        print(f"Subdirectories in '{target_directory}':")
-        for subdir in subdirectories:
-            print(subdir)
+    # Check if the target directory exists anywhere
+    if check_directory_exists(ssh_client, target_directory):
+        print(f"Directory '{target_directory}' exists on the server.")
     else:
-        print(f"No subdirectories found in '{target_directory}'.")
+        print(f"Directory '{target_directory}' does not exist on the server.")
 
 finally:
     # Close the SSH connection
