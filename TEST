@@ -1,44 +1,24 @@
-from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, construct_putty_credentials, save_credentials, autosys_job_run
-import pytest
+import paramiko
 
-@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
-def test_Maximis_regression(page: Page, testcase):
-    testdata = testcase["testdata"]
+# SSH connection details
+hostname = 'example.com'
+username = 'username'
+password = 'your_password'  # Replace with your actual password
 
-    # Credentials
-    credentials_data = construct_putty_credentials(testdata)
-    cred_json_file_path = save_credentials(credentials_data)
+# Create an SSH client instance
+ssh_client = paramiko.SSHClient()
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    page.goto(testdata["autosys_url"])
+try:
+    # Connect to the SSH server using password authentication
+    ssh_client.connect(hostname=hostname, username=username, password=password)
 
-    try:
-        expect(page.get_by_text("AutoSys Workload Automation")).to_be_visible()
-        print("Autosys Login Success!")
+    # Perform operations on the remote server...
+    stdin, stdout, stderr = ssh_client.exec_command('ls -l')
 
-    except AssertionError:
-        raise Exception("Autosys Login Failed.")
-    
-    # List of jobs to execute sequentially
-    jobs_to_execute = [
-        (testdata["maximis_load_job"], testdata["ODS_file_load_job"]),
-        (testdata["another_job1"], testdata["another_job2"]),
-        (testdata["another_job3"], testdata["another_job4"]),
-        # Add more jobs as needed
-    ]
+    # Example command execution
+    print(stdout.read().decode())
 
-    overall_success = True  # Flag to track overall success
-
-    for job in jobs_to_execute:
-        if overall_success:
-            job_status = autosys_job_run(page, testdata, job[0], job[1])
-            print(f"{job[0]} Status: {job_status}")
-
-            if job_status.upper() != "SUCCESS":
-                overall_success = False  # Update flag if any job fails
-
-    if not overall_success:
-        raise Exception("One or more jobs failed.")
-
-if __name__ == "__main__":
-    pytest.main()
+finally:
+    # Close the SSH connection
+    ssh_client.close()
