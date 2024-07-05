@@ -1,50 +1,12 @@
-from playwright.sync_api import Playwright, sync_playwright, expect
+def check_unix_server(hostname, port):
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(5)
+        sock.connect((hostname, port))
+        
+        response = {'status' : True}
+        return response
 
-
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False, slow_mo=1000)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("https://wcctest.thehartford.com/wcc/ui/Launcher.html")
-    page.wait_for_timeout(1500)
-    page.locator("a").filter(has_text="Quick View").click()
-    frame = page.frame_locator("#QuickView")
-    frame.get_by_label("Enter job name search pattern").click()
-    frame.get_by_label("Enter job name search pattern").fill("7kaad2cmx_mxms_ldg_wkfl_load")
-    frame.get_by_role("button", name="Go").click()
-    frame.locator("[id=\"jobResultTable\\:eventId\"]").select_option("1")
-    frame.locator("[id=\"jobResultTable\\:sendEventButton\"]").click()
-    frame.frame_locator("iframe[name=\"_blank\"]").get_by_role("button", name="Yes").click()
-    frame.get_by_role("button", name="Refresh").click()
-
-    logframe = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
-
-    # Get the second row of the table (assuming you want the second row)
-    Log_row = logframe.locator("tbody tr:nth-child(2)")
-            
-    # Get the text from the sixth cell in the second row
-    Job_status = Log_row.locator("td:nth-child(6)").inner_text().strip()
-
-    # Wait for Run status to be Success/Not Success/Warning/Error for approximately 10 minutes.
-    retry = 0
-    while retry < 600:
-        expected_values = ['SUCCESS', 'FAILURE']
-
-        if Job_status in expected_values:
-            break
-        else:
-            frame.get_by_role("button", name="Refresh").click()
-            retry += 1
-
-    if Job_status.upper() != "SUCCESS":
-        raise Exception(f"Job Status : {Job_status}")
-    else:
-        return Job_status
-
-    # ---------------------
-    context.close()
-    browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
+    except Exception as e:
+        response = {'status' : False, 'error' : e }
+        return response
