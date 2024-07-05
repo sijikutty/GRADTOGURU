@@ -16,14 +16,81 @@ def print_folders(sftp, current_directory, indentation=""):
 
         for item in items:
             # Check if the item is a directory
-            if sftp.stat(f"{current_directory}/{item}").st_mode // 32768 == 1:  # Directory check
-                print(f"{indentation}{item}/")  # Print folder name with indentation
+            try:
+                # Check if the item is a directory
+                item_attributes = sftp.stat(f"{current_directory}/{item}")
+                if stat.S_ISDIR(item_attributes.st_mode):
+                    print(f"{indentation}{item}/")  # Print folder name with indentation
 
-                # Recursively print subfolders
-                print_folders(sftp, f"{current_directory}/{item}", indentation + "    ")
+                    # Recursively print subfolders
+                    print_folders(sftp, f"{current_directory}/{item}", indentation + "    ")
+
+            except FileNotFoundError:
+                print(f"{current_directory}/{item}: Not found")
 
     except FileNotFoundError:
         print(f"{current_directory}: Not found")
+
+    except PermissionError:
+        print(f"{current_directory}: Permission denied")
+
+    except Exception as e:
+        print(f"Error listing folder {current_directory}: {str(e)}")
+
+# Create an SSH client instance
+ssh_client = paramiko.SSHClient()
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+try:
+    # Connect to the SSH server using password authentication
+    ssh_client.connect(hostname=hostname, username=username, password=password)
+
+    # Open an SFTP session on the SSH connection
+    sftp = ssh_client.open_sftp()
+
+    # Print all folders and subfolders starting from root directory ("/")
+    print(f"Listing all folders and subfolders in {hostname}:")
+    print_folders(sftp, "/")
+
+finally:
+    # Close the SFTP session and SSH connection
+    if ssh_client:
+        ssh_client.close()
+import paramiko
+
+# SSH connection details
+hostname = 'example.com'
+username = 'your_username'
+password = 'your_password'
+
+# Function to recursively print folders and subfolders
+def print_folders(sftp, current_directory, indentation=""):
+    try:
+        # Change directory to the current directory
+        sftp.chdir(current_directory)
+
+        # List all items (files and directories) in the current directory
+        items = sftp.listdir()
+
+        for item in items:
+            # Check if the item is a directory
+            try:
+                # Check if the item is a directory
+                item_attributes = sftp.stat(f"{current_directory}/{item}")
+                if stat.S_ISDIR(item_attributes.st_mode):
+                    print(f"{indentation}{item}/")  # Print folder name with indentation
+
+                    # Recursively print subfolders
+                    print_folders(sftp, f"{current_directory}/{item}", indentation + "    ")
+
+            except FileNotFoundError:
+                print(f"{current_directory}/{item}: Not found")
+
+    except FileNotFoundError:
+        print(f"{current_directory}: Not found")
+
+    except PermissionError:
+        print(f"{current_directory}: Permission denied")
 
     except Exception as e:
         print(f"Error listing folder {current_directory}: {str(e)}")
