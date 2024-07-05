@@ -4,10 +4,10 @@ import paramiko
 hostname = 'example.com'
 username = 'your_username'
 password = 'your_password'
-target_file = 'mm.dat'  # File name to search for
+target_substring = 'maxi'  # Substring to search for in file names
 
-# Function to recursively search for a file
-def search_for_file(sftp, current_directory, target_file):
+# Function to recursively search for a file containing a substring
+def search_for_file(sftp, current_directory, target_substring):
     try:
         # Change directory to the current directory
         sftp.chdir(current_directory)
@@ -16,13 +16,13 @@ def search_for_file(sftp, current_directory, target_file):
         items = sftp.listdir()
 
         for item in items:
-            # Check if the item is a file
-            if item == target_file:
+            # Check if the item is a file and contains the target substring
+            if target_substring in item and sftp.stat(item).st_mode // 32768 == 1:  # File check
                 return True
             # Check if the item is a directory
             elif sftp.stat(item).st_mode // 32768 == 1:  # Directory check
                 # Recursively search within this directory
-                if search_for_file(sftp, f"{current_directory}/{item}", target_file):
+                if search_for_file(sftp, f"{current_directory}/{item}", target_substring):
                     return True
 
         return False
@@ -45,11 +45,11 @@ try:
     # Open an SFTP session on the SSH connection
     sftp = ssh_client.open_sftp()
 
-    # Check if the target file exists anywhere
-    if search_for_file(sftp, "/", target_file):
-        print(f"File '{target_file}' exists in at least one directory on the server.")
+    # Check if any file with the target substring exists anywhere
+    if search_for_file(sftp, "/", target_substring):
+        print(f"A file containing '{target_substring}' in its name exists in at least one directory on the server.")
     else:
-        print(f"File '{target_file}' does not exist in any directory on the server.")
+        print(f"No file containing '{target_substring}' in its name exists in any directory on the server.")
 
 finally:
     # Close the SFTP session and SSH connection
