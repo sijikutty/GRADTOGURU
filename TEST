@@ -1,16 +1,18 @@
-import pytest
-from playwright.sync_api import Page
-from automation_utils import get_testdata, connect_to_oracleDB
+from playwright.sync_api import Page, expect
+from automation_utils import get_testdata, get_secrets,construct_putty_credentials,save_credentials
+from smoketest_awsinfra import get_testcase,connect_to_oracleDB
+print("hi2")
 
-@pytest.mark.parametrize("testcase", get_testdata("test_PS_EGL_DB_connectivity"))
-def test_PS_EGL_DB_connectivity(page: Page, testcase):
-    testdata = testcase["testdata"]
-    
+
+def test_PS_EGL_DB_connectivity(page : Page):
+
+    print("hi1")
     # Call the function you want to test
-    result = connect_to_oracleDB(testdata["secretID"])
+    result = connect_to_oracleDB("dev/2807/fgld")
 
     # Assert the expected result or behavior
     assert result["status"] == True, f"DB connectivity test failed: {result['error']}"
 
     # Print test success message for visibility
-    print(f"Test case {testcase['testcase_id']} executed successfully.")
+    print(f"Test case test_PS_EGL_DB_connectivity executed successfully.")
+    
