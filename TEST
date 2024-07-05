@@ -11,11 +11,15 @@ def list_folders(sftp, remote_path, indentation=""):
         for item in items:
             # Check if the item is a directory
             try:
+                # Attempt to change into the directory to verify it's a folder
                 sftp.chdir(f"{remote_path}/{item}")
                 print(f"{indentation}{item}/")  # Print folder name with indentation
 
                 # Recursively list subfolders
                 list_folders(sftp, f"{remote_path}/{item}", indentation + "    ")
+
+                # Change back to the parent directory after listing subfolders
+                sftp.chdir(remote_path)
 
             except IOError:
                 # IOError will be raised if it's not a directory or if permission is denied
