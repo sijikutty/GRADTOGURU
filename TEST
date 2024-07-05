@@ -45,5 +45,5 @@ def connect_to_oracleDB(secretID):
 
 if __name__ == "__main__":
     # Example usage with a specific secret ID
-    result = connect_to_oracleDB("your_secret_id")
+    result = connect_to_oracleDB(["qa/app2809/pipe"])
     print(result)
