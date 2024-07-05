@@ -4,10 +4,9 @@ import paramiko
 hostname = 'example.com'
 username = 'your_username'
 password = 'your_password'
-target_substring = 'maxi'  # Substring to search for in file names
 
-# Function to recursively search for a file containing a substring
-def search_for_file(sftp, current_directory, target_substring):
+# Function to recursively print folders and subfolders
+def print_folders(sftp, current_directory, indentation=""):
     try:
         # Change directory to the current directory
         sftp.chdir(current_directory)
@@ -16,23 +15,18 @@ def search_for_file(sftp, current_directory, target_substring):
         items = sftp.listdir()
 
         for item in items:
-            # Check if the item is a file and contains the target substring
-            if target_substring in item and sftp.stat(item).st_mode // 32768 == 1:  # File check
-                return True
             # Check if the item is a directory
-            elif sftp.stat(item).st_mode // 32768 == 1:  # Directory check
-                # Recursively search within this directory
-                if search_for_file(sftp, f"{current_directory}/{item}", target_substring):
-                    return True
+            if sftp.stat(f"{current_directory}/{item}").st_mode // 32768 == 1:  # Directory check
+                print(f"{indentation}{item}/")  # Print folder name with indentation
 
-        return False
+                # Recursively print subfolders
+                print_folders(sftp, f"{current_directory}/{item}", indentation + "    ")
 
     except FileNotFoundError:
-        return False
+        print(f"{current_directory}: Not found")
 
     except Exception as e:
-        print(f"Error searching for file in {current_directory}: {str(e)}")
-        return False
+        print(f"Error listing folder {current_directory}: {str(e)}")
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -45,11 +39,9 @@ try:
     # Open an SFTP session on the SSH connection
     sftp = ssh_client.open_sftp()
 
-    # Check if any file with the target substring exists anywhere
-    if search_for_file(sftp, "/", target_substring):
-        print(f"A file containing '{target_substring}' in its name exists in at least one directory on the server.")
-    else:
-        print(f"No file containing '{target_substring}' in its name exists in any directory on the server.")
+    # Print all folders and subfolders starting from root directory ("/")
+    print(f"Listing all folders and subfolders in {hostname}:")
+    print_folders(sftp, "/")
 
 finally:
     # Close the SFTP session and SSH connection
