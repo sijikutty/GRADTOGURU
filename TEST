@@ -23,7 +23,7 @@ def search_directory_recursive(ssh_client, root_path, target_directory):
 
     # Check if the target directory exists in the output
     if target_directory in output:
-        print(f"Directory '{target_directory}' found in '{output}'.")
+        print(f"Directory '{target_directory}' found in '{root_path}'.")
     else:
         print(f"Directory '{target_directory}' not found in '{root_path}'.")
 
@@ -45,12 +45,4 @@ try:
             found = True
             break
         except Exception as e:
-            print(f"Failed to search in '{root_path}': {str(e)}")
-            continue
-    
-    if not found:
-        print(f"Failed to find '{target_directory}' in any of the common root paths.")
-
-finally:
-    # Close the SSH connection
-    ssh_client.close()
+            print(f"Failed to search in '{root_path}': {str(e)
