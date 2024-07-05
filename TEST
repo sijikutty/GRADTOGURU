@@ -4,13 +4,16 @@ import paramiko
 hostname = 'example.com'
 username = 'your_username'
 password = 'your_password'  # Replace with your actual password
-directory_to_enter = 'ora'  # The directory you want to enter
+search_path = '/path/to/search'  # Replace with the path to search, e.g., '/home/user'
 
-# Function to recursively list directories
-def list_directories(ssh_client, current_directory):
-    # Send the command to list files and directories in the current directory
-    ssh_shell.send(f'cd {current_directory}\n')
-    ssh_shell.send('ls -l -d */\n')  # List only directories (ending with '/')
+# Function to search for the directory
+def search_directory(ssh_client, search_path, target_directory):
+    # Create an interactive shell session
+    ssh_shell = ssh_client.invoke_shell()
+
+    # Send commands to change directory and list contents
+    ssh_shell.send(f'cd {search_path}\n')
+    ssh_shell.send('ls -l\n')  # List all files and directories
 
     # Wait for the command to execute
     while not ssh_shell.recv_ready():
@@ -19,21 +22,11 @@ def list_directories(ssh_client, current_directory):
     # Read and print the output of the command
     output = ssh_shell.recv(65535).decode()
 
-    # Extract directory names from the output
-    lines = output.splitlines()
-
-    # Check if there are any directories to process
-    if len(lines) > 0:
-        dir_names = [line.split()[8].strip('/') for line in lines if line.strip().endswith('/')]
-
-        # Print the directory names
-        print(f"Subdirectories in '{current_directory}':")
-        for dir_name in dir_names:
-            print(dir_name)
-
-        # Recursively list contents of each subdirectory
-        for dir_name in dir_names:
-            list_directories(ssh_client, f"{current_directory}/{dir_name}")
+    # Check if the target directory exists in the output
+    if target_directory in output:
+        print(f"Directory '{target_directory}' found in '{search_path}'.")
+    else:
+        print(f"Directory '{target_directory}' not found in '{search_path}'.")
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -43,11 +36,8 @@ try:
     # Connect to the SSH server using password authentication
     ssh_client.connect(hostname=hostname, username=username, password=password)
 
-    # Create an interactive shell session
-    ssh_shell = ssh_client.invoke_shell()
-
-    # Call the function to list directories recursively starting from 'ora'
-    list_directories(ssh_client, directory_to_enter)
+    # Call the function to search for the directory
+    search_directory(ssh_client, search_path, 'fit/data/in')
 
 finally:
     # Close the SSH connection
