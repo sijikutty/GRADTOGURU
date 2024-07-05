@@ -1,30 +1,22 @@
-import paramiko
-
-# SSH connection details
-hostname = 'example.com'
-username = 'your_username'
-password = 'your_password'
 target_folder = 'data'  # Subfolder name to search for
 
 # Function to recursively search for a folder
-def search_for_folder(ssh_client, current_directory, target_folder):
+def search_for_folder(sftp, current_directory, target_folder):
     try:
-        sftp = ssh_client.open_sftp()
+        # Change directory to the current directory
         sftp.chdir(current_directory)
 
         # List all items (files and directories) in the current directory
-        items = sftp.listdir_attr()
+        items = sftp.listdir()
 
         for item in items:
-            item_name = item.filename
-
             # Check if the item is a directory
-            if item.st_mode & paramiko.S_IFDIR:
-                if item_name == target_folder:
+            if sftp.stat(item).st_mode // 32768 == 1:  # Directory check
+                if item == target_folder:
                     return True
                 else:
                     # Recursively search within this directory
-                    if search_for_folder(ssh_client, f"{current_directory}/{item_name}", target_folder):
+                    if search_for_folder(sftp, f"{current_directory}/{item}", target_folder):
                         return True
 
         return False
@@ -44,12 +36,16 @@ try:
     # Connect to the SSH server using password authentication
     ssh_client.connect(hostname=hostname, username=username, password=password)
 
+    # Open an SFTP session on the SSH connection
+    sftp = ssh_client.open_sftp()
+
     # Check if the target folder exists anywhere
-    if search_for_folder(ssh_client, "/", target_folder):
+    if search_for_folder(sftp, "/", target_folder):
         print(f"Subfolder '{target_folder}' exists in at least one directory on the server.")
     else:
         print(f"Subfolder '{target_folder}' does not exist in any directory on the server.")
 
 finally:
-    # Close the SSH connection
-    ssh_client.close()
+    # Close the SFTP session and SSH connection
+    if ssh_client:
+        ssh_client.close()
