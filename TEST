@@ -1,12 +1,13 @@
-from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, get_secrets,construct_putty_credentials,save_credentials
-from smoketest_awsinfra import get_testcase,connect_to_oracleDB
+# test_script.py
+
+from playwright.sync_api import Page
+from smoketest_awsinfra import connect_to_oracleDB
+
 print("hi2")
 
-
-def test_PS_EGL_DB_connectivity(page : Page):
-
+def test_PS_EGL_DB_connectivity(page: Page):
     print("hi1")
+    
     # Call the function you want to test
     result = connect_to_oracleDB("dev/2807/fgld")
 
@@ -15,4 +16,6 @@ def test_PS_EGL_DB_connectivity(page : Page):
 
     # Print test success message for visibility
     print(f"Test case test_PS_EGL_DB_connectivity executed successfully.")
-    
+
+if __name__ == "__main__":
+    test_PS_EGL_DB_connectivity(Page())
