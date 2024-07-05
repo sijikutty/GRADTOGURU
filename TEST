@@ -1,15 +1,9 @@
 import paramiko
 
-# SSH connection details
-hostname = 'example.com'
-username = 'your_username'
-password = 'your_password'
-
-# Function to recursively print folders and subfolders
-def print_folders(sftp, current_directory, indentation=""):
+def list_folders(sftp, remote_path, indentation=""):
     try:
-        # Change directory to the current directory
-        sftp.chdir(current_directory)
+        # Change directory to the remote_path
+        sftp.chdir(remote_path)
 
         # List all items (files and directories) in the current directory
         items = sftp.listdir()
@@ -17,11 +11,11 @@ def print_folders(sftp, current_directory, indentation=""):
         for item in items:
             # Check if the item is a directory
             try:
-                sftp.chdir(f"{current_directory}/{item}")
+                sftp.chdir(f"{remote_path}/{item}")
                 print(f"{indentation}{item}/")  # Print folder name with indentation
 
-                # Recursively print subfolders
-                print_folders(sftp, f"{current_directory}/{item}", indentation + "    ")
+                # Recursively list subfolders
+                list_folders(sftp, f"{remote_path}/{item}", indentation + "    ")
 
             except IOError:
                 # IOError will be raised if it's not a directory or if permission is denied
@@ -32,7 +26,12 @@ def print_folders(sftp, current_directory, indentation=""):
         pass
 
     except Exception as e:
-        print(f"Error listing folder {current_directory}: {str(e)}")
+        print(f"Error listing folder {remote_path}: {str(e)}")
+
+# SSH connection details
+hostname = 'example.com'
+username = 'your_username'
+password = 'your_password'
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -47,7 +46,7 @@ try:
 
     # Print all folders and subfolders starting from root directory ("/")
     print(f"Listing all folders and subfolders in {hostname}:")
-    print_folders(sftp, "/")
+    list_folders(sftp, "/")
 
 finally:
     # Close the SFTP session and SSH connection
