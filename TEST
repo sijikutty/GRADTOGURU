@@ -4,6 +4,27 @@ import paramiko
 hostname = 'example.com'
 username = 'your_username'
 password = 'your_password'  # Replace with your actual password
+directory_to_enter = 'ora'  # The directory you want to enter
+
+# Function to recursively list directories
+def list_directories(ssh_client, current_directory):
+    # Send the command to list files and directories in the current directory
+    ssh_shell.send(f'cd {current_directory}\n')
+    ssh_shell.send('ls -l\n')
+
+    # Wait for the command to execute
+    while not ssh_shell.recv_ready():
+        pass
+
+    # Read and print the output of the command
+    output = ssh_shell.recv(65535).decode()
+    print(f"Contents of '{current_directory}' directory:\n{output}")
+
+    # Find directories in the output and recursively list their contents
+    for line in output.splitlines():
+        if line.startswith('d'):
+            subdir_name = line.split()[-1]
+            list_directories(ssh_client, f"{current_directory}/{subdir_name}")
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -13,20 +34,11 @@ try:
     # Connect to the SSH server using password authentication
     ssh_client.connect(hostname=hostname, username=username, password=password)
 
-    # Execute command to list all files and directories
-    stdin, stdout, stderr = ssh_client.exec_command('ls -l')
+    # Create an interactive shell session
+    ssh_shell = ssh_client.invoke_shell()
 
-    # Read and print the output of the command
-    output = stdout.read().decode()
-    print(f"List of files and directories on {hostname}:\n{output}")
-
-    # Filter directories from the output
-    directories = [line.split()[-1] for line in output.splitlines() if line.startswith('d')]
-
-    # Print the list of directories
-    print(f"\nDirectories on {hostname}:")
-    for directory in directories:
-        print(directory)
+    # Call the function to list directories recursively starting from 'ora'
+    list_directories(ssh_client, directory_to_enter)
 
 finally:
     # Close the SSH connection
