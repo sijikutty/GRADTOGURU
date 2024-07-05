@@ -2,7 +2,7 @@ import paramiko
 
 # SSH connection details
 hostname = 'example.com'
-username = 'username'
+username = 'your_username'
 password = 'your_password'  # Replace with your actual password
 
 # Create an SSH client instance
@@ -13,11 +13,20 @@ try:
     # Connect to the SSH server using password authentication
     ssh_client.connect(hostname=hostname, username=username, password=password)
 
-    # Perform operations on the remote server...
+    # Execute command to list all files and directories
     stdin, stdout, stderr = ssh_client.exec_command('ls -l')
 
-    # Example command execution
-    print(stdout.read().decode())
+    # Read and print the output of the command
+    output = stdout.read().decode()
+    print(f"List of files and directories on {hostname}:\n{output}")
+
+    # Filter directories from the output
+    directories = [line.split()[-1] for line in output.splitlines() if line.startswith('d')]
+
+    # Print the list of directories
+    print(f"\nDirectories on {hostname}:")
+    for directory in directories:
+        print(directory)
 
 finally:
     # Close the SSH connection
