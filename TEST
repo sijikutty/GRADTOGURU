@@ -1,3 +1,1 @@
-    # Call autosys_job_run function with specific job names
-    job1_status = autosys_job_run(page, testdata, testdata["maximis_load_job"], testdata["ODS_file_load_job"])
-    print(f"Job 1 Status: {job1_status}")
+def autosys_job_run(page: Page, testdata: dict, maximis_load_job: str, ODS_file_load_job: str):
