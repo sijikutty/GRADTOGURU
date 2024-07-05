@@ -45,4 +45,12 @@ try:
             found = True
             break
         except Exception as e:
-            print(f"Failed to search in '{root_path}': {str(e)
+            print(f"Failed to search in '{root_path}': {str(e)}")
+            continue
+    
+    if not found:
+        print(f"Failed to find '{target_directory}' in any of the common root paths.")
+
+finally:
+    # Close the SSH connection
+    ssh_client.close()
