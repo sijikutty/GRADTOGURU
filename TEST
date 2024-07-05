@@ -1,33 +1,26 @@
 from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, get_secrets,construct_putty_credentials,save_credentials
+from automation_utils import get_testdata, construct_putty_credentials, save_credentials
 import pytest
 
-@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
-def test_Maximis_regression(page:Page, testcase):
-
-    testdata = testcase["testdata"]
-
-        # Credentials
+def execute_job_sequence(page: Page, testdata: dict, job_name: str, search_label: str):
+    # Credentials
     credentials_data = construct_putty_credentials(testdata)
-
-    cred_json_file_path=save_credentials(credentials_data)
+    cred_json_file_path = save_credentials(credentials_data)
 
     page.goto(testdata["autosys_url"])
-    
+
     try:
         expect(page.get_by_text("AutoSys Workload Automation")).to_be_visible()
         print("Autosys Login Success!")
-
     except AssertionError:
         raise Exception("Autosys Login Failed.")
-    
-  
+
     page.locator("a").filter(has_text="Quick View").click()
     frame = page.frame_locator("#QuickView")
-    frame.get_by_label("Enter job name search pattern").fill(testdata["maximis_load_job"])
+    frame.get_by_label("Enter job name search pattern").fill(testdata[search_label])
     frame.get_by_label("Enter job name search pattern").press("Enter")
     frame.get_by_role("link", name="Select to expand").click()
-    frame.get_by_role("link", name=testdata["ODS_file_load_job"]).click()
+    frame.get_by_role("link", name=job_name).click()
     page.wait_for_timeout(1500)
     frame.locator("[id=\"jobResultTable\\:eventId\"]").select_option("1")
     frame.locator("[id=\"jobResultTable\\:sendEventButton\"]").click()
@@ -39,7 +32,7 @@ def test_Maximis_regression(page:Page, testcase):
 
     # Get the second row of the table (assuming you want the second row)
     Log_row = logframe.locator("tbody tr:nth-child(2)")
-            
+
     # Get the text from the sixth cell in the second row
     Job_status = Log_row.locator("td:nth-child(5)").inner_text().strip()
 
@@ -57,5 +50,25 @@ def test_Maximis_regression(page:Page, testcase):
 
     if Job_status.upper() != "SUCCESS":
         raise Exception(f"Job Status : {Job_status}")
-    else:
-        return Job_status
+
+    return Job_status
+
+@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
+def test_Maximis_regression(page: Page, testcase):
+    testdata = testcase["testdata"]
+
+    # Execute first job
+    job1_status = execute_job_sequence(page, testdata, testdata["maximis_load_job"], "maximis_load_job")
+    print(f"Job 1 Status: {job1_status}")
+
+    # Execute second job
+    job2_status = execute_job_sequence(page, testdata, testdata["ODS_file_load_job"], "ODS_file_load_job")
+    print(f"Job 2 Status: {job2_status}")
+
+    # Add more jobs if needed...
+
+    # Assertions or further actions based on job statuses
+
+if __name__ == "__main__":
+    # Execute tests directly when running as a script
+    pytest.main()
