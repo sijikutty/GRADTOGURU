@@ -1,7 +1,13 @@
-target_folder = 'data'  # Subfolder name to search for
+import paramiko
 
-# Function to recursively search for a folder
-def search_for_folder(sftp, current_directory, target_folder):
+# SSH connection details
+hostname = 'example.com'
+username = 'your_username'
+password = 'your_password'
+target_file = 'mm.dat'  # File name to search for
+
+# Function to recursively search for a file
+def search_for_file(sftp, current_directory, target_file):
     try:
         # Change directory to the current directory
         sftp.chdir(current_directory)
@@ -10,14 +16,14 @@ def search_for_folder(sftp, current_directory, target_folder):
         items = sftp.listdir()
 
         for item in items:
+            # Check if the item is a file
+            if item == target_file:
+                return True
             # Check if the item is a directory
-            if sftp.stat(item).st_mode // 32768 == 1:  # Directory check
-                if item == target_folder:
+            elif sftp.stat(item).st_mode // 32768 == 1:  # Directory check
+                # Recursively search within this directory
+                if search_for_file(sftp, f"{current_directory}/{item}", target_file):
                     return True
-                else:
-                    # Recursively search within this directory
-                    if search_for_folder(sftp, f"{current_directory}/{item}", target_folder):
-                        return True
 
         return False
 
@@ -25,7 +31,7 @@ def search_for_folder(sftp, current_directory, target_folder):
         return False
 
     except Exception as e:
-        print(f"Error searching for folder in {current_directory}: {str(e)}")
+        print(f"Error searching for file in {current_directory}: {str(e)}")
         return False
 
 # Create an SSH client instance
@@ -39,11 +45,11 @@ try:
     # Open an SFTP session on the SSH connection
     sftp = ssh_client.open_sftp()
 
-    # Check if the target folder exists anywhere
-    if search_for_folder(sftp, "/", target_folder):
-        print(f"Subfolder '{target_folder}' exists in at least one directory on the server.")
+    # Check if the target file exists anywhere
+    if search_for_file(sftp, "/", target_file):
+        print(f"File '{target_file}' exists in at least one directory on the server.")
     else:
-        print(f"Subfolder '{target_folder}' does not exist in any directory on the server.")
+        print(f"File '{target_file}' does not exist in any directory on the server.")
 
 finally:
     # Close the SFTP session and SSH connection
