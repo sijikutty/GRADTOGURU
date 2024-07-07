@@ -1,32 +1,57 @@
-import cx_Oracle
-import oracledb  # Make sure this is the correct import for cx_Oracle
+import oracledb  # Assuming this is a custom module or wrapper for Oracle DB operations
+from automation_utils import get_secrets
+
+def get_DBsecrets(secretID):
+    try:
+        secret = get_secrets(secretID)
+
+        db_secrets = {
+            'username': secret['username'],
+            'password': secret['password'],
+            'host': secret['host'],
+            'port': secret['port'],
+            'servicename': secret['dbname'],
+        }
+        return db_secrets
+
+    except Exception as e:
+        print(f"Error retrieving secret: {e}")
+        return None
 
 def connect_to_oracleDB(secretID):
     db_secrets = get_DBsecrets(secretID)
 
     try:
         print("Connecting to DB")
-        connection = cx_Oracle.connect(user=db_secrets['username'],
-                                       password=db_secrets['password'],
-                                       dsn=f"{db_secrets['host']}:{db_secrets['port']}/{db_secrets['servicename']}")
+        connection = oracledb.connect(user=db_secrets['username'],
+                                      password=db_secrets['password'],
+                                      host=db_secrets['host'],
+                                      port=db_secrets['port'],
+                                      service_name=db_secrets['servicename'])
 
         print("Database connected successfully")
-        cursor = connection.cursor()
-
+        
         # Example query
         query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'MAX'"
-
+        
+        cursor = connection.cursor()
         cursor.execute(query)
-        row = cursor.fetchone()
-        count = row[0]  # Assuming COUNT(*) returns a single value
-
+        result = cursor.fetchone()
+        
+        count = result[0] if result else None
+        
         print(f"Result of the query: {count}")
-
+        
         cursor.close()
         connection.close()
-
+        
         return {"status": True, "count": count}
 
-    except cx_Oracle.Error as e:
-        print(f"ORACLE Error: {e}")
+    except Exception as e:
+        print(f"Error connecting to Oracle DB: {e}")
         return {"status": False, "error": str(e)}
+
+if __name__ == "__main__":
+    # Example usage with a specific secret ID
+    result = connect_to_oracleDB("dev/2807/fgld")
+    print(result)
