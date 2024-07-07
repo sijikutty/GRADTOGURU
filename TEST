@@ -1,58 +1,48 @@
-import paramiko
+import boto3
+from botocore.exceptions import ClientError
+from automation_utils import get_testdata, get_secrets
+import json
+import oracledb
 
-def list_folders(sftp, remote_path, indentation=""):
+def get_DBsecrets(secretID):
     try:
-        # Change directory to the remote_path
-        sftp.chdir(remote_path)
+        secret = get_secrets(secretID)
 
-        # List all items (files and directories) in the current directory
-        items = sftp.listdir()
+        db_secrets = {
+            'username': secret['username'],
+            'password': secret['password'],
+            'host': secret['host'],
+            'port': secret['port'],
+            'servicename': secret['dbname'],
+        }
+        print (secret['username'])
+        print (secret['password'])
+        return db_secrets
 
-        for item in items:
-            # Check if the item is a directory
-            try:
-                # Attempt to change into the directory to verify it's a folder
-                sftp.chdir(f"{remote_path}/{item}")
-                print(f"{indentation}{item}/")  # Print folder name with indentation
+    except ClientError as e:
+        print(f"Error retrieving secret: {e}")
+        return None
 
-                # Recursively list subfolders
-                list_folders(sftp, f"{remote_path}/{item}", indentation + "    ")
+def connect_to_oracleDB(secretID):
+    db_secrets = get_DBsecrets(secretID)
 
-                # Change back to the parent directory after listing subfolders
-                sftp.chdir(remote_path)
+    try:
+        print("Connecting to DB")
+        connection = oracledb.connect(user=db_secrets['username'],
+                                      password=db_secrets['password'],
+                                      host=db_secrets['host'],
+                                      port=db_secrets['port'],
+                                      service_name=db_secrets['servicename'])
 
-            except IOError:
-                # IOError will be raised if it's not a directory or if permission is denied
-                pass
+        print(f"Database connected successfully", connection)
+        return {"status": True, "conn": connection}
 
-    except IOError:
-        # IOError will be raised if directory doesn't exist or permission is denied
-        pass
+    except oracledb.Error as e:
+        print(f"ORACLE Error: ", str(e))
+        return {"status": False, "error": str(e)}
 
-    except Exception as e:
-        print(f"Error listing folder {remote_path}: {str(e)}")
-
-# SSH connection details
-hostname = 'example.com'
-username = 'your_username'
-password = 'your_password'
-
-# Create an SSH client instance
-ssh_client = paramiko.SSHClient()
-ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-try:
-    # Connect to the SSH server using password authentication
-    ssh_client.connect(hostname=hostname, username=username, password=password)
-
-    # Open an SFTP session on the SSH connection
-    sftp = ssh_client.open_sftp()
-
-    # Print all folders and subfolders starting from root directory ("/")
-    print(f"Listing all folders and subfolders in {hostname}:")
-    list_folders(sftp, "/")
-
-finally:
-    # Close the SFTP session and SSH connection
-    if ssh_client:
-        ssh_client.close()
+if __name__ == "__main__":
+    # Example usage with a specific secret ID
+    #result = connect_to_oracleDB("dev/2807/fgld")
+    result = connect_to_oracleDB("dev/2807/fgld")
+    print(result)
