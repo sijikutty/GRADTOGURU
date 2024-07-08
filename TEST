@@ -1,40 +1,68 @@
-import paramiko
+search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to search for files
 
-def execute_command_ssh(hostname, port, username, password, command):
+def directory_exists(sftp, remote_path):
     try:
-        # Create SSH client instance
-        ssh_client = paramiko.SSHClient()
-        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        
-        # Connect to SSH server using username and password
-        ssh_client.connect(hostname=hostname, port=port, username=username, password=password)
-        
-        # Execute command on the SSH server
-        stdin, stdout, stderr = ssh_client.exec_command(command)
-        
-        # Read the output from the command
-        output = stdout.read().decode()
-        
-        # Close the SSH connection
-        ssh_client.close()
-        
-        response = {'status': True, 'output': output}
-        return response
+        sftp.stat(remote_path)
+        return True
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"Error checking directory existence: {str(e)}")
+        return False
+
+def list_files(sftp, remote_path):
+    try:
+        # Change directory to the remote_path
+        sftp.chdir(remote_path)
+
+        # List all items (files and directories) in the current directory
+        items = sftp.listdir()
+
+        for item in items:
+            item_path = f"{remote_path}/{item}"
+            try:
+                # Attempt to change into the directory to verify it's a folder
+                sftp.chdir(item_path)
+
+                # Recursively list files and folders
+                list_files(sftp, item_path)
+
+                # Change back to the parent directory after listing
+                sftp.chdir(remote_path)
+
+            except IOError:
+                # If not a directory, it's a file
+                print(f"Found file: {item_path}")
+
+    except IOError:
+        # IOError will be raised if directory doesn't exist or permission is denied
+        print(f"Directory {remote_path} does not exist or cannot be accessed.")
 
     except Exception as e:
-        response = {'status': False, 'error': str(e)}
-        return response
+        print(f"Error listing folder {remote_path}: {str(e)}")
 
-# Example usage
-hostname = 'your_hostname'
-port = 22  # Default SSH port
-username = 'your_username'
-password = 'your_password'
-command = 'ls -lrt'
 
-result = execute_command_ssh(hostname, port, username, password, command)
-if result['status']:
-    print("Output of 'ls -lrt' command:")
-    print(result['output'])
-else:
-    print(f"Error executing command: {result['error']}")
+# Create an SSH client instance
+ssh_client = paramiko.SSHClient()
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+try:
+    # Connect to the SSH server using password authentication
+    ssh_client.connect(hostname=hostname, username=username, password=password)
+
+    # Open an SFTP session on the SSH connection
+    sftp = ssh_client.open_sftp()
+
+    # Check if the directory exists before listing files
+    if directory_exists(sftp, search_path):
+        print("Directory exists")
+        # Print all files in the specified directory
+        print(f"Listing all files in {search_path}:")
+        list_files(sftp, search_path)
+    else:
+        print(f"Directory {search_path} does not exist on the server.")
+
+finally:
+    # Close the SFTP session and SSH connection
+    if ssh_client:
+        ssh_client.close()
