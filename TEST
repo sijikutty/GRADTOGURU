@@ -1,6 +1,7 @@
 import paramiko
 
 search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to search for files
+file_to_read = 'maximis.out'  # File to read
 
 def directory_exists(sftp, remote_path):
     try:
@@ -12,27 +13,16 @@ def directory_exists(sftp, remote_path):
         print(f"Error checking directory existence: {str(e)}")
         return False
 
-def list_files(sftp, remote_path):
+def read_file_content(sftp, remote_file_path):
     try:
-        # Change directory to the remote_path
-        sftp.chdir(remote_path)
-
-        # Execute ls -al command to list all files and directories
-        stdin, stdout, stderr = ssh_client.exec_command(f"ls -al {remote_path}")
-        
-        # Read the output from the command
-        output = stdout.read().decode()
-        
-        # Print the output
-        print(f"Listing all files and directories in {remote_path}:")
-        print(output)
-
-    except IOError:
-        # IOError will be raised if directory doesn't exist or permission is denied
-        print(f"Directory {remote_path} does not exist or cannot be accessed.")
+        # Open the file in read mode
+        with sftp.open(remote_file_path, 'r') as file:
+            content = file.read()
+            return content
 
     except Exception as e:
-        print(f"Error listing folder {remote_path}: {str(e)}")
+        print(f"Error reading file {remote_file_path}: {str(e)}")
+        return None
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -45,11 +35,22 @@ try:
     # Open an SFTP session on the SSH connection
     sftp = ssh_client.open_sftp()
 
-    # Check if the directory exists before listing files
+    # Check if the directory exists before reading file
     if directory_exists(sftp, search_path):
         print("Directory exists")
-        # List all files and directories using ls -al command
-        list_files(sftp, search_path)
+        
+        # Construct full path of the file to read
+        file_path = f"{search_path}/{file_to_read}"
+        
+        # Read the file content
+        file_content = read_file_content(sftp, file_path)
+        
+        if file_content is not None:
+            print(f"Content of {file_to_read}:")
+            print(file_content)
+        else:
+            print(f"Failed to read content of {file_to_read}")
+
     else:
         print(f"Directory {search_path} does not exist on the server.")
 
