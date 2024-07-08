@@ -1,77 +1,32 @@
-import paramiko
+def connect_to_oracleDB(secretID):
+    db_secrets = get_DBsecrets(secretID)
 
-def write_file_content(sftp, remote_file_path, content):
     try:
-        # Convert content to a string if it's a list
-        if isinstance(content, list):
-            content = "\n".join(content)
+        print("Connecting to DB")
+        connection = oracledb.connect(user=db_secrets['username'],
+                                      password=db_secrets['password'],
+                                      host=db_secrets['host'],
+                                      port=db_secrets['port'],
+                                      service_name=db_secrets['servicename'])
 
-        # Open the file in write mode to replace content
-        with sftp.open(remote_file_path, 'w') as file:
-            file.write(content)
+        print("Database connected successfully")
         
-        print(f"Modification completed: Successfully updated file {remote_file_path}")
-
-    except Exception as e:
-        raise RuntimeError(f"Error updating file {remote_file_path}: {str(e)}")
-
-def directory_exists(sftp, remote_path):
-    try:
-        sftp.stat(remote_path)
-        return True
-    except FileNotFoundError:
-        return False
-    except Exception as e:
-        raise RuntimeError(f"Error checking directory existence: {str(e)}")
-
-def file_exists(sftp, remote_file_path):
-    try:
-        # Attempt to open the file to check if it exists
-        sftp.stat(remote_file_path)
-        return True
-    except IOError:
-        return False
-    except Exception as e:
-        raise RuntimeError(f"Error checking file existence: {str(e)}")
-
-def update_remote_file(hostname, username, password, search_path, file_to_edit, new_content):
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    
-    try:
-        ssh_client.connect(hostname=hostname, username=username, password=password)
-        sftp = ssh_client.open_sftp()
-    
-        if not directory_exists(sftp, search_path):
-            raise RuntimeError(f"Directory {search_path} does not exist on the server.")
+        # Example query
+        query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'MAX' "
         
-        file_path = f"{search_path}/{file_to_edit}"
+        cursor = connection.cursor()
+        cursor.execute(query)
+        result = cursor.fetchone()
         
-        if not file_exists(sftp, file_path):
-            raise RuntimeError(f"File {file_path} does not exist on the server.")
+        count = result[0] if result else None
+        
+        print(f"Result of the query: {count}")
+        
+        cursor.close()
+        connection.close()
+        
+        return {"status": True, "count": count}
 
-        write_file_content(sftp, file_path, new_content)
-    
     except Exception as e:
-        raise RuntimeError(f"Failed to update file: {str(e)}")
-    
-    finally:
-        if ssh_client:
-            ssh_client.close()
-
-# Example usage:
-hostname = "example.com"
-username = "your_username"
-password = "your_password"
-search_path = "/path/to/search"
-file_to_edit = "maximis.out"
-new_content = [
-    "04/14/2024NCSH10000434100HIG    USD                 100.400    MAX  23386  1686READY_FOR_GL_IMPORT                              04/15/2024  08:18:52 AM                       100.000USD",
-    "04/14/2024NCSH10000105800HIG    USD                -100.400    MAX  23386   908READY_FOR_GL_IMPORT                              04/15/2024  08:18:52 AM                      -100.000USD"
-]
-
-try:
-    update_remote_file(hostname, username, password, search_path, file_to_edit, new_content)
-    print("Update successful.")
-except RuntimeError as e:
-    print(f"Error occurred: {str(e)}")
+        print(f"Error connecting to Oracle DB: {e}")
+        return {"status": False, "error": str(e)}
