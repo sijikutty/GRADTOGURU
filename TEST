@@ -1,67 +1,12 @@
-search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to check existence
-
-def directory_exists(sftp, remote_path):
+def check_unix_server(hostname, port):
     try:
-        sftp.stat(remote_path)
-        return True
-    except FileNotFoundError:
-        return False
-    except Exception as e:
-        print(f"Error checking directory existence: {str(e)}")
-        return False
-
-def list_files(sftp, remote_path):
-    try:
-        # Change directory to the remote_path
-        sftp.chdir(remote_path)
-
-        # List all items (files and directories) in the current directory
-        items = sftp.listdir()
-
-        for item in items:
-            item_path = f"{remote_path}/{item}"
-            try:
-                # Attempt to change into the directory to verify it's a folder
-                sftp.chdir(item_path)
-
-                # Recursively list files and folders
-                list_files(sftp, item_path)
-
-                # Change back to the parent directory after listing
-                sftp.chdir(remote_path)
-
-            except IOError:
-                # If not a directory, it's a file
-                print(f"Found file: {item_path}")
-
-    except IOError:
-        # IOError will be raised if directory doesn't exist or permission is denied
-        print(f"Directory {remote_path} does not exist or cannot be accessed.")
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(5)
+        sock.connect((hostname, port))
+        
+        response = {'status' : True}
+        return response
 
     except Exception as e:
-        print(f"Error listing folder {remote_path}: {str(e)}")
-
-
-# Create an SSH client instance
-ssh_client = paramiko.SSHClient()
-ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-try:
-    # Connect to the SSH server using password authentication
-    ssh_client.connect(hostname=hostname, username=username, password=password)
-
-    # Open an SFTP session on the SSH connection
-    sftp = ssh_client.open_sftp()
-
-    # Check if the directory exists before listing files
-    if directory_exists(sftp, search_path):
-        # Print all files in the specified directory
-        print(f"Listing all files in {search_path}:")
-        list_files(sftp, search_path)
-    else:
-        print(f"Directory {search_path} does not exist on the server.")
-
-finally:
-    # Close the SFTP session and SSH connection
-    if ssh_client:
-        ssh_client.close()
+        response = {'status' : False, 'error' : e }
+        return response
