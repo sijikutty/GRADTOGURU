@@ -4,7 +4,7 @@ import paramiko
 hostname = "n"
 username = "p"
 password = "m"  # Replace with your actual password
-directory_to_enter = 'oradiag_fitap01d'  # The directory you want to enter
+directory_to_enter = 'k'  # The directory you want to enter
 search_path = '/fit/data/in'  # Replace with the path to search, e.g., '/home/user'
 search_path = '/appl/cits/dev/infashr/fit/data/in'
 target_substring = 'maxi'  # Substring to search for in file names
