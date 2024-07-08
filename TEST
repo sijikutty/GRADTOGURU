@@ -1,50 +1,23 @@
-import cx_Oracle
-
-def connect_to_oracle_db(secretID):
+def connect_to_oracleDB(secretID):
     db_secrets = get_DBsecrets(secretID)
 
     try:
         print("Connecting to DB")
-        connection = cx_Oracle.connect(user=db_secrets['username'],
-                                       password=db_secrets['password'],
-                                       dsn=f"{db_secrets['host']}:{db_secrets['port']}/{db_secrets['servicename']}")
-        
-        print("Database connected successfully")
-        return connection
+        connection = oracledb.connect(user=db_secrets['username'],
+                                      password=db_secrets['password'],
+                                      host=db_secrets['host'],
+                                      port=db_secrets['port'],
+                                      service_name=db_secrets['servicename'])
 
+        print("Database connected successfully")
     except Exception as e:
         print(f"Error connecting to Oracle DB: {e}")
-        return None
-
-def execute_query(connection, query):
-    try:
-        cursor = connection.cursor()
-        cursor.execute(query)
-        result = cursor.fetchone()
-        
-        count = result[0] if result else None
-        
-        print(f"Result of the query: {count}")
-        
-        cursor.close()
-        return {"status": True, "count": count}
-
-    except Exception as e:
-        print(f"Error executing query: {e}")
         return {"status": False, "error": str(e)}
-    finally:
-        if connection:
-            connection.close()
-
-# Example usage in main or another function
-def main():
-    secretID = "your_secret_id"
-    query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'MAX'"
-
-    # Connect to Oracle DB
-    connection = connect_to_oracle_db(secretID)
+# Connect to Oracle DB
+    connection = connect_to_oracleDB(testdata["ps_db"])
     
     if connection:
+        print("hi")
         # Execute query
         query_result = execute_query(connection, query)
 
@@ -56,5 +29,7 @@ def main():
     else:
         print("Failed to connect to the database.")
 
-if __name__ == "__main__":
-    main()
+------
+result:Connecting to DB
+Database connected successfully
+Failed to connect to the database.
