@@ -1,11 +1,14 @@
-import paramiko
+search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to check existence
 
-# SSH connection details
-hostname = "your_hostname"
-username = "your_username"
-password = "your_password"
-
-search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to search for files
+def directory_exists(sftp, remote_path):
+    try:
+        sftp.stat(remote_path)
+        return True
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"Error checking directory existence: {str(e)}")
+        return False
 
 def list_files(sftp, remote_path):
     try:
@@ -33,7 +36,7 @@ def list_files(sftp, remote_path):
 
     except IOError:
         # IOError will be raised if directory doesn't exist or permission is denied
-        pass
+        print(f"Directory {remote_path} does not exist or cannot be accessed.")
 
     except Exception as e:
         print(f"Error listing folder {remote_path}: {str(e)}")
@@ -50,9 +53,13 @@ try:
     # Open an SFTP session on the SSH connection
     sftp = ssh_client.open_sftp()
 
-    # Print all files in the specified directory
-    print(f"Listing all files in {search_path}:")
-    list_files(sftp, search_path)
+    # Check if the directory exists before listing files
+    if directory_exists(sftp, search_path):
+        # Print all files in the specified directory
+        print(f"Listing all files in {search_path}:")
+        list_files(sftp, search_path)
+    else:
+        print(f"Directory {search_path} does not exist on the server.")
 
 finally:
     # Close the SFTP session and SSH connection
