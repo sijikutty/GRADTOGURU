@@ -1,57 +1,64 @@
-import oracledb  # Assuming this is a custom module or wrapper for Oracle DB operations
-from automation_utils import get_secrets
+import paramiko
 
-def get_DBsecrets(secretID):
+# SSH connection details
+hostname = "n"
+username = "p"
+password = "m"  # Replace with your actual password
+directory_to_enter = 'oradiag_fitap01d'  # The directory you want to enter
+search_path = '/fit/data/in'  # Replace with the path to search, e.g., '/home/user'
+search_path = '/appl/cits/dev/infashr/fit/data/in'
+target_substring = 'maxi'  # Substring to search for in file names
+
+def list_folders(sftp, remote_path, indentation=""):
     try:
-        secret = get_secrets(secretID)
+        # Change directory to the remote_path
+        sftp.chdir(remote_path)
 
-        db_secrets = {
-            'username': secret['username'],
-            'password': secret['password'],
-            'host': secret['host'],
-            'port': secret['port'],
-            'servicename': secret['dbname'],
-        }
-        return db_secrets
+        # List all items (files and directories) in the current directory
+        items = sftp.listdir()
+
+        for item in items:
+            # Check if the item is a directory
+            try:
+                # Attempt to change into the directory to verify it's a folder
+                sftp.chdir(f"{remote_path}/{item}")
+                print(f"{indentation}{item}/")  # Print folder name with indentation
+
+                # Recursively list subfolders
+                list_folders(sftp, f"{remote_path}/{item}", indentation + "    ")
+
+                # Change back to the parent directory after listing subfolders
+                sftp.chdir(remote_path)
+
+            except IOError:
+                # IOError will be raised if it's not a directory or if permission is denied
+                pass
+
+    except IOError:
+        # IOError will be raised if directory doesn't exist or permission is denied
+        pass
 
     except Exception as e:
-        print(f"Error retrieving secret: {e}")
-        return None
+        print(f"Error listing folder {remote_path}: {str(e)}")
 
-def connect_to_oracleDB(secretID):
-    db_secrets = get_DBsecrets(secretID)
 
-    try:
-        print("Connecting to DB")
-        connection = oracledb.connect(user=db_secrets['username'],
-                                      password=db_secrets['password'],
-                                      host=db_secrets['host'],
-                                      port=db_secrets['port'],
-                                      service_name=db_secrets['servicename'])
 
-        print("Database connected successfully")
-        
-        # Example query
-        query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'MAX'"
-        
-        cursor = connection.cursor()
-        cursor.execute(query)
-        result = cursor.fetchone()
-        
-        count = result[0] if result else None
-        
-        print(f"Result of the query: {count}")
-        
-        cursor.close()
-        connection.close()
-        
-        return {"status": True, "count": count}
+# Create an SSH client instance
+ssh_client = paramiko.SSHClient()
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    except Exception as e:
-        print(f"Error connecting to Oracle DB: {e}")
-        return {"status": False, "error": str(e)}
+try:
+    # Connect to the SSH server using password authentication
+    ssh_client.connect(hostname=hostname, username=username, password=password)
 
-if __name__ == "__main__":
-    # Example usage with a specific secret ID
-    result = connect_to_oracleDB("dev/2807/fgld")
-    print(result)
+    # Open an SFTP session on the SSH connection
+    sftp = ssh_client.open_sftp()
+
+    # Print all folders and subfolders starting from root directory ("/")
+    print(f"Listing all folders and subfolders in {hostname}:")
+    list_folders(sftp, "/")
+
+finally:
+    # Close the SFTP session and SSH connection
+    if ssh_client:
+        ssh_client.close()
