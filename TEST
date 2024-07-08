@@ -1,54 +1,15 @@
-from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, get_secrets,construct_putty_credentials,save_credentials,autosys_job_run
-import pytest
 import paramiko
 
-
-@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
-def test_Maximis_regression(page:Page, testcase):
-
-
-    testdata = testcase["testdata"]
-    secrets = get_secrets(testdata["ods_unix_secretID"])
-    # SSH connection details
-    hostname = testdata["hostname"]
-    username = secrets['User']
-    password = secrets['Password'] 
-
-    search_path = testdata["search_path"]  # Path to search for file
-    file_to_edit = testdata["file_to_edit"] # File to read
-
-    new_content = testdata["new_content"]
-    # Create an SSH client instance
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    
+def write_file_content(sftp, remote_file_path, content):
     try:
-        # Connect to the SSH server using password authentication
-        ssh_client.connect(hostname=hostname, username=username, password=password)
-    
-        # Open an SFTP session on the SSH connection
-        sftp = ssh_client.open_sftp()
-    
-        # Check if the directory exists before writing file
-        if directory_exists(sftp, search_path):
-            print("Directory exists")
-            
-            # Construct full path of the file to edit
-            file_path = f"{search_path}/{file_to_edit}"
-            
-            # Write the new content to the file
-            write_file_content(sftp, file_path, new_content)
-            
-        else:
-            print(f"Directory {search_path} does not exist on the server.")
-    
-    finally:
-        # Close the SFTP session and SSH connection
-        if ssh_client:
-            ssh_client.close()
+        # Open the file in write mode to replace content
+        with sftp.open(remote_file_path, 'w') as file:
+            file.write(content)
+        
+        print(f"Modification completed: Successfully updated file {remote_file_path}")
 
-    
+    except Exception as e:
+        print(f"Modification failed: Error updating file {remote_file_path}: {str(e)}")
 
 def directory_exists(sftp, remote_path):
     try:
@@ -60,14 +21,47 @@ def directory_exists(sftp, remote_path):
         print(f"Error checking directory existence: {str(e)}")
         return False
 
-def write_file_content(sftp, remote_file_path, content):
+def update_remote_file(hostname, username, password, search_path, file_to_edit, new_content):
+    ssh_client = paramiko.SSHClient()
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
     try:
-        # Open the file in write mode to replace content
-        with sftp.open(remote_file_path, 'w') as file:
-            file.write(content)
-        
-        print(f"Successfully updated file {remote_file_path}")
-
+        ssh_client.connect(hostname=hostname, username=username, password=password)
+        sftp = ssh_client.open_sftp()
+    
+        if directory_exists(sftp, search_path):
+            print("Directory exists")
+            
+            file_path = f"{search_path}/{file_to_edit}"
+            write_file_content(sftp, file_path, new_content)
+            
+        else:
+            print(f"Directory {search_path} does not exist on the server.")
+    
     except Exception as e:
-        print(f"Error updating file {remote_file_path}: {str(e)}")
+        print(f"Failed to update file: {str(e)}")
+    
+    finally:
+        if ssh_client:
+            ssh_client.close()
 
+---------
+import pytest
+from playwright.sync_api import Page
+from automation_utils import get_testdata, get_secrets
+from update_utils import update_remote_file  # Assuming the refactored function is in update_utils
+
+@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
+def test_Maximis_regression(page: Page, testcase):
+    testdata = testcase["testdata"]
+    secrets = get_secrets(testdata["ods_unix_secretID"])
+
+    hostname = testdata["hostname"]
+    username = secrets['User']
+    password = secrets['Password']
+
+    search_path = testdata["search_path"]
+    file_to_edit = testdata["file_to_edit"]
+    new_content = testdata["new_content"]
+
+    update_remote_file(hostname, username, password, search_path, file_to_edit, new_content)
