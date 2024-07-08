@@ -1,2 +1,59 @@
+import paramiko
+
+search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to search for files
+file_to_edit = 'maximis.out'  # File to edit
+
+new_content = """\
 04/14/2024NCSH10000434100HIG    USD                 100.400    MAX  23386  1686READY_FOR_GL_IMPORT                              04/15/2024  08:18:52 AM                       100.000USD
 04/14/2024NCSH10000105800HIG    USD                -100.400    MAX  23386   908READY_FOR_GL_IMPORT                              04/15/2024  08:18:52 AM                      -100.000USD
+"""
+
+def directory_exists(sftp, remote_path):
+    try:
+        sftp.stat(remote_path)
+        return True
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"Error checking directory existence: {str(e)}")
+        return False
+
+def write_file_content(sftp, remote_file_path, content):
+    try:
+        # Open the file in write mode to replace content
+        with sftp.open(remote_file_path, 'w') as file:
+            file.write(content)
+        
+        print(f"Successfully updated file {remote_file_path}")
+
+    except Exception as e:
+        print(f"Error updating file {remote_file_path}: {str(e)}")
+
+# Create an SSH client instance
+ssh_client = paramiko.SSHClient()
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+try:
+    # Connect to the SSH server using password authentication
+    ssh_client.connect(hostname=hostname, username=username, password=password)
+
+    # Open an SFTP session on the SSH connection
+    sftp = ssh_client.open_sftp()
+
+    # Check if the directory exists before writing file
+    if directory_exists(sftp, search_path):
+        print("Directory exists")
+        
+        # Construct full path of the file to edit
+        file_path = f"{search_path}/{file_to_edit}"
+        
+        # Write the new content to the file
+        write_file_content(sftp, file_path, new_content)
+        
+    else:
+        print(f"Directory {search_path} does not exist on the server.")
+
+finally:
+    # Close the SFTP session and SSH connection
+    if ssh_client:
+        ssh_client.close()
