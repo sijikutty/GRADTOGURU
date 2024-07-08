@@ -1,15 +1,13 @@
 import paramiko
 
 # SSH connection details
-hostname = "n"
-username = "p"
-password = "m"  # Replace with your actual password
-directory_to_enter = 'k'  # The directory you want to enter
-search_path = '/fit/data/in'  # Replace with the path to search, e.g., '/home/user'
-search_path = '/appl/cits/dev/infashr/fit/data/in'
-target_substring = 'maxi'  # Substring to search for in file names
+hostname = "your_hostname"
+username = "your_username"
+password = "your_password"
 
-def list_folders(sftp, remote_path, indentation=""):
+search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to search for files
+
+def list_files(sftp, remote_path):
     try:
         # Change directory to the remote_path
         sftp.chdir(remote_path)
@@ -18,21 +16,20 @@ def list_folders(sftp, remote_path, indentation=""):
         items = sftp.listdir()
 
         for item in items:
-            # Check if the item is a directory
+            item_path = f"{remote_path}/{item}"
             try:
                 # Attempt to change into the directory to verify it's a folder
-                sftp.chdir(f"{remote_path}/{item}")
-                print(f"{indentation}{item}/")  # Print folder name with indentation
+                sftp.chdir(item_path)
 
-                # Recursively list subfolders
-                list_folders(sftp, f"{remote_path}/{item}", indentation + "    ")
+                # Recursively list files and folders
+                list_files(sftp, item_path)
 
-                # Change back to the parent directory after listing subfolders
+                # Change back to the parent directory after listing
                 sftp.chdir(remote_path)
 
             except IOError:
-                # IOError will be raised if it's not a directory or if permission is denied
-                pass
+                # If not a directory, it's a file
+                print(f"Found file: {item_path}")
 
     except IOError:
         # IOError will be raised if directory doesn't exist or permission is denied
@@ -40,7 +37,6 @@ def list_folders(sftp, remote_path, indentation=""):
 
     except Exception as e:
         print(f"Error listing folder {remote_path}: {str(e)}")
-
 
 
 # Create an SSH client instance
@@ -54,9 +50,9 @@ try:
     # Open an SFTP session on the SSH connection
     sftp = ssh_client.open_sftp()
 
-    # Print all folders and subfolders starting from root directory ("/")
-    print(f"Listing all folders and subfolders in {hostname}:")
-    list_folders(sftp, "/")
+    # Print all files in the specified directory
+    print(f"Listing all files in {search_path}:")
+    list_files(sftp, search_path)
 
 finally:
     # Close the SFTP session and SSH connection
