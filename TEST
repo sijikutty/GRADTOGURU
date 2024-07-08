@@ -1,1 +1,63 @@
-Modification failed: Error updating file /appl/cits/dev/infashr/fit/data/in/maximis.out: memoryview: a bytes-like object is required, not 'list'
+import paramiko
+
+def write_file_content(sftp, remote_file_path, content):
+    try:
+        # Convert content to a string if it's a list
+        if isinstance(content, list):
+            content = "\n".join(content)
+
+        # Open the file in write mode to replace content
+        with sftp.open(remote_file_path, 'w') as file:
+            file.write(content)
+        
+        print(f"Modification completed: Successfully updated file {remote_file_path}")
+
+    except Exception as e:
+        print(f"Modification failed: Error updating file {remote_file_path}: {str(e)}")
+
+def directory_exists(sftp, remote_path):
+    try:
+        sftp.stat(remote_path)
+        return True
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"Error checking directory existence: {str(e)}")
+        return False
+
+def update_remote_file(hostname, username, password, search_path, file_to_edit, new_content):
+    ssh_client = paramiko.SSHClient()
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    try:
+        ssh_client.connect(hostname=hostname, username=username, password=password)
+        sftp = ssh_client.open_sftp()
+    
+        if directory_exists(sftp, search_path):
+            print("Directory exists")
+            
+            file_path = f"{search_path}/{file_to_edit}"
+            write_file_content(sftp, file_path, new_content)
+            
+        else:
+            print(f"Directory {search_path} does not exist on the server.")
+    
+    except Exception as e:
+        print(f"Failed to update file: {str(e)}")
+    
+    finally:
+        if ssh_client:
+            ssh_client.close()
+
+# Example usage:
+hostname = "example.com"
+username = "your_username"
+password = "your_password"
+search_path = "/path/to/search"
+file_to_edit = "maximis.out"
+new_content = [
+    "04/14/2024NCSH10000434100HIG    USD                 100.400    MAX  23386  1686READY_FOR_GL_IMPORT                              04/15/2024  08:18:52 AM                       100.000USD",
+    "04/14/2024NCSH10000105800HIG    USD                -100.400    MAX  23386   908READY_FOR_GL_IMPORT                              04/15/2024  08:18:52 AM                      -100.000USD"
+]
+
+update_remote_file(hostname, username, password, search_path, file_to_edit, new_content)
