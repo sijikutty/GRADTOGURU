@@ -1,12 +1,40 @@
-def check_unix_server(hostname, port):
+import paramiko
+
+def execute_command_ssh(hostname, port, username, password, command):
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(5)
-        sock.connect((hostname, port))
+        # Create SSH client instance
+        ssh_client = paramiko.SSHClient()
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         
-        response = {'status' : True}
+        # Connect to SSH server using username and password
+        ssh_client.connect(hostname=hostname, port=port, username=username, password=password)
+        
+        # Execute command on the SSH server
+        stdin, stdout, stderr = ssh_client.exec_command(command)
+        
+        # Read the output from the command
+        output = stdout.read().decode()
+        
+        # Close the SSH connection
+        ssh_client.close()
+        
+        response = {'status': True, 'output': output}
         return response
 
     except Exception as e:
-        response = {'status' : False, 'error' : e }
+        response = {'status': False, 'error': str(e)}
         return response
+
+# Example usage
+hostname = 'your_hostname'
+port = 22  # Default SSH port
+username = 'your_username'
+password = 'your_password'
+command = 'ls -lrt'
+
+result = execute_command_ssh(hostname, port, username, password, command)
+if result['status']:
+    print("Output of 'ls -lrt' command:")
+    print(result['output'])
+else:
+    print(f"Error executing command: {result['error']}")
