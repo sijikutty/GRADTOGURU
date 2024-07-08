@@ -1,3 +1,5 @@
+import paramiko
+
 search_path = '/appl/cits/dev/infashr/fit/data/in'  # Path to search for files
 
 def directory_exists(sftp, remote_path):
@@ -15,24 +17,15 @@ def list_files(sftp, remote_path):
         # Change directory to the remote_path
         sftp.chdir(remote_path)
 
-        # List all items (files and directories) in the current directory
-        items = sftp.listdir()
-
-        for item in items:
-            item_path = f"{remote_path}/{item}"
-            try:
-                # Attempt to change into the directory to verify it's a folder
-                sftp.chdir(item_path)
-
-                # Recursively list files and folders
-                list_files(sftp, item_path)
-
-                # Change back to the parent directory after listing
-                sftp.chdir(remote_path)
-
-            except IOError:
-                # If not a directory, it's a file
-                print(f"Found file: {item_path}")
+        # Execute ls -al command to list all files and directories
+        stdin, stdout, stderr = ssh_client.exec_command(f"ls -al {remote_path}")
+        
+        # Read the output from the command
+        output = stdout.read().decode()
+        
+        # Print the output
+        print(f"Listing all files and directories in {remote_path}:")
+        print(output)
 
     except IOError:
         # IOError will be raised if directory doesn't exist or permission is denied
@@ -40,7 +33,6 @@ def list_files(sftp, remote_path):
 
     except Exception as e:
         print(f"Error listing folder {remote_path}: {str(e)}")
-
 
 # Create an SSH client instance
 ssh_client = paramiko.SSHClient()
@@ -56,8 +48,7 @@ try:
     # Check if the directory exists before listing files
     if directory_exists(sftp, search_path):
         print("Directory exists")
-        # Print all files in the specified directory
-        print(f"Listing all files in {search_path}:")
+        # List all files and directories using ls -al command
         list_files(sftp, search_path)
     else:
         print(f"Directory {search_path} does not exist on the server.")
