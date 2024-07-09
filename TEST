@@ -1,56 +1,9 @@
-from playwright.sync_api import Page
-from automation_utils import get_testdata, get_secrets, autosys_job_run
-import pytest
-
-@pytest.fixture(scope="function")
-def setup_autosys_login(page: Page, testcase):
-    # Extract test data
-    testdata = testcase["testdata"]
-    
-    # Perform login actions for Autosys
+    #Logging in to Autosys
     page.goto(testdata["autosys_url"])
     
     try:
         expect(page.get_by_text("AutoSys Workload Automation")).to_be_visible()
         print("Autosys Login Success!")
+
     except AssertionError:
         raise Exception("Autosys Login Failed.")
-
-    yield testdata  # Provide test data to the test function
-
-@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
-def test_Maximis_regression(page: Page, setup_autosys_login, testcase):
-    # Extract test data from setup_autosys_login fixture
-    testdata = setup_autosys_login
-    
-    # List of jobs to execute sequentially
-    jobs_to_execute = [
-        (testdata["maximis_load_job"], testdata["ODS_file_load_job"]),
-        (testdata["maximis_load_job"], testdata["ODS_landing_to_stg_job"]),
-        (testdata["maximis_load_job"], testdata["Staging_Journal_to_FAH_job"]),
-        (testdata["maximis_load_job"], testdata["file_archive"]),
-        (testdata["maximis_load_job"], testdata["log_archive"]),
-        (testdata["maximis_load_job"], testdata["Record_check"]),
-        (testdata["maximis_load_job"], testdata["Workflow_exec"]),
-        (testdata["maximis_load_job"], testdata["FAH_processing_job"]),        
-        (testdata["maximis_load_job"], testdata["3rd_party_customisation_job"]),
-        (testdata["maximis_load_job"], testdata["3rd_party_edit_job"]),
-        (testdata["maximis_load_job"], testdata["journal_ss_rt"]),
-        (testdata["maximis_load_job"], testdata["journal_post"]),
-        (testdata["maximis_load_job"], testdata["Update_threshold"]),
-        (testdata["maximis_load_job"], testdata["journal_process"])
-        # Add more jobs as needed
-    ]
-    
-    overall_success = True  # Flag to track overall success
-
-    for job in jobs_to_execute:
-        if overall_success:
-            job_status = autosys_job_run(page, testdata, job[0], job[1])
-            print(f"{job[1]} Status: {job_status}")
-
-            if job_status.upper() != "SUCCESS":
-                overall_success = False  # Update flag if any job fails
-
-    if not overall_success:
-        raise Exception("One or more jobs failed.")
