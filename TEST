@@ -1,3 +1,14 @@
+from playwright.sync_api import Page, expect
+from automation_utils import get_testdata, get_secrets,update_remote_file,autosys_job_run,connect_to_oracleDB,execute_query
+import pytest
+import paramiko
+
+
+@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
+def test_Maximis_regression(page: Page, testcase):
+    # Extract test data
+    testdata = testcase["testdata"]
+
     #Logging in to Autosys
     page.goto(testdata["autosys_url"])
     
