@@ -1,57 +1,38 @@
-import paramiko
+def autosys_job_run(page: Page, testdata: dict, main_autosys_job: str, sub_autosys_job: str):
+    page.locator("a").filter(has_text="Quick View").click()
+    frame = page.frame_locator("#QuickView")
+    frame.get_by_label("Enter job name search pattern").fill(main_autosys_job)
+    frame.get_by_label("Enter job name search pattern").press("Enter")
+    frame.get_by_role("link", name="Select to expand").click()
+    frame.get_by_role("link", name=sub_autosys_job).click()
+    page.wait_for_timeout(1500)
+    frame.locator("[id=\"jobResultTable\\:eventId\"]").select_option("1")
+    frame.locator("[id=\"jobResultTable\\:sendEventButton\"]").click()
+    frame.frame_locator("iframe[name=\"_blank\"]").get_by_role("button", name="Yes").click()
+    page.wait_for_timeout(30000)
+    frame.get_by_role("button", name="Refresh").click()
 
-def update_remote_file(hostname, username, password, search_path, file_to_edit, new_content):
-    # Initialize SSH client
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    
-    try:
-        # Connect to the remote server
-        ssh_client.connect(hostname=hostname, username=username, password=password)
-        
-        # Open SFTP session over the SSH connection
-        sftp = ssh_client.open_sftp()
-    
-        # Check if the specified directory exists on the server
-        if not directory_exists(sftp, search_path):
-            raise RuntimeError(f"Directory {search_path} does not exist on the server.")
-        
-        # Construct the full file path
-        file_path = f"{search_path}/{file_to_edit}"
-        
-        # Check if the specified file exists on the server
-        if not file_exists(sftp, file_path):
-            raise RuntimeError(f"File {file_path} does not exist on the server.")
+    logframe = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
 
-        # Write new content to the specified file
-        write_file_content(sftp, file_path, new_content)
-    
-    except Exception as e:
-        # Raise a RuntimeError if any exception occurs during the process
-        raise RuntimeError(f"Failed to update file: {str(e)}")
-    
-    finally:
-        # Close the SSH client connection in the finally block to ensure cleanup
-        if ssh_client:
-            ssh_client.close()
+    # Get the second row of the table (assuming you want the second row)
+    Log_row = logframe.locator("tbody tr:nth-child(2)")
+            
+    # Get the text from the sixth cell in the second row
+    Job_status = Log_row.locator("td:nth-child(5)").inner_text().strip()
 
-# Helper function to check if a directory exists on the remote server
-def directory_exists(sftp, path):
-    try:
-        sftp.stat(path)
-        return True
-    except IOError:
-        return False
+    # Wait for Run status to be Success/Not Success for approximately 10 minutes.
+    retry = 0
+    while retry < 600:
+        expected_values = ['SUCCESS', 'FAILURE']
+        print(Job_status)
+        if Job_status in expected_values:
+            break
+        else:
+            page.wait_for_timeout(20000)
+            frame.get_by_role("button", name="Refresh").click()
+            retry += 1
 
-# Helper function to check if a file exists on the remote server
-def file_exists(sftp, path):
-    try:
-        sftp.stat(path)
-        return True
-    except IOError:
-        return False
-
-# Helper function to write content to a file on the remote server
-def write_file_content(sftp, file_path, content):
-    with sftp.open(file_path, 'w') as file:
-        file.write(content)
+    if Job_status.upper() != "SUCCESS":
+        raise Exception(f"Job Status : {Job_status}")
+    else:
+        return Job_status
