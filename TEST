@@ -3,9 +3,11 @@ from automation_utils import get_testdata, get_secrets, autosys_job_run
 import pytest
 
 @pytest.fixture(scope="function")
-def setup_autosys_login(page: Page):
-    # Perform login actions or any setup required for Autosys
-    testdata = get_testdata("test_Maximis_regression")[0]["testdata"]
+def setup_autosys_login(page: Page, testcase):
+    # Extract test data
+    testdata = testcase["testdata"]
+    
+    # Perform login actions for Autosys
     page.goto(testdata["autosys_url"])
     
     try:
@@ -14,12 +16,12 @@ def setup_autosys_login(page: Page):
     except AssertionError:
         raise Exception("Autosys Login Failed.")
 
-    yield  # Optional teardown actions can go here if needed
+    yield testdata  # Provide test data to the test function
 
 @pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
 def test_Maximis_regression(page: Page, setup_autosys_login, testcase):
-    # Extract test data
-    testdata = testcase["testdata"]
+    # Extract test data from setup_autosys_login fixture
+    testdata = setup_autosys_login
     
     # List of jobs to execute sequentially
     jobs_to_execute = [
