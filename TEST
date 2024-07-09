@@ -1,31 +1,48 @@
-from playwright.sync_api import Page
-from automation_utils import get_testdata, get_secrets, update_remote_file, autosys_job_run, connect_to_oracleDB, execute_query
-import pytest
-import paramiko
-
-@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
 def test_Maximis_regression(page: Page, testcase):
-    # Extract test data from the testcase dictionary
+    # Extract test data
     testdata = testcase["testdata"]
     
-    # Retrieve secrets using the secret ID from test data
-    secrets = get_secrets(testdata["ods_unix_secretID"])
 
-    # Extract necessary connection information from test data
-    hostname = testdata["odsserver"]
-    username = secrets['User']
-    password = secrets['Password']
 
-    # Extract specific test data fields for ODS Unix file modification
-    search_path = testdata["search_path"]
-    file_to_edit = testdata["file_to_edit"]
-    new_content = testdata["new_content"]
-
-    # ODS Unix File modification
+    #Logging in to Autosys
+    page.goto(testdata["autosys_url"])
+    
     try:
-        # Attempt to update the remote file on ODS server
-        update_remote_file(hostname, username, password, search_path, file_to_edit, new_content)
-        print("ODS Maximis File Update successful.")
-    except RuntimeError as e:
-        # Handle and print any runtime error that occurs during file update
-        print(f"Error occurred: {str(e)}")
+        expect(page.get_by_text("AutoSys Workload Automation")).to_be_visible()
+        print("Autosys Login Success!")
+
+    except AssertionError:
+        raise Exception("Autosys Login Failed.")
+    
+  
+
+    # List of jobs to execute sequentially
+    jobs_to_execute = [
+        (testdata["maximis_load_job"], testdata["ODS_file_load_job"]),
+        (testdata["maximis_load_job"], testdata["ODS_landing_to_stg_job"]),
+        (testdata["maximis_load_job"], testdata["Staging_Journal_to_FAH_job"]),
+        (testdata["maximis_load_job"], testdata["file_archive"]),
+        (testdata["maximis_load_job"], testdata["log_archive"]),
+        (testdata["maximis_load_job"], testdata["Record_check"]),
+        (testdata["maximis_load_job"], testdata["Workflow_exec"]),
+        (testdata["maximis_load_job"], testdata["FAH_processing_job"]),        
+        (testdata["maximis_load_job"], testdata["3rd_party_customisation_job"]),
+        (testdata["maximis_load_job"], testdata["3rd_party_edit_job"]),
+        (testdata["maximis_load_job"], testdata["journal_ss_rt"]),
+        (testdata["maximis_load_job"], testdata["journal_post"]),
+        (testdata["maximis_load_job"], testdata["Update_threshold"]),
+        (testdata["maximis_load_job"], testdata["journal_process"])
+        # Add more jobs as needed
+    ]
+    overall_success = True  # Flag to track overall success
+
+    for job in jobs_to_execute:
+        if overall_success:
+            job_status = autosys_job_run(page, testdata, job[0], job[1])
+            print(f"{job[1]} Status: {job_status}")
+
+            if job_status.upper() != "SUCCESS":
+                overall_success = False  # Update flag if any job fails
+
+    if not overall_success:
+        raise Exception("One or more jobs failed.") 
