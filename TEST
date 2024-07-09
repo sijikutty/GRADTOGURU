@@ -1,26 +1,31 @@
-from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, get_secrets,update_remote_file,autosys_job_run,connect_to_oracleDB,execute_query
+from playwright.sync_api import Page
+from automation_utils import get_testdata, get_secrets, update_remote_file, autosys_job_run, connect_to_oracleDB, execute_query
 import pytest
 import paramiko
 
-
 @pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
 def test_Maximis_regression(page: Page, testcase):
+    # Extract test data from the testcase dictionary
     testdata = testcase["testdata"]
     
+    # Retrieve secrets using the secret ID from test data
     secrets = get_secrets(testdata["ods_unix_secretID"])
 
+    # Extract necessary connection information from test data
     hostname = testdata["odsserver"]
     username = secrets['User']
     password = secrets['Password']
 
+    # Extract specific test data fields for ODS Unix file modification
     search_path = testdata["search_path"]
     file_to_edit = testdata["file_to_edit"]
     new_content = testdata["new_content"]
 
-    #ODS Unix File modification
+    # ODS Unix File modification
     try:
+        # Attempt to update the remote file on ODS server
         update_remote_file(hostname, username, password, search_path, file_to_edit, new_content)
         print("ODS Maximis File Update successful.")
     except RuntimeError as e:
+        # Handle and print any runtime error that occurs during file update
         print(f"Error occurred: {str(e)}")
