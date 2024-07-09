@@ -1,16 +1,20 @@
 from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, get_secrets,update_remote_file,autosys_job_run,connect_to_oracleDB,execute_query
+from automation_utils import get_testdata
+
 import pytest
-import paramiko
 
+def autosys_login(page: Page, autosys_url: str):
+    """
+    Performs login to Autosys.
 
-@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
-def test_Maximis_regression(page: Page, testcase):
-    # Extract test data
-    testdata = testcase["testdata"]
-
-    #Logging in to Autosys
-    page.goto(testdata["autosys_url"])
+    Args:
+        page (Page): Playwright Page object.
+        autosys_url (str): URL of the Autosys login page.
+    
+    Raises:
+        Exception: If Autosys login fails.
+    """
+    page.goto(autosys_url)
     
     try:
         expect(page.get_by_text("AutoSys Workload Automation")).to_be_visible()
@@ -18,3 +22,25 @@ def test_Maximis_regression(page: Page, testcase):
 
     except AssertionError:
         raise Exception("Autosys Login Failed.")
+
+@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
+def test_Maximis_regression(page: Page, testcase):
+    # Extract test data
+    testdata = testcase["testdata"]
+
+    # Call autosys_login function with extracted test data
+    autosys_login(page, testdata["autosys_url"])
+
+    # Continue with the rest of your test logic using testdata
+    assert "maximis_load_job" in testdata
+    assert "ODS_file_load_job" in testdata
+    
+    # Your test logic here
+    jobs_to_execute = [
+        (testdata["maximis_load_job"], testdata["ODS_file_load_job"]),
+        # Define more jobs as needed
+    ]
+    
+    for job in jobs_to_execute:
+        # Execute jobs using autosys_job_run function or other logic
+        pass
