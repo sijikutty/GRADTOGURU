@@ -1,67 +1,26 @@
-def autosys_job_run(page: Page, testdata: dict, main_autosys_job: str, sub_autosys_job: str):
-    # Click on the link with text "Quick View"
-    page.locator("a").filter(has_text="Quick View").click()
-    
-    # Locate the frame with id "QuickView"
-    frame = page.frame_locator("#QuickView")
-    
-    # Fill in the main_autosys_job in the search input field
-    frame.get_by_label("Enter job name search pattern").fill(main_autosys_job)
-    
-    # Press Enter to perform the search
-    frame.get_by_label("Enter job name search pattern").press("Enter")
-    
-    # Click on the link with role "Select to expand"
-    frame.get_by_role("link", name="Select to expand").click()
-    
-    # Click on the link with role "sub_autosys_job" (assumed to be a specific job name)
-    frame.get_by_role("link", name=sub_autosys_job).click()
-    
-    # Wait for 1500 milliseconds (1.5 seconds)
-    page.wait_for_timeout(1500)
-    
-    # Select the first option in a dropdown (assuming it's related to job events)
-    frame.locator("[id=\"jobResultTable\\:eventId\"]").select_option("1")
-    
-    # Click on a button with id "jobResultTable:sendEventButton"
-    frame.locator("[id=\"jobResultTable\\:sendEventButton\"]").click()
-    
-    # Switch to a frame with name "_blank" inside the current frame
-    frame.frame_locator("iframe[name=\"_blank\"]").get_by_role("button", name="Yes").click()
-    
-    # Wait for 30,000 milliseconds (30 seconds)
-    page.wait_for_timeout(30000)
-    
-    # Click on a button with role "Refresh" inside the current frame
-    frame.get_by_role("button", name="Refresh").click()
+from playwright.sync_api import Page, expect
+from automation_utils import get_testdata, get_secrets,update_remote_file,autosys_job_run,connect_to_oracleDB,execute_query
+import pytest
+import paramiko
 
-    # Locate the logs table inside the frame with id "QuickView"
-    logframe = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
 
-    # Get the second row of the table (assuming you want the second row)
-    Log_row = logframe.locator("tbody tr:nth-child(2)")
+@pytest.mark.parametrize("testcase", get_testdata("test_Maximis_regression"))
+def test_Maximis_regression(page: Page, testcase):
+    testdata = testcase["testdata"]
     
-    # Get the text from the sixth cell in the second row
-    Job_status = Log_row.locator("td:nth-child(5)").inner_text().strip()
+    secrets = get_secrets(testdata["ods_unix_secretID"])
 
-    # Wait for Run status to be Success/Not Success for approximately 10 minutes.
-    retry = 0
-    while retry < 600:
-        expected_values = ['SUCCESS', 'FAILURE']
-        print(Job_status)
-        if Job_status in expected_values:
-            break
-        else:
-            # Wait for 20,000 milliseconds (20 seconds) before retrying
-            page.wait_for_timeout(20000)
-            
-            # Click on a button with role "Refresh" inside the current frame
-            frame.get_by_role("button", name="Refresh").click()
-            
-            retry += 1
+    hostname = testdata["odsserver"]
+    username = secrets['User']
+    password = secrets['Password']
 
-    # If the final Job_status is not "SUCCESS", raise an exception
-    if Job_status.upper() != "SUCCESS":
-        raise Exception(f"Job Status : {Job_status}")
-    else:
-        return Job_status
+    search_path = testdata["search_path"]
+    file_to_edit = testdata["file_to_edit"]
+    new_content = testdata["new_content"]
+
+    #ODS Unix File modification
+    try:
+        update_remote_file(hostname, username, password, search_path, file_to_edit, new_content)
+        print("ODS Maximis File Update successful.")
+    except RuntimeError as e:
+        print(f"Error occurred: {str(e)}")
