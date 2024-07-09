@@ -1,22 +1,46 @@
 def autosys_job_run(page: Page, testdata: dict, main_autosys_job: str, sub_autosys_job: str):
+    # Click on the link with text "Quick View"
     page.locator("a").filter(has_text="Quick View").click()
+    
+    # Locate the frame with id "QuickView"
     frame = page.frame_locator("#QuickView")
+    
+    # Fill in the main_autosys_job in the search input field
     frame.get_by_label("Enter job name search pattern").fill(main_autosys_job)
+    
+    # Press Enter to perform the search
     frame.get_by_label("Enter job name search pattern").press("Enter")
+    
+    # Click on the link with role "Select to expand"
     frame.get_by_role("link", name="Select to expand").click()
+    
+    # Click on the link with role "sub_autosys_job" (assumed to be a specific job name)
     frame.get_by_role("link", name=sub_autosys_job).click()
+    
+    # Wait for 1500 milliseconds (1.5 seconds)
     page.wait_for_timeout(1500)
+    
+    # Select the first option in a dropdown (assuming it's related to job events)
     frame.locator("[id=\"jobResultTable\\:eventId\"]").select_option("1")
+    
+    # Click on a button with id "jobResultTable:sendEventButton"
     frame.locator("[id=\"jobResultTable\\:sendEventButton\"]").click()
+    
+    # Switch to a frame with name "_blank" inside the current frame
     frame.frame_locator("iframe[name=\"_blank\"]").get_by_role("button", name="Yes").click()
+    
+    # Wait for 30,000 milliseconds (30 seconds)
     page.wait_for_timeout(30000)
+    
+    # Click on a button with role "Refresh" inside the current frame
     frame.get_by_role("button", name="Refresh").click()
 
+    # Locate the logs table inside the frame with id "QuickView"
     logframe = page.frame_locator("#QuickView").locator("[id=\"nestedDetailPageSuffix\\:logsTable\"]")
 
     # Get the second row of the table (assuming you want the second row)
     Log_row = logframe.locator("tbody tr:nth-child(2)")
-            
+    
     # Get the text from the sixth cell in the second row
     Job_status = Log_row.locator("td:nth-child(5)").inner_text().strip()
 
@@ -28,10 +52,15 @@ def autosys_job_run(page: Page, testdata: dict, main_autosys_job: str, sub_autos
         if Job_status in expected_values:
             break
         else:
+            # Wait for 20,000 milliseconds (20 seconds) before retrying
             page.wait_for_timeout(20000)
+            
+            # Click on a button with role "Refresh" inside the current frame
             frame.get_by_role("button", name="Refresh").click()
+            
             retry += 1
 
+    # If the final Job_status is not "SUCCESS", raise an exception
     if Job_status.upper() != "SUCCESS":
         raise Exception(f"Job Status : {Job_status}")
     else:
