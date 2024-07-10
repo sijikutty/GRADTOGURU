@@ -1,40 +1,13 @@
-import os
-import paramiko
+from automation_utils import get_testdata,connect_to_oracleDB
+import pytest
 
-def transfer_file_to_unix(hostname, username, password, local_file_path, server_directory):
-    # Check if the local file exists
-    if not os.path.exists(local_file_path):
-        raise FileNotFoundError(f"Local file '{local_file_path}' not found.")
 
-    # Initialize SSH client
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+@pytest.mark.parametrize("testcase", get_testdata("test_ODS_Smoketest_DB_connectivity"))
+def test_ODS_Smoketest_DB_connectivity( testcase):
+    # Extract test data
+    testdata = testcase["testdata"]
 
-    try:
-        # Connect to the server
-        client.connect(hostname, username=username, password=password)
+    # Connect to Oracle DB
+    connection = connect_to_oracleDB(testdata["db_secret"])
 
-        # Always place mm.out from local system folder to server directory
-        sftp = client.open_sftp()
-        sftp.put(local_file_path, os.path.join(server_directory, 'mm.out'))
-        sftp.close()
-
-    except Exception as e:
-        raise e
-
-    finally:
-        # Close SSH connection
-        client.close()
-
-# Example usage
-hostname = 'example.com'
-username = 'your_username'
-password = 'your_password'
-local_file_path = 'C:/VV/mm.out'
-server_directory = '/aa/in'
-
-try:
-    transfer_file_to_unix(hostname, username, password, local_file_path, server_directory)
-    print("File transfer successful.")
-except Exception as e:
-    print(f"An error occurred: {str(e)}")
+test_ODS_Smoketest_DB_connectivity[chromium-testcase1] - KeyError: 'testdata'
