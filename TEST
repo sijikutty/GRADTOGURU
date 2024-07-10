@@ -1,15 +1,57 @@
- # Function to write content to a file on the remote server   
-def write_file_content(sftp, remote_file_path, content):
-    try:
-        # Convert content to a string if it's a list
-        if isinstance(content, list):
-            content = "\n".join(content)
+import os
+import paramiko
 
-        # Open the file in write mode to replace content
-        with sftp.open(remote_file_path, 'w') as file:
-            file.write(content)
-        
-        print(f"Modification completed: Successfully updated file {remote_file_path}")
+def transfer_file_to_unix(hostname, username, password, local_file_path):
+    # Check if the local file exists
+    if not os.path.exists(local_file_path):
+        raise FileNotFoundError(f"Local file '{local_file_path}' not found.")
+
+    # Initialize SSH client
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        # Connect to the server
+        client.connect(hostname, username=username, password=password)
+
+        # Check if the directory /aa/in exists
+        stdin, stdout, stderr = client.exec_command('test -d /aa/in && echo exists || echo not_exists')
+        directory_status = stdout.read().decode().strip()
+
+        if directory_status == 'exists':
+            # Check if the file m.out exists
+            stdin, stdout, stderr = client.exec_command('test -f /aa/in/m.out && echo exists || echo not_exists')
+            file_status = stdout.read().decode().strip()
+
+            if file_status == 'exists':
+                # Replace m.out with mm.out from local system folder
+                sftp = client.open_sftp()
+                sftp.put(local_file_path, '/aa/in/mm.out')
+                sftp.close()
+            else:
+                # Place mm.out from local system folder to /aa/in
+                sftp = client.open_sftp()
+                sftp.put(local_file_path, '/aa/in/mm.out')
+                sftp.close()
+
+        elif directory_status == 'not_exists':
+            raise FileNotFoundError("Directory '/aa/in' does not exist on the server.")
 
     except Exception as e:
-        raise RuntimeError(f"Error updating file {remote_file_path}: {str(e)}")
+        raise e
+
+    finally:
+        # Close SSH connection
+        client.close()
+
+# Example usage
+hostname = 'example.com'
+username = 'your_username'
+password = 'your_password'
+local_file_path = 'C:/VV/mm.out'
+
+try:
+    transfer_file_to_unix(hostname, username, password, local_file_path)
+    print("File transfer successful.")
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
