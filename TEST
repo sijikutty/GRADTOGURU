@@ -1,7 +1,7 @@
 import os
 import paramiko
 
-def transfer_file_to_unix(hostname, username, password, local_file_path):
+def transfer_file_to_unix(hostname, username, password, local_file_path, server_directory):
     # Check if the local file exists
     if not os.path.exists(local_file_path):
         raise FileNotFoundError(f"Local file '{local_file_path}' not found.")
@@ -14,28 +14,10 @@ def transfer_file_to_unix(hostname, username, password, local_file_path):
         # Connect to the server
         client.connect(hostname, username=username, password=password)
 
-        # Check if the directory /aa/in exists
-        stdin, stdout, stderr = client.exec_command('test -d /aa/in && echo exists || echo not_exists')
-        directory_status = stdout.read().decode().strip()
-
-        if directory_status == 'exists':
-            # Check if the file m.out exists
-            stdin, stdout, stderr = client.exec_command('test -f /aa/in/m.out && echo exists || echo not_exists')
-            file_status = stdout.read().decode().strip()
-
-            if file_status == 'exists':
-                # Replace m.out with mm.out from local system folder
-                sftp = client.open_sftp()
-                sftp.put(local_file_path, '/aa/in/mm.out')
-                sftp.close()
-            else:
-                # Place mm.out from local system folder to /aa/in
-                sftp = client.open_sftp()
-                sftp.put(local_file_path, '/aa/in/mm.out')
-                sftp.close()
-
-        elif directory_status == 'not_exists':
-            raise FileNotFoundError("Directory '/aa/in' does not exist on the server.")
+        # Always place mm.out from local system folder to server directory
+        sftp = client.open_sftp()
+        sftp.put(local_file_path, os.path.join(server_directory, 'mm.out'))
+        sftp.close()
 
     except Exception as e:
         raise e
@@ -49,9 +31,10 @@ hostname = 'example.com'
 username = 'your_username'
 password = 'your_password'
 local_file_path = 'C:/VV/mm.out'
+server_directory = '/aa/in'
 
 try:
-    transfer_file_to_unix(hostname, username, password, local_file_path)
+    transfer_file_to_unix(hostname, username, password, local_file_path, server_directory)
     print("File transfer successful.")
 except Exception as e:
     print(f"An error occurred: {str(e)}")
