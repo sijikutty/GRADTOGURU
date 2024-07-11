@@ -1,13 +1,1 @@
-from automation_utils import get_testdata,connect_to_oracleDB
-import pytest
-
-
-@pytest.mark.parametrize("testcase", get_testdata("test_ODS_Smoketest_DB_connectivity"))
-def test_ODS_Smoketest_DB_connectivity( testcase):
-    # Extract test data
-    testdata = testcase["testdata"]
-
-    # Connect to Oracle DB
-    connection = connect_to_oracleDB(testdata["db_secret"])
-
-test_ODS_Smoketest_DB_connectivity[chromium-testcase1] - KeyError: 'testdata'
+page.wait_for_selector('#win0divPTS_Label1:has-text("vv")')
