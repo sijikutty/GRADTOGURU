@@ -1,1 +1,4 @@
-await expect(locator).toHaveText(/Welcome, Test User/);
+    expect(page.get_by_text("Warning -- No ChartFields")).to_be_visible()
+    page.get_by_role("button", name="OK").click()
+        if main_menu.is_visible():
+        main_menu.click()
