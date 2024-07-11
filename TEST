@@ -1,1 +1,1 @@
-page.wait_for_selector('#win0divPTS_Label1:has-text("vv")')
+await expect(locator).toHaveText(/Welcome, Test User/);
