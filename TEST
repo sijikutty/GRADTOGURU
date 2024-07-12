@@ -1,3 +1,2 @@
-We have faced multiple hindrances today while trying to access [specific link or platform]. This ongoing issue is significantly impacting our automation processes and causing disruptions.
-
-Could you please let us know if there are any maintenance activities or known issues that might be causing these access problems? 
+ C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui\conftest.py:28: DeprecationWarning: invalid escape sequence '\{'
+    screenshot_path = f"Result\{request.function.__name__}.png"
