@@ -1,8 +1,27 @@
-if Status.upper() == "V":
-    print("Edit success")
-elif Status.upper() == "E":
-    raise Exception("Error")
-elif Status.upper() == "N":
-    print("Timed out")
-else:
-    raise Exception(f"Autosys job {sub_autosys_job} has Status: {Status}")
+@pytest.mark.dependency(depends = ["test_manual_jrnl_create"])
+@pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_edit"))
+def test_manual_jrnl_edit(page:Page):
+
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("Process").select_option(value="E")
+    targetContentFrame.get_by_role("button", name="Process").click()
+    page.get_by_role("button", name="Yes").click()
+
+    status_row=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
+    time.sleep(30)
+    Status=status_row.locator("td:nth-child(5)").inner_text(timeout=10000)
+    print("Status : ", Status)
+---
+done, _ = await asyncio.wait(
+            {
+                self._connection._transport.on_error_future,
+                callback.future,
+            },
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+        if not callback.future.done():
+            callback.future.cancel()
+>       result = next(iter(done)).result()
+E       playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded.
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: TimeoutError
