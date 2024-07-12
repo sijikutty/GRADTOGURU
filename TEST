@@ -1,13 +1,13 @@
-import time
-
-def wait_for_column_value(page, row_locator, expected_value, timeout=10):
-    start_time = time.time()
+   start_time = time.time()
+    
     while time.time() - start_time < timeout:
+        # Get the current value of the 4th column
         fourth_column_value = row_locator.locator("td:nth-child(4)").inner_text()
+        
+        # Check if it matches the expected value
         if fourth_column_value == expected_value:
             return True
-        time.sleep(0.5)  # Sleep before checking again
-    raise TimeoutError(f"Timeout waiting for the 4th column to be '{expected_value}'.")
-
-# Usage
-wait_for_column_value(page, row_locator, "E")
+        
+        time.sleep(1)  # Wait a little before checking again
+    
+    raise TimeoutError(f"Timeout: waited {timeout} seconds for the 4th column to be '{expected_value}'.")
