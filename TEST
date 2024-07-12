@@ -1,5 +1,8 @@
-    if Status.upper() != "N" :
-        #raise Exception(f"Job Status : {Job_status}")
-        raise Exception(f"Autosys job {sub_autosys_job} has Status: {Job_status}")
-    else:
-        return Job_status
+if Status.upper() == "V":
+    print("Edit success")
+elif Status.upper() == "E":
+    raise Exception("Error")
+elif Status.upper() == "N":
+    print("Timed out")
+else:
+    raise Exception(f"Autosys job {sub_autosys_job} has Status: {Status}")
