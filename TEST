@@ -1,157 +1,16 @@
-from playwright.sync_api import Page
-from automation_utils import get_testdata
-from ps_utils import navigate_menu
-import pytest 
-import time
-
-@pytest.mark.dependency(name="test_manual_jrnl_create")
-@pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_create"))
-def test_manual_jrnl_create(page:Page, set_test_dependency, testcase):
-
-    testdata = testcase["testdata"]
-
-    # Choosing create journal option from NavBar
-    navigate_menu(page=page,
-                  menu_sequence=["General Ledger", 
-                                 "Journals", 
-                                 "Journal Entry", 
-                                 "Create/Update Journal Entries"])
-    
-    # Filling add new value Page
-    #!---------------
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-    targetContentFrame.get_by_role("button", name="Look up Business Unit").click()
-
-    # Assigning Popup window frame with generalised locator to popup_dialog handle
-    popup_dialog = page.frame_locator("[id^='ptModFrame']") # This handle can be used for all the pop-up windows
-    
-    popup_dialog.get_by_role("link", name=(testdata['business_unit'])).click()
-    targetContentFrame.get_by_role("button", name="Add").click()
-    #----------------!
-    
-    # Filling Header Page
-    #!----------------
-    targetContentFrame.get_by_label("Long Description").fill("test")
-
-    targetContentFrame.get_by_role("button", name="Look up Ledger Group").click()
-    popup_dialog.get_by_role("link", name=(testdata['ledger']), exact=True).click()
-
-    targetContentFrame.get_by_role("button", name="Look up Source").click()
-    popup_dialog.get_by_role("link", name=(testdata['source'])).click()
-
-    #----------------!
-
-
-    # Filling Lines Page
-    #!----------------
-    targetContentFrame.get_by_label("Lines", exact=True).click()
-
-    # Assigning 1st lines to a handle line1
-    line1 = targetContentFrame.locator("[id^='tr'][id$='row1']")
-
-    # Referencing all the elements in the 1st line using line1 handle
-    line1.get_by_role("button", name="Look Up Account").click()
-    popup_dialog.get_by_role("link", name=(testdata['account'])).click()
-
-    line1.get_by_role("button", name="Look up Oper Unit").click()
-    popup_dialog.get_by_role("link", name="000").click()
-
-    line1.locator("[id^='FOREIGN_AMOUNT']").fill(testdata['foreign_amount_line1'])
-    
-    # Creating second line
-    targetContentFrame.get_by_role("link", name="Insert Lines").click()
-
-    # Assigning 2nd lines to a handle line2
-    line2 = targetContentFrame.locator("[id^='tr'][id$='row2']")
-
-    line2.get_by_role("button", name="Look Up Account").click()
-    popup_dialog.get_by_role("link", name=(testdata['account'])).click()
-
-    line2.get_by_role("button", name="Look up Oper Unit").click()
-    popup_dialog.get_by_role("link", name=(testdata['oper_unit'])).click()
-
-    line2.locator("[id^='FOREIGN_AMOUNT']").fill(testdata['foreign_amount_line2'])
-
-    #----------------!
-
-    targetContentFrame.get_by_role("button", name="Save").click()
-
-    alertmsg = page.locator("[id^='ptModTable']")
-    alertmsg.get_by_role("button", name="OK").click()
-
-    journal_id = targetContentFrame.locator("[id='JRNL_HEADER_JOURNAL_ID']").inner_text()
-
-    #targetContentFrame.get_by_label("Process").select_option(value="E")
-    #targetContentFrame.get_by_role("button", name="Process").click()
-    #page.get_by_role("button", name="Yes").click()
-
-    print("Journal ID : ", journal_id)
-
- #This test depends on the successful execution of 'test_nvision_reportbook' test
-@pytest.mark.dependency(depends = ["test_manual_jrnl_create"])
+@pytest.mark.dependency(depends=["test_manual_jrnl_create"])
 @pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_edit"))
-def test_manual_jrnl_edit(page:Page, set_test_dependency):
-
+def test_manual_jrnl_edit(page: Page, set_test_dependency):
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Select the process option
     targetContentFrame.get_by_label("Process").select_option(value="E")
     targetContentFrame.get_by_role("button", name="Process").click()
-    page.get_by_role("button", name="Yes").click()
---------------
-___________________________________ test_manual_jrnl_edit[chromium-testcase0] ____________________________________ 
 
-page = <Page url='http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/c/PROCESS_JOURNALS.JOURNAL_ENTRY_IE.GBL'>
-set_test_dependency = None
+    # Wait for the "Yes" button to be visible
+    targetContentFrame.get_by_role("button", name="Yes").wait_for(state="visible", timeout=30000)
+    
+    # Click the "Yes" button
+    targetContentFrame.get_by_role("button", name="Yes").click()
 
-    @pytest.mark.dependency(depends = ["test_manual_jrnl_create"])
-    @pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_edit"))
-    def test_manual_jrnl_edit(page:Page, set_test_dependency):
-
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("Process").select_option(value="E")
-        targetContentFrame.get_by_role("button", name="Process").click()
->       page.get_by_role("button", name="Yes").click()
-
-PS_Testing\test_gui\QA_Test\test_manual_jrnl_create.py:98:
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
-.venv\Lib\site-packages\playwright\sync_api\_generated.py:14764: in click
-    self._sync(
-.venv\Lib\site-packages\playwright\_impl\_locator.py:153: in click
-    return await self._frame.click(self._selector, strict=True, **params)
-.venv\Lib\site-packages\playwright\_impl\_frame.py:488: in click
-    await self._channel.send("click", locals_to_params(locals()))
-.venv\Lib\site-packages\playwright\_impl\_connection.py:59: in send
-    return await self._connection.wrap_api_call(
-.venv\Lib\site-packages\playwright\_impl\_connection.py:509: in wrap_api_call
-    return await cb()
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
-
-self = <playwright._impl._connection.Channel object at 0x0000022528F8D090>, method = 'click'
-params = {'selector': 'internal:role=button[name="Yes"i]', 'strict': True}, return_as_dict = False
-
-    async def inner_send(
-        self, method: str, params: Optional[Dict], return_as_dict: bool
-    ) -> Any:
-        if params is None:
-            params = {}
-        if self._connection._error:
-            error = self._connection._error
-            self._connection._error = None
-            raise error
-        callback = self._connection._send_message_to_server(
-            self._object, method, _filter_none(params)
-        )
-        done, _ = await asyncio.wait(
-            {
-                self._connection._transport.on_error_future,
-                callback.future,
-            },
-            return_when=asyncio.FIRST_COMPLETED,
-        )
-        if not callback.future.done():
-            callback.future.cancel()
->       result = next(iter(done)).result()
-E       playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded.
-
-.venv\Lib\site-packages\playwright\_impl\_connection.py:97: TimeoutError
-============================================ short test summary info =============================================
-FAILED PS_Testing\test_gui\QA_Test\test_manual_jrnl_create.py::test_manual_jrnl_edit[chromium-testcase0] - playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded.
+    # Add further code to handle the status or other interactions
