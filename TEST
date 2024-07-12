@@ -1,1 +1,7 @@
-Status=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]").inner_text(timeout=10000)
+# Locate the specific row
+row_locator = targetContentFrame.locator("[id='trJRNL_HEADER_IU$0_row1']")
+
+# Get the 4th column value (index 3 since it's 0-based)
+fourth_column_value = row_locator.locator("td:nth-child(4)").inner_text(timeout=10000)
+
+print("4th Column Value:", fourth_column_value)
