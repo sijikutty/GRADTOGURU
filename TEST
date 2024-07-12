@@ -1,7 +1,13 @@
-# Locate the specific row
-row_locator = targetContentFrame.locator("[id='trJRNL_HEADER_IU$0_row1']")
+import time
 
-# Get the 4th column value (index 3 since it's 0-based)
-fourth_column_value = row_locator.locator("td:nth-child(4)").inner_text(timeout=10000)
+def wait_for_column_value(page, row_locator, expected_value, timeout=10):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        fourth_column_value = row_locator.locator("td:nth-child(4)").inner_text()
+        if fourth_column_value == expected_value:
+            return True
+        time.sleep(0.5)  # Sleep before checking again
+    raise TimeoutError(f"Timeout waiting for the 4th column to be '{expected_value}'.")
 
-print("4th Column Value:", fourth_column_value)
+# Usage
+wait_for_column_value(page, row_locator, "E")
