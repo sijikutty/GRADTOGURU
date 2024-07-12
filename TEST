@@ -1,13 +1,5 @@
-   start_time = time.time()
-    
-    while time.time() - start_time < timeout:
-        # Get the current value of the 4th column
-        fourth_column_value = row_locator.locator("td:nth-child(4)").inner_text()
-        
-        # Check if it matches the expected value
-        if fourth_column_value == expected_value:
-            return True
-        
-        time.sleep(1)  # Wait a little before checking again
-    
-    raise TimeoutError(f"Timeout: waited {timeout} seconds for the 4th column to be '{expected_value}'.")
+    if Status.upper() != "N" :
+        #raise Exception(f"Job Status : {Job_status}")
+        raise Exception(f"Autosys job {sub_autosys_job} has Status: {Job_status}")
+    else:
+        return Job_status
