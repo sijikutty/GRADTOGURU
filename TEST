@@ -1,3 +1,1 @@
-    for testcase in json_content["testcases"]:
-        if "smoketest gui" in testcase['key'].lower():
-            gui_smoketestcases.append(testcase)
+Status=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]").inner_text(timeout=10000)
