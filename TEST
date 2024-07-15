@@ -1,36 +1,52 @@
 from playwright.sync_api import Page
 from automation_utils import get_testdata
-from ps_utils import navigate_menu,add_run_control_id,schedule_process, monitor_process
+from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
 import pytest 
 import time
 from Common_function import jrnl_create
 
 @pytest.mark.parametrize("testcase", get_testdata("test_batch_jrnl_edit"))
-def test_batch_jrnl_edit(page:Page,  testcase):
-
+def test_batch_jrnl_edit(page: Page, testcase):
+    # Extract test data from the testcase parameter
     testdata = testcase["testdata"]
-    journal_id=jrnl_create(page,  testdata)
+    
+    # Create a journal entry and retrieve the Journal ID
+    journal_id = jrnl_create(page, testdata)
 
+    # Navigate to the "Edit Journals" section
     navigate_menu(page=page,
                   menu_sequence=["General Ledger", 
                                  "Journals", 
                                  "Process Journals", 
                                  "Edit Journals"])
     
-    # Fill values in the page
+    # Fill the run control ID on the page
     add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
+    
+    # Locate the target iframe for further actions
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
   
+    # Select the "Once" option for running the process
     targetContentFrame.get_by_label("Once").check()
+    
+    # Fill in the Business Unit field
     targetContentFrame.get_by_label("Business Unit").fill(testdata['business_unit'])
     
+    # Fill in the Journal ID fields with the created Journal ID
     targetContentFrame.get_by_label("Journal ID From").fill(journal_id)
     targetContentFrame.get_by_label("To Journal ID").fill(journal_id)
+    
+    # Fill in the description with the run control ID
     targetContentFrame.get_by_label("Description").fill(testdata['run_control_id'])
+    
+    # Click the "Run" button to initiate the batch journal edit process
     targetContentFrame.get_by_role("button", name="Run").click()
 
-    process_instance_id = schedule_process(page=page, server_name=testdata["server"],process_name=testdata["editprocess"])
+    # Schedule the process for execution and retrieve the process instance ID
+    process_instance_id = schedule_process(page=page, server_name=testdata["server"], process_name=testdata["editprocess"])
 
+    # Monitor the scheduled process and retrieve its status
     run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
 
-    print(f"Journal Batch Edit Program Run status : ", run_status)
+    # Print the run status of the Journal Batch Edit Program for debugging
+    print(f"Journal Batch Edit Program Run status: ", run_status)
