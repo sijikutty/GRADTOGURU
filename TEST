@@ -1,16 +1,2 @@
-@pytest.mark.dependency(depends=["test_manual_jrnl_create"])
-@pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_edit"))
-def test_manual_jrnl_edit(page: Page, set_test_dependency):
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-    
-    # Select the process option
-    targetContentFrame.get_by_label("Process").select_option(value="E")
-    targetContentFrame.get_by_role("button", name="Process").click()
-
-    # Wait for the "Yes" button to be visible
-    targetContentFrame.get_by_role("button", name="Yes").wait_for(state="visible", timeout=30000)
-    
-    # Click the "Yes" button
-    targetContentFrame.get_by_role("button", name="Yes").click()
-
-    # Add further code to handle the status or other interactions
+    if testdata['scenario']=="test_Journal_ID_Ref_Onl":
+        line1.locator("[id=\"JRNL_LN_REF\\$0\"]").fill(testdata['jrnl_ref'])
