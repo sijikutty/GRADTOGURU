@@ -1,71 +1,15 @@
 from playwright.sync_api import Page
 from automation_utils import get_testdata
-from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
+from ps_utils import navigate_menu
 import pytest 
 import time
-from automation_utils import get_testdata, get_secrets, update_remote_file, transfer_file_to_unix, autosys_login, autosys_job_run, connect_to_oracleDB, execute_query
+from Common_function import jrnl_create
 
-@pytest.mark.parametrize("testcase", get_testdata("test_combo_build_process"))
-def test_combo_build_process(page: Page, testcase):
-    # Extract test data for the current test case
-    testdata = testcase["testdata"]  
+@pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_create"))
+def test_manual_jrnl_create(page:Page,  testcase):
 
-    # Navigate to the "Build Combination Data" section in the UI
-    navigate_menu(page=page,
-                  menu_sequence=["Set Up Financials/Supply Chain", 
-                                 "Common Definitions", 
-                                 "Design ChartFields", 
-                                 "Combination Editing",
-                                 "Build Combination Data"])
-    
-    # Add run control ID to the form
-    add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
-    
-    # Locate the target iframe for the form
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-    
-    # Fill in the 'As of Date' field
-    targetContentFrame.get_by_label("As of Date").fill(testdata['asofdt'])
-    
-    # Click the 'Update' button to apply changes
-    targetContentFrame.get_by_role("button", name="Update", exact=True).click()
-    
-    # Fill in the required fields for the combination build request
-    targetContentFrame.locator("[id=\"COMBO_BLD_REQ_PROCESS_FREQUENCY\\$0\"]").select_option(testdata['processfrequency'])
-    targetContentFrame.locator("[id=\"COMBO_BLD_REQ_BUSINESS_UNIT\\$0\"]").fill(testdata['BU'])
-    targetContentFrame.locator("[id=\"COMBO_BLD_REQ_LEDGER_GROUP\\$0\"]").fill(testdata['ledger_grp'])
-    targetContentFrame.locator("[id=\"COMBO_BLD_REQ_CDT_BUILD_OPTN\\$0\"]").select_option(testdata['build_optn'])
-    
-    # Save the combination build request
-    targetContentFrame.get_by_role("button", name="Save").click()
-    
-    # Click the 'Run' button to initiate the combination build process
-    targetContentFrame.get_by_role("button", name="Run").click()
-    
-    # Schedule the process and retrieve the process instance ID
-    process_instance_id = schedule_process(page=page, server_name=testdata["server"], process_name=testdata["combobuildprocess"])
+    testdata = testcase["testdata"]
+    jrnl_create(page,  testdata)
 
-    # Monitor the scheduled process and retrieve its status
-    run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
 
-    # Print the run status of the Combo Build Program for debugging
-    print(f"Combo Build Program Run status: ", run_status)
-
-    # Connect to the Oracle database to verify the process
-    connection = connect_to_oracleDB(testdata["ps_db"])
-    
-    # Query to count records for the given process instance
-    query = "SELECT COUNT(*) FROM PS_COMBO_SEL_GROUP WHERE PROCESS_INSTANCE = '"+process_instance_id+"'"  
-    print(query)  
-    
-    if connection:
-        # Execute the query and retrieve the result
-        query_result = execute_query(connection, query)
-
-        # Check the query execution status and print the results
-        if query_result["status"]:
-            print(f"Query executed successfully. Count: {query_result['count']}")
-        else:
-            print(f"Failed to execute query. Error: {query_result['error']}")
-    else:
-        print("Failed to connect to the database.")
+ 
