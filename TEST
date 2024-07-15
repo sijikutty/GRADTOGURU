@@ -1,2 +1,21 @@
     if testdata['scenario']=="test_Journal_ID_Ref_Onl":
         line1.locator("[id=\"JRNL_LN_REF\\$0\"]").fill(testdata['jrnl_ref'])
+
+{
+            "key"       : "QA test GUI - TC33977",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Journal_ID_Ref_Onl",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "jrnl_ref":"0999",
+                "userid":"PWTEST",
+                "scenario"  : "test_Journal_ID_Ref_Onl"
+            }
+        },
