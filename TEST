@@ -6,10 +6,11 @@ import time
 from Common_function import jrnl_edit
 
 @pytest.mark.parametrize("testcase", get_testdata("test_open_period_update"))
-def test_open_period_update(page:Page,  testcase):
-
+def test_open_period_update(page: Page, testcase):
+    # Extract test data from the testcase parameter
     testdata = testcase["testdata"]
 
+    # Navigate to the "Open Periods Mass Update" section in the application
     navigate_menu(page=page,
                   menu_sequence=["Set Up Financials/Supply Chain", 
                                  "Business Unit Related", 
@@ -17,35 +18,52 @@ def test_open_period_update(page:Page,  testcase):
                                  "Open Periods",
                                  "Open Periods Mass Update"])
     
+    # Locate the target iframe
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
+    # Fill in the required fields with test data
     targetContentFrame.get_by_label("Calendar").fill(testdata['Calendar'])
     targetContentFrame.get_by_label("Unit").fill(testdata['Unit'])
     targetContentFrame.get_by_label("Ledger Code").fill(testdata['Ledger_Code'])
     targetContentFrame.get_by_label("Ledger Group").fill(testdata['Ledger_Group'])
+    
+    # Click the "Search" button to initiate the search
     targetContentFrame.get_by_role("button", name="Search").click()
+    
+    # Fill in the period fields for the first update
     targetContentFrame.get_by_label("From Period").fill(testdata['From_Period1'])
     targetContentFrame.get_by_label("To Period").fill(testdata['To_Period1'])
+    
+    # Select the relevant checkboxes for the update
     targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$0\"]").check()
     targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$1\"]").check()
+    
+    # Click the "Apply" button to apply the changes
     targetContentFrame.get_by_role("button", name="Apply").click()
 
+    # Locate the period fields to verify the updates
+    From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
+    To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
 
-    From_period=targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
-    To_period=targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
-
-    if From_period.inner_text()==testdata['From_Period1'] and To_period.inner_text()==testdata['To_Period1']:
+    # Check if the mass update was successful for the first period
+    if From_period.inner_text() == testdata['From_Period1'] and To_period.inner_text() == testdata['To_Period1']:
         print("Mass update success")
     else:
-        raise Exception(f"Mass update failed")
+        raise Exception("Mass update failed")
 
+    # Fill in the period fields for the second update
     targetContentFrame.get_by_label("From Period").fill(testdata['From_Period2'])
     targetContentFrame.get_by_label("To Period").fill(testdata['To_Period2'])
+    
+    # Select the relevant checkboxes for the update again
     targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$0\"]").check()
     targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$1\"]").check()
+    
+    # Click the "Apply" button to apply the second set of changes
     targetContentFrame.get_by_role("button", name="Apply").click()
 
-    if From_period.inner_text()==testdata['From_Period2'] and To_period.inner_text()==testdata['To_Period2']:
+    # Check if the mass update was successful for the second period
+    if From_period.inner_text() == testdata['From_Period2'] and To_period.inner_text() == testdata['To_Period2']:
         print("Mass update success")
     else:
-        raise Exception(f"Mass update failed")
+        raise Exception("Mass update failed")
