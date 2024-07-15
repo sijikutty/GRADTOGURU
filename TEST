@@ -6,11 +6,9 @@ import time
 from Common_function import jrnl_edit
 
 @pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_edit"))
-def test_manual_jrnl_edit(page:Page,  testcase):
-
+def test_manual_jrnl_edit(page: Page, testcase):
+    # Extract test data for the current test case
     testdata = testcase["testdata"]
-    jrnl_edit(page,  testdata)
-
-
-
- 
+    
+    # Call the function to edit the journal using the provided test data
+    jrnl_edit(page, testdata)
