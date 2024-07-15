@@ -1,21 +1,51 @@
-    if testdata['scenario']=="test_Journal_ID_Ref_Onl":
-        line1.locator("[id=\"JRNL_LN_REF\\$0\"]").fill(testdata['jrnl_ref'])
+from playwright.sync_api import Page
+from automation_utils import get_testdata
+from ps_utils import navigate_menu
+import pytest 
+import time
+from Common_function import jrnl_edit
 
-{
-            "key"       : "QA test GUI - TC33977",
-            "env"       : "Dev",
-            "runflag"   : "N",
-            "scenario"  : "test_Journal_ID_Ref_Onl",
-            "testdata"  : {
-                "business_unit":"10000",
-                "ledger":"ACTUALS",
-                "source":"A01",
-                "account":"100010",
-                "foreign_amount_line1":"1500",
-                "foreign_amount_line2":"-1500",
-                "oper_unit":"000",
-                "jrnl_ref":"0999",
-                "userid":"PWTEST",
-                "scenario"  : "test_Journal_ID_Ref_Onl"
-            }
-        },
+@pytest.mark.parametrize("testcase", get_testdata("test_open_period_update"))
+def test_open_period_update(page:Page,  testcase):
+
+    testdata = testcase["testdata"]
+
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Business Unit Related", 
+                                 "General Ledger", 
+                                 "Open Periods",
+                                 "Open Periods Mass Update"])
+    
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+
+    targetContentFrame.get_by_label("Calendar").fill(testdata['Calendar'])
+    targetContentFrame.get_by_label("Unit").fill(testdata['Unit'])
+    targetContentFrame.get_by_label("Ledger Code").fill(testdata['Ledger_Code'])
+    targetContentFrame.get_by_label("Ledger Group").fill(testdata['Ledger_Group'])
+    targetContentFrame.get_by_role("button", name="Search").click()
+    targetContentFrame.get_by_label("From Period").fill(testdata['From_Period1'])
+    targetContentFrame.get_by_label("To Period").fill(testdata['To_Period1'])
+    targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$0\"]").check()
+    targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$1\"]").check()
+    targetContentFrame.get_by_role("button", name="Apply").click()
+
+
+    From_period=targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
+    To_period=targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
+
+    if From_period.inner_text()==testdata['From_Period1'] and To_period.inner_text()==testdata['To_Period1']:
+        print("Mass update success")
+    else:
+        raise Exception(f"Mass update failed")
+
+    targetContentFrame.get_by_label("From Period").fill(testdata['From_Period2'])
+    targetContentFrame.get_by_label("To Period").fill(testdata['To_Period2'])
+    targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$0\"]").check()
+    targetContentFrame.locator("[id=\"OPEN_CLOSE_WRK_SELECT_FLAG\\$1\"]").check()
+    targetContentFrame.get_by_role("button", name="Apply").click()
+
+    if From_period.inner_text()==testdata['From_Period2'] and To_period.inner_text()==testdata['To_Period2']:
+        print("Mass update success")
+    else:
+        raise Exception(f"Mass update failed")
