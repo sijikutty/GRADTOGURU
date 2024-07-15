@@ -1,39 +1,137 @@
 from playwright.sync_api import Page
 from automation_utils import get_testdata
 from ps_utils import navigate_menu
-import pytest 
 import time
-from Common_function import jrnl_post
 
-@pytest.mark.parametrize("testcase", get_testdata("test_Journal_ID_Ref_Onl"))
-def test_Journal_ID_Ref_Onl(page: Page, testcase):
-    # Extract test data from the testcase parameter
-    testdata = testcase["testdata"]
-    
-    # Navigate to the "Define User Preferences" section in the application
+
+def jrnl_create(page:Page,  testdata: dict):
+
+       
+    # Choosing create journal option from NavBar
     navigate_menu(page=page,
-                  menu_sequence=["Set Up Financials/Supply Chain", 
-                                 "Common Definitions", 
-                                 "User Preferences", 
-                                 "Define User Preferences"])
+                  menu_sequence=["General Ledger", 
+                                 "Journals", 
+                                 "Journal Entry", 
+                                 "Create/Update Journal Entries"])
     
-    # Locate the target iframe for further actions
+    # Filling add new value Page
+    #!---------------
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_role("button", name="Look up Business Unit").click()
+
+    # Assigning Popup window frame with generalised locator to popup_dialog handle
+    popup_dialog = page.frame_locator("[id^='ptModFrame']") # This handle can be used for all the pop-up windows
     
-    # Fill in the User ID with the test data
-    targetContentFrame.get_by_label("User ID").fill(testdata['userid'])
+    popup_dialog.get_by_role("link", name=(testdata['business_unit'])).click()
+    targetContentFrame.get_by_role("button", name="Add").click()
+    #----------------!
     
-    # Click on the "Search" link to find the user preferences
-    targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a").click()
+    # Filling Header Page
+    #!----------------
+    targetContentFrame.get_by_label("Long Description").fill("test")
+
+    targetContentFrame.get_by_role("button", name="Look up Ledger Group").click()
+    popup_dialog.get_by_role("link", name=(testdata['ledger']), exact=True).click()
+
+    targetContentFrame.get_by_role("button", name="Look up Source").click()
+    popup_dialog.get_by_role("link", name=(testdata['source'])).click()
+
+    #----------------!
+
+
+    # Filling Lines Page
+    #!----------------
+    targetContentFrame.get_by_label("Lines", exact=True).click()
+
+    # Assigning 1st lines to a handle line1
+    line1 = targetContentFrame.locator("[id^='tr'][id$='row1']")
+
+    # Referencing all the elements in the 1st line using line1 handle
+    line1.get_by_role("button", name="Look Up Account").click()
+    popup_dialog.get_by_role("link", name=(testdata['account'])).click()
+
+    line1.get_by_role("button", name="Look up Oper Unit").click()
+    popup_dialog.get_by_role("link", name="000").click()
+
+    line1.locator("[id^='FOREIGN_AMOUNT']").fill(testdata['foreign_amount_line1'])
+
+    if 'scenario' in testdata:
+        if testdata['scenario']=="test_Journal_ID_Ref_Onl":
+            line1.locator("[id=\"JRNL_LN_REF\\$0\"]").fill(testdata['jrnl_ref'])
     
-    # Select "General Ledger" from the options
-    targetContentFrame.get_by_role("link", name="General Ledger").click()
-    
-    # Check the "Enable Online Journal Post" option
-    targetContentFrame.get_by_label("Enable Online Journal Post").check()
-    
-    # Click the "Save" button to apply changes
+    # Creating second line
+    targetContentFrame.get_by_role("link", name="Insert Lines").click()
+
+    # Assigning 2nd lines to a handle line2
+    line2 = targetContentFrame.locator("[id^='tr'][id$='row2']")
+
+    line2.get_by_role("button", name="Look Up Account").click()
+    popup_dialog.get_by_role("link", name=(testdata['account'])).click()
+
+    line2.get_by_role("button", name="Look up Oper Unit").click()
+    popup_dialog.get_by_role("link", name=(testdata['oper_unit'])).click()
+
+    line2.locator("[id^='FOREIGN_AMOUNT']").fill(testdata['foreign_amount_line2'])
+    if 'scenario' in testdata:
+        if testdata['scenario']=="test_Journal_ID_Ref_Onl":
+            line2.locator("[id=\"JRNL_LN_REF\\$1\"]").fill(testdata['jrnl_ref'])
+
+    #----------------!
+
     targetContentFrame.get_by_role("button", name="Save").click()
+
+    alertmsg = page.locator("[id^='ptModTable']")
+    alertmsg.get_by_role("button", name="OK").click()
+
+    journal_id = targetContentFrame.locator("[id='JRNL_HEADER_JOURNAL_ID']").inner_text()
+    print("Journal ID : ", journal_id)
+    return journal_id
+
+def jrnl_edit(page:Page,  testdata: dict):
+    journal_id=jrnl_create(page,  testdata)
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("Process").select_option(value="E")
+    targetContentFrame.get_by_role("button", name="Process").click()
+    retry = 0
+    while retry < 30:
+        expected_values=['V']
+        status_row=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
+        Status=status_row.locator("td:nth-child(5)").inner_text()
+        if Status in expected_values:
+            break
+        else:
+            time.sleep(10)
+            retry += 1
+       # If the final Job_status is not "SUCCESS", raise an exception
+    if Status.upper() == "V":
+        print("Journal Edit success")
+    elif Status.upper() == "E":
+        raise Exception(f"Journal Edit has Error with Status : {Status}")
+    elif Status.upper() == "N":
+        raise Exception(f"Journal Edit Timed out with Status : {Status}")
+    else:
+        raise Exception(f"Journal Edit Failed with Status : {Status}")
     
-    # Call the jrnl_post function to perform journal posting with the test data
-    jrnl_post(page, testdata)
+    return journal_id
+    
+def jrnl_post(page:Page,  testdata: dict):
+    jrnl_edit(page,  testdata)
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("Process").select_option(value="P")
+    targetContentFrame.get_by_role("button", name="Process").click()
+    page.get_by_role("button", name="OK").click()
+    retry = 0
+    while retry < 60:
+        expected_values=['P']
+        status_row=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
+        Status=status_row.locator("td:nth-child(5)").inner_text()
+        if Status in expected_values:
+            break
+        else:
+            time.sleep(10)
+            retry += 1
+       # If the final Job_status is not "SUCCESS", raise an exception
+    if Status.upper() == "P":
+        print("Journal Post success")
+    else:
+        raise Exception(f"Journal Post Failed with Status : {Status}")
