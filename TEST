@@ -3,135 +3,164 @@ from automation_utils import get_testdata
 from ps_utils import navigate_menu
 import time
 
-
-def jrnl_create(page:Page,  testdata: dict):
-
-       
-    # Choosing create journal option from NavBar
+def jrnl_create(page: Page, testdata: dict):
+    # Navigate to the "Create/Update Journal Entries" section
     navigate_menu(page=page,
                   menu_sequence=["General Ledger", 
                                  "Journals", 
                                  "Journal Entry", 
                                  "Create/Update Journal Entries"])
     
-    # Filling add new value Page
-    #!---------------
+    # Locate the target iframe for further actions
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Click the button to look up the Business Unit
     targetContentFrame.get_by_role("button", name="Look up Business Unit").click()
 
-    # Assigning Popup window frame with generalised locator to popup_dialog handle
-    popup_dialog = page.frame_locator("[id^='ptModFrame']") # This handle can be used for all the pop-up windows
+    # Handle the popup dialog for business unit selection
+    popup_dialog = page.frame_locator("[id^='ptModFrame']")
     
+    # Select the business unit from the popup
     popup_dialog.get_by_role("link", name=(testdata['business_unit'])).click()
-    targetContentFrame.get_by_role("button", name="Add").click()
-    #----------------!
     
-    # Filling Header Page
-    #!----------------
+    # Click "Add" to create a new journal entry
+    targetContentFrame.get_by_role("button", name="Add").click()
+    
+    # Filling the Header Page
     targetContentFrame.get_by_label("Long Description").fill("test")
 
+    # Look up the Ledger Group
     targetContentFrame.get_by_role("button", name="Look up Ledger Group").click()
     popup_dialog.get_by_role("link", name=(testdata['ledger']), exact=True).click()
 
+    # Look up the Source
     targetContentFrame.get_by_role("button", name="Look up Source").click()
     popup_dialog.get_by_role("link", name=(testdata['source'])).click()
 
-    #----------------!
-
-
     # Filling Lines Page
-    #!----------------
     targetContentFrame.get_by_label("Lines", exact=True).click()
 
-    # Assigning 1st lines to a handle line1
+    # Handle the first line
     line1 = targetContentFrame.locator("[id^='tr'][id$='row1']")
 
-    # Referencing all the elements in the 1st line using line1 handle
+    # Look up the Account for the first line
     line1.get_by_role("button", name="Look Up Account").click()
     popup_dialog.get_by_role("link", name=(testdata['account'])).click()
 
+    # Look up the Operating Unit for the first line
     line1.get_by_role("button", name="Look up Oper Unit").click()
     popup_dialog.get_by_role("link", name="000").click()
 
+    # Fill in the foreign amount for the first line
     line1.locator("[id^='FOREIGN_AMOUNT']").fill(testdata['foreign_amount_line1'])
 
+    # If the scenario is specified, fill the journal reference
     if 'scenario' in testdata:
-        if testdata['scenario']=="test_Journal_ID_Ref_Onl":
+        if testdata['scenario'] == "test_Journal_ID_Ref_Onl":
             line1.locator("[id=\"JRNL_LN_REF\\$0\"]").fill(testdata['jrnl_ref'])
     
-    # Creating second line
+    # Create the second line
     targetContentFrame.get_by_role("link", name="Insert Lines").click()
 
-    # Assigning 2nd lines to a handle line2
+    # Handle the second line
     line2 = targetContentFrame.locator("[id^='tr'][id$='row2']")
 
+    # Look up the Account for the second line
     line2.get_by_role("button", name="Look Up Account").click()
     popup_dialog.get_by_role("link", name=(testdata['account'])).click()
 
+    # Look up the Operating Unit for the second line
     line2.get_by_role("button", name="Look up Oper Unit").click()
     popup_dialog.get_by_role("link", name=(testdata['oper_unit'])).click()
 
+    # Fill in the foreign amount for the second line
     line2.locator("[id^='FOREIGN_AMOUNT']").fill(testdata['foreign_amount_line2'])
+
+    # If the scenario is specified, fill the journal reference for the second line
     if 'scenario' in testdata:
-        if testdata['scenario']=="test_Journal_ID_Ref_Onl":
+        if testdata['scenario'] == "test_Journal_ID_Ref_Onl":
             line2.locator("[id=\"JRNL_LN_REF\\$1\"]").fill(testdata['jrnl_ref'])
 
-    #----------------!
-
+    # Click the "Save" button to save the journal entry
     targetContentFrame.get_by_role("button", name="Save").click()
 
+    # Confirm the action in the alert message
     alertmsg = page.locator("[id^='ptModTable']")
     alertmsg.get_by_role("button", name="OK").click()
 
+    # Retrieve and print the Journal ID
     journal_id = targetContentFrame.locator("[id='JRNL_HEADER_JOURNAL_ID']").inner_text()
     print("Journal ID : ", journal_id)
+    
     return journal_id
 
-def jrnl_edit(page:Page,  testdata: dict):
-    journal_id=jrnl_create(page,  testdata)
+def jrnl_edit(page: Page, testdata: dict):
+    # Create a journal entry and get the Journal ID
+    journal_id = jrnl_create(page, testdata)
+    
+    # Locate the target iframe for editing the journal
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Set the process type to Edit
     targetContentFrame.get_by_label("Process").select_option(value="E")
+    
+    # Click the "Process" button to edit the journal
     targetContentFrame.get_by_role("button", name="Process").click()
+    
     retry = 0
     while retry < 30:
-        expected_values=['V']
-        status_row=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
-        Status=status_row.locator("td:nth-child(5)").inner_text()
+        expected_values = ['V']  # Expected status values
+        status_row = targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
+        Status = status_row.locator("td:nth-child(5)").inner_text()  # Get the current status
+        
         if Status in expected_values:
             break
         else:
-            time.sleep(10)
+            time.sleep(10)  # Wait before retrying
             retry += 1
-       # If the final Job_status is not "SUCCESS", raise an exception
+    
+    # Check the final job status and raise exceptions if necessary
     if Status.upper() == "V":
         print("Journal Edit success")
     elif Status.upper() == "E":
-        raise Exception(f"Journal Edit has Error with Status : {Status}")
+        raise Exception(f"Journal Edit has Error with Status: {Status}")
     elif Status.upper() == "N":
-        raise Exception(f"Journal Edit Timed out with Status : {Status}")
+        raise Exception(f"Journal Edit Timed out with Status: {Status}")
     else:
-        raise Exception(f"Journal Edit Failed with Status : {Status}")
+        raise Exception(f"Journal Edit Failed with Status: {Status}")
     
     return journal_id
     
-def jrnl_post(page:Page,  testdata: dict):
-    jrnl_edit(page,  testdata)
+def jrnl_post(page: Page, testdata: dict):
+    # Edit the journal entry
+    jrnl_edit(page, testdata)
+    
+    # Locate the target iframe for posting the journal
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Set the process type to Post
     targetContentFrame.get_by_label("Process").select_option(value="P")
+    
+    # Click the "Process" button to post the journal
     targetContentFrame.get_by_role("button", name="Process").click()
+    
+    # Confirm the action in the alert message
     page.get_by_role("button", name="OK").click()
+    
     retry = 0
     while retry < 60:
-        expected_values=['P']
-        status_row=targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
-        Status=status_row.locator("td:nth-child(5)").inner_text()
+        expected_values = ['P']  # Expected status values
+        status_row = targetContentFrame.locator("[id=\"trJRNL_HEADER_IU\\$0_row1\"]")
+        Status = status_row.locator("td:nth-child(5)").inner_text()  # Get the current status
+        
         if Status in expected_values:
             break
         else:
-            time.sleep(10)
+            time.sleep(10)  # Wait before retrying
             retry += 1
-       # If the final Job_status is not "SUCCESS", raise an exception
+    
+    # Check the final job status and raise exceptions if necessary
     if Status.upper() == "P":
         print("Journal Post success")
     else:
-        raise Exception(f"Journal Post Failed with Status : {Status}")
+        raise Exception(f"Journal Post Failed with Status: {Status}")
