@@ -3,12 +3,21 @@ from automation_utils import get_testdata
 from ps_utils import navigate_menu
 import pytest 
 import time
-from Common_function import jrnl_edit
+from Common_function import jrnl_post
 
-@pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_edit"))
-def test_manual_jrnl_edit(page: Page, testcase):
-    # Extract test data for the current test case
+@pytest.mark.parametrize("testcase", get_testdata("test_manual_jrnl_post"))
+def test_manual_jrnl_post(page:Page,  testcase):
+
     testdata = testcase["testdata"]
-    
-    # Call the function to edit the journal using the provided test data
-    jrnl_edit(page, testdata)
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "User Preferences", 
+                                 "Define User Preferences"])
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("User ID").fill(testdata['userid'])
+    targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a").click()
+    targetContentFrame.get_by_role("link", name="General Ledger").click()
+    targetContentFrame.get_by_label("Enable Online Journal Post").check()
+    targetContentFrame.get_by_role("button", name="Save").click()
+    jrnl_post(page,  testdata)
