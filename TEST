@@ -1,67 +1,90 @@
 from playwright.sync_api import Page
 from automation_utils import get_testdata
-from ps_utils import navigate_menu,add_run_control_id,schedule_process, monitor_process
-import pytest ,time
+from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
+import pytest 
+import time
 from datetime import datetime
 from Common_function import jrnl_edit
 
 @pytest.mark.parametrize("testcase", get_testdata("test_batch_jrnl_post"))
-def test_batch_jrnl_post(page:Page,  testcase):
-
+def test_batch_jrnl_post(page: Page, testcase):
+    # Extract test data from the testcase parameter
     testdata = testcase["testdata"]
-    journal_id=jrnl_edit(page,  testdata)
+    
+    # Edit the journal and retrieve the Journal ID
+    journal_id = jrnl_edit(page, testdata)
 
+    # Navigate to the "Mark Journals for Posting" section
     navigate_menu(page=page,
                   menu_sequence=["General Ledger", 
                                  "Journals", 
                                  "Process Journals", 
                                  "Mark Journals for Posting"])
 
-    # Fill values in the page
+    # Locate the target iframe for filling in the form
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
+    # Fill in the required fields for marking journals for posting
     targetContentFrame.get_by_label("Unit").fill(testdata['business_unit'])
     targetContentFrame.get_by_label("Ledger Group").fill(testdata['ledger'])
-    targetContentFrame.get_by_label("Year").fill(str(datetime.now().year))
-    targetContentFrame.get_by_label("Period", exact=True).fill(str(datetime.now().month))
+    targetContentFrame.get_by_label("Year").fill(str(datetime.now().year))  # Current year
+    targetContentFrame.get_by_label("Period", exact=True).fill(str(datetime.now().month))  # Current month
 
+    # Fill in the source field
     targetContentFrame.get_by_label("Source").fill(testdata['source'])
 
-    #targetContentFrame.get_by_role("button", name="Look up Journal ID").click()
-    #popup_dialog = page.frame_locator("[id^='ptModFrame']")
-    #popup_dialog.get_by_role("link", name=journal_id).click()
+    # Fill in the Journal ID obtained from the edited journal
     targetContentFrame.get_by_label("Journal ID").fill(journal_id)
-    time.sleep(30)
+    
+    # Wait for any asynchronous operations to complete (if necessary)
+    time.sleep(30)  # Consider replacing with a more reliable wait
+
+    # Click the "Search" button to find the journal
     targetContentFrame.get_by_role("button", name="Search").click()
     
+    # Select the journal to post
     targetContentFrame.locator("[id=\"JRNL_TO_POST_VW_JRNL_PROCESS_REQST\\$0\"]").check()
+    
+    # Click the "Save" button to save the selection
     targetContentFrame.get_by_role("button", name="Save").click()
 
-
+    # Navigate to the "Post Journals" section
     navigate_menu(page=page,
                   menu_sequence=["General Ledger", 
                                  "Journals", 
                                  "Process Journals", 
                                  "Post Journals"])
     
-    # Fill values in the page
+    # Fill values in the page for posting journals
     add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-  
+
+    # Select the "Once" option for the run
     targetContentFrame.get_by_label("Once").check()
+    
+    # Fill in the Business Unit field for posting
     targetContentFrame.get_by_label("Business Unit").fill(testdata['business_unit'])
+    
+    # Look up the Journal ID From
     targetContentFrame.get_by_role("button", name="Look up Journal ID From").click()
     popup_dialog = page.frame_locator("[id^='ptModFrame']")
-    popup_dialog.get_by_role("rowheader", name=journal_id).click()
+    popup_dialog.get_by_role("rowheader", name=journal_id).click()  # Select the journal
+
+    # Look up the Journal ID To
     targetContentFrame.get_by_role("button", name="Look up Journal ID To").click()
-    popup_dialog.get_by_role("link", name=journal_id).click()
-    #targetContentFrame.get_by_label("Journal ID From").fill(journal_id)
-    #targetContentFrame.get_by_label("Journal ID To").fill(journal_id)
+    popup_dialog.get_by_role("link", name=journal_id).click()  # Select the same journal
+
+    # Fill in the description with the run control ID
     targetContentFrame.get_by_label("Description").fill(testdata['run_control_id'])
+    
+    # Click the "Run" button to initiate the posting process
     targetContentFrame.get_by_role("button", name="Run").click()
 
-    process_instance_id = schedule_process(page=page, server_name=testdata["server"],process_name=testdata["postprocess"])
+    # Schedule the posting process and retrieve the process instance ID
+    process_instance_id = schedule_process(page=page, server_name=testdata["server"], process_name=testdata["postprocess"])
 
+    # Monitor the scheduled process and retrieve its status
     run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
 
-    print(f"Journal Batch Post Program Run status : ", run_status)
+    # Print the run status of the Journal Batch Post Program for debugging
+    print(f"Journal Batch Post Program Run status: ", run_status)
