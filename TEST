@@ -1,32 +1,45 @@
 from playwright.sync_api import Page
-from automation_utils import get_testdata, get_secrets,update_remote_file,transfer_file_to_unix,autosys_login,autosys_job_run,connect_to_oracleDB,execute_query
-from ps_utils import navigate_menu,add_run_control_id,schedule_process, monitor_process
+from automation_utils import get_testdata, get_secrets, update_remote_file, transfer_file_to_unix, autosys_login, autosys_job_run, connect_to_oracleDB, execute_query
+from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
 import pytest 
 import time
 
 @pytest.mark.parametrize("testcase", get_testdata("test_CF_Security_process"))
-def test_CF_Security_process(page:Page,  testcase):
+def test_CF_Security_process(page: Page, testcase):
+    # Extract test data from the testcase parameter
     testdata = testcase["testdata"] 
-      
-    # Choosing create journal option from NavBar
+
+    # Navigate to the "Request CF Security Build" section
     navigate_menu(page=page,
                   menu_sequence=["Set Up Financials/Supply Chain", 
                                  "Security", 
                                  "Chartfield Security", 
                                  "Maintain Security Rules",
                                  "Request CF Security Build"])
+
+    # Add run control ID to the form
     add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
+    
+    # Locate the target iframe for filling in the form
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Fill in the required fields for the security build request
     targetContentFrame.locator("[id=\"SEC_BUILD_REQ_PROCESS_FREQUENCY\\$0\"]").select_option(testdata['processfrequency'])
     targetContentFrame.locator("[id=\"SEC_BUILD_REQ_SEC_PROCESS_TYPE\\$0\"]").select_option(testdata['processtype'])
     targetContentFrame.locator("[id=\"SEC_BUILD_REQ_DATE_REQ_OPTION2\\$0\"]").select_option(testdata['reqdtoptn'])
     targetContentFrame.locator("[id=\"SEC_BUILD_REQ_CF_SECURITY2\\$0\"]").select_option(testdata['security_method'])
+    
+    # Click the "Save" button to save the request
     targetContentFrame.get_by_role("button", name="Save").click()
+    
+    # Click the "Run" button to initiate the security build process
     targetContentFrame.get_by_role("button", name="Run").click()
-    process_instance_id = schedule_process(page=page, server_name=testdata["server"],process_name=testdata["cfsecurityprocess"])
 
+    # Schedule the process and retrieve the process instance ID
+    process_instance_id = schedule_process(page=page, server_name=testdata["server"], process_name=testdata["cfsecurityprocess"])
+
+    # Monitor the scheduled process and retrieve its status
     run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
 
-    print(f"CF Security Program Run status : ", run_status)
-
-
+    # Print the run status of the CF Security Program for debugging
+    print(f"CF Security Program Run status: ", run_status)
