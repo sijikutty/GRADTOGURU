@@ -6,18 +6,34 @@ import time
 from Common_function import jrnl_post
 
 @pytest.mark.parametrize("testcase", get_testdata("test_Journal_ID_Ref_Onl"))
-def test_Journal_ID_Ref_Onl(page:Page,  testcase):
-
+def test_Journal_ID_Ref_Onl(page: Page, testcase):
+    # Extract test data from the testcase parameter
     testdata = testcase["testdata"]
+    
+    # Navigate to the "Define User Preferences" section in the application
     navigate_menu(page=page,
                   menu_sequence=["Set Up Financials/Supply Chain", 
                                  "Common Definitions", 
                                  "User Preferences", 
                                  "Define User Preferences"])
+    
+    # Locate the target iframe for further actions
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Fill in the User ID with the test data
     targetContentFrame.get_by_label("User ID").fill(testdata['userid'])
+    
+    # Click on the "Search" link to find the user preferences
     targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a").click()
+    
+    # Select "General Ledger" from the options
     targetContentFrame.get_by_role("link", name="General Ledger").click()
+    
+    # Check the "Enable Online Journal Post" option
     targetContentFrame.get_by_label("Enable Online Journal Post").check()
+    
+    # Click the "Save" button to apply changes
     targetContentFrame.get_by_role("button", name="Save").click()
-    jrnl_post(page,  testdata)
+    
+    # Call the jrnl_post function to perform journal posting with the test data
+    jrnl_post(page, testdata)
