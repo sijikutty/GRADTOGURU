@@ -1,41 +1,36 @@
 from playwright.sync_api import Page
 from automation_utils import get_testdata
-from ps_utils import navigate_menu
+from ps_utils import navigate_menu,add_run_control_id,schedule_process, monitor_process
 import pytest 
 import time
-from Common_function import jrnl_edit
+from Common_function import jrnl_create
 
-@pytest.mark.parametrize("testcase", get_testdata("test_approval_workflow"))
-def test_approval_workflow(page: Page, testcase):
-    # Extract test data from the testcase parameter
+@pytest.mark.parametrize("testcase", get_testdata("test_batch_jrnl_edit"))
+def test_batch_jrnl_edit(page:Page,  testcase):
+
     testdata = testcase["testdata"]
-    
-    # Edit the journal and retrieve the Journal ID
-    journal_id = jrnl_edit(page, testdata)
+    journal_id=jrnl_create(page,  testdata)
 
-    # Locate the target iframe for processing
+    navigate_menu(page=page,
+                  menu_sequence=["General Ledger", 
+                                 "Journals", 
+                                 "Process Journals", 
+                                 "Edit Journals"])
+    
+    # Fill values in the page
+    add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+  
+    targetContentFrame.get_by_label("Once").check()
+    targetContentFrame.get_by_label("Business Unit").fill(testdata['business_unit'])
+    
+    targetContentFrame.get_by_label("Journal ID From").fill(journal_id)
+    targetContentFrame.get_by_label("To Journal ID").fill(journal_id)
+    targetContentFrame.get_by_label("Description").fill(testdata['run_control_id'])
+    targetContentFrame.get_by_role("button", name="Run").click()
 
-    # Select the option to submit for approval
-    targetContentFrame.get_by_label("Process").select_option("S")
-    
-    # Click the "Process" button to initiate the approval workflow
-    targetContentFrame.get_by_role("button", name="Process").click()
+    process_instance_id = schedule_process(page=page, server_name=testdata["server"],process_name=testdata["editprocess"])
 
-    # Print the Journal ID for reference
-    print(journal_id) 
-    
-    # Click the "Approval" section to check the status
-    targetContentFrame.get_by_label("Approval").click()
-    
-    # Retrieve the current approval status from the UI
-    Status = targetContentFrame.locator("[id=\"PSXLATITEM_XLATLONGNAME\\$0\"]").inner_text()
-    
-    # Print the current status for debugging
-    print(Status)
-    
-    # Check if the status indicates pending approval
-    if Status == "Pending Approval":
-        print("Approval initiated successfully")
-    else:
-        raise Exception(f"Approval framework issue")
+    run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
+
+    print(f"Journal Batch Edit Program Run status : ", run_status)
