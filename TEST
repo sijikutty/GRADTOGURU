@@ -6,21 +6,36 @@ import time
 from Common_function import jrnl_edit
 
 @pytest.mark.parametrize("testcase", get_testdata("test_approval_workflow"))
-def test_approval_workflow(page:Page,  testcase):
-
+def test_approval_workflow(page: Page, testcase):
+    # Extract test data from the testcase parameter
     testdata = testcase["testdata"]
-    journal_id=jrnl_edit(page,  testdata)
+    
+    # Edit the journal and retrieve the Journal ID
+    journal_id = jrnl_edit(page, testdata)
 
+    # Locate the target iframe for processing
     targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
+    # Select the option to submit for approval
     targetContentFrame.get_by_label("Process").select_option("S")
+    
+    # Click the "Process" button to initiate the approval workflow
     targetContentFrame.get_by_role("button", name="Process").click()
 
+    # Print the Journal ID for reference
     print(journal_id) 
+    
+    # Click the "Approval" section to check the status
     targetContentFrame.get_by_label("Approval").click()
-    Status=targetContentFrame.locator("[id=\"PSXLATITEM_XLATLONGNAME\\$0\"]").inner_text()
+    
+    # Retrieve the current approval status from the UI
+    Status = targetContentFrame.locator("[id=\"PSXLATITEM_XLATLONGNAME\\$0\"]").inner_text()
+    
+    # Print the current status for debugging
     print(Status)
-    if Status=="Pending Approval":
+    
+    # Check if the status indicates pending approval
+    if Status == "Pending Approval":
         print("Approval initiated successfully")
     else:
         raise Exception(f"Approval framework issue")
