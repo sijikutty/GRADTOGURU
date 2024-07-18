@@ -1,2 +1,92 @@
-    SELECT COUNT(*)
-     FROM PS_JRNL_HEADER WHERE DESCR='VV' AND SYSTEM_SOURCE='CON' AND TRUNC(CUR_EFFDT)=TRUNC(TO_DATE(07/16/2024,'YYYY-MM-DD'))
+   def connect_to_oracleDB(secretID):
+    db_secrets = get_DBsecrets(secretID)
+
+    try:
+        print("Connecting to DB")
+        connection = oracledb.connect(user=db_secrets['username'],
+                                      password=db_secrets['password'],
+                                      host=db_secrets['host'],
+                                      port=db_secrets['port'],
+                                      service_name=db_secrets['servicename'])
+
+        print("Database connected successfully")
+        return connection
+    except Exception as e:
+        print(f"Error connecting to Oracle DB: {e}")
+        return None
+    
+def execute_query(connection, query):
+    try:
+        cursor = connection.cursor()
+        cursor.execute(query)
+        result = cursor.fetchone()
+        
+        count = result[0] if result else None
+        
+        print(f"Result of the query: {count}")
+        
+        cursor.close()
+        return {"status": True, "count": count}
+
+    except Exception as e:
+        print(f"Error executing query: {e}")
+        return {"status": False, "error": str(e)}
+    finally:
+        if connection:
+            connection.close()
+
+# Connect to the Oracle database to verify the process
+    connection = connect_to_oracleDB(testdata["ps_db"])
+    
+    # Query to count records for the given process instance
+    query1 = "SELECT COUNT(*) FROM PS_LEDGER WHERE DTTM_STAMP_SEC>SYSDATE-1 AND FISCAL_YEAR= '"+testdata["fiscal_year"]+"'"  
+    print(query1)  
+
+    query2 = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE JOURNAL_ID LIKE 'CL%' AND JRNL_CREATE_DTTM>SYSDATE-1"  
+    print(query2)  
+    
+    if connection:
+        # Execute the query and retrieve the result
+        query_result1 = execute_query(connection, query1)
+        query_result2 = execute_query(connection, query2)
+        # Check the query execution status and print the results
+        
+
+        if query_result1["status"]:
+            if query_result1['count']>0 :
+                print(f"Query executed successfully. Count: {query_result1['count']}")
+            else:
+                raise Exception(f"Query Result has 0 rows")
+        else:
+            raise Exception(f"Failed to execute query. Error: {query_result1['error']}")
+                # Check the query execution status and print the results
+        if query_result2["status"]:
+            if query_result2['count']>0 :
+                print(f"Query executed successfully. Count: {query_result2['count']}")
+            else:
+                raise Exception(f"Query Result has 0 rows")
+        else:
+            raise Exception(f"Failed to execute query. Error: {query_result2['error']}")    
+    else:
+        print("Failed to connect to the database.")
+
+
+------
+Result
+ if connection:
+            # Execute the query and retrieve the result
+            query_result1 = execute_query(connection, query1)
+>           query_result2 = execute_query(connection, query2)
+
+PS_Testing\test_gui\QA_Test\test_ledger_close.py:76:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+PS_Testing\test_gui\automation_utils.py:135: in execute_query
+    connection.close()
+.venv\Lib\site-packages\oracledb\connection.py:638: in close
+    self._verify_connected()
+.venv\Lib\site-packages\oracledb\connection.py:84: in _verify_connected
+    errors._raise_err(errors.ERR_NOT_CONNECTED)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+error_num = 1001, context_error_message = None, cause = None, args = {}, message = 'DPY-1001: not connected to database'      
+error = <oracledb.errors._Error object at 0x0000028F22364CD0>
