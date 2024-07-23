@@ -1,11 +1,27 @@
-    targetContentFrame.get_by_label("Output and Journal Options").click()
+# Assuming you have already initialized Playwright and navigated to the page
 
+# Click on the element labeled "Output and Journal Options" in the target content frame
+targetContentFrame.get_by_label("Output and Journal Options").click()
 
-    # Get the row corresponding to the required program to run and check the checkbox
-    sample_bookcd_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text='Book Code')
-    
-    #sample_bookcd_row.get_by_label("Retain Value").uncheck()
-    sample_bookcd_row.get_by_role("checkbox").uncheck()
-    sample_bookcd_row.get_by_role("textbox").fill("STNC")
+# Locate the rows in the grid, filtering for rows with 'Book Code' in the dropdown
+sample_bookcd_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text='Book Code')
 
-    targetContentFrame.get_by_role("button", name="Save").click()
+# Assuming there is a dropdown in each row, let's find the correct row and uncheck the checkbox
+for row in sample_bookcd_row:
+    # Assuming the dropdown is the first element in the row and has specific identifier or class
+    dropdown = row.locator("select").first()  # Adjust the locator as per your HTML structure
+
+    # Check if the dropdown has 'Book Code' selected
+    if dropdown.evaluate('(element) => element.value') == 'Book Code':
+        # Now find and uncheck the checkbox in the same row
+        checkbox = row.get_by_role("checkbox").first()  # Assuming the checkbox is identified by role
+        checkbox.uncheck()
+
+        # Assuming there's a textbox associated with this row that needs to be filled with "STNC"
+        textbox = row.get_by_role("textbox").first()  # Adjust the locator for the textbox
+        textbox.fill("STNC")
+
+        break  # Exit the loop once we've processed the correct row
+
+# After modifying the row, save the changes
+targetContentFrame.get_by_role("button", name="Save").click()
