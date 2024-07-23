@@ -1,6 +1,5 @@
 from playwright.sync_api import sync_playwright
 
-# Assuming you have initialized Playwright and navigated to the page
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page()
@@ -10,26 +9,12 @@ with sync_playwright() as p:
     target_content_frame = page.frame('targetContentFrame')  # Replace with your actual frame name or selector
     target_content_frame.click('text="Output and Journal Options"')
 
-    # Locate the rows in the grid, filtering for rows with 'Book Code' in the dropdown
-    rows = target_content_frame.locator("tr[id^='tr']").elements()
+    # Find the dropdown element
+    dropdown = target_content_frame.locator("select").first()
 
-    # Iterate through each row to find the correct one
-    for row in rows:
-        dropdown_value = row.locator("select").first().evaluate('(element) => element.value')
-        
-        # Check if the dropdown has 'Book Code' selected
-        if dropdown_value == 'Book Code':
-            # Now find and uncheck the checkbox in the same row
-            checkbox = row.locator("input[type='checkbox']").first()  # Adjust the locator for the checkbox
-            checkbox.uncheck()
+    # Evaluate JavaScript to get the selected option
+    selected_option = dropdown.evaluate('(element) => element.options[element.selectedIndex].text')
 
-            # Assuming there's a textbox associated with this row that needs to be filled with "STNC"
-            textbox = row.locator("input[type='text']").first()  # Adjust the locator for the textbox
-            textbox.fill("STNC")
-
-            break  # Exit the loop once we've processed the correct row
-
-    # After modifying the row, save the changes
-    target_content_frame.click('button[name="Save"]')
+    print(f"Selected option in dropdown: {selected_option}")
 
     browser.close()
