@@ -1,10 +1,11 @@
+    targetContentFrame.get_by_label("Output and Journal Options").click()
 
-07/19/2024 13:45:08.781-0400 CAWA_I_20009 Successfully changed file owner and group for file "/opt/CA/WorkloadAutomationAE/SystemAgent/WA_AGENT/spool/TST_SCH/MAIN/WAAE_WF0.1/337033.68569192_1"
-07/19/2024 13:45:08.782-0400 CAWA_I_20009 Successfully changed file owner and group for file "/opt/CA/WorkloadAutomationAE/SystemAgent/WA_AGENT/spool/TST_SCH/MAIN/WAAE_WF0.1/337033.68569192_1.B37442D4265CEA0B3DCF999259615823BA273F97.joblog"
-07/19/2024 13:45:08.782-0400 CAWA_I_20010 The local security is bypassed
-07/19/2024 13:45:08.784-0400 CAWA_I_20009 User and group identity successfully set for user
-07/19/2024 13:45:08.785-0400 CAWA_I_20009 Recheck access permissions with new uid
-07/19/2024 13:45:08.785-0400 CAWA_I_20009 Use wrapper shell '/opt/CA/WorkloadAutomationAE/SystemAgent/WA_AGENT/spool/TST_SCH/MAIN/WAAE_WF0.1/337033.68569192_1.B37442D4265CEA0B3DCF999259615823BA273F97_wrapper.sh'
-07/19/2024 13:45:08.786-0400 CAWA_I_20041 Executing /opt/CA/WorkloadAutomationAE/SystemAgent/WA_AGENT/spool/TST_SCH/MAIN/WAAE_WF0.1/337033.68569192_1.B37442D4265CEA0B3DCF999259615823BA273F97_wrapper.sh 337033.68569192_1.B37442D4265CEA0B3DCF999259615823BA273F97_wrapper.sh. pid: 89586
-07/19/2024 13:45:08.845-0400 CAWA_I_20041 Executing /opt/CA/WorkloadAutomationAE/SystemAgent/WA_AGENT/spool/TST_SCH/MAIN/WAAE_WF0.1/337033.68569192_1.B37442D4265CEA0B3DCF999259615823BA273F97.sh /opt/CA/WorkloadAutomationAE/SystemAgent/WA_AGENT/spool/TST_SCH/MAIN/WAAE_WF0.1/337033.68569192_1.B37442D4265CEA0B3DCF999259615823BA273F97.sh. pid: 89586
-07/19/2024 13:45:10.027-0400 CAWA_I_20018 Job failed. Exit code 100, Status: 
+
+    # Get the row corresponding to the required program to run and check the checkbox
+    sample_bookcd_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text='Book Code')
+    
+    #sample_bookcd_row.get_by_label("Retain Value").uncheck()
+    sample_bookcd_row.get_by_role("checkbox").uncheck()
+    sample_bookcd_row.get_by_role("textbox").fill("STNC")
+
+    targetContentFrame.get_by_role("button", name="Save").click()
