@@ -1,407 +1,140 @@
-def test_GL_Configuration(page: Page, testcase):
-    # Extract test data for the current test case
-    testdata = testcase["testdata"]  
-    secrets = get_secrets(testdata["secretID"])
-#18--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Reporting Tools", 
-                                     "PS/nVision", 
-                                     "PS/nVision Schedule Requests"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("Business Unit")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Report ID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Description")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"PS/nVision Schedule Requests page is accessible")
-    except Exception as e:
-        raise Exception(f"PS/nVision Schedule Requests page cannot be navigated : {str(e)}")
+# 18
+try:
+    # Navigate to PS/nVision Schedule Requests
+    navigate_menu(page=page,
+                  menu_sequence=["Reporting Tools", 
+                                 "PS/nVision", 
+                                 "PS/nVision Schedule Requests"])   
     
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Reporting Tools", 
-                                     "PS/nVision", 
-                                     "PS/nVision Scope Definitions"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Report Scope")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"PS/nVision Scope Definitions page is accessible")
-    except Exception as e:
-        raise Exception(f"PS/nVision Scope Definitions page cannot be navigated : {str(e)}")
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
+    # Assertions for visibility of elements
+    expect(targetContentFrame.get_by_label("Business Unit")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Report ID")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Description")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
 
-    #19--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Tree Manager", 
-                                     "Tree Manager"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.locator("#PSTREEDEFVW_TREE_NAME")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Tree Manager page is accessible")
-    except Exception as e:
-        raise Exception(f"Tree Manager page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Tree Manager", 
-                                     "Tree Auditor"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.locator("#RUN_TREE_AUDVW_RUN_CNTL_ID")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
+    # Print confirmation message
+    print("PS/nVision Schedule Requests page is accessible")
+except Exception as e:
+    raise Exception(f"PS/nVision Schedule Requests page cannot be navigated : {str(e)}")
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Tree Auditor page is accessible")
-    except Exception as e:
-        raise Exception(f"Tree Auditor page cannot be navigated : {str(e)}")
+try:
+    # Navigate to PS/nVision Scope Definitions
+    navigate_menu(page=page,
+                  menu_sequence=["Reporting Tools", 
+                                 "PS/nVision", 
+                                 "PS/nVision Scope Definitions"])   
     
-       
-
-
-
-    #20--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Tree Manager", 
-                                     "Tree Utilities",
-                                     "Copy/Delete Trees"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_role("tab", name="Tree Maintenance")).to_be_visible()
-        expect(targetContentFrame.locator("[id=\"win0divPSTREEMAINTWRK_SETCNTRLVALUE\\$0\"]")).to_be_visible()
-        expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_TREE_NAME\\$0\"]")).to_be_visible()
-        expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_EFFDT\\$0\"]")).to_be_visible()
-        expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_VALID_TREE\\$0\"]")).to_be_visible()
-        expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_SETCNTRL_IND\\$0\"]")).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Tree Auditor page is accessible")
-    except Exception as e:
-        raise Exception(f"Tree Auditor page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Tree Manager", 
-                                     "Tree Utilities",
-                                     "Export Trees"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.locator("#RUN_TREEMOVER_RUN_CNTL_ID")).to_be_visible()
-        expect(targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a")).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Export Trees page is accessible")
-    except Exception as e:
-        raise Exception(f"Export Trees page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Tree Manager", 
-                                     "Tree Utilities",
-                                     "Import Trees"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.locator("#RUN_TREEMOVER_RUN_CNTL_ID")).to_be_visible()
-        expect(targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a")).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Import Trees page is accessible")
-    except Exception as e:
-        raise Exception(f"Import Trees page cannot be navigated : {str(e)}")
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
+    # Assertions for visibility of elements
+    expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Report Scope")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
 
-    #21--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Enterprise Components", 
-                                     "Approvals", 
-                                     "Approvals",
-                                     "Monitor Approvals"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("Approval Process")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Definition ID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Header Status")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Last Modified")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Approver", exact=True)).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
+    # Print confirmation message
+    print("PS/nVision Scope Definitions page is accessible")
+except Exception as e:
+    raise Exception(f"PS/nVision Scope Definitions page cannot be navigated : {str(e)}")
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Monitor Approvals page is accessible")
-    except Exception as e:
-        raise Exception(f"Monitor Approvals page cannot be navigated : {str(e)}")
-
-
-    #22--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Consolidation",
-                                     "Define Elimination Set"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Elimination Set")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Elimination Set page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Elimination Set page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Consolidation",
-                                     "Define Subsidiary Ownership"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Ownership Set")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Subsidiary Ownership page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Subsidiary Ownership page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Consolidation",
-                                     "Define Minority Interest Sets"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Minority Interest Set")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Minority Interest Sets page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Minority Interest Sets page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Consolidation",
-                                     "Consolidation Ledger Sets"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("Ledger Set")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Description")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Consolidation Ledger Sets page is accessible")
-    except Exception as e:
-        raise Exception(f"Consolidation Ledger Sets page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Consolidation",
-                                     "Define Consolidation Set"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Consolidation Set")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Consolidation Set page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Consolidation Set page cannot be navigated : {str(e)}")
-
-    #23--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Equitization",
-                                     "Define Equitization Rules"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Equitization Rule")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Equitization Rules page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Equitization Rules page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Equitization",
-                                     "Define Equitization Groups"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Equitization Group")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
- 
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Equitization Groups page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Equitization Groups page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Consolidate Financial Data", 
-                                     "Equitization",
-                                     "Request Equitization"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("Run Control ID")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
- 
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Request Equitization page is accessible")
-    except Exception as e:
-        raise Exception(f"Request Equitization page cannot be navigated : {str(e)}")
-
-    #24--
- 
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Process Multi-Currency", 
-                                     "Define and Process", 
-                                     "Define Revaluation Step"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Process Step")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Revaluation Step page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Revaluation Step page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Process Multi-Currency", 
-                                     "Define and Process", 
-                                     "Define Translation Rules"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Translation Rule")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Translation Rules page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Translation Rules page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Process Multi-Currency", 
-                                     "Define and Process", 
-                                     "Define Translation Steps"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Process Step")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Translation Steps page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Translation Steps page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Process Multi-Currency", 
-                                     "Define and Process", 
-                                     "Define Process Group"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Process Group")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Process Group page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Process Group page cannot be navigated : {str(e)}")
+# 19
+try:
+    # Navigate to Tree Manager -> Tree Manager
+    navigate_menu(page=page,
+                  menu_sequence=["Tree Manager", 
+                                 "Tree Manager"])   
     
-
-    #25--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Monitor Background Process", 
-                                     "Journal Unlock"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("User ID")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Journal Unlock page is accessible")
-    except Exception as e:
-        raise Exception(f"Journal Unlock page cannot be navigated : {str(e)}")
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
+    # Assertions for visibility of elements
+    expect(targetContentFrame.locator("#PSTREEDEFVW_TREE_NAME")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
 
+    # Print confirmation message
+    print("Tree Manager page is accessible")
+except Exception as e:
+    raise Exception(f"Tree Manager page cannot be navigated : {str(e)}")
 
-    #26--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Close Ledgers", 
-                                     "Closing Rules"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
-        targetContentFrame.get_by_label("Closing Rule").fill(testdata['closing_rule'])
-        targetContentFrame.get_by_label("Closing Rule").press("Enter")
-        expect(targetContentFrame.get_by_label("Description")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Ledger Template")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Effective Date")).to_be_visible()
-        expect(targetContentFrame.get_by_text(testdata['closing_rule'])).to_be_visible()
-        expect(targetContentFrame.locator("#CLOSE_DEFN_TBL_SETID")).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Closing Rules page is accessible")
-    except Exception as e:
-        raise Exception(f"Closing Rules page cannot be navigated : {str(e)}")
+try:
+    # Navigate to Tree Manager -> Tree Auditor
+    navigate_menu(page=page,
+                  menu_sequence=["Tree Manager", 
+                                 "Tree Auditor"])   
     
-
-    #27--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["General Ledger", 
-                                     "Close Ledgers", 
-                                     "Request Ledger Close"])   
-        
-                # Add run control ID to the form
-        add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
-
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("Business Unit for Prompting")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Close Request Type")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Run")).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Request Ledger Close page is accessible")
-    except Exception as e:
-        raise Exception(f"Request Ledger Close page cannot be navigated : {str(e)}")
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
+    # Assertions for visibility of elements
+    expect(targetContentFrame.locator("#RUN_TREE_AUDVW_RUN_CNTL_ID")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
+
+    # Print confirmation message
+    print("Tree Auditor page is accessible")
+except Exception as e:
+    raise Exception(f"Tree Auditor page cannot be navigated : {str(e)}")
+
+# 20
+try:
+    # Navigate to Tree Manager -> Tree Utilities -> Copy/Delete Trees
+    navigate_menu(page=page,
+                  menu_sequence=["Tree Manager", 
+                                 "Tree Utilities",
+                                 "Copy/Delete Trees"])   
+    
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Assertions for visibility of elements
+    expect(targetContentFrame.get_by_role("tab", name="Tree Maintenance")).to_be_visible()
+    expect(targetContentFrame.locator("[id=\"win0divPSTREEMAINTWRK_SETCNTRLVALUE\\$0\"]")).to_be_visible()
+    expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_TREE_NAME\\$0\"]")).to_be_visible()
+    expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_EFFDT\\$0\"]")).to_be_visible()
+    expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_VALID_TREE\\$0\"]")).to_be_visible()
+    expect(targetContentFrame.locator("[id=\"win0divPSTREEDEFMVW_SETCNTRL_IND\\$0\"]")).to_be_visible()
+
+    # Print confirmation message
+    print("Copy/Delete Trees page is accessible")
+except Exception as e:
+    raise Exception(f"Copy/Delete Trees page cannot be navigated : {str(e)}")
+
+try:
+    # Navigate to Tree Manager -> Tree Utilities -> Export Trees
+    navigate_menu(page=page,
+                  menu_sequence=["Tree Manager", 
+                                 "Tree Utilities",
+                                 "Export Trees"])   
+    
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Assertions for visibility of elements
+    expect(targetContentFrame.locator("#RUN_TREEMOVER_RUN_CNTL_ID")).to_be_visible()
+    expect(targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a")).to_be_visible()
+
+    # Print confirmation message
+    print("Export Trees page is accessible")
+except Exception as e:
+    raise Exception(f"Export Trees page cannot be navigated : {str(e)}")
+
+try:
+    # Navigate to Tree Manager -> Tree Utilities -> Import Trees
+    navigate_menu(page=page,
+                  menu_sequence=["Tree Manager", 
+                                 "Tree Utilities",
+                                 "Import Trees"])   
+    
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    
+    # Assertions for visibility of elements
+    expect(targetContentFrame.locator("#RUN_TREEMOVER_RUN_CNTL_ID")).to_be_visible()
+    expect(targetContentFrame.get_by_role("cell", name="Search", exact=True).locator("a")).to_be_visible()
+
+    # Print confirmation message
+    print("Import Trees page is accessible")
+except Exception as e:
+    raise Exception(f"Import Trees page cannot be navigated : {str(e)}")
