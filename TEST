@@ -1,282 +1,254 @@
-    #6---
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "Design ChartFields",
-                                     "Combination Editing",
-                                     "Combination Rule"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
-        targetContentFrame.get_by_label("Combination Rule").fill(testdata['Combo_rule'])
-        targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-        expect(targetContentFrame.locator("#COMBO_RULE_TBL_SETID")).to_contain_text(testdata['SETID'])
-        expect(targetContentFrame.locator("#COMBO_RULE_TBL_COMBINATION")).to_contain_text(testdata['Combo_rule'])
+# 6. Combination Rule page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "Design ChartFields",
+                                 "Combination Editing",
+                                 "Combination Rule"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
+    targetContentFrame.get_by_label("Combination Rule").fill(testdata['Combo_rule'])
+    targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    expect(targetContentFrame.locator("#COMBO_RULE_TBL_SETID")).to_contain_text(testdata['SETID'])
+    expect(targetContentFrame.locator("#COMBO_RULE_TBL_COMBINATION")).to_contain_text(testdata['Combo_rule'])
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Combination Rule page is accessible")
-    except Exception as e:
-        raise Exception(f"Combination Rule page cannot be navigated : {str(e)}")
+    # Print the run status of the Combination Rule page for debugging
+    print(f"Combination Rule page is accessible")
+except Exception as e:
+    raise Exception(f"Combination Rule page cannot be navigated : {str(e)}")
 
-   #7---
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "User Preferences",
-                                     "Define User Preferences"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        
+# 7. Define User Preferences page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "User Preferences",
+                                 "Define User Preferences"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("User ID").fill(secrets['User'])
+    targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    expect(targetContentFrame.locator("#win0divOPR_LINKS_OPR_DEF_LINK_FS1")).to_be_visible()
+    expect(targetContentFrame.locator("#win0divOPR_LINKS_OPR_DEF_LINK_GL1")).to_be_visible()
 
-        targetContentFrame.get_by_label("User ID").fill(secrets['User'])
-        targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-        expect(targetContentFrame.locator("#win0divOPR_LINKS_OPR_DEF_LINK_FS1")).to_be_visible()
-        expect(targetContentFrame.locator("#win0divOPR_LINKS_OPR_DEF_LINK_GL1")).to_be_visible()
+    # Print the run status of the Define User Preferences page for debugging
+    print(f"Define User Preferences page is accessible")
+except Exception as e:
+    raise Exception(f"Define User Preferences page cannot be navigated : {str(e)}")
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define User Preferences page is accessible")
-    except Exception as e:
-        raise Exception(f"Define User Preferences page cannot be navigated : {str(e)}")
-     #8---
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "Journals",
-                                     "Define Journal Source"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
-        targetContentFrame.get_by_label("Source").fill(testdata['Source'])
-        targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-        expect(targetContentFrame.locator("#win0divSOURCE_TBL_SETID")).to_be_visible()
-        expect(targetContentFrame.locator("#SOURCE_TBL_SOURCE")).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Journal Source page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Journal Source page cannot be navigated : {str(e)}")
+# 8. Define Journal Source page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "Journals",
+                                 "Define Journal Source"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
+    targetContentFrame.get_by_label("Source").fill(testdata['Source'])
+    targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    expect(targetContentFrame.locator("#win0divSOURCE_TBL_SETID")).to_be_visible()
+    expect(targetContentFrame.locator("#SOURCE_TBL_SOURCE")).to_be_visible()
 
+    # Print the run status of the Define Journal Source page for debugging
+    print(f"Define Journal Source page is accessible")
+except Exception as e:
+    raise Exception(f"Define Journal Source page cannot be navigated : {str(e)}")
 
+# 9. Define TimeSpans page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "Calendars/Schedules",
+                                 "Define TimeSpans"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
+    targetContentFrame.get_by_label("TimeSpan").fill(testdata['Timespan'])
+    targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    expect(targetContentFrame.get_by_label("Start Year", exact=True)).to_be_visible()
+    expect(targetContentFrame.locator("#TIME_SPANS_TIME_SPAN")).to_contain_text(testdata['Timespan'])
+    expect(targetContentFrame.locator("#TIME_SPANS_SETID")).to_contain_text(testdata['SETID'])
 
-    #9---
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "Calendars/Schedules",
-                                     "Define TimeSpans"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("SetID").fill(testdata['SETID'])
-        targetContentFrame.get_by_label("TimeSpan").fill(testdata['Timespan'])
-        targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-        expect(targetContentFrame.get_by_label("Start Year", exact=True)).to_be_visible()
-        expect(targetContentFrame.locator("#TIME_SPANS_TIME_SPAN")).to_contain_text(testdata['Timespan'])
-        expect(targetContentFrame.locator("#TIME_SPANS_SETID")).to_contain_text(testdata['SETID'])
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define TimeSpans page is accessible")
-    except Exception as e:
-        raise Exception(f"Define TimeSpans page cannot be navigated : {str(e)}")
+    # Print the run status of the Define TimeSpans page for debugging
+    print(f"Define TimeSpans page is accessible")
+except Exception as e:
+    raise Exception(f"Define TimeSpans page cannot be navigated : {str(e)}")
 
+# 10. Market Rate Definition page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "Market Rate Definition"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("Market Rate Index").fill(testdata['Rate_indx'])
+    targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    expect(targetContentFrame.locator("[id=\"RT_RATE_DEF_TBL_FROM_CUR\\$0\"]")).to_be_visible()
+    expect(targetContentFrame.locator("#RT_INDEX_TBL_RT_RATE_INDEX")).to_contain_text(testdata['Rate_indx'])
+    expect(targetContentFrame.locator("#PSXLATITEM_XLATLONGNAME")).to_contain_text("Exchange Rate")
 
+    # Print the run status of the Market Rate Definition page for debugging
+    print(f"Market Rate Definition page is accessible")
+except Exception as e:
+    raise Exception(f"Market Rate Definition page cannot be navigated : {str(e)}")
 
-    #10-----
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "Market Rates"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-                # Print the run status of the CF Security Program for debugging
-        print(f"ChartField Value Set page is accessible")
-    except Exception as e:
-        raise Exception(f"ChartField Value Set page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "Market Rates"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-                # Print the run status of the CF Security Program for debugging
-        print(f"ChartField Value Set page is accessible")
-    except Exception as e:
-        raise Exception(f"ChartField Value Set page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Common Definitions", 
-                                     "Market Rate Definition"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("Market Rate Index").fill(testdata['Rate_indx'])
-        targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-        expect(targetContentFrame.locator("[id=\"RT_RATE_DEF_TBL_FROM_CUR\\$0\"]")).to_be_visible()
-        expect(targetContentFrame.locator("#RT_INDEX_TBL_RT_RATE_INDEX")).to_contain_text(testdata['Rate_indx'])
-        expect(targetContentFrame.locator("#PSXLATITEM_XLATLONGNAME")).to_contain_text("Exchange Rate")
- 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Market Rate Definition page is accessible")
-    except Exception as e:
-        raise Exception(f"Market Rate Definition page cannot be navigated : {str(e)}")
+# 11. Ledger for a Unit page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Business Unit Related", 
+                                 "General Ledger",
+                                 "Ledger for a Unit"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_label("Business Unit").fill(testdata['BU'])
+    expect(targetContentFrame.get_by_label("Ledger Group")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Ledger Type")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Calendar ID")).to_be_visible()
+    expect(targetContentFrame.locator("#app_label")).to_contain_text("Definition")
 
+    # Print the run status of the Ledger for a Unit page for debugging
+    print(f"Ledger for a Unit page is accessible")
+except Exception as e:
+    raise Exception(f"Ledger for a Unit page cannot be navigated : {str(e)}")
 
-   #----
-    #11---
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Business Unit Related", 
-                                     "General Ledger",
-                                     "Ledger for a Unit"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.get_by_label("Business Unit").fill(testdata['BU'])
-        expect(targetContentFrame.get_by_label("Ledger Group")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Ledger Type")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Calendar ID")).to_be_visible()
-        expect(targetContentFrame.locator("#app_label")).to_contain_text("Definition")
-                # Print the run status of the CF Security Program for debugging
-        print(f"Ledger for a Unit page is accessible")
-    except Exception as e:
-        raise Exception(f"Ledger for a Unit page cannot be navigated : {str(e)}")
+# 12. Open Periods Mass Update page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Business Unit Related", 
+                                 "General Ledger",
+                                 "Open Periods",
+                                 "Open Periods Mass Update"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    expect(targetContentFrame.get_by_label("PeopleSoft Product")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Unit")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Calendar")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Ledger Code")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Ledger Group")).to_be_visible()
+    expect(targetContentFrame.get_by_label("From Year")).to_be_visible()
+    expect(targetContentFrame.get_by_label("From Period")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Apply")).to_be_visible()
 
+    # Print the run status of the Open Periods Mass Update page for debugging
+    print(f"Open Periods Mass Update page is accessible")
+except Exception as e:
+    raise Exception(f"Open Periods Mass Update page cannot be navigated : {str(e)}")
 
-    #12---
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Set Up Financials/Supply Chain", 
-                                     "Business Unit Related", 
-                                     "General Ledger",
-                                     "Open Periods",
-                                     "Open Periods Mass Update"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("PeopleSoft Product")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Unit")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Calendar")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Ledger Code")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Ledger Group")).to_be_visible()
-        expect(targetContentFrame.get_by_label("From Year")).to_be_visible()
-        expect(targetContentFrame.get_by_label("From Period")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Apply")).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Open Periods Mass Update page is accessible")
-    except Exception as e:
-        raise Exception(f"Open Periods Mass Update page cannot be navigated : {str(e)}")
-    
+# 13. Workflow Route Control Profile page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Workflow", 
+                                 "Routings and Roles",
+                                 "Workflow Route Control Profile"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.locator("#RTE_CNTL_PROF_RTE_CNTL_PROFILE").fill(testdata['profile'])
+    targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    expect(targetContentFrame.get_by_label("Description:")).to_be_visible()
+    expect(targetContentFrame.get_by_label("From Value:")).to_be_visible()
+    expect(targetContentFrame.get_by_label("To Value:")).to_be_visible()
+    expect(targetContentFrame.get_by_text(testdata['profile'])).to_be_visible()
 
+    # Print the run status of the Workflow Route Control Profile page for debugging
+    print(f"Workflow Route Control Profile page is accessible")
+except Exception as e:
+    raise Exception(f"Workflow Route Control Profile page cannot be navigated : {str(e)}")
 
-    #13--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["PeopleTools", 
-                                     "Workflow", 
-                                     "Routings and Roles",
-                                     "Workflow Route Control Profile"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        targetContentFrame.locator("#RTE_CNTL_PROF_RTE_CNTL_PROFILE").fill(testdata['profile'])
-        targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-        expect(targetContentFrame.get_by_label("Description:")).to_be_visible()
-        expect(targetContentFrame.get_by_label("From Value:")).to_be_visible()
-        expect(targetContentFrame.get_by_label("To Value:")).to_be_visible()
-        expect(targetContentFrame.get_by_text(testdata['profile'])).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Workflow Route Control Profile page is accessible")
-    except Exception as e:
-        raise Exception(f"Workflow Route Control Profile page cannot be navigated : {str(e)}")
-    
-    #14--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["PeopleTools", 
-                                     "Security", 
-                                     "User Profiles",
-                                     "User Profiles"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+# 14. User Profiles page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Security", 
+                                 "User Profiles",
+                                 "User Profiles"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.locator("#PSOPRDEFN_SRCH_OPRID").fill(secrets['User'])
+    targetContentFrame.locator("#PSOPRDEFN_SRCH_OPRID").press("Enter")
+    expect(targetContentFrame.get_by_label("Language")).to_be_visible()
+    expect(targetContentFrame.get_by_role("cell", name="Account Locked Out?", exact=True)).to_be_visible()
 
+    # Print the run status of the User Profiles page for debugging
+    print(f"User Profiles page is accessible")
+except Exception as e:
+    raise Exception(f"User Profiles page cannot be navigated : {str(e)}")
 
-        targetContentFrame.locator("#PSOPRDEFN_SRCH_OPRID").fill(secrets['User'])
-        targetContentFrame.locator("#PSOPRDEFN_SRCH_OPRID").press("Enter")
-        expect(targetContentFrame.get_by_label("Language")).to_be_visible()
-        expect(targetContentFrame.get_by_role("cell", name="Account Locked Out?", exact=True)).to_be_visible()
+# 15. Process Monitor page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Process Scheduler", 
+                                 "Process Monitor"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    expect(targetContentFrame.get_by_label("User ID")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Name")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Instance")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Refresh")).to_be_visible()
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"User Profiles page is accessible")
-    except Exception as e:
-        raise Exception(f"User Profiles page cannot be navigated : {str(e)}")
+    # Print the run status of the Process Monitor page for debugging
+    print(f"Process Monitor page is accessible")
+except Exception as e:
+    raise Exception(f"Process Monitor page cannot be navigated : {str(e)}")
 
-    #15--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["PeopleTools", 
-                                     "Process Scheduler", 
-                                     "Process Monitor"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("User ID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Name")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Instance")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Refresh")).to_be_visible()
+# 16. Data Migration Workbench page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Lifecycle Tools", 
+                                 "Migrate Data",
+                                 "Data Migration Workbench"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    expect(targetContentFrame.get_by_label("Project Name")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Description")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Process Monitor page is accessible")
-    except Exception as e:
-        raise Exception(f"Process Monitor page cannot be navigated : {str(e)}")
+    # Print the run status of the Data Migration Workbench page for debugging
+    print(f"Data Migration Workbench page is accessible")
+except Exception as e:
+    raise Exception(f"Data Migration Workbench page cannot be navigated : {str(e)}")
 
+# 17. Define Allocation Step page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Allocations", 
+                                 "Define and Perform Allocations", 
+                                 "Define Allocation Step"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
+    expect(targetContentFrame.get_by_label("Allocation Step")).to_be_visible()
+    expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
+    expect(page.get_by_role("button", name="NavBar")).to_be_visible()
 
-#16--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["PeopleTools", 
-                                     "Lifecycle Tools", 
-                                     "Migrate Data",
-                                     "Data Migration Workbench"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("Project Name")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Description")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
+    # Print the run status of the Define Allocation Step page for debugging
+    print(f"Define Allocation Step page is accessible")
+except Exception as e:
+    raise Exception(f"Define Allocation Step page cannot be navigated : {str(e)}")
 
-                # Print the run status of the CF Security Program for debugging
-        print(f"Data Migration Workbench page is accessible")
-    except Exception as e:
-        raise Exception(f"Data Migration Workbench page cannot be navigated : {str(e)}")
-    
+# 18. Define Allocation Group page navigation
+try:
+    navigate_menu(page=page,
+                  menu_sequence=["Allocations", 
+                                 "Define and Perform Allocations", 
+                                 "Define Allocation Group"])   
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    expect(page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("SetID")).to_be_visible()
+    expect(page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Allocation Group")).to_be_visible()
+    expect(page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Search", exact=True)).to_be_visible()
 
-    #17--
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Allocations", 
-                                     "Define and Perform Allocations", 
-                                     "Define Allocation Step"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(targetContentFrame.get_by_label("SetID")).to_be_visible()
-        expect(targetContentFrame.get_by_label("Allocation Step")).to_be_visible()
-        expect(targetContentFrame.get_by_role("button", name="Search", exact=True)).to_be_visible()
-        expect(page.get_by_role("button", name="NavBar")).to_be_visible()
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Allocation Step page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Allocation Step page cannot be navigated : {str(e)}")
-    try:
-        navigate_menu(page=page,
-                      menu_sequence=["Allocations", 
-                                     "Define and Perform Allocations", 
-                                     "Define Allocation Group"])   
-            # Locate the target iframe for the form
-        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        expect(page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("SetID")).to_be_visible()
-        expect(page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Allocation Group")).to_be_visible()
-        expect(page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Search", exact=True)).to_be_visible()
-
-                # Print the run status of the CF Security Program for debugging
-        print(f"Define Allocation Group page is accessible")
-    except Exception as e:
-        raise Exception(f"Define Allocation Group page cannot be navigated : {str(e)}")
+    # Print the run status of the Define Allocation Group page for debugging
+    print(f"Define Allocation Group page is accessible")
+except Exception as e:
+    raise Exception(f"Define Allocation Group page cannot be navigated : {str(e)}")
