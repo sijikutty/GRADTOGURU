@@ -1,6 +1,3 @@
-Function WriteToUFTOne(result)
-    If result = "Test is success" Then
-    	AIUtil("button", "OK").Click
-    	fetch_jrnlid
-        Reporter.ReportEvent micPass, "Test Result", result
-        verdict="Pass"
+        ' Extract the values from the dictionary
+        journal_id = jrnlData("journal_id")
+        business_unit = jrnlData("business_unit")
