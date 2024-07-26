@@ -1,14 +1,6 @@
-                targetContentFrame.locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-                print_frames(page)
-                # Assuming ptModFrame_1 is the correct frame
-                pt_mod_frame_1 = page.frame_locator("iframe[name=\"ptModFrame_1\"]")
-#
-                #
-                #print("Clicking View Log/Trace link")
-                view_log_trace_link = pt_mod_frame_1.get_by_role("link", name="View Log/Trace")
-#
-                view_log_trace_link.click()
-------
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=ERROR
+Total number of frames: 6
+Frame Name: , Frame URL: http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/c/GL_FIN_ACCOUNTING_INTEGRATION.HF_SUSP_RPT_CMP.GBL
+Frame Name: TargetContent, Frame URL: http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/PROCESSMONITOR.PROCESSMONITOR.GBL?Page=PMN_PRCSLIST&Action=U
+Frame Name: RelatedContent, Frame URL: http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RelatedContent
+Frame Name: SRelatedContent, Frame URL: about:blank
+Frame Name: RCArea, Frame URL: about:blank
