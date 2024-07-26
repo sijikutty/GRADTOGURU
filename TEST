@@ -1,16 +1,16 @@
-Function WriteToUFTOne(result)
-    If result = "Test is success" Then
-    	AIUtil("button", "OK").Click
-    	Set jrnlData=fetch_jrnlid()
-    	' Extract the values from the dictionary
-        journal_id = jrnlData("Journal_id")
-        business_unit = jrnlData("Business_unit")
-        Reporter.ReportEvent micPass, "Test Result", result
-        verdict="Pass"
-        JournalDataJson business_unit,journal_id
-    Else
-        Reporter.ReportEvent micFail, "Test Result", result
-        verdict="Fail"
-    End If
-        WriteRallyJson "Smoketest for Load Journal to Template","TC32541",verdict,result
-End Function
+ page.get_by_label("Process Monitor").click()
+    page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
+    page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
+    expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
+
+
+-------
+            try:
+                page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
+                time.sleep(10)
+                page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
+                expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
+                print(f"Suspense Reclassification report has been generated")
+
+            except Exception as e:
+                raise Exception(f"Suspense Reclassification report has not been generated : {str(e)}")
