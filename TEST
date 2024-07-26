@@ -1,7 +1,7 @@
  page.get_by_label("Process Monitor").click()
     page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
     page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-    expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
+    expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("kk_SUSP_BLC.csv")
 
 
 -------
@@ -9,7 +9,7 @@
                 page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
                 time.sleep(10)
                 page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-                expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
+                expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("kk_SUSP_BLC.csv")
                 print(f"Suspense Reclassification report has been generated")
 
             except Exception as e:
