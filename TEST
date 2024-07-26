@@ -1,3 +1,39 @@
-        ' Extract the values from the dictionary
-        journal_id = jrnlData("journal_id")
-        business_unit = jrnlData("business_unit")
+    Dim jsonContent, rallyContent
+    Set jsonContent = CreateObject("Scripting.Dictionary")
+    jsonContent.Add "key", TCName
+    
+    Set rallyContent = CreateObject("Scripting.Dictionary")
+    rallyContent.Add "Tcid", TCID
+    rallyContent.Add "verdict", verdict
+    rallyContent.Add "notes", result
+
+    ' Create JSON string
+    Dim jsonData
+    jsonData = "{"
+    jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
+    jsonData = jsonData & """Rally"":{"
+    For Each key In rallyContent.Keys
+        jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
+    Next
+    jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
+    jsonData = jsonData & "}}"
+
+	
+    ' Set file path for JSON data
+    Dim filePath
+    filePath = Datatable.Value("uftrespath")
+    
+    ' Create FileSystemObject
+    Dim fs, outFile
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    
+    ' Create or overwrite the file
+    Set outFile = fs.CreateTextFile(filePath, True)
+    
+    ' Write JSON content to the file
+    outFile.WriteLine(jsonData)
+    
+    ' Close the file
+    outFile.Close
+    Set outFile=Nothing
+    Set fs=Nothing
