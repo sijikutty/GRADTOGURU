@@ -61,25 +61,9 @@ def test_Suspense_reclass(page: Page, testcase):
             print("Distribution Status Posted. Checking View Log/Trace.")
             
             try:
-                # Click the button to view details
-                targetContentFrame.locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-
-                # Wait for the new iframe to load
-                time.sleep(5)  # Adjust as needed for page load
-                
-                # Click the "View Log/Trace" link
-                pt_mod_frame_0 = page.frame_locator("iframe[name=\"ptModFrame_0\"]")
-                view_log_trace_link = pt_mod_frame_0.get_by_role("link", name="View Log/Trace")
-                view_log_trace_link.click()
-
-                # Wait for the new iframe to load
-                time.sleep(5)  # Adjust as needed for page load
-                
-                # Check for the presence of the file in the log
-                pt_mod_frame_1 = page.frame_locator("iframe[name=\"ptModFrame_1\"]")
-                file_list_item = pt_mod_frame_1.locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")
-                expect(file_list_item).to_contain_text("HF_SUSP_BLC.csv")
-
+                page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
+                page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="View Log/Trace").click()
+                expect(page.frame_locator("iframe[name=\"ptModFrame_2\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
                 print(f"Suspense Reclassification report has been generated")
 
             except Exception as e:
@@ -87,3 +71,9 @@ def test_Suspense_reclass(page: Page, testcase):
     else:
         raise Exception(f"Process run status was not 'Success'. It was {run_status}")
 
+------
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_2\"]")
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
