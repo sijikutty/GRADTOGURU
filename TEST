@@ -1,6 +1,2 @@
-Total number of frames: 6
-Frame Name: , Frame URL: http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/c/GL_FIN_ACCOUNTING_INTEGRATION.HF_SUSP_RPT_CMP.GBL
-Frame Name: TargetContent, Frame URL: http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/PROCESSMONITOR.PROCESSMONITOR.GBL?Page=PMN_PRCSLIST&Action=U
-Frame Name: RelatedContent, Frame URL: http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RelatedContent
-Frame Name: SRelatedContent, Frame URL: about:blank
-Frame Name: RCArea, Frame URL: about:blank
+Frame Name: ptModFrame_0, Frame URL: http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/PROCESSMONITOR.PROCESSMONITOR.GBL?ICType=Panel&ICElementNum=0&ICStateNum=2&ICResubmit=1&ICAJAX=1&
+Frame Name: ptModFrame_1, Frame URL: http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/PROCESSMONITOR.PROCESSMONITOR.GBL?ICType=Panel&ICElementNum=0&ICStateNum=3&ICResubmit=1&ICAJAX=1&
