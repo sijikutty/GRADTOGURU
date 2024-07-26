@@ -1,43 +1,7 @@
-from playwright.sync_api import Playwright, sync_playwright, expect
-
-
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False, slow_mo=500)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&")
-    page.get_by_label("User ID").press("CapsLock")
-    page.get_by_label("User ID").fill("PWTEST")
-    page.get_by_label("User ID").press("Tab")
-    page.get_by_label("Password").fill("P")
-    page.get_by_label("Password").press("CapsLock")
-    page.get_by_label("Password").fill("Pwtest@100")
-    page.get_by_label("Password").press("Enter")
-    page.get_by_label("Process Monitor").click()
-    #page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-    #page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-    #expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
-
-    try:
-        page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-        page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-        expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
-        print(f"Suspense Reclassification report has been generated")
-    except Exception as e:
-        raise Exception(f"Suspense Reclassification report has not been generated : {str(e)}")
-                
-    # ---------------------
-    context.close()
-    browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
-------
 from playwright.sync_api import Page, sync_playwright, expect
 from automation_utils import get_testdata
 from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
-import pytest 
+import pytest
 import time
 
 @pytest.mark.parametrize("testcase", get_testdata("test_Suspense_reclass"))
@@ -76,33 +40,50 @@ def test_Suspense_reclass(page: Page, testcase):
 
     # Print the run status of the CF Security Program for debugging
     print(f"Suspense Reclassification Program Run status: ", run_status)
-    if run_status=='Success':
+    if run_status == 'Success':
         process_inst_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text=process_instance_id)
         dist_status = process_inst_row.locator("[id^='PMN_PRCSLIST_DISTSTATUS']")
 
         # Wait for Run status to be Success/Not Success/Warning/Error for approx 10min.
         retry = 0
         while retry < 600:
-            if dist_status.text_content()=='Posted':
+            if dist_status.text_content() == 'Posted':
                 break
-
             else:
                 targetContentFrame.get_by_role("button", name="Refresh").click() 
+                time.sleep(10)  # Adjust sleep time as needed
                 retry += 1
 
         if dist_status.text_content().lower() != "posted":
             raise Exception(f"Distribution Status : {dist_status.text_content()}")
         else:
-                # Handle the popup dialog for business unit selection
-            #popup_dialog = page.frame_locator("[id^='ptModFrame']")
-
+            # Add debug information for troubleshooting
+            print("Distribution Status Posted. Checking View Log/Trace.")
+            
             try:
-                page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-                page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-                expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
+                # Click the button to view details
+                targetContentFrame.locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
+
+                # Wait for the new iframe to load
+                time.sleep(5)  # Adjust as needed for page load
+                
+                # Click the "View Log/Trace" link
+                pt_mod_frame_0 = page.frame_locator("iframe[name=\"ptModFrame_0\"]")
+                view_log_trace_link = pt_mod_frame_0.get_by_role("link", name="View Log/Trace")
+                view_log_trace_link.click()
+
+                # Wait for the new iframe to load
+                time.sleep(5)  # Adjust as needed for page load
+                
+                # Check for the presence of the file in the log
+                pt_mod_frame_1 = page.frame_locator("iframe[name=\"ptModFrame_1\"]")
+                file_list_item = pt_mod_frame_1.locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")
+                expect(file_list_item).to_contain_text("HF_SUSP_BLC.csv")
+
                 print(f"Suspense Reclassification report has been generated")
 
             except Exception as e:
-                raise Exception(f"Suspense Reclassification report has not been generated : {str(e)}")
-    
+                raise Exception(f"Suspense Reclassification report has not been generated: {str(e)}")
+    else:
+        raise Exception(f"Process run status was not 'Success'. It was {run_status}")
 
