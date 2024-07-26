@@ -1,99 +1,14 @@
-from playwright.sync_api import Page, sync_playwright, expect
-import pytest
-import time
-
-def print_frames(page: Page):
-    frames = page.frames
-    print(f"Total number of frames: {len(frames)}")
-    
-    for frame in frames:
-        frame_url = frame.url
-        frame_name = frame.name
-        print(f"Frame Name: {frame_name}, Frame URL: {frame_url}")
-        # Optionally, print frame content for further inspection
-        # print(frame.content())
-
-@pytest.mark.parametrize("testcase", get_testdata("test_Suspense_reclass"))
-def test_Suspense_reclass(page: Page, testcase):
-    testdata = testcase["testdata"]
-
-    # Navigate to the "Request CF Security Build" section
-    navigate_menu(page=page, menu_sequence=["General Ledger", "External System Integration", "Suspense Reclassification"])
-
-    # Add run control ID to the form
-    add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
-    
-    # Locate the target iframe for filling in the form
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-    
-    # Fill in the required fields for the security build request
-    targetContentFrame.get_by_label("External System ID").fill(testdata['systemid'])
-    targetContentFrame.get_by_label("Descr").fill(testdata['descr'])
-    targetContentFrame.get_by_label("Journal Template").fill(testdata['jrnl_template'])
-
-    # Click the "Save" button to save the request
-    targetContentFrame.get_by_role("button", name="Save").click()
-    
-    # Click the "Run" button to initiate the security build process
-    targetContentFrame.get_by_role("button", name="Run").click()
-
-    # Schedule the process and retrieve the process instance ID
-    process_instance_id = schedule_process(page=page, server_name=testdata["server"], process_name=testdata["suspenseprocess"])
-
-    # Monitor the scheduled process and retrieve its status
-    run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
-
-    # Print the run status of the CF Security Program for debugging
-    print(f"Suspense Reclassification Program Run status: {run_status}")
-    
-    if run_status == 'Success':
-        process_inst_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text=process_instance_id)
-        dist_status = process_inst_row.locator("[id^='PMN_PRCSLIST_DISTSTATUS']")
-
-        # Wait for Run status to be "Posted"
-        retry = 0
-        while retry < 600:
-            if dist_status.text_content() == 'Posted':
-                break
-            else:
-                targetContentFrame.get_by_role("button", name="Refresh").click() 
-                time.sleep(10)  # Adjust sleep time as needed
-                retry += 1
-
-        if dist_status.text_content().lower() != "posted":
-            raise Exception(f"Distribution Status: {dist_status.text_content()}")
-        else:
-            # Print frames for debugging
-            print("Distribution Status Posted. Checking View Log/Trace.")
-            print_frames(page)  # Debugging frames
-            
-            try:
-                # Access the correct frame using its index or specific attribute
                 targetContentFrame.locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-
+                print_frames(page)
                 # Assuming ptModFrame_1 is the correct frame
                 pt_mod_frame_1 = page.frame_locator("iframe[name=\"ptModFrame_1\"]")
-                pt_mod_frame_1.wait_for()  # Wait for the frame to be available
-                
-                print("Clicking View Log/Trace link")
+#
+                #
+                #print("Clicking View Log/Trace link")
                 view_log_trace_link = pt_mod_frame_1.get_by_role("link", name="View Log/Trace")
-                view_log_trace_link.wait_for(state='visible')  # Wait until the link is visible
+#
                 view_log_trace_link.click()
-
-                # Assuming ptModFrame_2 is the correct frame
-                pt_mod_frame_2 = page.frame_locator("iframe[name=\"ptModFrame_2\"]")
-                pt_mod_frame_2.wait_for()  # Wait for the frame to be available
-                
-                # Check for the presence of the file in the log
-                file_list_item = pt_mod_frame_2.locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")
-                file_list_item.wait_for(state='visible')  # Wait until the element is visible
-                expect(file_list_item).to_contain_text("HF_SUSP_BLC.csv")
-                
-                print(f"Suspense Reclassification report has been generated")
-
-            except Exception as e:
-                page.screenshot(path='screenshot.png')  # Take a screenshot for debugging
-                raise Exception(f"Suspense Reclassification report has not been generated: {str(e)}")
-    else:
-        raise Exception(f"Process run status was not 'Success'. It was {run_status}")
-
+------
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=ERROR
