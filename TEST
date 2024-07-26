@@ -1,5 +1,6 @@
-extractedNumber = Trim(Split(fullString, " ")(0))
-extractedValue = Mid(fullString, 6, 10)
-
-' Trim any extra spaces just in case
-extractedValue = Trim(extractedValue)
+Function WriteToUFTOne(result)
+    If result = "Test is success" Then
+    	AIUtil("button", "OK").Click
+    	fetch_jrnlid
+        Reporter.ReportEvent micPass, "Test Result", result
+        verdict="Pass"
