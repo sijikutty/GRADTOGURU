@@ -1,1 +1,5 @@
-10000     0000719387          4/30/2024    automation                    TM1
+extractedNumber = Trim(Split(fullString, " ")(0))
+extractedValue = Mid(fullString, 6, 10)
+
+' Trim any extra spaces just in case
+extractedValue = Trim(extractedValue)
