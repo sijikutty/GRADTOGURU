@@ -1,39 +1,16 @@
-    Dim jsonContent, rallyContent
-    Set jsonContent = CreateObject("Scripting.Dictionary")
-    jsonContent.Add "key", TCName
-    
-    Set rallyContent = CreateObject("Scripting.Dictionary")
-    rallyContent.Add "Tcid", TCID
-    rallyContent.Add "verdict", verdict
-    rallyContent.Add "notes", result
-
-    ' Create JSON string
-    Dim jsonData
-    jsonData = "{"
-    jsonData = jsonData & """key"":""" & jsonContent("key") & ""","
-    jsonData = jsonData & """Rally"":{"
-    For Each key In rallyContent.Keys
-        jsonData = jsonData & """" & key & """:""" & rallyContent(key) & ""","
-    Next
-    jsonData = Left(jsonData, Len(jsonData) - 1) ' Remove the trailing comma
-    jsonData = jsonData & "}}"
-
-	
-    ' Set file path for JSON data
-    Dim filePath
-    filePath = Datatable.Value("uftrespath")
-    
-    ' Create FileSystemObject
-    Dim fs, outFile
-    Set fs = CreateObject("Scripting.FileSystemObject")
-    
-    ' Create or overwrite the file
-    Set outFile = fs.CreateTextFile(filePath, True)
-    
-    ' Write JSON content to the file
-    outFile.WriteLine(jsonData)
-    
-    ' Close the file
-    outFile.Close
-    Set outFile=Nothing
-    Set fs=Nothing
+Function WriteToUFTOne(result)
+    If result = "Test is success" Then
+    	AIUtil("button", "OK").Click
+    	Set jrnlData=fetch_jrnlid()
+    	' Extract the values from the dictionary
+        journal_id = jrnlData("Journal_id")
+        business_unit = jrnlData("Business_unit")
+        Reporter.ReportEvent micPass, "Test Result", result
+        verdict="Pass"
+        JournalDataJson business_unit,journal_id
+    Else
+        Reporter.ReportEvent micFail, "Test Result", result
+        verdict="Fail"
+    End If
+        WriteRallyJson "Smoketest for Load Journal to Template","TC32541",verdict,result
+End Function
