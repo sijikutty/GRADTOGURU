@@ -1,1 +1,27 @@
-popup_dialog = page.frame_locator("iframe[id='ptModFrame_1'][name='ptModFrame_1']")
+            {
+                "key"       : "QA test GUI - TC33990",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Open_Item_Recon_SSJ2",
+                "testdata"  : {
+                    "Sheetname"   : "Open_item",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+-----
+    # Retrieve test data
+    testdata = testcase["testdata"]
+    
+    
+    # Convert JSON data to DataFrame
+    df = pd.DataFrame([testdata])
+
+    # Specify the path for the Excel file
+    excel_file_path = "Result/tcjson.xlsx"
+
+    # Write DataFrame to Excel
+    df.to_excel(excel_file_path, index=False)
