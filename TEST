@@ -1,3 +1,1 @@
-  popup_dialog = page.frame_locator("[id='ptModFrame_1']","[name=\"ptModFrame_1\"]")
-
- <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+popup_dialog = page.frame_locator("iframe[id='ptModFrame_1'][name='ptModFrame_1']")
