@@ -1,47 +1,10 @@
-from playwright.sync_api import Playwright, sync_playwright, expect,Page
+page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
+                #time.sleep(5000)
+                popup_dialog = page.frame_locator("[id='ptModFrame_1']")
+                popup_dialog.get_by_role("link", name="View Log/Trace").click()
+----------------
+ playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_2\"]")
 
-def print_frames(page: Page):
-    frames = page.frames
-    print(f"Total number of frames: {len(frames)}")
-    
-    for frame in frames:
-        frame_url = frame.url
-        frame_name = frame.name
-        print(f"Frame Name: {frame_name}, Frame URL: {frame_url}")
-        # Optionally, print frame content for further inspection
-        # print(frame.content())
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False, slow_mo=500)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&")
-    page.get_by_label("User ID").press("CapsLock")
-    page.get_by_label("User ID").fill("PWTEST")
-    page.get_by_label("User ID").press("Tab")
-    page.get_by_label("Password").fill("P")
-    page.get_by_label("Password").press("CapsLock")
-    page.get_by_label("Password").fill("Pwtest@100")
-    page.get_by_label("Password").press("Enter")
-    page.get_by_label("Process Monitor").click()
-    #page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-    #page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-    #expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
-
-    try:
-        page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-        popup_dialog = page.frame_locator("[id^='ptModFrame']")
-        #page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-        #expect(page.frame_locator("iframe[name=\"ptModFrame_1\"]").locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
-        popup_dialog.get_by_role("link", name="View Log/Trace").click()
-        expect(popup_dialog.locator("[id=\"trCDM_FILELIST_VW\\$0_row2\"]")).to_contain_text("HF_SUSP_BLC.csv")
-        print(f"Suspense Reclassification report has been generated")
-    except Exception as e:
-        raise Exception(f"Suspense Reclassification report has not been generated : {str(e)}")
-                
-    # ---------------------
-    context.close()
-    browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
