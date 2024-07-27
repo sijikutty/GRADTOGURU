@@ -1,6 +1,2 @@
-                page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
-                frames=page.frame
-                target_frame=frames[1]
-                target_frame.get_by_role("link", name="View Log/Trace").click()
-----------
-'method' object is not subscriptable
+for i, frame in enumerate(frames):
+    print(f"Frame {i}: ID={frame.get_attribute('id')}, Name={frame.name}, URL={frame.url}")
