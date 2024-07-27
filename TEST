@@ -1,2 +1,7 @@
-for i, frame in enumerate(frames):
-    print(f"Frame {i}: ID={frame.get_attribute('id')}, Name={frame.name}, URL={frame.url}")
+for i, frame in enumerate(page.frames):
+    # Access frame attributes
+    frame_id = frame.get_attribute('id') if frame.get_attribute('id') else 'N/A'
+    frame_name = frame.name if frame.name else 'N/A'
+    frame_url = frame.url if frame.url else 'N/A'
+    
+    print(f"Frame {i}: ID={frame_id}, Name={frame_name}, URL={frame_url}")
