@@ -1,7 +1,3 @@
-for i, frame in enumerate(page.frames):
-    # Access frame attributes
-    frame_id = frame.get_attribute('id') if frame.get_attribute('id') else 'N/A'
-    frame_name = frame.name if frame.name else 'N/A'
-    frame_url = frame.url if frame.url else 'N/A'
-    
-    print(f"Frame {i}: ID={frame_id}, Name={frame_name}, URL={frame_url}")
+  popup_dialog = page.frame_locator("[id='ptModFrame_1']","[name=\"ptModFrame_1\"]")
+
+ <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
