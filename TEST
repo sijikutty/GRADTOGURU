@@ -1,10 +1,9 @@
 page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PRCSDETAIL_BTN\\$0\"]").click()
                 #time.sleep(5000)
-                popup_dialog = page.frame_locator("[id='ptModFrame_1']")
+                #popup_dialog = page.frame_locator("[id='ptModFrame_1']")
+                popup_dialog = page.frame_locator("#ptModFrame_1")
                 popup_dialog.get_by_role("link", name="View Log/Trace").click()
-----------------
- playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_2\"]")
-
+-----
 playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")     
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_2\"]")
