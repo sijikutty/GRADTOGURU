@@ -1,3 +1,2 @@
-  required_row = frame.locator("tr[id^='tr']").filter(has=frame.locator(f"text='{testdata["server_name"]}'"))
-E                                                                                                ^^^^^^^^^^^
-E   SyntaxError: f-string: unmatched '['
+server_name = testdata["server_name"]
+required_row = frame.locator("tr[id^='tr']").filter(has=frame.locator(f"text='{server_name}'"))
