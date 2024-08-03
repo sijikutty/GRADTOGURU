@@ -1,11 +1,3 @@
-targetContentFrame.get_by_role("button", name="Search").click()
-    alertmsg = page.locator("[id^='ptModTable']")
-    print(alertmsg.inner_text())
-    try:
-        expect(alertmsg).to_contain_text("There are no entries matching the selection criteria")   
-        # Print status for debugging
-        print(f"Manual Reconciliation is successful")
-        
-    except Exception as e:
-        raise Exception(f"Manual Reconciliation is not successful : {str(e)}")
-    
+  required_row = frame.locator("tr[id^='tr']").filter(has=frame.locator(f"text='{testdata["server_name"]}'"))
+E                                                                                                ^^^^^^^^^^^
+E   SyntaxError: f-string: unmatched '['
