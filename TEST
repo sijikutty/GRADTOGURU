@@ -1,1 +1,1 @@
-    expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"win0divALLOC_STEP_TBL_EFFDT\\$0\"]")).to_contain_text("08/03/2024")
+<input type="text" name="ALLOC_STEP_TBL_EFFDT$0" id="ALLOC_STEP_TBL_EFFDT$0" tabindex="51" value="08/03/2024" class="PSEDITBOX PTCPEDITBOXWITHICON " style="width:86px; " maxlength="10" onchange="addchg_win0(this);return doEdits_win0(this,'DMDY/450','N','N','N','N','N','N',0);" onkeyup="if (isPromptKey(event))DatePrompt_win0('ALLOC_STEP_TBL_EFFDT$0','ALLOC_STEP_TBL_EFFDT$0','450',false);return false;" aria-required="true">
