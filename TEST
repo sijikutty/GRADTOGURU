@@ -1,2 +1,1 @@
-server_name = testdata["server_name"]
-required_row = frame.locator("tr[id^='tr']").filter(has=frame.locator(f"text='{server_name}'"))
+    expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"win0divALLOC_STEP_TBL_EFFDT\\$0\"]")).to_contain_text("08/03/2024")
