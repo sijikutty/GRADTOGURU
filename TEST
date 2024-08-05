@@ -1,8 +1,2 @@
-    server_name = testdata['server_name']
-    popup_dialog = page.frame_locator("[id^='ptModFrame']") 
-    popup_dialog.get_by_label("Server Name").select_option(server_name)
-
- 1) <iframe frameborder="0" id="ptModFrame_3" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_3\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_5" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_5\"]")
-
-.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
+    page.frame_locator("iframe[name=\"ptModFrame_3\"]").get_by_label("Server Name").first.select_option(server_name)
+    
