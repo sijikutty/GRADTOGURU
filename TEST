@@ -1,3 +1,5 @@
-TO_CHAR(your_date_column, 'MM/DD/YYYY')
+    query = "SELECT TO_CHAR(MAX(EFFDT), 'MM/DD/YYYY') FROM PS_CURR_STEP_TBL WHERE CURR_STEP='"+testdata['Group']+"' AND EFF_STATUS='A'"
+    
+As_of_Date=As_of_Date+timedelta(days=2)
 
-TO_CHAR(TO_DATE('2024-03-25 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'MM/DD/YYYY')
+TypeError: can only concatenate str (not "datetime.timedelta") to str
