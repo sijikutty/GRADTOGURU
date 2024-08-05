@@ -1,2 +1,8 @@
-Error: Node is not an <input>, <textarea> or <select> element
-<input type="text" name="ALLOC_STEP_TBL_EFFDT$0" id="ALLOC_STEP_TBL_EFFDT$0" tabindex="51" value="08/03/2024" class="PSEDITBOX PTCPEDITBOXWITHICON " style="width:86px; " maxlength="10" onchange="addchg_win0(this);return doEdits_win0(this,'DMDY/450','N','N','N','N','N','N',0);" onkeyup="if (isPromptKey(event))DatePrompt_win0('ALLOC_STEP_TBL_EFFDT$0','ALLOC_STEP_TBL_EFFDT$0','450',false);return false;" aria-required="true">
+    server_name = testdata['server_name']
+    popup_dialog = page.frame_locator("[id^='ptModFrame']") 
+    popup_dialog.get_by_label("Server Name").select_option(server_name)
+
+ 1) <iframe frameborder="0" id="ptModFrame_3" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_3\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_5" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_5\"]")
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
