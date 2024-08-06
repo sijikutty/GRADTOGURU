@@ -1,2 +1,11 @@
-<iframe frameborder="0" id="ptModFrame_7" name="ptModFrame_7" src="http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL?ICType=Panel&amp;ICElementNum=0&amp;ICStateNum=11&amp;ICResubmit=1&amp;ICAJAX=1&amp;" aria-labelledby="ptModTitle_7" style="width: 1010px; height: 404px;"></iframe>
-<input type="button" id="#ICSave" name="#ICSave" class="PSPUSHBUTTONTBOK PSPRIMARY" value="OK" onclick="javascript:submitAction_win0(document.win0, '#ICSave');" tabindex="230">
+    # Wait for the iframe to be loaded and visible
+    iframe = page.frame_locator("iframe#ptModFrame_7")
+
+    # Ensure the iframe is loaded
+    iframe.wait_for()
+
+    # Locate the "OK" button within the iframe and click it
+    # Use the most specific selector based on attributes of the button
+    ok_button = iframe.locator('input#ICSave[value="OK"]')
+    ok_button.wait_for(state="visible")  # Ensure the button is visible before clicking
+    ok_button.click()
