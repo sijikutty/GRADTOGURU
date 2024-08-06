@@ -1,1 +1,3 @@
-As_of_Date1_str = As_of_Date1.strftime('%m/%d/%Y')
+	nvisionFilePath="C:\Program Files\PT860\bin\client\winx86\"
+	nvisionexecutable=nvisionFilePath|"psnvs.exe"
+   	SystemUtil.Run nvisionexecutable
