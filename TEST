@@ -1,14 +1,18 @@
     # List all iframes with the id starting with 'ptModFrame'
     iframes = page.query_selector_all("iframe[id^='ptModFrame']")
 
-    # Optionally, apply additional logic to choose the correct iframe
-    # For example, select the first iframe if there's no specific criterion
-    selected_iframe = iframes[0]  # Modify selection logic as needed
+    # Example logic: choose the first iframe
+    if not iframes:
+        raise Exception("No iframes found")
 
-    # Ensure the iframe is loaded
-    selected_iframe.wait_for()
+    selected_iframe = iframes[0]  # Select the first iframe, or apply custom logic to choose
 
-    # Locate the "OK" button inside the selected iframe
-    ok_button = selected_iframe.locator('input#ICSave[value="OK"]')
-    ok_button.wait_for(state="visible")  # Ensure the button is visible
+    # Get the content frame of the selected iframe
+    frame = selected_iframe.content_frame()
+    
+    # Ensure the frame is fully loaded
+    frame.wait_for_selector('input#ICSave[value="OK"]', state='attached')
+
+    # Locate and click the "OK" button inside the selected iframe
+    ok_button = frame.locator('input#ICSave[value="OK"]')
     ok_button.click()
