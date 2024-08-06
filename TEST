@@ -1,8 +1,2 @@
- # Wait for the button to be visible
-    page.wait_for_selector('input#ICSave[value="OK"]')  # You can also use other attributes if needed
-
-    # Locate the "OK" button and click it
-    ok_button = page.locator('input#ICSave[value="OK"]')
-    ok_button.click()
-
+<iframe frameborder="0" id="ptModFrame_7" name="ptModFrame_7" src="http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL?ICType=Panel&amp;ICElementNum=0&amp;ICStateNum=11&amp;ICResubmit=1&amp;ICAJAX=1&amp;" aria-labelledby="ptModTitle_7" style="width: 1010px; height: 404px;"></iframe>
 <input type="button" id="#ICSave" name="#ICSave" class="PSPUSHBUTTONTBOK PSPRIMARY" value="OK" onclick="javascript:submitAction_win0(document.win0, '#ICSave');" tabindex="230">
