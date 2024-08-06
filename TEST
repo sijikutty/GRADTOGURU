@@ -1,3 +1,57 @@
-	nvisionFilePath="C:\Program Files\PT860\bin\client\winx86\"
-	nvisionexecutable=nvisionFilePath|"psnvs.exe"
-   	SystemUtil.Run nvisionexecutable
+    page.frame_locator("iframe[name=\"ptModFrame_3\"]").get_by_label("Server Name").select_option("PSUNX")
+
+
+with sync_playwright() as playwright:
+    run(playwright)
+----------
+
+>       page.frame_locator("iframe[name=\"ptModFrame_3\"]").get_by_label("Server Name").select_option("PSUNX")
+
+PS_Testing\test_gui\QA_Test\test_datamigration_workbench.py:101:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv\Lib\site-packages\playwright\sync_api\_generated.py:16650: in select_option
+    self._sync(
+.venv\Lib\site-packages\playwright\_impl\_locator.py:550: in select_option
+    return await self._frame.select_option(
+.venv\Lib\site-packages\playwright\_impl\_frame.py:679: in select_option
+    return await self._channel.send("selectOption", params)
+.venv\Lib\site-packages\playwright\_impl\_connection.py:59: in send
+    return await self._connection.wrap_api_call(
+.venv\Lib\site-packages\playwright\_impl\_connection.py:509: in wrap_api_call
+    return await cb()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <playwright._impl._connection.Channel object at 0x00000187B99BDA10>
+method = 'selectOption'
+params = {'options': [{'valueOrLabel': 'PSUNX'}], 'selector': 'iframe[name="ptModFrame_3"] >> 
+internal:control=enter-frame >> internal:label="Server Name"i', 'strict': True}
+return_as_dict = False
+
+    async def inner_send(
+        self, method: str, params: Optional[Dict], return_as_dict: bool
+    ) -> Any:
+        if params is None:
+            params = {}
+        if self._connection._error:
+            error = self._connection._error
+            self._connection._error = None
+            raise error
+        callback = self._connection._send_message_to_server(
+            self._object, method, _filter_none(params)
+        )
+        done, _ = await asyncio.wait(
+            {
+                self._connection._transport.on_error_future,
+                callback.future,
+            },
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+        if not callback.future.done():
+            callback.future.cancel()
+>       result = next(iter(done)).result()
+E       playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded.
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: TimeoutError
+================================== short test summary info ================================== 
+FAILED PS_Testing\test_gui\QA_Test\test_datamigration_workbench.py::test_datamigration_workbench[chromium-testcase0] - playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded.     
+ERROR PS_Testing\test_gui\QA_Test\test_datamigration_workbench.py::test_datamigration_workbench[chromium-testcase0] - playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']...
