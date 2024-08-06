@@ -1,7 +1,1 @@
- As_of_Date = datetime.strptime(query_result['count'], date_format)
-
-            # Add 2 days
-            As_of_Date1 = As_of_Date + timedelta(days=2)
-
-            # Convert the updated date back to a string
-            As_of_Date1_str = As_of_Date1.strftime(date_format)
+As_of_Date1_str = As_of_Date1.strftime('%m/%d/%Y')
