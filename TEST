@@ -1,11 +1,6 @@
-    # Wait for the iframe to be loaded and visible
-    iframe = page.frame_locator("iframe#ptModFrame_7")
+    popup_dialog = page.frame_locator("[id^='ptModFrame']")
+    popup_dialog.locator('input#ICSave[value="OK"]').click()
 
-    # Ensure the iframe is loaded
-    iframe.wait_for()
-
-    # Locate the "OK" button within the iframe and click it
-    # Use the most specific selector based on attributes of the button
-    ok_button = iframe.locator('input#ICSave[value="OK"]')
-    ok_button.wait_for(state="visible")  # Ensure the button is visible before clicking
-    ok_button.click()
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+    1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
+    2) <iframe frameborder="0" id="ptModFrame_3" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_3\"]")
