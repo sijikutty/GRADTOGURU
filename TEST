@@ -1,18 +1,4 @@
-    # List all iframes with the id starting with 'ptModFrame'
-    iframes = page.query_selector_all("iframe[id^='ptModFrame']")
-
-    # Example logic: choose the first iframe
-    if not iframes:
-        raise Exception("No iframes found")
-
-    selected_iframe = iframes[0]  # Select the first iframe, or apply custom logic to choose
-
-    # Get the content frame of the selected iframe
-    frame = selected_iframe.content_frame()
-    
-    # Ensure the frame is fully loaded
-    frame.wait_for_selector('input#ICSave[value="OK"]', state='attached')
-
-    # Locate and click the "OK" button inside the selected iframe
-    ok_button = frame.locator('input#ICSave[value="OK"]')
-    ok_button.click()
+' Identify the Open dialog and file path control
+Set dlgOpen = Dialog("Caption:=Open")
+dlgOpen.WinEdit("ClassName:=Edit").Set "C:\Program folder\xx.xls"
+dlgOpen.WinButton("Caption:=Open").Click
