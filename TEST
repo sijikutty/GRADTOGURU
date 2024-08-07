@@ -1,8 +1,4 @@
-Set dlgOpen = Dialog("Caption:=Open nVision Layout")
-dlgOpen.WinEdit("ClassName:=Edit").Set "C:\Program Files\PT860\nvision\LAYOUT\pp_BAL Due Stat Reclass.xnv"
-dlgOpen.WinButton("Caption:=Open").Click
-
-Cannot find the "[ WinEdit ]" object's parent "[ Dialog ]" (class Dialog).
-Verify that parent properties match an object currently displayed in your application.
-
-Line (6): "dlgOpen.WinEdit("ClassName:=Edit").Set "C:\Program Files\PT860\nvision\LAYOUT\pp_BAL Due Stat Reclass.xnv"". 
+AIUtil.SetContext Window("text:=PP_BAL Due Stat Reclass\.xnv  -  Read-Only  -  Compatibility Mode - Excel", "regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "is owned window:=False", "is child window:=False")
+AIUtil.SetContext Window("text:=TEST1\.xls  -  Compatibility Mode - Excel", "regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "is owned window:=False", "is child window:=False")
+	'AIUtil.FindTextBlock("TEST1.xls -").Click
+	If AIUtil.FindTextBlock("TEST1.xls -").CheckExists(True) Then
