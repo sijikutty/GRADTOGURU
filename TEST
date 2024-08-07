@@ -1,4 +1,8 @@
-' Identify the Open dialog and file path control
-Set dlgOpen = Dialog("Caption:=Open")
-dlgOpen.WinEdit("ClassName:=Edit").Set "C:\Program folder\xx.xls"
+Set dlgOpen = Dialog("Caption:=Open nVision Layout")
+dlgOpen.WinEdit("ClassName:=Edit").Set "C:\Program Files\PT860\nvision\LAYOUT\pp_BAL Due Stat Reclass.xnv"
 dlgOpen.WinButton("Caption:=Open").Click
+
+Cannot find the "[ WinEdit ]" object's parent "[ Dialog ]" (class Dialog).
+Verify that parent properties match an object currently displayed in your application.
+
+Line (6): "dlgOpen.WinEdit("ClassName:=Edit").Set "C:\Program Files\PT860\nvision\LAYOUT\pp_BAL Due Stat Reclass.xnv"". 
