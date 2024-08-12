@@ -1,27 +1,4 @@
-' Retrieve values from DataTable
-Dim requestName, xnv
-requestName = DataTable("requestname", dtGlobalSheet)
-xnv = DataTable("xnv", dtGlobalSheet)
-
-' Set context for the Excel window using dynamic values
-AIUtil.SetContext Window("text:=" & xnv & " - Read-Only - Compatibility Mode - Excel", _
-                      "regexpwndtitle:=Excel", _
-                      "regexpwndclass:=XLMAIN", _
-                      "is owned window:=False", _
-                      "is child window:=False")
-
-' Set context for the TEST1.xls window
-AIUtil.SetContext Window("text:=" & requestName & " - Compatibility Mode - Excel", _
-                      "regexpwndtitle:=Excel", _
-                      "regexpwndclass:=XLMAIN", _
-                      "is owned window:=False", _
-                      "is child window:=False")
-
-' Check if the window with TEST1.xls exists and interact with it
-If AIUtil.FindTextBlock(requestName & " -").CheckExists(True) Then
-    ' Interact with the window if it exists
-    AIUtil.FindTextBlock(requestName & " -").Click
-Else
-    ' Handle the case where the window does not exist
-    Reporter.ReportEvent micWarning, "Window Not Found", "The window with text '" & requestName & " -' was not found."
-End If
+page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Server Name").select_option("PSUNX")
+    page.frame_locator("iframe[name=\"ptModFrame_2\"]").locator("[id=\"PRCSRQSTDLG_WRK_SELECT_FLAG\\$0\"]").uncheck()
+    page.frame_locator("iframe[name=\"ptModFrame_2\"]").locator("[id=\"PRCSRQSTDLG_WRK_SELECT_FLAG\\$0\"]").check()
+    page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_role("button", name="OK", exact=True).click()
