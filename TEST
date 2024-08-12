@@ -1,4 +1,11 @@
-page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Server Name").select_option("PSUNX")
-    page.frame_locator("iframe[name=\"ptModFrame_2\"]").locator("[id=\"PRCSRQSTDLG_WRK_SELECT_FLAG\\$0\"]").uncheck()
-    page.frame_locator("iframe[name=\"ptModFrame_2\"]").locator("[id=\"PRCSRQSTDLG_WRK_SELECT_FLAG\\$0\"]").check()
-    page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_role("button", name="OK", exact=True).click()
+# Wait for the iframe to load and locate the frame by its content
+iframe_locator = page.locator('iframe').locator('text="Specific Content Inside Iframe"').frame()
+# Iterate through all iframes to find the right one
+for iframe in page.frames:
+    if 'ptModFrame' in iframe.name:  # or use any other unique check
+        # Perform actions within this iframe
+        iframe.locator('label:text("Server Name")').select_option("PSUNX")
+        iframe.locator('#PRCSRQSTDLG_WRK_SELECT_FLAG\\$0').uncheck()
+        iframe.locator('#PRCSRQSTDLG_WRK_SELECT_FLAG\\$0').check()
+        iframe.locator('button:has-text("OK")').click()
+        break
