@@ -1,6 +1,12 @@
-Dim oDesc ‘Declare an object variable
-Set oDesc = Description.Create ‘Create an empty description
-oDesc("type").value= "text"
-oDesc("name").value= "userName"
-oDesc("html tag").value= "INPUT"
-Browser("Browser").Page("Page").WebEdit(oDesc).Set "mercury"
+Cannot find the "[ WebEdit ]" object's parent "[ Frame ]" (class Frame).
+Verify that parent properties match an object currently displayed in your application.
+
+Line (74): "Browser("micclass:=Browser").Page("micclass:=Page").Frame("micclass:=Frame").WebEdit(CFDescrtable).Set Datatable.value("CFDescr")". 
+	Set CFDescrtable = Description.Create 
+	CFDescrtable("name").value=Datatable.value("CFDescrtable") & "$0"
+	'CFDescrtable("micclass").value="PSEDITBOX"
+	CFDescrtable("type").value="text"
+
+	Browser("micclass:=Browser").Page("micclass:=Page").Frame("micclass:=Frame").WebEdit(CFDescrtable).Set Datatable.value("CFDescr")
+	Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit(CFDescrtable).Set Datatable.value("CFDescr")
+	Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Save").Click
