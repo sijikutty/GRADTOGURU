@@ -1,12 +1,8 @@
-Cannot find the "[ WebEdit ]" object's parent "[ Frame ]" (class Frame).
-Verify that parent properties match an object currently displayed in your application.
+' Check the Browser
+Browser("micclass:=Browser").Exist ' Ensure the browser exists
 
-Line (74): "Browser("micclass:=Browser").Page("micclass:=Page").Frame("micclass:=Frame").WebEdit(CFDescrtable).Set Datatable.value("CFDescr")". 
-	Set CFDescrtable = Description.Create 
-	CFDescrtable("name").value=Datatable.value("CFDescrtable") & "$0"
-	'CFDescrtable("micclass").value="PSEDITBOX"
-	CFDescrtable("type").value="text"
+' Check the Page
+Browser("micclass:=Browser").Page("micclass:=Page").Exist ' Ensure the page exists
 
-	Browser("micclass:=Browser").Page("micclass:=Page").Frame("micclass:=Frame").WebEdit(CFDescrtable).Set Datatable.value("CFDescr")
-	Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebEdit(CFDescrtable).Set Datatable.value("CFDescr")
-	Browser("iConnect - Home").Page("Define ChartField Value").Frame("TargetContent_2").WebButton("Save").Click
+' Check the Frame
+Browser("micclass:=Browser").Page("micclass:=Page").Frame("micclass:=Frame").Exist ' Ensure the frame exists
