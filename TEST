@@ -1,2 +1,6 @@
-	Browser("micclass:=Browser").Page("title:=Account").Frame("html id:=ptifrmtgtframe").WebEdit("type:=text","name:=CFDescrtable").Set Datatable.value("CFDescr")
-	
+Dim oDesc ‘Declare an object variable
+Set oDesc = Description.Create ‘Create an empty description
+oDesc("type").value= "text"
+oDesc("name").value= "userName"
+oDesc("html tag").value= "INPUT"
+Browser("Browser").Page("Page").WebEdit(oDesc).Set "mercury"
