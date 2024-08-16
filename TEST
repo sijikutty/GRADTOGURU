@@ -1,9 +1,13 @@
-Hi Team,
+We are currently experiencing an issue with the Integration Broker (IB) in the FGL2D environment. Specifically, the Message/Operation Instances are stuck in the status NEW, which is adversely affecting our automation processes that are crucial for our current sprint.
 
-We had an issue with IB earlier and it was resolved. It came back again now.
+Issue Details:
 
+Problem: Integration Broker Message/Operation Instances Stuck in Status NEW
+Environment: FGL2D
+Impact: Disruption to current sprint automation
+We had encountered a similar issue previously, which was resolved. Unfortunately, this problem has resurfaced. For your reference, I have attached the email trail from the previous occurrence of this issue. This information may assist in identifying and addressing the root cause more efficiently.
 
-Integration Broker Message/Operation Instances are Stuck in Status NEW in FGL2D.
+Attachments:
 
-Could you please help. This automation is part of current sprint ,so we will be waiting for resolution soon.
-I am attaching the previous email trail, as it might help you to track old issue cause.
+Email trail from previous resolution
+Given the critical nature of this issue, your prompt attention and assistance in resolving it would be greatly appreciated. Please advise if any additional information is required or if there are immediate actions we should undertake while awaiting a resolution.
