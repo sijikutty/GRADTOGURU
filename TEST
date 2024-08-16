@@ -1,8 +1,9 @@
-' Check the Browser
-Browser("micclass:=Browser").Exist ' Ensure the browser exists
+Hi Team,
 
-' Check the Page
-Browser("micclass:=Browser").Page("micclass:=Page").Exist ' Ensure the page exists
+We had an issue with IB earlier and it was resolved. It came back again now.
 
-' Check the Frame
-Browser("micclass:=Browser").Page("micclass:=Page").Frame("micclass:=Frame").Exist ' Ensure the frame exists
+
+Integration Broker Message/Operation Instances are Stuck in Status NEW in FGL2D.
+
+Could you please help. This automation is part of current sprint ,so we will be waiting for resolution soon.
+I am attaching the previous email trail, as it might help you to track old issue cause.
