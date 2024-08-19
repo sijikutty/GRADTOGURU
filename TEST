@@ -1,177 +1,144 @@
-from automation_utils import get_testdata, construct_ps_fah_credentials,save_credentials
-import win32com.client
+import os
+import time
+import json
+import pandas as pd
 import pytest
 import psutil
-import pandas as pd
-import json
-import time
-import os
-from ps_utils import navigate_menu
-from playwright.sync_api import Page,expect
+import win32com.client
+from playwright.sync_api import Page
+from automation_utils import get_testdata, construct_ps_fah_credentials, save_credentials
 from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
 
-# Test function
-@pytest.mark.parametrize("testcase", get_testdata("test_Chartfield_Validation_ACCOUNT"))
-def test_Chartfield_Validation_ACCOUNT(page: Page, testcase):
-    # Extract test data from the testcase parameter
-    testdata = testcase["testdata"]
+# Helper function to fill a form field
+def fill_form_field(frame, label, value, exact=False):
+    frame.get_by_label(label, exact=exact).fill(value)
 
-    # Navigate to the "Define ChartField Value" section in the application
-    navigate_menu(page=page,
-                  menu_sequence=["Set Up Financials/Supply Chain", 
-                                 "Common Definitions", 
-                                 "Design ChartFields", 
-                                 "Define Values",
-                                 "Define ChartField Value"])
+# Helper function to click a button
+def click_button(frame, name, exact=False):
+    frame.get_by_role("button", name=name, exact=exact).click()
+
+# Helper function to click a link
+def click_link(frame, name):
+    frame.get_by_role("link", name=name).click()
+
+# Function to navigate and perform actions on the "Define ChartField Value" section
+def define_chartfield_value(page: Page, testdata):
+    navigate_menu(page=page, menu_sequence=[
+        "Set Up Financials/Supply Chain", 
+        "Common Definitions", 
+        "Design ChartFields", 
+        "Define Values",
+        "Define ChartField Value"
+    ])
     
-    # Locate the target iframe
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    target_frame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
-    # Fill in the required fields with test data
-    targetContentFrame.get_by_role("link", name=testdata['Link']).click()
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("SetID").fill(testdata['SETID'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Account", exact=True).fill(testdata['Chartfieldvalue'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Search", exact=True).click()
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("cell", name="Correct History", exact=True).locator("a").click()
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Description", exact=True).fill(testdata['CFDescr'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Save").click()
+    click_link(target_frame, testdata['Link'])
+    fill_form_field(target_frame, "SetID", testdata['SETID'])
+    fill_form_field(target_frame, "Account", testdata['Chartfieldvalue'], exact=True)
+    click_button(target_frame, "Search", exact=True)
+    target_frame.get_by_role("cell", name="Correct History", exact=True).locator("a").click()
+    fill_form_field(target_frame, "Description", testdata['CFDescr'], exact=True)
+    click_button(target_frame, "Save")
 
-    # Navigate to the "Full Data Publish" section in the application
-    navigate_menu(page=page,
-                  menu_sequence=["Enterprise Components", 
-                                 "Integration Definitions", 
-                                 "Initiate Processes", 
-                                 "Full Data Publish"])
+# Function to navigate and initiate the "Full Data Publish" process
+def initiate_full_data_publish(page: Page, testdata):
+    navigate_menu(page=page, menu_sequence=[
+        "Enterprise Components", 
+        "Integration Definitions", 
+        "Initiate Processes", 
+        "Full Data Publish"
+    ])
+
+    add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
+    target_frame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
-    add_run_control_id(page=page, run_ctrl_id = testdata['run_control_id'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Request ID").fill(testdata['Request_id'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Description").fill(testdata['Request_descr'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Once").check()
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Service Operation").fill(testdata['Operation_name'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Run").click()
+    fill_form_field(target_frame, "Request ID", testdata['Request_id'])
+    fill_form_field(target_frame, "Description", testdata['Request_descr'])
+    target_frame.get_by_label("Once").check()
+    fill_form_field(target_frame, "Service Operation", testdata['Operation_name'])
+    click_button(target_frame, "Run")
 
-    process_instance_id = schedule_process(page=page, server_name=testdata["server"],process_name=testdata["publishprocess"])
+# Function to monitor and validate the asynchronous service status
+def monitor_asynchronous_service(page: Page, testdata):
+    navigate_menu(page=page, menu_sequence=[
+        "PeopleTools", 
+        "Integration Broker", 
+        "Service Operations Monitor", 
+        "Monitoring",
+        "Monitor Asynchronous Services"
+    ])
 
-    run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
-
-    print(f"Run status : ", run_status)
-
-    # Navigate to the "Monitor Asynchronous Services" section in the application
-    navigate_menu(page=page,
-                  menu_sequence=["PeopleTools", 
-                                 "Integration Broker", 
-                                 "Service Operations Monitor", 
-                                 "Monitoring",
-                                 "Monitor Asynchronous Services"])
+    target_frame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("tab", name="Operation Instances").click()
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Service Operation").fill(testdata['Operation_name'])
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Status").select_option("")
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Refresh").click()
+    click_button(target_frame, "Operation Instances")
+    fill_form_field(target_frame, "Service Operation", testdata['Operation_name'])
+    target_frame.get_by_label("Status").select_option("")
+    click_button(target_frame, "Refresh")
 
-    #expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]")).to_contain_text("Done")
-    
-        # Wait for Run status to be Done
-    #print("IB:",IB_Status)
     retry = 0
     while retry < 200:
-        IB_Status=page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]").inner_text()
-        #expected_values=['Done']
-
-        if IB_Status=="Done":
-            break
-
+        status = target_frame.locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]").inner_text()
+        if status == "Done":
+            return
         else:
             time.sleep(5)
-            page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Refresh").click()
-            print("IBS:",IB_Status)
+            click_button(target_frame, "Refresh")
             retry += 1
-    if IB_Status=="Done":
-	        # Close any existing instances of UFT
-        for process in psutil.process_iter():
-            if process.name() == "UFT.exe":
-                process.terminate()
+    
+    raise Exception("IB Status is not Done.")
 
-        # Retrieve test data
-        testdata = testcase["testdata"]
+# Function to handle UFT testing
+def handle_uft_testing(testdata):
+    if os.path.exists("Result/tcjson.xlsx"):
+        os.remove("Result/tcjson.xlsx")
+    if os.path.exists("Result/uftres.json"):
+        os.remove("Result/uftres.json")
+    
+    df = pd.DataFrame([testdata])
+    df.to_excel("Result/tcjson.xlsx", index=False)
 
-        # Delete the Excel and JSON files if they exist
-        if os.path.exists("Result/tcjson.xlsx"):
-            os.remove("Result/tcjson.xlsx")
-        if os.path.exists("Result/uftres.json"):
-            os.remove("Result/uftres.json")
+    credentials_data = construct_ps_fah_credentials(testdata)
+    cred_json_file_path = save_credentials(credentials_data)
 
-        # Convert JSON data to DataFrame
-        df = pd.DataFrame([testdata])
+    try:
+        uft = win32com.client.Dispatch("QuickTest.Application")
+        uft.Launch()
+        uft.Visible = True
+        uft.Open(testdata["test_path"])
 
-        # Specify the path for the Excel file
-        excel_file_path = "Result/tcjson.xlsx"
+        uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+        uft.Test.Save()
+        uft.Test.Run(uftResultsOpt, True)
 
-        # Write DataFrame to Excel
-        df.to_excel(excel_file_path, index=False)
+        with open("Result/uftres.json", 'r') as json_file:
+            data = json.load(json_file)
 
-        test_path = testdata["test_path"]
-           # Credentials
-        credentials_data = construct_ps_fah_credentials(testdata)
+        verdict = data['Rally']['verdict']
+        result = data['Rally']['notes']
 
-        cred_json_file_path=save_credentials(credentials_data)
+        if verdict != "Pass":
+            if result:
+                raise Exception(result)
 
-        try:
-            # Create an instance of UFT
-            uft = win32com.client.Dispatch("QuickTest.Application")
+        print("Script execution success!")
 
-            # Start UFT and make the window visible
-            uft.Launch()
-            uft.Visible = True
+    except Exception as e:
+        print("Error:", e)
+        raise e
 
-            # Open the test
-            uft.Open(test_path)
+    finally:
+        if os.path.exists(cred_json_file_path):
+            os.remove(cred_json_file_path)
+        uft.Test.Close()
+        uft.Quit()
 
-            # Create a RunResultsOptions object
-            uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+# Main test function
+@pytest.mark.parametrize("testcase", get_testdata("test_Chartfield_Validation_ACCOUNT"))
+def test_Chartfield_Validation_ACCOUNT(page: Page, testcase):
+    testdata = testcase["testdata"]
 
-            # Save the changes
-            uft.Test.Save()
-
-            # Run the test with parameters
-            uft.Test.Run(uftResultsOpt, True)
-
-            # Get the result path from UFT script
-            resultpath = "Result/uftres.json"
-
-            with open(resultpath, 'r') as json_file:
-                # Load JSON data from the file
-                data = json.load(json_file)
-
-            # Get the verdict and result from the JSON data
-            verdict = data['Rally']['verdict']
-            result = data['Rally']['notes']
-
-            # Check if verdict is not "Passed"
-            if verdict != "Pass":
-                if result:
-                    # Raise an exception with the result
-                    raise Exception(result)
-
-            print("Script execution success!")
-
-        except Exception as e:
-            print("Error:", e)
-            raise e
-
-        finally:
-            # Delete the credentials JSON file if it exist
-            if os.path.exists(cred_json_file_path):
-                os.remove(cred_json_file_path)
-            # Close the test
-            uft.Test.Close()
-
-            # Quit UFT
-            uft.Quit()
-
-
-
-    else:
-	    raise Exception("IB Status is not Done.")
-	
-
+    define_chartfield_value(page, testdata)
+    initiate_full_data_publish(page, testdata)
+    monitor_asynchronous_service(page, testdata)
+    handle_uft_testing(testdata)
