@@ -9,20 +9,9 @@ from playwright.sync_api import Page
 from automation_utils import get_testdata, construct_ps_fah_credentials, save_credentials
 from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
 
-# Helper function to fill a form field
-def fill_form_field(frame, label, value, exact=False):
-    frame.get_by_label(label, exact=exact).fill(value)
-
-# Helper function to click a button
-def click_button(frame, name, exact=False):
-    frame.get_by_role("button", name=name, exact=exact).click()
-
-# Helper function to click a link
-def click_link(frame, name):
-    frame.get_by_role("link", name=name).click()
-
 # Function to navigate and perform actions on the "Define ChartField Value" section
 def define_chartfield_value(page: Page, testdata):
+    # Navigate to the "Define ChartField Value" section
     navigate_menu(page=page, menu_sequence=[
         "Set Up Financials/Supply Chain", 
         "Common Definitions", 
@@ -31,18 +20,21 @@ def define_chartfield_value(page: Page, testdata):
         "Define ChartField Value"
     ])
     
+    # Locate the target iframe
     target_frame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
-    click_link(target_frame, testdata['Link'])
-    fill_form_field(target_frame, "SetID", testdata['SETID'])
-    fill_form_field(target_frame, "Account", testdata['Chartfieldvalue'], exact=True)
-    click_button(target_frame, "Search", exact=True)
+    # Perform actions within the iframe
+    target_frame.get_by_role("link", name=testdata['Link']).click()
+    target_frame.get_by_label("SetID").fill(testdata['SETID'])
+    target_frame.get_by_label("Account", exact=True).fill(testdata['Chartfieldvalue'])
+    target_frame.get_by_role("button", name="Search", exact=True).click()
     target_frame.get_by_role("cell", name="Correct History", exact=True).locator("a").click()
-    fill_form_field(target_frame, "Description", testdata['CFDescr'], exact=True)
-    click_button(target_frame, "Save")
+    target_frame.get_by_label("Description", exact=True).fill(testdata['CFDescr'])
+    target_frame.get_by_role("button", name="Save").click()
 
 # Function to navigate and initiate the "Full Data Publish" process
 def initiate_full_data_publish(page: Page, testdata):
+    # Navigate to the "Full Data Publish" section
     navigate_menu(page=page, menu_sequence=[
         "Enterprise Components", 
         "Integration Definitions", 
@@ -50,17 +42,19 @@ def initiate_full_data_publish(page: Page, testdata):
         "Full Data Publish"
     ])
 
+    # Add run control ID and fill in the form
     add_run_control_id(page=page, run_ctrl_id=testdata['run_control_id'])
     target_frame = page.frame_locator("iframe[name=\"TargetContent\"]")
-    
-    fill_form_field(target_frame, "Request ID", testdata['Request_id'])
-    fill_form_field(target_frame, "Description", testdata['Request_descr'])
+
+    target_frame.get_by_label("Request ID").fill(testdata['Request_id'])
+    target_frame.get_by_label("Description").fill(testdata['Request_descr'])
     target_frame.get_by_label("Once").check()
-    fill_form_field(target_frame, "Service Operation", testdata['Operation_name'])
-    click_button(target_frame, "Run")
+    target_frame.get_by_label("Service Operation").fill(testdata['Operation_name'])
+    target_frame.get_by_role("button", name="Run").click()
 
 # Function to monitor and validate the asynchronous service status
 def monitor_asynchronous_service(page: Page, testdata):
+    # Navigate to the "Monitor Asynchronous Services" section
     navigate_menu(page=page, menu_sequence=[
         "PeopleTools", 
         "Integration Broker", 
@@ -69,13 +63,15 @@ def monitor_asynchronous_service(page: Page, testdata):
         "Monitor Asynchronous Services"
     ])
 
+    # Perform actions within the iframe
     target_frame = page.frame_locator("iframe[name=\"TargetContent\"]")
     
-    click_button(target_frame, "Operation Instances")
-    fill_form_field(target_frame, "Service Operation", testdata['Operation_name'])
+    target_frame.get_by_role("tab", name="Operation Instances").click()
+    target_frame.get_by_label("Service Operation").fill(testdata['Operation_name'])
     target_frame.get_by_label("Status").select_option("")
-    click_button(target_frame, "Refresh")
+    target_frame.get_by_role("button", name="Refresh").click()
 
+    # Wait for the status to be "Done"
     retry = 0
     while retry < 200:
         status = target_frame.locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]").inner_text()
@@ -83,34 +79,40 @@ def monitor_asynchronous_service(page: Page, testdata):
             return
         else:
             time.sleep(5)
-            click_button(target_frame, "Refresh")
+            target_frame.get_by_role("button", name="Refresh").click()
             retry += 1
     
     raise Exception("IB Status is not Done.")
 
 # Function to handle UFT testing
 def handle_uft_testing(testdata):
+    # Clean up old result files
     if os.path.exists("Result/tcjson.xlsx"):
         os.remove("Result/tcjson.xlsx")
     if os.path.exists("Result/uftres.json"):
         os.remove("Result/uftres.json")
     
+    # Convert test data to Excel
     df = pd.DataFrame([testdata])
     df.to_excel("Result/tcjson.xlsx", index=False)
 
+    # Save credentials
     credentials_data = construct_ps_fah_credentials(testdata)
     cred_json_file_path = save_credentials(credentials_data)
 
     try:
+        # Initialize UFT
         uft = win32com.client.Dispatch("QuickTest.Application")
         uft.Launch()
         uft.Visible = True
         uft.Open(testdata["test_path"])
 
+        # Run the test
         uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
         uft.Test.Save()
         uft.Test.Run(uftResultsOpt, True)
 
+        # Process UFT results
         with open("Result/uftres.json", 'r') as json_file:
             data = json.load(json_file)
 
@@ -128,6 +130,7 @@ def handle_uft_testing(testdata):
         raise e
 
     finally:
+        # Clean up
         if os.path.exists(cred_json_file_path):
             os.remove(cred_json_file_path)
         uft.Test.Close()
