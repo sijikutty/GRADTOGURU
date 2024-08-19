@@ -1,8 +1,1 @@
-# Get the dynamic part from testdata
-dynamic_value = testdata['Chartfieldvalue']
-
-# Construct the locator dynamically
-locator_string = f"[id=\"{dynamic_value}\$0\"]"
-
-# Use the dynamically constructed locator
-page.frame_locator("iframe[name=\"TargetContent\"]").locator(locator_string).fill("Assumed VV")
+	OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Application").OpenDialog
