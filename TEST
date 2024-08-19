@@ -1,15 +1,4 @@
-    retry = 0
-    while retry < 200:
-        IB_Status=page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]").inner_text()
-        #expected_values=['Done']
+page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"CHARTFIELD1_TBL_DESCR\\$0\"]").fill("Assumed VV")
 
-        if IB_Status=="Done":
-            break
+testdata['Chartfieldvalue']
 
-        else:
-            time.sleep(5)
-            page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Refresh").click()
-            print("IBS:",IB_Status)
-            retry += 1
-    if IB_Status=="Done":
-        handle_uft_testing(testdata)
