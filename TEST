@@ -1,13 +1,177 @@
-We are currently experiencing an issue with the Integration Broker (IB) in the FGL2D environment. Specifically, the Message/Operation Instances are stuck in the status NEW, which is adversely affecting our automation processes that are crucial for our current sprint.
+from automation_utils import get_testdata, construct_ps_fah_credentials,save_credentials
+import win32com.client
+import pytest
+import psutil
+import pandas as pd
+import json
+import time
+import os
+from ps_utils import navigate_menu
+from playwright.sync_api import Page,expect
+from ps_utils import navigate_menu, add_run_control_id, schedule_process, monitor_process
 
-Issue Details:
+# Test function
+@pytest.mark.parametrize("testcase", get_testdata("test_Chartfield_Validation_ACCOUNT"))
+def test_Chartfield_Validation_ACCOUNT(page: Page, testcase):
+    # Extract test data from the testcase parameter
+    testdata = testcase["testdata"]
 
-Problem: Integration Broker Message/Operation Instances Stuck in Status NEW
-Environment: FGL2D
-Impact: Disruption to current sprint automation
-We had encountered a similar issue previously, which was resolved. Unfortunately, this problem has resurfaced. For your reference, I have attached the email trail from the previous occurrence of this issue. This information may assist in identifying and addressing the root cause more efficiently.
+    # Navigate to the "Define ChartField Value" section in the application
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain", 
+                                 "Common Definitions", 
+                                 "Design ChartFields", 
+                                 "Define Values",
+                                 "Define ChartField Value"])
+    
+    # Locate the target iframe
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
-Attachments:
+    # Fill in the required fields with test data
+    targetContentFrame.get_by_role("link", name=testdata['Link']).click()
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("SetID").fill(testdata['SETID'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Account", exact=True).fill(testdata['Chartfieldvalue'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Search", exact=True).click()
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("cell", name="Correct History", exact=True).locator("a").click()
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Description", exact=True).fill(testdata['CFDescr'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Save").click()
 
-Email trail from previous resolution
-Given the critical nature of this issue, your prompt attention and assistance in resolving it would be greatly appreciated. Please advise if any additional information is required or if there are immediate actions we should undertake while awaiting a resolution.
+    # Navigate to the "Full Data Publish" section in the application
+    navigate_menu(page=page,
+                  menu_sequence=["Enterprise Components", 
+                                 "Integration Definitions", 
+                                 "Initiate Processes", 
+                                 "Full Data Publish"])
+    
+    add_run_control_id(page=page, run_ctrl_id = testdata['run_control_id'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Request ID").fill(testdata['Request_id'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Description").fill(testdata['Request_descr'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Once").check()
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Service Operation").fill(testdata['Operation_name'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Run").click()
+
+    process_instance_id = schedule_process(page=page, server_name=testdata["server"],process_name=testdata["publishprocess"])
+
+    run_status = monitor_process(page=page, process_inst_id=process_instance_id, server=testdata["server"])
+
+    print(f"Run status : ", run_status)
+
+    # Navigate to the "Monitor Asynchronous Services" section in the application
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Integration Broker", 
+                                 "Service Operations Monitor", 
+                                 "Monitoring",
+                                 "Monitor Asynchronous Services"])
+    
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("tab", name="Operation Instances").click()
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Service Operation").fill(testdata['Operation_name'])
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Status").select_option("")
+    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Refresh").click()
+
+    #expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]")).to_contain_text("Done")
+    
+        # Wait for Run status to be Done
+    #print("IB:",IB_Status)
+    retry = 0
+    while retry < 200:
+        IB_Status=page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"IB_MONITOR_AMM_STATUS\\$0\"]").inner_text()
+        #expected_values=['Done']
+
+        if IB_Status=="Done":
+            break
+
+        else:
+            time.sleep(5)
+            page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Refresh").click()
+            print("IBS:",IB_Status)
+            retry += 1
+    if IB_Status=="Done":
+	        # Close any existing instances of UFT
+        for process in psutil.process_iter():
+            if process.name() == "UFT.exe":
+                process.terminate()
+
+        # Retrieve test data
+        testdata = testcase["testdata"]
+
+        # Delete the Excel and JSON files if they exist
+        if os.path.exists("Result/tcjson.xlsx"):
+            os.remove("Result/tcjson.xlsx")
+        if os.path.exists("Result/uftres.json"):
+            os.remove("Result/uftres.json")
+
+        # Convert JSON data to DataFrame
+        df = pd.DataFrame([testdata])
+
+        # Specify the path for the Excel file
+        excel_file_path = "Result/tcjson.xlsx"
+
+        # Write DataFrame to Excel
+        df.to_excel(excel_file_path, index=False)
+
+        test_path = testdata["test_path"]
+           # Credentials
+        credentials_data = construct_ps_fah_credentials(testdata)
+
+        cred_json_file_path=save_credentials(credentials_data)
+
+        try:
+            # Create an instance of UFT
+            uft = win32com.client.Dispatch("QuickTest.Application")
+
+            # Start UFT and make the window visible
+            uft.Launch()
+            uft.Visible = True
+
+            # Open the test
+            uft.Open(test_path)
+
+            # Create a RunResultsOptions object
+            uftResultsOpt = win32com.client.Dispatch("QuickTest.RunResultsOptions")
+
+            # Save the changes
+            uft.Test.Save()
+
+            # Run the test with parameters
+            uft.Test.Run(uftResultsOpt, True)
+
+            # Get the result path from UFT script
+            resultpath = "Result/uftres.json"
+
+            with open(resultpath, 'r') as json_file:
+                # Load JSON data from the file
+                data = json.load(json_file)
+
+            # Get the verdict and result from the JSON data
+            verdict = data['Rally']['verdict']
+            result = data['Rally']['notes']
+
+            # Check if verdict is not "Passed"
+            if verdict != "Pass":
+                if result:
+                    # Raise an exception with the result
+                    raise Exception(result)
+
+            print("Script execution success!")
+
+        except Exception as e:
+            print("Error:", e)
+            raise e
+
+        finally:
+            # Delete the credentials JSON file if it exist
+            if os.path.exists(cred_json_file_path):
+                os.remove(cred_json_file_path)
+            # Close the test
+            uft.Test.Close()
+
+            # Quit UFT
+            uft.Quit()
+
+
+
+    else:
+	    raise Exception("IB Status is not Done.")
+	
+
