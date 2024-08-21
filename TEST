@@ -1,11 +1,33 @@
-    page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Server Name").select_option("PSUNX")
-    expect(page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_role("button", name="OK", exact=True)).to_be_visible()
-    page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_role("button", name="OK", exact=True).click()
+def find_frame_by_name_prefix(page, prefix):
+    frames = page.frames  # Get all frames
+    for frame in frames:
+        frame_name = frame.name  # Get the name of each frame
+        if frame_name and frame_name.startswith(prefix):
+            return frame
+    return None
 
-    page.frame_locator("iframe[name=\"ptModFrame_5\"]").get_by_label("Server Name").select_option("PSUNX")
-    expect(page.frame_locator("iframe[name=\"ptModFrame_5\"]").get_by_role("button", name="OK", exact=True)).to_be_visible()
-    page.frame_locator("iframe[name=\"ptModFrame_5\"]").get_by_role("button", name="OK", exact=True).click()
+def main():
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
 
-    page.frame_locator("iframe[name=\"ptModFrame_6\"]").get_by_label("Server Name").select_option("PSUNX")
-    expect(page.frame_locator("iframe[name=\"ptModFrame_6\"]").get_by_role("button", name="OK", exact=True)).to_be_visible()
-    page.frame_locator("iframe[name=\"ptModFrame_6\"]").get_by_role("button", name="OK", exact=True).click()
+        # Navigate to the desired URL
+        page.goto('http://example.com')
+
+        # Find the frame with a name prefix
+        frame_prefix = 'ptModFrame_'
+        frame = find_frame_by_name_prefix(page, frame_prefix)
+        
+        if frame:
+            # Perform actions inside the found frame
+            frame_locator = frame.locator('label:has-text("Server Name")')
+            if frame_locator.is_visible():
+                frame_locator.select_option("PSUNX")
+                print("Option selected")
+            else:
+                print("Label not found in the frame")
+        else:
+            print("Frame with the specified prefix not found")
+
+        # Close the browser
+        browser.close()
