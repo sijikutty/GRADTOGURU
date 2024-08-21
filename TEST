@@ -1,4 +1,11 @@
-    #popup_dialog = page.frame_locator("[id^='ptModFrame']") 
-    #popup_dialog.get_by_label("Server Name").select_option(server_name)
+    page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Server Name").select_option("PSUNX")
+    expect(page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_role("button", name="OK", exact=True)).to_be_visible()
+    page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_role("button", name="OK", exact=True).click()
 
-expect(page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Run Date")).to_have_value("08/21/2024");
+    page.frame_locator("iframe[name=\"ptModFrame_5\"]").get_by_label("Server Name").select_option("PSUNX")
+    expect(page.frame_locator("iframe[name=\"ptModFrame_5\"]").get_by_role("button", name="OK", exact=True)).to_be_visible()
+    page.frame_locator("iframe[name=\"ptModFrame_5\"]").get_by_role("button", name="OK", exact=True).click()
+
+    page.frame_locator("iframe[name=\"ptModFrame_6\"]").get_by_label("Server Name").select_option("PSUNX")
+    expect(page.frame_locator("iframe[name=\"ptModFrame_6\"]").get_by_role("button", name="OK", exact=True)).to_be_visible()
+    page.frame_locator("iframe[name=\"ptModFrame_6\"]").get_by_role("button", name="OK", exact=True).click()
