@@ -1,5 +1,1 @@
-    popup_dialog1 = page.frame_locator("[id^='ptModFrame']") 
-    popup_dialog1.get_by_label("Server Name").select_option(server_name)
----
-E           1) <iframe frameborder="0" id="ptModFrame_3" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_3\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_6" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_6\"]")
+page.frame_locator("iframe[name=\"ptModFrame_1\"]"
