@@ -1,1 +1,1 @@
-	OracleFormWindow("Find Key Flexfield Segment").OracleTextField("Application").OpenDialog
+expect(page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Run Date")).to_have_value("08/21/2024");
