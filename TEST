@@ -1,1 +1,4 @@
+    #popup_dialog = page.frame_locator("[id^='ptModFrame']") 
+    #popup_dialog.get_by_label("Server Name").select_option(server_name)
+
 expect(page.frame_locator("iframe[name=\"ptModFrame_2\"]").get_by_label("Run Date")).to_have_value("08/21/2024");
