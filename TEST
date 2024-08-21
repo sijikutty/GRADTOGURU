@@ -1,1 +1,2 @@
-page.frame_locator("iframe[name=\"ptModFrame_1\"]"
+    page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("button", name="Run").click()
+    page.frame_locator("iframe[name=\"ptModFrame_4\"]").get_by_label("Server Name").select_option("PSUNX")
