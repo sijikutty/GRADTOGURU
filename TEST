@@ -1,2 +1,5 @@
     sample_select_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text="ACCOUNT")
     vv=sample_select_row.get_by_role("textbox").text_content()
+
+
+<option value="ACCOUNT" selected="selected">Account</option>
