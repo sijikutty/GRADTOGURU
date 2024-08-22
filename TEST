@@ -1,9 +1,12 @@
 def print_iframe_texts(page: Page):
-    # Get all iframes on the page
+    # Locate all iframe elements on the page
     iframes = page.locator('iframe')
     
+    # Get the count of iframes
+    iframe_count = iframes.count()
+    
     # Iterate through each iframe
-    for index in range(len(iframes)):
+    for index in range(iframe_count):
         iframe_locator = iframes.nth(index)
         try:
             # Switch to the iframe and print its content
