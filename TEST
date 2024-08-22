@@ -1,19 +1,18 @@
-def print_iframe_titles(page: Page):
-    # Locate all iframe elements on the page
+def print_iframe_texts(page: Page):
+    # Get all iframes on the page
     iframes = page.locator('iframe')
     
-    # Get the count of iframes
-    iframe_count = iframes.count()
-    
     # Iterate through each iframe
-    for index in range(iframe_count):
+    for index in range(len(iframes)):
         iframe_locator = iframes.nth(index)
         try:
-            # Get the title attribute of the iframe
-            title = iframe_locator.get_attribute('title')
-            print(f"Title of iframe {index}: {title}")
+            # Switch to the iframe and print its content
+            iframe = iframe_locator.content_frame()
+            # Print all text content within the iframe
+            content_text = iframe.locator('body').text_content()
+            print(f"Text content in iframe {index}: {content_text.strip()}")
         except Exception as e:
-            print(f"Could not retrieve title from iframe {index}: {str(e)}")
+            print(f"Could not retrieve content from iframe {index}: {str(e)}")
 
 # Call the function in your test
-print_iframe_titles(page)
+print_iframe_texts(page)
