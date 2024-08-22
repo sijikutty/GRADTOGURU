@@ -1,32 +1,33 @@
-def print_iframe_texts(page: Page):
-    # Locate all iframe elements on the page
-    iframe_locators = page.locator('iframe')
-    
-    # Get the count of iframes
-    iframe_count = iframe_locators.count()
-    
-    # Iterate through each iframe
-    for index in range(iframe_count):
-        try:
-            # Get the iframe locator
-            iframe_locator = iframe_locators.nth(index)
-            
-            # Get the iframe's name or id to construct the frame_locator selector
-            iframe_id = iframe_locator.get_attribute('id') or ''
-            iframe_name = iframe_locator.get_attribute('name') or ''
-            
-            # Construct a selector for the frame
-            iframe_selector = f'iframe#{iframe_id}' if iframe_id else f'iframe[name="{iframe_name}"]'
-            
-            # Switch to the iframe using frame_locator
-            iframe = page.frame_locator(iframe_selector)
-            
-            # Print all text content within the iframe
-            content_text = iframe.locator('body').text_content()
-            print(f"Text content in iframe {index}: {content_text.strip()}")
-        
-        except Exception as e:
-            print(f"Could not retrieve content from iframe {index}: {str(e)}")
+popup_dialog = page.frame_locator("iframe[id='unique-frame-id']")
 
-# Call the function in your test
-print_iframe_texts(page)
+# Wait for the iframe containing specific text to be visible
+page.wait_for_selector("iframe:has-text('Specific Text in Frame')")
+popup_dialog = page.frame_locator("iframe:has-text('Specific Text in Frame')")
+
+# Locate the iframe within a specific section or container
+container = page.locator("#container-id")  # Replace with actual container identifier
+iframe = container.frame_locator("iframe[name='frame-name']")
+
+# Locate iframe by its title attribute
+popup_dialog = page.frame_locator("iframe[title='Frame Title']")
+
+ # Define the selector for the iframe containing specific text
+    iframe_selector = "iframe:has-text('Specific Text in Frame')"
+    
+    # Wait for the iframe to be visible
+    page.wait_for_selector(iframe_selector, timeout=10000)  # Adjust timeout as needed
+    
+    # Check if the iframe exists and get the iframe locator
+    iframe_locators = page.locator(iframe_selector)
+    
+    # Determine if there are any matching iframes
+    if iframe_locators.count() > 0:
+        print("Iframe with specific text is present.")
+        # Optionally, interact with the iframe
+        iframe = page.frame_locator(iframe_selector)
+        # Perform actions within the iframe if needed
+        # For example: print the text content
+        content_text = iframe.locator('body').text_content()
+        print(f"Text content in the iframe: {content_text.strip()}")
+    else:
+        print("No iframe with the specified text was found.")
