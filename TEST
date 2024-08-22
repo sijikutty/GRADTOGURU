@@ -52,5 +52,64 @@ def test_datamigration(page: Page, testcase):
     page.get_by_role("button", name="Yes").click()
     time.sleep(50)
 
+error:______________________ ERROR at teardown of test_datamigration[chromium-testcase0] ______________________ 
+
+page = <Page url='http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMWSEARCH.GBL'>
+
+    @pytest.fixture(scope="function", autouse=True)
+    def teardown(page):
+        yield
+>       test_cleanup(page)
+
+PS_Testing\test_gui\conftest.py:74:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+PS_Testing\test_gui\ps_utils.py:152: in test_cleanup
+    if popup_cancel_btn.is_visible(timeout=500):
+.venv\Lib\site-packages\playwright\sync_api\_generated.py:16377: in is_visible
+    self._sync(self._impl_obj.is_visible(timeout=timeout))
+.venv\Lib\site-packages\playwright\_impl\_locator.py:493: in is_visible
+    return await self._frame.is_visible(
+.venv\Lib\site-packages\playwright\_impl\_frame.py:354: in is_visible
+    return await self._channel.send("isVisible", locals_to_params(locals()))
+.venv\Lib\site-packages\playwright\_impl\_connection.py:59: in send
+    return await self._connection.wrap_api_call(
+.venv\Lib\site-packages\playwright\_impl\_connection.py:509: in wrap_api_call
+    return await cb()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <playwright._impl._connection.Channel object at 0x0000020132CB98D0>, method = 'isVisible'
+params = {'selector': '[id^=\'ptModFrame\'] >> internal:control=enter-frame >> internal:role=button[name="Cancel"s]', 'strict': True, 'timeout': 500}
+return_as_dict = False
+
+    async def inner_send(
+        self, method: str, params: Optional[Dict], return_as_dict: bool
+    ) -> Any:
+        if params is None:
+            params = {}
+        if self._connection._error:
+            error = self._connection._error
+            self._connection._error = None
+            raise error
+        callback = self._connection._send_message_to_server(
+            self._object, method, _filter_none(params)
+        )
+        done, _ = await asyncio.wait(
+            {
+                self._connection._transport.on_error_future,
+                callback.future,
+            },
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+        if not callback.future.done():
+            callback.future.cancel()
+>       result = next(iter(done)).result()
+E       playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_3" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_3\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_6" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_6\"]")
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
+======================================== short test summary info ======================================== 
+ERROR PS_Testing\test_gui\Unit Test\test_datamigration.py::test_datamigration[chromium-testcase0] - playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved 
+
 
 
