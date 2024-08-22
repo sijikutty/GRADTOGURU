@@ -1,2 +1,56 @@
-    page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("button", name="Run").click()
-    page.frame_locator("iframe[name=\"ptModFrame_4\"]").get_by_label("Server Name").select_option("PSUNX")
+
+def test_datamigration(page: Page, testcase):
+    # Extract test data for the current test case
+    testdata = testcase["testdata"]  
+
+
+    # Navigate to the "Data Migration Workbench" section in the UI
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Lifecycle Tools", 
+                                 "Migrate Data",
+                                 "Data Migration Workbench"])
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+
+    targetContentFrame.get_by_role("link", name="Add a New Value").click()
+    time.sleep(10)
+    targetContentFrame.get_by_label("Project Name").fill(testdata["Project"])
+    targetContentFrame.get_by_label("Description").fill(testdata["descr"])
+    targetContentFrame.get_by_role("button", name="Add").click()
+
+
+    if page.get_by_text("Project already exists. Press").is_visible():
+        page.get_by_role("button", name="OK").click()
+        if targetContentFrame.locator("[id=\"win0divPTADSNAME_LINK\\$0\"]").inner_text()==testdata['dataset']:
+            targetContentFrame.get_by_role("link", name=(testdata['dataset'])).click()
+            targetContentFrame.get_by_role("button", name="Select All", exact=True).click()
+            targetContentFrame.get_by_role("button", name="Delete").click()
+            targetContentFrame.get_by_role("button", name="Insert Content").click()
+    else:
+        targetContentFrame.locator("[id=\"PTADSNAME\\$0\"]").fill(testdata["dataset"])
+        targetContentFrame.get_by_role("cell", name="Save", exact=True).locator("a").click()
+        page.get_by_role("button", name="OK").click()
+
+    popup_dialog = page.frame_locator("[id^='ptModFrame']")
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$0\"]").fill(testdata["SETID"])
+    time.sleep(10)
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").click()
+    time.sleep(10)
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").fill(testdata['process_step'])
+    popup_dialog.get_by_role("button", name="Search", exact=True).click()
+    popup_dialog.get_by_role("button", name="Select All", exact=True).click()
+    popup_dialog.get_by_role("button", name="Insert and Return").click()
+    page.get_by_role("button", name="OK").click()
+    targetContentFrame.get_by_role("button", name="Save").click()
+    targetContentFrame.get_by_role("button", name="Copy To File").click()
+    page.get_by_role("button", name="OK").click()
+    #popup_dialog.locator("[name='PSADS_WORK_LOADPRCSRQSTDLGPB']").click
+    
+    popup_dialog.get_by_role("cell", name="Run", exact=True).locator("a").click()
+    
+    page.get_by_role("button", name="Yes").click()
+    time.sleep(50)
+
+
+
