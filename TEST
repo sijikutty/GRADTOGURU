@@ -1,5 +1,3 @@
-    sample_select_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text="ACCOUNT")
-    vv=sample_select_row.get_by_role("textbox").text_content()
-
-
-<option value="ACCOUNT" selected="selected">Account</option>
+Why should this team or individual win this award? Focus on the problem statement, solution, 
+impact and outcome of the effort. If applicable, provide links to a demo, slide deck, 
+or other evidence of the impact of this work.
