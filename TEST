@@ -1,19 +1,30 @@
 def print_iframe_texts(page: Page):
     # Locate all iframe elements on the page
-    iframes = page.locator('iframe')
+    iframe_locators = page.locator('iframe')
     
     # Get the count of iframes
-    iframe_count = iframes.count()
+    iframe_count = iframe_locators.count()
     
     # Iterate through each iframe
     for index in range(iframe_count):
-        iframe_locator = iframes.nth(index)
         try:
-            # Switch to the iframe and print its content
-            iframe = iframe_locator.content_frame()
+            # Get the iframe locator
+            iframe_locator = iframe_locators.nth(index)
+            
+            # Get the iframe's name or id to construct the frame_locator selector
+            iframe_id = iframe_locator.get_attribute('id') or ''
+            iframe_name = iframe_locator.get_attribute('name') or ''
+            
+            # Construct a selector for the frame
+            iframe_selector = f'iframe#{iframe_id}' if iframe_id else f'iframe[name="{iframe_name}"]'
+            
+            # Switch to the iframe using frame_locator
+            iframe = page.frame_locator(iframe_selector)
+            
             # Print all text content within the iframe
             content_text = iframe.locator('body').text_content()
             print(f"Text content in iframe {index}: {content_text.strip()}")
+        
         except Exception as e:
             print(f"Could not retrieve content from iframe {index}: {str(e)}")
 
