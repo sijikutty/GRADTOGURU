@@ -1,7 +1,1 @@
-    locator_string = f"[id=\"{CFDescr_tbl}\$0\"]"
-    target_frame.locator(locator_string).fill(testdata['CFDescr'])
-C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui\Common_function.py:260: DeprecationWarning: 
-invalid escape sequence '\$'
-    locator_string = f"[id=\"{CFDescr_tbl}\$0\"]"
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+sample_ae_row = popup_dialog.locator("tr[id^='tr']").filter(has_text=process_name)
