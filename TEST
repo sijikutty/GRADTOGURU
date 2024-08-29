@@ -1,1 +1,24 @@
-sample_ae_row = popup_dialog.locator("tr[id^='tr']").filter(has_text=process_name)
+Function Checkfields()
+	ErrorHandling
+
+	AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "is owned window:=False", "is child window:=False")
+	if AIUtil.FindTextBlock("Oper Unit").CheckExists(True) and
+		AIUtil.FindTextBlock("Affiliate").CheckExists(True) and
+		AIUtil.FindTextBlock("Portfolio").CheckExists(True) and
+		AIUtil.FindTextBlock("Stat LOB").CheckExists(True) and
+		AIUtil.FindTextBlock("Prod Type").CheckExists(True) and
+		AIUtil.FindTextBlock("Prod Type").CheckExists(True) and
+		AIUtil.FindTextBlock("Location").CheckExists(True) and
+		AIUtil.FindTextBlock("Office Cd").CheckExists(True) and
+		AIUtil.FindTextBlock("Unit", micFromBottom, 1).CheckExists(True) and
+		AIUtil.FindTextBlock("Ledger").CheckExists(True) and
+		AIUtil.FindTextBlock("Account").CheckExists(True) and
+		AIUtil.FindTextBlock("Alt Account").CheckExists(True) and
+		AIUtil.FindTextBlock("Book Code").CheckExists(True) and
+		AIUtil.FindTextBlock("RPT").CheckExists(True) Then
+	        	WriteToUFTOne "Test is success"
+	Else
+	        	WriteToUFTOne "Test failed"
+	End If
+
+End Function
