@@ -1,28 +1,10 @@
-Function Checkfields()
-    ErrorHandling
-
-    AIUtil.SetContext Window("regexpwndtitle:=Excel", "regexpwndclass:=XLMAIN", "is owned window:=False", "is child window:=False")
-
-    If AIUtil.FindTextBlock("Oper Unit").CheckExists(True) And _
-       AIUtil.FindTextBlock("Affiliate").CheckExists(True) And _
-       AIUtil.FindTextBlock("Portfolio").CheckExists(True) And _
-       AIUtil.FindTextBlock("Stat LOB").CheckExists(True) And _
-       AIUtil.FindTextBlock("Prod Type").CheckExists(True) And _
-       AIUtil.FindTextBlock("Location").CheckExists(True) And _
-       AIUtil.FindTextBlock("Office Cd").CheckExists(True) And _
-       AIUtil.FindTextBlock("Unit", micFromBottom, 1).CheckExists(True) And _
-       AIUtil.FindTextBlock("Ledger").CheckExists(True) And _
-       AIUtil.FindTextBlock("Account").CheckExists(True) And _
-       AIUtil.FindTextBlock("Alt Account").CheckExists(True) And _
-       AIUtil.FindTextBlock("Book Code").CheckExists(True) And _
-       AIUtil.FindTextBlock("RPT").CheckExists(True) Then
-
-        WriteToUFTOne "Test is success"
-
-    Else
-
-        WriteToUFTOne "Test failed"
-
-    End If
-
-End Function
+search_page=page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Search", exact=True)
+    time.sleep(10)
+    if search_page.is_visible():
+        page.frame_locator("iframe[name=\"TargetContent\"]").locator("#PRCSRUNCNTL_RUN_CNTL_ID").click()
+        page.frame_locator("iframe[name=\"TargetContent\"]").locator("#PRCSRUNCNTL_RUN_CNTL_ID").fill("test1")
+        page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Search", exact=True).click()
+        page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"win0divPTS_CFG_CL_RSLT_PTS_DRILLIN\\$40\\$\\$0\"]").click()
+        print("visible")
+    else:
+        print("notvisible")
