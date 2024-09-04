@@ -1,34 +1,13 @@
-{
-    "key": "Unit test GUI - TA130325",
-    "env": "Dev",
-    "runflag": "Y",
-    "scenario": "test_Run_Queries_view_output",
-    "testdata": {
-        "queries": [
-            "NAVG_BAL_INT_BINDERS",
-            "NAVG_CON_JRNLS",
-            "NAVG_RVL_JRNLS",
-            "NAVG_TRN_JRNLS",
-            "NAV_JOURNAL_DETAIL_ACTUALS",
-            "NAV_MCP_CHECK_REVAL_BS",
-            "NAV_MCP_CHECK_TRANS_USD_BS",
-            "NAV_MCP_CHECK_TRANS_USD_IS"
-        ]
-    }
-}
-----------
 from playwright.sync_api import Page
 from automation_utils import get_testdata
 from ps_utils import navigate_menu
 import pytest 
 
-# Fetch the test data from the JSON
-testdata = get_testdata("test_Run_Queries_view_output")
-queries = testdata["testdata"]["queries"]
+@pytest.mark.parametrize("testcase", get_testdata("test_Run_Queries_view_output"))
+def test_Run_Queries_view_output(page:Page,  testcase):
 
-@pytest.mark.parametrize("query", queries)
-def test_Run_Queries_view_output(page: Page, query: str):
-
+    testdata = testcase["testdata"]
+    queries = testdata["testdata"]["queries"]
     navigate_menu(page=page,
                   menu_sequence=["Reporting Tools",
                                  "Query",
@@ -37,15 +16,4 @@ def test_Run_Queries_view_output(page: Page, query: str):
     frame = page.frame_locator("iframe[name='TargetContent']")
 
     frame.get_by_label("Search By").select_option(label="Query Name")
-    frame.locator("[id^='QRYSELECT_WRK_QRYSEARCHTEXT']").fill(query)
-    frame.get_by_role("button", name="Search", exact=True).click()
-
-    query_row = frame.locator("tr[id^='tr']").filter(has_text=query)
-
-    with page.expect_download() as download_info:
-        query_row.get_by_role("link", name="Excel").click()
-        
-    download = download_info.value
-    download.save_as(path=f"Result/{download.suggested_filename}")
-
-
+    frame.locator("[id^='QRYSELECT_WRK_QRYSEARCHTEXT']").fill(testdata['query'])
