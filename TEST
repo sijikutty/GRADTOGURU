@@ -1,19 +1,1 @@
-from playwright.sync_api import Page
-from automation_utils import get_testdata
-from ps_utils import navigate_menu
-import pytest 
 
-@pytest.mark.parametrize("testcase", get_testdata("test_Run_Queries_view_output"))
-def test_Run_Queries_view_output(page:Page,  testcase):
-
-    testdata = testcase["testdata"]
-    queries = testdata["testdata"]["queries"]
-    navigate_menu(page=page,
-                  menu_sequence=["Reporting Tools",
-                                 "Query",
-                                 "Query Manager"])
-    
-    frame = page.frame_locator("iframe[name='TargetContent']")
-
-    frame.get_by_label("Search By").select_option(label="Query Name")
-    frame.locator("[id^='QRYSELECT_WRK_QRYSEARCHTEXT']").fill(testdata['query'])
