@@ -1,1 +1,5 @@
+GitHub scm
+Single-stage SAM Pipeline using CFT in AWS Cloud
+Smoke & Regression Test Lambdas
+GUI smoke & regr test scripts using Playwright for Python & UFT with Pytest fixtures
 
