@@ -1,2 +1,1 @@
-
-Test type {testcase['key'].split('-')[0]}."
+Test type {f"Peoplesoft testcase['key'].split('-')[0]}
