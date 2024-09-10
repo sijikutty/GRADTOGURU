@@ -1,10 +1,1 @@
-
-        "Rally": {
-            "workspace" : testcase["rally"]["workspace"], 
-            "project"   : testcase["rally"]["project"],
-            "Tcid"      : testcase["key"].split("-")[-1].strip(),
-            "build"     : f"{testcase['env']}-Automated Run", 
-            "run_date"  : datetime.now().isoformat(), 
-            "verdict"   : verdict,
-            "notes"     : f"The testcase {testcase['scenario']} has {verdict}ed. {notes}. Test type {testcase['key'].split('-')[0]}."
-        }
+<img src="https://github.com/username/repository/wiki/images/my-image.png" width="300" height="200" alt="A description of the image">
