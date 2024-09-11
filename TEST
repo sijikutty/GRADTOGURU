@@ -1,1 +1,21 @@
 
+import re
+
+# Define the file path
+file_path = 'C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.txt'
+
+# Read the content from the file
+with open(file_path, 'r') as file:
+    content = file.read()
+
+# Replace the date in <JOURNAL_DATE> tag
+content = re.sub(r'(<JOURNAL_DATE>).*?(</JOURNAL_DATE>)', r'\1' + '2024-08-31' + r'\2', content)
+
+# Replace the date in <CUR_EFFDT> tag
+content = re.sub(r'(<CUR_EFFDT>).*?(</CUR_EFFDT>)', r'\1' + '2024-08-31' + r'\2', content)
+
+# Write the modified content back to the file
+with open(file_path, 'w') as file:
+    file.write(content)
+
+print("File updated successfully.")
