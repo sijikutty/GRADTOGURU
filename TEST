@@ -1,7 +1,7 @@
 import re
 
 # Define the file path
-file_path = 'c:/vv/pp.txt'
+file_path = 'C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.txt'
 
 # Read the content from the file
 with open(file_path, 'r') as file:
@@ -10,18 +10,21 @@ with open(file_path, 'r') as file:
 # Replace the date in <JOURNAL_DATE> tag
 content = re.sub(r'(<JOURNAL_DATE>).*?(</JOURNAL_DATE>)', r'\1' + '2024-08-31' + r'\2', content)
 
-# Extract the amount from <FOREIGN_AMOUNT> tag
-amount_match = re.search(r'<FOREIGN_AMOUNT>(\d+)</FOREIGN_AMOUNT>', content)
-if amount_match:
-    old_amount = int(amount_match.group(1))
-    new_amount = old_amount + 1
-
-    # Replace old amount with new amount
-    content = re.sub(rf'<FOREIGN_AMOUNT>{old_amount}</FOREIGN_AMOUNT>', f'<FOREIGN_AMOUNT>{new_amount}</FOREIGN_AMOUNT>', content)
-    content = re.sub(str(old_amount), str(new_amount), content)
+# Replace the date in <JOURNAL_DATE> tag
+content = re.sub(r'(<CUR_EFFDT>).*?(</CUR_EFFDT>)', r'\1' + '2024-08-31' + r'\2', content)
 
 # Write the modified content back to the file
 with open(file_path, 'w') as file:
     file.write(content)
 
 print("File updated successfully.")
+
+<JRNL_HDR_STG>
+  <SEQNO>1559</SEQNO>
+  <BUSINESS_UNIT>10000</BUSINESS_UNIT>
+  P24-08-31</JOURNAL_DATE>
+  <DESCR254>automation</DESCR254>
+  <LEDGER_GROUP>ACTUALS</LEDGER_GROUP>
+  <SOURCE>TM1</SOURCE>
+  <OPRID>CURRENT_USER</OPRID>
+  P24-08-31</CUR_EFFDT>
