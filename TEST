@@ -1,1 +1,90 @@
+Function Launch()
+	SystemUtil.CloseProcessByName("pside.exe")
+	DataTable.Import "C:\Github\corp_corpit_ps_egl_test_automation\Result\tcjson.xlsx" 
+	appdes_FilePath = "C:\Program Files\PT860\bin\client\winx86\pside.exe"
+	'excelFilePath=Datatable.Value("macropath")
+	SystemUtil.Run appdes_FilePath
+End	
+Function Checkflag()
+	ErrorHandling
+	AIUtil.SetContext Dialog("text:=Signon", "nativeclass:=#32770", "is owned window:=True", "is child window:=False")
+AIUtil("text_box", "Database Name:").SetText "h"
+AIUtil("text_box", "User ID").SetText "bb"
+AIUtil("text_box", "Password").SetText "b@100"
+AIUtil("button", "OK.").Click
 
+AIUtil.SetContext Window("regexpwndtitle:=Application Designer", "regexpwndclass:=Afx:", "is owned window:=False", "is child window:=False")
+ErrorHandling
+AIUtil.FindTextBlock("File").Click
+AIUtil.FindTextBlock("Open").Click
+
+
+Window("Application Designer").Dialog("Open Definition").WinComboBox("Definition Type:").Select "Component Interface"
+Window("Application Designer").Dialog("Open Definition").WinEdit("Name").Set "USER_PROFILE"
+Window("Application Designer").Dialog("Open Definition").WinButton("Open").Click
+'Window("Application Designer").Dialog("Open Definition").WinListView("Definitions matching selection").Select "USER_PROFILE"
+'Window("Application Designer").Dialog("Open Definition").WinButton("Open").Click
+'AIUtil("down_triangle").Click
+'AIUtil.FindTextBlock("Component Interface").Click
+'AIUtil("text_box", "Name").Type "USER_PROFILE"
+'AIUtil("button", "Open").Click
+AIUtil.FindTextBlock("User Profile Component").Click
+AIUtil("button", "Open").Click
+ErrorHandling
+AIUtil.FindTextBlock("File").Click
+AIUtil.FindTextBlock("Definition Properties").Click
+AIUtil.FindTextBlock("Standard Methods").Click
+ErrorHandling
+check_flag=Window("Application Designer").Dialog("Properties").WinCheckBox("Find").GetROProperty("checked")
+
+If check_flag="ON" Then
+	
+       		 WriteToUFTOne "Test is success"
+
+    Else
+
+        WriteToUFTOne "Test failed"
+
+    End If
+End Function
+
+Function WriteToUFTOne(result)
+    If result = "Test is success" Then
+        Reporter.ReportEvent micPass, "Test Result", result
+        verdict="Pass"
+    Else
+        Reporter.ReportEvent micFail, "Test Result", result
+        verdict="Fail"
+    End If
+        WriteRallyJson "Unit test for USER_PROFILE Component Interface",verdict,result
+End Function
+
+' Function for error handling
+Function ErrorHandling()
+	'Msgbox(Err.Number)
+    If Err.Number <> 0 Then
+	  'WScript.Echo "Error in Launch: " & Err.Description
+	  WriteToUFTOne "Test failed: " & Err.Description
+	  Err.Clear
+	  SystemUtil.CloseProcessByName("pside.exe")
+	  ExitTest 
+    End If
+End Function
+
+' Function to close application windows and browsers
+Function CloseWindows()
+      	ErrorHandling
+      ' Close application 
+	SystemUtil.CloseProcessByName("pside.exe")
+End Function
+' Main subroutine to run the test
+Sub Main()
+     On Error Resume Next
+	Launch
+	Checkflag
+	CloseWindows
+       ErrorHandling
+End Sub
+
+' Call the main subroutine to start the test
+Main
