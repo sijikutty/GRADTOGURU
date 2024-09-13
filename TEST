@@ -1,6 +1,18 @@
-    targetContentFrame.get_by_role("link", name="Details").click()
-    page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="View Log/Trace").click()
-    with page.expect_download() as download_info:
-        with page.expect_popup() as page1_info:
-            page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="BLC.csv").click()
+# Locate and click the "Details" link in the main page
+targetContentFrame.get_by_role("link", name="Details").click()
 
+# Locate the iframe dynamically based on its content
+iframe = page.locator("iframe:has-text('some unique text')")
+
+# Click the "View Log/Trace" link within the identified iframe
+iframe.get_by_role("link", name="View Log/Trace").click()
+
+# Expect a download and a popup
+with page.expect_download() as download_info:
+    with page.expect_popup() as page1_info:
+        # Click the "BLC.csv" link within the same iframe
+        iframe.get_by_role("link", name="BLC.csv").click()
+
+# Print the title of the iframe document
+iframe_title = iframe.evaluate("document.title")
+print(f"Document title inside iframe: {iframe_title}")
