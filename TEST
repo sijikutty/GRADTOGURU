@@ -1,89 +1,100 @@
+' Function to launch the application and import data
 Function Launch()
-	SystemUtil.CloseProcessByName("pside.exe")
-	DataTable.Import "C:\Github\corp_corpit_ps_egl_test_automation\Result\tcjson.xlsx" 
-	appdes_FilePath = "C:\Program Files\PT860\bin\client\winx86\pside.exe"
-	'excelFilePath=Datatable.Value("macropath")
-	SystemUtil.Run appdes_FilePath
-End	
+    ' Close the application if it is already running
+    SystemUtil.CloseProcessByName("pside.exe")
+    
+    ' Import data from an Excel file into the DataTable
+    DataTable.Import "C:\Github\corp_corpit_ps_egl_test_automation\Result\tcjson.xlsx"
+    
+    ' Define the path to the application executable
+    appdes_FilePath = "C:\Program Files\PT860\bin\client\winx86\pside.exe"
+    
+    ' Launch the application
+    SystemUtil.Run appdes_FilePath
+End Function
+
+' Function to check the flag and perform actions
 Function Checkflag()
-	ErrorHandling
-	AIUtil.SetContext Dialog("text:=Signon", "nativeclass:=#32770", "is owned window:=True", "is child window:=False")
-AIUtil("text_box", "Database Name:").SetText "h"
-AIUtil("text_box", "User ID").SetText "bb"
-AIUtil("text_box", "Password").SetText "b@100"
-AIUtil("button", "OK.").Click
-
-AIUtil.SetContext Window("regexpwndtitle:=Application Designer", "regexpwndclass:=Afx:", "is owned window:=False", "is child window:=False")
-ErrorHandling
-AIUtil.FindTextBlock("File").Click
-AIUtil.FindTextBlock("Open").Click
-
-
-Window("Application Designer").Dialog("Open Definition").WinComboBox("Definition Type:").Select "Component Interface"
-Window("Application Designer").Dialog("Open Definition").WinEdit("Name").Set "USER_PROFILE"
-Window("Application Designer").Dialog("Open Definition").WinButton("Open").Click
-'Window("Application Designer").Dialog("Open Definition").WinListView("Definitions matching selection").Select "USER_PROFILE"
-'Window("Application Designer").Dialog("Open Definition").WinButton("Open").Click
-'AIUtil("down_triangle").Click
-'AIUtil.FindTextBlock("Component Interface").Click
-'AIUtil("text_box", "Name").Type "USER_PROFILE"
-'AIUtil("button", "Open").Click
-AIUtil.FindTextBlock("User Profile Component").Click
-AIUtil("button", "Open").Click
-ErrorHandling
-AIUtil.FindTextBlock("File").Click
-AIUtil.FindTextBlock("Definition Properties").Click
-AIUtil.FindTextBlock("Standard Methods").Click
-ErrorHandling
-check_flag=Window("Application Designer").Dialog("Properties").WinCheckBox("Find").GetROProperty("checked")
-
-If check_flag="ON" Then
-	
-       		 WriteToUFTOne "Test is success"
-
+    ' Error handling to catch any issues
+    ErrorHandling
+    
+    ' Set context to the Signon dialog and enter credentials
+    AIUtil.SetContext Dialog("text:=Signon", "nativeclass:=#32770", "is owned window:=True", "is child window:=False")
+    AIUtil("text_box", "Database Name:").SetText "h"
+    AIUtil("text_box", "User ID").SetText "bb"
+    AIUtil("text_box", "Password").SetText "b@100"
+    AIUtil("button", "OK.").Click
+    
+    ' Set context to the Application Designer window
+    AIUtil.SetContext Window("regexpwndtitle:=Application Designer", "regexpwndclass:=Afx:", "is owned window:=False", "is child window:=False")
+    
+    ' Perform actions to open the desired definition
+    AIUtil.FindTextBlock("File").Click
+    AIUtil.FindTextBlock("Open").Click
+    Window("Application Designer").Dialog("Open Definition").WinComboBox("Definition Type:").Select "Component Interface"
+    Window("Application Designer").Dialog("Open Definition").WinEdit("Name").Set "USER_PROFILE"
+    Window("Application Designer").Dialog("Open Definition").WinButton("Open").Click
+    
+    ' Select the user profile component interface
+    AIUtil.FindTextBlock("User Profile Component").Click
+    AIUtil("button", "Open").Click
+    
+    ' Access definition properties and check the flag
+    ErrorHandling
+    AIUtil.FindTextBlock("File").Click
+    AIUtil.FindTextBlock("Definition Properties").Click
+    AIUtil.FindTextBlock("Standard Methods").Click
+    
+    ' Fetch the checkbox state
+    check_flag = Window("Application Designer").Dialog("Properties").WinCheckBox("Find").GetROProperty("checked")
+    
+    ' Validate and report the result
+    If check_flag = "ON" Then
+        WriteToUFTOne "Test is success"
     Else
-
         WriteToUFTOne "Test failed"
-
     End If
 End Function
 
+' Function to write test results to UFT One
 Function WriteToUFTOne(result)
+    ' Report the result based on the outcome
     If result = "Test is success" Then
         Reporter.ReportEvent micPass, "Test Result", result
-        verdict="Pass"
+        verdict = "Pass"
     Else
         Reporter.ReportEvent micFail, "Test Result", result
-        verdict="Fail"
+        verdict = "Fail"
     End If
-        WriteRallyJson "Unit test for USER_PROFILE Component Interface",verdict,result
+    
+    ' Write the result to Rally JSON
+    WriteRallyJson "Unit test for USER_PROFILE Component Interface", verdict, result
 End Function
 
 ' Function for error handling
 Function ErrorHandling()
-	'Msgbox(Err.Number)
     If Err.Number <> 0 Then
-	  'WScript.Echo "Error in Launch: " & Err.Description
-	  WriteToUFTOne "Test failed: " & Err.Description
-	  Err.Clear
-	  SystemUtil.CloseProcessByName("pside.exe")
-	  ExitTest 
+        WriteToUFTOne "Test failed: " & Err.Description
+        Err.Clear
+        SystemUtil.CloseProcessByName("pside.exe")
+        ExitTest
     End If
 End Function
 
 ' Function to close application windows and browsers
 Function CloseWindows()
-      	ErrorHandling
-      ' Close application 
-	SystemUtil.CloseProcessByName("pside.exe")
+    ErrorHandling
+    ' Close the application
+    SystemUtil.CloseProcessByName("pside.exe")
 End Function
+
 ' Main subroutine to run the test
 Sub Main()
-     On Error Resume Next
-	Launch
-	Checkflag
-	CloseWindows
-       ErrorHandling
+    On Error Resume Next
+    Launch
+    Checkflag
+    CloseWindows
+    ErrorHandling
 End Sub
 
 ' Call the main subroutine to start the test
