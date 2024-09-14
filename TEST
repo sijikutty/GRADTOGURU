@@ -1,18 +1,26 @@
-# Locate and click the "Details" link in the main page
-targetContentFrame.get_by_role("link", name="Details").click()
+from playwright.sync_api import sync_playwright
 
-# Locate the iframe dynamically based on its content
-iframe = page.locator("iframe:has-text('some unique text')")
+def print_iframe_titles(url):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(url)
 
-# Click the "View Log/Trace" link within the identified iframe
-iframe.get_by_role("link", name="View Log/Trace").click()
+        # Get all iframes
+        iframes = page.query_selector_all('iframe')
 
-# Expect a download and a popup
-with page.expect_download() as download_info:
-    with page.expect_popup() as page1_info:
-        # Click the "BLC.csv" link within the same iframe
-        iframe.get_by_role("link", name="BLC.csv").click()
+        # Iterate over each iframe and print its title
+        for iframe in iframes:
+            # Switch to the iframe's content
+            frame = iframe.content_frame()
+            if frame:
+                # Retrieve and print the document's title inside the iframe
+                title = frame.evaluate("document.title")
+                print(f"Iframe title: {title}")
+            else:
+                print("No content frame found for this iframe.")
+        
+        browser.close()
 
-# Print the title of the iframe document
-iframe_title = iframe.evaluate("document.title")
-print(f"Document title inside iframe: {iframe_title}")
+# Example usage
+print_iframe_titles('https://example.com')
