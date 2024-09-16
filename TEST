@@ -1,26 +1,35 @@
 from playwright.sync_api import sync_playwright
+import time
 
-def print_iframe_titles(url):
+def measure_download_link_load_time(url, button_selector, download_link_selector):
     with sync_playwright() as p:
+        # Launch browser
         browser = p.chromium.launch()
         page = browser.new_page()
+
+        # Go to the URL
         page.goto(url)
 
-        # Get all iframes
-        iframes = page.query_selector_all('iframe')
+        # Click the button
+        page.click(button_selector)
 
-        # Iterate over each iframe and print its title
-        for iframe in iframes:
-            # Switch to the iframe's content
-            frame = iframe.content_frame()
-            if frame:
-                # Retrieve and print the document's title inside the iframe
-                title = frame.evaluate("document.title")
-                print(f"Iframe title: {title}")
-            else:
-                print("No content frame found for this iframe.")
-        
+        # Measure time until the download link appears
+        start_time = time.time()
+        try:
+            page.wait_for_selector(download_link_selector, timeout=30000)  # Wait for up to 30 seconds
+            end_time = time.time()
+            load_time = end_time - start_time
+            print(f"The time taken for the download link to appear is {load_time:.2f} seconds.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+        # Close browser
         browser.close()
 
-# Example usage
-print_iframe_titles('https://example.com')
+if __name__ == "__main__":
+    # Define the URL and selectors
+    url = 'https://example.com'  # Replace with the URL you want to test
+    button_selector = 'button#your-button-id'  # Replace with the button selector
+    download_link_selector = 'a#your-download-link-id'  # Replace with the download link selector
+
+    measure_download_link_load_time(url, button_selector, download_link_selector)
