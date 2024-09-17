@@ -20,7 +20,7 @@ if iframe_index is not None:
                 # Check if the element is visible
                 is_visible = frame.evaluate(f"""
                     var element = document.querySelector('{view_link_selector}');
-                    return window.getComputedStyle(element).display !== 'none' && window.getComputedStyle(element).visibility !== 'hidden';
+                    return element && window.getComputedStyle(element).display !== 'none' && window.getComputedStyle(element).visibility !== 'hidden';
                 """)
                 print(f"Element visible: {is_visible}")
 
