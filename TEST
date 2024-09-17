@@ -1,28 +1,27 @@
-    iframe_index = next((idx for idx, iframe in enumerate(page.query_selector_all('iframe')) if iframe.content_frame().evaluate("document.title") == "Process Detail"), None)
-    print (f"iframe_index: {iframe_index}")
-    ##page.query_selector_all('iframe')[iframe_index].content_frame().get_by_role("link", name="View Log/Trace").click()
+if iframe_index is not None:
+        # Access the iframe's content frame
+        iframe_element = iframes[iframe_index]
+        frame = iframe_element.content_frame()
 
-        # Directly access the iframe and perform actions
-    frame = page.query_selector_all('iframe')[iframe_index].content_frame()
- 
-    if iframe_index is not None:
-#        try:
+        if frame is not None:
             # Define the selector for the 'View Log/Trace' link
             view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
-            iframe_element = page.query_selector_all('iframe')[iframe_index]
-            if iframe_element is None:
-                print(f"No iframe found at index {iframe_index}")
-            frame = iframe_element.content_frame()
-            if frame is None:
-                print("Failed to get content frame from the iframe")
-
-        
-        # Get the outer HTML of the element inside the iframe
+            
+            # Get the outer HTML of the element inside the iframe (for debugging)
             outer_html = frame.evaluate(f'document.querySelector("{view_link_selector}").outerHTML')
-            # Print the outer HTML for debugging
             print(f"View Link Outer HTML: {outer_html}")
-
-            element=frame.query_selector(view_link_selector)
-            element.click()
-    1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+            
+            try:
+                # Query and click the element inside the iframe
+                element = frame.query_selector(view_link_selector)
+                if element is not None:
+                    element.click()
+                    print(f"Clicked on the element with selector '{view_link_selector}'.")
+                else:
+                    print(f"Element with selector '{view_link_selector}' not found inside the iframe.")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+        else:
+            print("Failed to get content frame from the iframe.")
+    else:
+        print("No iframe with the specified content title found.")
