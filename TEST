@@ -1,4 +1,11 @@
- if frame:
+   iframe_index = next((idx for idx, iframe in enumerate(page.query_selector_all('iframe')) if iframe.content_frame().evaluate("document.title") == "Process Detail"), None)
+    print (f"iframe_index: {iframe_index}")
+    ##page.query_selector_all('iframe')[iframe_index].content_frame().get_by_role("link", name="View Log/Trace").click()
+
+        # Directly access the iframe and perform actions
+    frame = page.query_selector_all('iframe')[iframe_index].content_frame()
+ 
+    if iframe_index is not None:
         try:
             # Define the selector for the 'View Log/Trace' link
             view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
@@ -23,17 +30,17 @@
 
                 if is_visible:
                     # Scroll into view and click the element
-                    frame.evaluate(f"""
-                        var element = document.querySelector('{view_link_selector}');
-                        if (element) {
-                            element.scrollIntoView();
-                            setTimeout(function() {{
-                                element.click();
-                            }}, 100);
-                        } else {
-                            console.error('Element not found');
-                        }
-                    """)
+#                    frame.evaluate(f"""
+#                        var element = document.querySelector('{view_link_selector}');
+#                        if (element) {
+#                            element.scrollIntoView();
+#                            setTimeout(function() {{
+#                                element.click();
+#                            }}, 100);
+#                        } else {
+#                            console.error('Element not found');
+#                        }
+#                    """)
                     print("Clicked on the 'View Log/Trace' link.")
                 else:
                     print("The 'View Log/Trace' link is not visible.")
@@ -44,5 +51,9 @@
             print(f"An error occurred while trying to interact with the link: {e}")
     else:
         print(f"No content frame found for iframe at index {iframe_index}.")
-else:
-    print("Iframe with title 'Process Detail' not found.")
+
+
+An error occurred while trying to interact with the link: SyntaxError: missing ) after argument list
+    at eval (<anonymous>)
+    at UtilityScript.evaluate (<anonymous>:226:30)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
