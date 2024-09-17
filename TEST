@@ -1,6 +1,22 @@
-Iframe 0 title: Process Monitor
-Iframe 1 title: 
-Iframe 2 title: 
-Iframe 3 title: Process Detail
-Iframe 3 attributes: {'id': None, 'name': '', 'src': None}
-Iframe ID: None
+# Fetch the index of the iframe with title "Process Detail"
+iframe_index = next((idx for idx, iframe in enumerate(page.query_selector_all('iframe')) if iframe.content_frame().evaluate("document.title") == "Process Detail"), None)
+
+if iframe_index is not None:
+    # Get all iframes
+    iframes = page.query_selector_all('iframe')
+    
+    # Get the specific iframe
+    iframe = iframes[iframe_index]
+    
+    # Switch to the iframe's content
+    frame = iframe.content_frame()
+    if frame:
+        # Create a frame locator for the iframe using its index
+        popup_dialog = frame
+        # Click on the "View Log/Trace" link
+        popup_dialog.get_by_role("link", name="View Log/Trace").click()
+        print("Clicked on the 'View Log/Trace' link.")
+    else:
+        print(f"No content frame found for iframe at index {iframe_index}.")
+else:
+    print("Iframe with title 'Process Detail' not found.")
