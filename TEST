@@ -12,19 +12,13 @@ for iframe in iframes:
         
         # Check if the title is "Process Monitor"
         if title == "Process Monitor":
-            # Retrieve and print all elements inside this iframe
-            all_elements = frame.evaluate('''
-                Array.from(document.body.getElementsByTagName('*')).map(el => ({
-                    tagName: el.tagName,
-                    outerHTML: el.outerHTML
-                }))
-            ''')
-            
-            if all_elements:
-                print("All elements inside iframe:")
-                for element in all_elements:
-                    print(f"Tag: {element['tagName']}, HTML: {element['outerHTML']}")
+            # Find the "View" link inside the iframe and click it
+            view_link_selector = "a:has-text('View')"  # Adjust selector if necessary
+            view_link = frame.query_selector(view_link_selector)
+            if view_link:
+                view_link.click()
+                print("Clicked on the 'View' link.")
             else:
-                print("No elements found inside this iframe.")
+                print("No 'View' link found inside this iframe.")
     else:
         print("No content frame found for this iframe.")
