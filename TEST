@@ -1,35 +1,7 @@
-# Get all iframes
-iframes = page.query_selector_all('iframe')
+    popup_dialog = page.frame_locator("[id^='ptModFrame']")
+    popup_dialog.get_by_role("link", name="View Log/Trace").click()
 
-# Print details of all iframes for debugging
-for idx, iframe in enumerate(iframes):
-    # Print id or name of the iframe for better identification
-    iframe_id = iframe.evaluate("this.id")
-    iframe_name = iframe.evaluate("this.name")
-    print(f"Iframe {idx}: id={iframe_id}, name={iframe_name}")
-
-    # Optionally, check the title in each iframe
-    frame = iframe.content_frame()
-    if frame:
-        title = frame.evaluate("document.title")
-        print(f"Iframe {idx} title: {title}")
-
-        if title == "Process Detail":
-            # We have found the correct iframe, now interact with it
-            # Find the "View Log/Trace" link inside the iframe and click it
-            view_link_selector = "a:has-text('View Log/Trace')"  # Adjust selector if necessary
-            view_link = frame.query_selector(view_link_selector)
-
-            if view_link:
-                view_link.click()
-                print("Clicked on the 'View Log/Trace' link.")
-            else:
-                print("No 'View Log/Trace' link found inside this iframe.")
-            break  # Exit loop once the correct iframe is processed
-    else:
-        print(f"No content frame found for iframe {idx}.")
-
-E       playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+ playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
 E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
 E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator
 
