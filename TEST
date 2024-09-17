@@ -1,4 +1,2 @@
-        iframe_element = page.query_selector_all('iframe')[iframe_index]
-        if iframe_element is None:
-            print(f"No iframe found at index {iframe_index}")
-            return None
+outer_html = frame.evaluate(f'document.querySelector("{view_link_selector}").outerHTML')
+View Link Outer HTML: <a name="PMN_DERIVED_INDEX_BTN" id="PMN_DERIVED_INDEX_BTN" ptlinktgt="pt_peoplecode" tabindex="22" onclick="javascript:cancelBubble(event);" href="javascript:submitAction_win0(document.win0,'PMN_DERIVED_INDEX_BTN');" class="PSHYPERLINK">View Log/Trace</a>  
