@@ -21,3 +21,8 @@
             outer_html = frame.evaluate(f'document.querySelector("{view_link_selector}").outerHTML')
             # Print the outer HTML for debugging
             print(f"View Link Outer HTML: {outer_html}")
+
+            element=frame.query_selector(view_link_selector)
+            element.click()
+    1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
