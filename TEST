@@ -1,5 +1,50 @@
-An error occurred while trying to interact with the link: ReferenceError: arguments is not defined
-    at eval (eval at evaluate (:226:30), <anonymous>:1:24)
-    at eval (<anonymous>)
-    at UtilityScript.evaluate (<anonymous>:226:30)
-    at UtilityScript.<anonymous> (<anonymous>:1:44)
+if iframe_index is not None:
+    # Access the iframe
+    iframes = page.query_selector_all('iframe')
+    iframe = iframes[iframe_index]
+    frame = iframe.content_frame()
+
+    if frame:
+        try:
+            # Define the selector for the 'View Log/Trace' link
+            view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
+            
+            # Wait for the element to be visible
+            view_link = frame.wait_for_selector(view_link_selector, state="visible", timeout=15000)  # Increase timeout if necessary
+            
+            if view_link:
+                # Print the outer HTML for debugging
+                outer_html = frame.evaluate(f"document.querySelector('{view_link_selector}').outerHTML")
+                print(f"View Link Outer HTML: {outer_html}")
+
+                # Check if the element is visible
+                is_visible = frame.evaluate(f"""
+                    var element = document.querySelector('{view_link_selector}');
+                    return window.getComputedStyle(element).display !== 'none' && window.getComputedStyle(element).visibility !== 'hidden';
+                """)
+                print(f"Element visible: {is_visible}")
+
+                if is_visible:
+                    # Scroll into view and click using JavaScript
+                    frame.evaluate(f"""
+                        var element = document.querySelector('{view_link_selector}');
+                        if (element) {
+                            element.scrollIntoView(true);
+                            element.click();
+                        } else {
+                            console.error('Element not found');
+                        }
+                    """)
+                    
+                    print("Clicked on the 'View Log/Trace' link.")
+                else:
+                    print("The 'View Log/Trace' link is not visible.")
+            else:
+                print("The 'View Log/Trace' link was not found or is not visible.")
+        
+        except Exception as e:
+            print(f"An error occurred while trying to interact with the link: {e}")
+    else:
+        print(f"No content frame found for iframe at index {iframe_index}.")
+else:
+    print("Iframe with title 'Process Detail' not found.")
