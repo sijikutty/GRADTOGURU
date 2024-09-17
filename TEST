@@ -9,31 +9,3 @@ frame.evaluate(f"""
                             console.error('Element not found');
                         }
                     """)
-                    
-                    print("Clicked on the 'View Log/Trace' link.")
-                else:
-                    print("The 'View Log/Trace' link is not visible.")
-            else:
-                print("The 'View Log/Trace' link was not found or is not visible.")
-        
-        except Exception as e:
-            print(f"An error occurred while trying to interact with the link: {e}")
-    else:
-        print(f"No content frame found for iframe at index {iframe_index}.")
-else:
-    print("Iframe with title 'Process Detail' not found.")
-Explanation
-Use of {{ and }}: Double curly braces are used to escape braces in f-strings for the JavaScript code.
-
-scrollIntoView Options: Adding behavior: 'smooth' and block: 'center' ensures a smoother scrolling effect and positions the element in the center of the viewport.
-
-setTimeout: Added a slight delay before clicking to ensure that the element is fully rendered and visible.
-
-Error Handling: Error messages are printed to provide feedback if something goes wrong.
-
-By ensuring the JavaScript code is correctly formatted and tested, you should be able to resolve the issues related to element visibility and interaction within the iframe.
-
-
-
-
-Get smarter responses, upload files an
