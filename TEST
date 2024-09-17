@@ -1,1 +1,53 @@
-<DIV    id='win0divPMN_DERIVED_INDEX_BTN'><span id='PMN_DERIVED_INDEX_BTN$span'  class='PSHYPERLINK'  title='Index Page' ><a name='PMN_DERIVED_INDEX_BTN' id='PMN_DERIVED_INDEX_BTN'  ptlinktgt='pt_peoplecode' tabindex='22' onclick='javascript:cancelBubble(event);' href="javascript:submitAction_win0(document.win0,'PMN_DERIVED_INDEX_BTN');"  class='PSHYPERLINK' >View Log/Trace</a></span><!-- PMN_DERIVED_INDEX_BTN --></DIV></td>
+# Fetch the index of the iframe with title "Process Detail"
+iframe_index = next((
+    idx for idx, iframe in enumerate(page.query_selector_all('iframe'))
+    if iframe.content_frame().evaluate("document.title") == "Process Detail"
+), None)
+
+print(f"iframe_index: {iframe_index}")
+
+if iframe_index is not None:
+    # Access the iframe
+    iframes = page.query_selector_all('iframe')
+    iframe = iframes[iframe_index]
+    frame = iframe.content_frame()
+    
+    if frame:
+        try:
+            # Directly use the id of the <a> tag
+            view_link_selector = "a#PMN_DERIVED_INDEX_BTN"
+            view_link = frame.query_selector(view_link_selector)
+            
+            if view_link:
+                view_link.click()
+                print("Clicked on the 'View Log/Trace' link using the id.")
+            else:
+                print("The 'View Log/Trace' link with id 'PMN_DERIVED_INDEX_BTN' was not found.")
+        
+        except Exception as e:
+            print(f"An error occurred while trying to click the link: {e}")
+    else:
+        print(f"No content frame found for iframe at index {iframe_index}.")
+else:
+    print("Iframe with title 'Process Detail' not found.")
+---------------------
+# Directly use the name of the <a> tag
+view_link_selector = "a[name='PMN_DERIVED_INDEX_BTN']"
+view_link = frame.query_selector(view_link_selector)
+
+if view_link:
+    view_link.click()
+    print("Clicked on the 'View Log/Trace' link using the name attribute.")
+else:
+    print("The 'View Log/Trace' link with name 'PMN_DERIVED_INDEX_BTN' was not found.")
+----------
+# Using title attribute in span
+view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
+view_link = frame.query_selector(view_link_selector)
+
+if view_link:
+    view_link.click()
+    print("Clicked on the 'View Log/Trace' link using the title attribute in span.")
+else:
+    print("The 'View Log/Trace' link with title 'Index Page' in span was not found.")
+-----------
