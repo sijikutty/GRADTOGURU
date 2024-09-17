@@ -1,7 +1,4 @@
-view_log_trace_selector = "a:has-text('View Log/Trace')"
-
-            try:
-                # Locate the first link with the specified text
-                first_link = frame.query_selector(view_log_trace_selector)
-                if first_link is not None:
-                    first_link.click()
+view_link_selector = "a:has-text('View Log/Trace')"
+element = frame.query_selector(view_link_selector)
+                    if element is not None:
+                        element.click()
