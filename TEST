@@ -1,36 +1,7 @@
-    iframe_index = next((idx for idx, iframe in enumerate(page.query_selector_all('iframe')) if iframe.content_frame().evaluate("document.title") == "Process Detail"), None)
-    print (f"iframe_index: {iframe_index}")
-    ##page.query_selector_all('iframe')[iframe_index].content_frame().get_by_role("link", name="View Log/Trace").click()
+view_log_trace_selector = "a:has-text('View Log/Trace')"
 
-        # Directly access the iframe and perform actions
-    frame = page.query_selector_all('iframe')[iframe_index].content_frame()
-    # Access all iframes
-    iframes = page.query_selector_all('iframe')
-    if iframe_index is not None:
-            # Access the iframe's content frame
-            iframe_element = iframes[iframe_index]
-            frame = iframe_element.content_frame()
-
-            if frame is not None:
-                # Define the selector for the 'View Log/Trace' link
-                view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
-
-                # Get the outer HTML of the element inside the iframe (for debugging)
-                outer_html = frame.evaluate(f'document.querySelector("{view_link_selector}").outerHTML')
-                print(f"View Link Outer HTML: {outer_html}")
-
-                try:
-                    # Query and click the element inside the iframe
-                    element = frame.query_selector(view_link_selector)
-                    if element is not None:
-                        element.click()
-                        print(f"Clicked on the element with selector '{view_link_selector}'.")
-                    else:
-                        print(f"Element with selector '{view_link_selector}' not found inside the iframe.")
-                except Exception as e:
-                    print(f"An error occurred: {e}")
-            else:
-                print("Failed to get content frame from the iframe.")
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+            try:
+                # Locate the first link with the specified text
+                first_link = frame.query_selector(view_log_trace_selector)
+                if first_link is not None:
+                    first_link.click()
