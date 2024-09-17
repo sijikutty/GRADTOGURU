@@ -1,3 +1,6 @@
+# Access all iframes
+    iframes = page.query_selector_all('iframe')
+
 if iframe_index is not None:
         # Access the iframe's content frame
         iframe_element = iframes[iframe_index]
