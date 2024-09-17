@@ -1,31 +1,12 @@
-      # Get all iframes
-    iframes = page.query_selector_all('iframe')
- # Iterate over each iframe and print its title
-    for iframe in iframes:
-        # Switch to the iframe's content
-        frame = iframe.content_frame()
-        if frame:
-            # Retrieve and print the document's title inside the iframe
-            title = frame.evaluate("document.title")
-            print(f"Iframe title: {title}")
-    # Check if the title is "Process Monitor"
-            if title == "Process Detail":
-                # Retrieve and print all elements inside this iframe
-                # Find the "View" link inside the iframe and click it
-                view_link_selector = "a:has-text('View Log/Trace')"  # Adjust selector if necessary
-                view_link = frame.query_selector(view_link_selector)
-                if view_link:
-                    view_link.click()
-                    print("Clicked on the 'View' link.")
-                else:
-                    print("No 'View' link found inside this iframe.")
-            else:
-                print("No content frame found for this iframe.")   
-            
-        else:
-            print("No content frame found for this iframe.")
+# Print details of all iframes for debugging
+for idx, iframe in enumerate(iframes):
+    # Print id or name of the iframe for better identification
+    iframe_id = iframe.evaluate("this.id")
+    iframe_name = iframe.evaluate("this.name")
+    print(f"Iframe {idx}: id={iframe_id}, name={iframe_name}")
 
-
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator
+    # Optionally, check the title in each iframe
+    frame = iframe.content_frame()
+    if frame:
+        title = frame.evaluate("document.title")
+        print(f"Iframe {idx} title: {title}")
