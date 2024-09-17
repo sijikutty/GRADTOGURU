@@ -1,6 +1,7 @@
-view_link_selector = "a:has-text('View Log/Trace')"
-element = frame.query_selector(view_link_selector)
-                    if element is not None:
-                        element.click()
-
-playwright._impl._errors.Error: DOMException: Failed to execute 'querySelector' on 'Document': 'a:has-text('View Log/Trace')' is not a valid selector.
+view_link_selector = "a"
+ link_locator = frame.locator(view_link_selector).locator("text=View Log/Trace")
+                if link_locator.count() > 0:
+                    link_locator.first.click()  # Click the first matching link
+                    print("Clicked the first 'View Log/Trace' link inside the iframe.")
+                else:
+                    print("No link with the text 'View Log/Trace' found inside the iframe.")
