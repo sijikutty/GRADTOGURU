@@ -1,36 +1,10 @@
-if iframe_index is not None:
-    # Access the iframe
-    iframes = page.query_selector_all('iframe')
-    iframe = iframes[iframe_index]
-    frame = iframe.content_frame()
-
-    if frame:
-        try:
-            # Define the selector for the 'View Log/Trace' link
-            view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
-            
-            # Wait for the element to be visible
-            view_link = frame.wait_for_selector(view_link_selector, state="visible", timeout=15000)  # Increase timeout if necessary
-            
-            if view_link:
-                # Print the outer HTML for debugging
-                outer_html = frame.evaluate(f"document.querySelector('{view_link_selector}').outerHTML")
-                print(f"View Link Outer HTML: {outer_html}")
-
-                # Check if the element is visible
-                is_visible = frame.evaluate(f"""
-                    var element = document.querySelector('{view_link_selector}');
-                    return element && window.getComputedStyle(element).display !== 'none' && window.getComputedStyle(element).visibility !== 'hidden';
-                """)
-                print(f"Element visible: {is_visible}")
-
-                if is_visible:
-                    # Scroll into view and click using JavaScript
-                    frame.evaluate(f"""
+frame.evaluate(f"""
                         var element = document.querySelector('{view_link_selector}');
                         if (element) {
-                            element.scrollIntoView(true);
-                            element.click();
+                            element.scrollIntoView({{behavior: 'smooth', block: 'center'}});
+                            setTimeout(function() {{
+                                element.click();
+                            }}, 100);  // Add a slight delay to ensure click event is registered
                         } else {
                             console.error('Element not found');
                         }
@@ -48,3 +22,18 @@ if iframe_index is not None:
         print(f"No content frame found for iframe at index {iframe_index}.")
 else:
     print("Iframe with title 'Process Detail' not found.")
+Explanation
+Use of {{ and }}: Double curly braces are used to escape braces in f-strings for the JavaScript code.
+
+scrollIntoView Options: Adding behavior: 'smooth' and block: 'center' ensures a smoother scrolling effect and positions the element in the center of the viewport.
+
+setTimeout: Added a slight delay before clicking to ensure that the element is fully rendered and visible.
+
+Error Handling: Error messages are printed to provide feedback if something goes wrong.
+
+By ensuring the JavaScript code is correctly formatted and tested, you should be able to resolve the issues related to element visibility and interaction within the iframe.
+
+
+
+
+Get smarter responses, upload files an
