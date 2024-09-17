@@ -1,14 +1,10 @@
-      # Get all iframes
-    iframes = page.query_selector_all('iframe')
- # Iterate over each iframe and print its title
-    for iframe in iframes:
-        # Switch to the iframe's content
-        frame = iframe.content_frame()
-        if frame:
-            # Retrieve and print the document's title inside the iframe
-            title = frame.evaluate("document.title")
-            print(f"Iframe title: {title}")
-            if title=="Process Monitor":
-            
-        else:
-            print("No content frame found for this iframe.")
+        # Check if the title is "Process Monitor"
+        if title == "Process Monitor":
+            # Find the "View" link inside the iframe and click it
+            view_link_selector = "a:has-text('View')"  # Adjust selector if necessary
+            view_link = frame.query_selector(view_link_selector)
+            if view_link:
+                view_link.click()
+                print("Clicked on the 'View' link.")
+            else:
+                print("No 'View' link found inside this iframe.")
