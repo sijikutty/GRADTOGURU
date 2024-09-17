@@ -1,10 +1,11 @@
 frame.evaluate(f"""
                         var element = document.querySelector('{view_link_selector}');
                         if (element) {
-                            element.scrollIntoView({{behavior: 'smooth', block: 'center'}});
+                            element.scrollIntoView();
+                            // Use setTimeout to ensure click event is registered
                             setTimeout(function() {{
                                 element.click();
-                            }}, 100);  // Add a slight delay to ensure click event is registered
+                            }}, 100);
                         } else {
                             console.error('Element not found');
                         }
