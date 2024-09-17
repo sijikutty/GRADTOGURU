@@ -1,28 +1,3 @@
- if frame:
-        try:
-            # Define the selector for the 'View Log/Trace' link
-            view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
-            
-            # Wait for the element to be visible and interactable
-            view_link = frame.wait_for_selector(view_link_selector, state="visible", timeout=10000)
-            
-            # Print details about the element
-            if view_link:
-                href = view_link.evaluate("this.href")
-                text = view_link.evaluate("this.textContent")
-                id = view_link.evaluate("this.id")
-                name = view_link.evaluate("this.name")
-                print(f"View Link Details: href={href}, text={text}, id={id}, name={name}")
-                
-                # Click on the element
-                view_link.click()
-                print("Clicked on the 'View Log/Trace' link.")
-            else:
-                print("The 'View Log/Trace' link was not found or is not visible.")
-        
-        except Exception as e:
-            print(f"An error occurred while trying to interact with the link: {e}")
-    else:
-        print(f"No content frame found for iframe at index {iframe_index}.")
-else:
-    print("Iframe with title 'Process Detail' not found.")
+iframe_index: 3
+View Link Details: href=None, text=None, id=None, name=modWin_0
+Clicked on the 'View Log/Trace' link.
