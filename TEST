@@ -1,11 +1,28 @@
-    iframe_id = page.query_selector("iframe").content_frame().evaluate("document.querySelector('iframe[title=\"Process Detail\"]').id")
-    print(iframe_id)
+# Find the iframe with the title "Process Detail"
+iframe_id = None
 
-E       playwright._impl._errors.Error: TypeError: Cannot read properties of null (reading 'id')
-E           at eval (eval at evaluate (:226:30), <anonymous>:1:57)
-E           at eval (<anonymous>)
-E           at UtilityScript.evaluate (<anonymous>:226:30)
+# Get all iframes
+iframes = page.query_selector_all('iframe')
 
-.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
+# Iterate through each iframe to find the correct one
+for iframe in iframes:
+    # Switch to the iframe's context
+    frame = iframe.content_frame()
+    if frame:
+        # Retrieve the document title inside the iframe
+        title = frame.evaluate("document.title")
+        
+        if title == "Process Detail":
+            # Fetch the id of the iframe with the matching title
+            iframe_id = iframe.evaluate("this.id")
+            break
 
-Iframe title: Process Detail
+# Print the iframe_id
+print(f"Iframe ID: {iframe_id}")
+
+# Use the iframe_id to create a frame locator if found
+if iframe_id:
+    popup_dialog = page.frame_locator(f"iframe#{iframe_id}")
+    popup_dialog.get_by_role("link", name="View Log/Trace").click()
+else:
+    print("No iframe with title 'Process Detail' found.")
