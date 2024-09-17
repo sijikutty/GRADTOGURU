@@ -1,7 +1,4 @@
-frame = iframe_element.content_frame()
-        if frame is None:
-            print("Failed to get content frame from the iframe")
+        iframe_element = page.query_selector_all('iframe')[iframe_index]
+        if iframe_element is None:
+            print(f"No iframe found at index {iframe_index}")
             return None
-        
-        # Get the outer HTML of the element inside the iframe
-        outer_html = frame.evaluate(f'document.querySelector("{selector}").outerHTML')
