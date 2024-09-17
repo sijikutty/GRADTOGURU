@@ -1,28 +1,33 @@
-# Find the iframe with the title "Process Detail"
-iframe_id = None
+      # Get all iframes
+    iframes = page.query_selector_all('iframe')
+ # Iterate over each iframe and print its title
+    iframe_id = None
+    for iframe in iframes:
+        # Switch to the iframe's content
+        frame = iframe.content_frame()
+        if frame:
+            # Retrieve and print the document's title inside the iframe
+            title = frame.evaluate("document.title")
+            print(f"Iframe title: {title}")
+    # Check if the title is "Process Monitor"
+            if title == "Process Detail":
+                iframe_id = iframe.evaluate("this.id")
+                print(f"Iframe ID: {iframe_id}")
+                # Retrieve and print all elements inside this iframe
+                # Find the "View" link inside the iframe and click it
+                view_link_selector = "a:has-text('View Log/Trace')"  # Adjust selector if necessary
+                view_link = frame.query_selector(view_link_selector)
+                if view_link:
+                    #view_link.click()
+                    print("Clicked on the 'View' link.")
+                else:
+                    print("No 'View' link found inside this iframe.")
+            else:
+                print("No content frame found for this iframe.")   
+            
+        else:
+            print("No content frame found for this iframe.")
 
-# Get all iframes
-iframes = page.query_selector_all('iframe')
-
-# Iterate through each iframe to find the correct one
-for iframe in iframes:
-    # Switch to the iframe's context
-    frame = iframe.content_frame()
-    if frame:
-        # Retrieve the document title inside the iframe
-        title = frame.evaluate("document.title")
-        
-        if title == "Process Detail":
-            # Fetch the id of the iframe with the matching title
-            iframe_id = iframe.evaluate("this.id")
-            break
-
-# Print the iframe_id
-print(f"Iframe ID: {iframe_id}")
-
-# Use the iframe_id to create a frame locator if found
-if iframe_id:
-    popup_dialog = page.frame_locator(f"iframe#{iframe_id}")
-    popup_dialog.get_by_role("link", name="View Log/Trace").click()
-else:
-    print("No iframe with title 'Process Detail' found.")
+Result:Iframe title: Process Detail
+Iframe ID: None
+Clicked on the 'View' link.
