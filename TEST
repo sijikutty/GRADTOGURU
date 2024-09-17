@@ -1,8 +1,6 @@
-    popup_dialog = page.frame_locator("[id^='ptModFrame']")
-    popup_dialog.get_by_role("link", name="View Log/Trace").click()
+# Fetch the id of the iframe with the title "Process Detail"
+iframe_id = page.query_selector("iframe").content_frame().evaluate("document.querySelector('iframe[title=\"Process Detail\"]').id")
 
- playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator
-
-.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
+# Use that id to create a frame locator and interact with the iframe
+popup_dialog = page.frame_locator(f"iframe#{iframe_id}")
+popup_dialog.get_by_role("link", name="View Log/Trace").click()
