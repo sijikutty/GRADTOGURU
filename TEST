@@ -1,40 +1,41 @@
 # Get all iframes
-iframes = page.query_selector_all('iframe')
-
-# Iterate over each iframe and print its title
-iframe_id = None
-for idx, iframe in enumerate(iframes):
-    # Switch to the iframe's content
-    frame = iframe.content_frame()
-    if frame:
-        # Retrieve and print the document's title inside the iframe
-        title = frame.evaluate("document.title")
-        print(f"Iframe {idx} title: {title}")
-
-        if title == "Process Detail":
-            # Attempt to get the id of the iframe
-            iframe_id = iframe.evaluate("this.id")
-            # Print other attributes for debugging
-            iframe_attributes = iframe.evaluate("""
-                {
-                    id: this.id,
-                    name: this.name,
-                    src: this.src
-                }
-            """)
-            print(f"Iframe {idx} attributes: {iframe_attributes}")
-
-            print(f"Iframe ID: {iframe_id}")
-
-            # Retrieve and print all elements inside this iframe
-            # Find the "View Log/Trace" link inside the iframe and click it
-            view_link_selector = "a:has-text('View Log/Trace')"  # Adjust selector if necessary
-            view_link = frame.query_selector(view_link_selector)
-            if view_link:
-                # view_link.click()
-                print("Clicked on the 'View Log/Trace' link.")
-            else:
-                print("No 'View Log/Trace' link found inside this iframe.")
-            break  # Exit loop once the correct iframe is processed
-    else:
-        print(f"No content frame found for iframe {idx}.")
+    iframes = page.query_selector_all('iframe')
+    
+    # Iterate over each iframe and print its title
+    iframe_id = None
+    for idx, iframe in enumerate(iframes):
+        # Switch to the iframe's content
+        frame = iframe.content_frame()
+        if frame:
+            # Retrieve and print the document's title inside the iframe
+            title = frame.evaluate("document.title")
+            print(f"Iframe {idx} title: {title}")
+    
+            if title == "Process Detail":
+                # Attempt to get the id of the iframe
+                iframe_id = iframe.evaluate("this.id")
+                # Print other attributes for debugging
+                iframe_attributes = iframe.evaluate("""
+                    {
+                        id: this.id,
+                        name: this.name,
+                        src: this.src
+                    }
+                """)
+                print(f"Iframe {idx} attributes: {iframe_attributes}")
+    
+                print(f"Iframe ID: {iframe_id}")
+    
+                # Retrieve and print all elements inside this iframe
+                # Find the "View Log/Trace" link inside the iframe and click it
+                view_link_selector = "a:has-text('View Log/Trace')"  # Adjust selector if necessary
+                view_link = frame.query_selector(view_link_selector)
+                if view_link:
+                    # view_link.click()
+                    print("Clicked on the 'View Log/Trace' link.")
+                else:
+                    print("No 'View Log/Trace' link found inside this iframe.")
+                break  # Exit loop once the correct iframe is processed
+        else:
+            print(f"No content frame found for iframe {idx}.")
+playwright._impl._errors.Error: SyntaxError: Unexpected token ':'
