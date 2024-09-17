@@ -15,7 +15,7 @@
                 view_link_selector = "a:has-text('View Log/Trace')"  # Adjust selector if necessary
                 view_link = frame.query_selector(view_link_selector)
                 if view_link:
-                    #view_link.click()
+                    view_link.click()
                     print("Clicked on the 'View' link.")
                 else:
                     print("No 'View' link found inside this iframe.")
@@ -24,3 +24,8 @@
             
         else:
             print("No content frame found for this iframe.")
+
+
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator
