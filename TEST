@@ -28,3 +28,9 @@ for idx, iframe in enumerate(iframes):
             break  # Exit loop once the correct iframe is processed
     else:
         print(f"No content frame found for iframe {idx}.")
+
+E       playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
