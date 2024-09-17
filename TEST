@@ -1,4 +1,8 @@
-    # Directly access the iframe and perform actions
+    iframe_index = next((idx for idx, iframe in enumerate(page.query_selector_all('iframe')) if iframe.content_frame().evaluate("document.title") == "Process Detail"), None)
+    print (f"iframe_index: {iframe_index}")
+    ##page.query_selector_all('iframe')[iframe_index].content_frame().get_by_role("link", name="View Log/Trace").click()
+
+        # Directly access the iframe and perform actions
     frame = page.query_selector_all('iframe')[iframe_index].content_frame()
     
     if frame:
@@ -10,3 +14,9 @@
             print("No 'View Log/Trace' link found inside this iframe.")
     else:
         print(f"No content frame found for iframe at index {iframe_index}.")
+
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
+E           1) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+E           2) <iframe frameborder="0" id="ptModFrame_2" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_2\"]")
+
+.venv\Lib\site-packages\playwright\_impl\_connection.py:97: Error
