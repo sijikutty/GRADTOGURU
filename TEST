@@ -1,1 +1,1 @@
-            view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
+outer_html = page.evaluate(f'document.querySelector("{view_link_selector}").outerHTML')
