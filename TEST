@@ -1,18 +1,7 @@
-    iframe_index = next((idx for idx, iframe in enumerate(page.query_selector_all('iframe')) if iframe.content_frame().evaluate("document.title") == "Process Detail"), None)
-    print (f"iframe_index: {iframe_index}")
-    ##page.query_selector_all('iframe')[iframe_index].content_frame().get_by_role("link", name="View Log/Trace").click()
-
-        # Directly access the iframe and perform actions
-    frame = page.query_selector_all('iframe')[iframe_index].content_frame()
- 
-    if iframe_index is not None:
-#        try:
-            # Define the selector for the 'View Log/Trace' link
-            view_link_selector = "div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a"
-
-            outer_html = page.evaluate(f'document.querySelector("{view_link_selector}").outerHTML')
-
-            # Print the outer HTML for debugging
-            print(f"View Link Outer HTML: {outer_html}")
-
-Cannot read properties of null (reading 'outerHTML')
+frame = iframe_element.content_frame()
+        if frame is None:
+            print("Failed to get content frame from the iframe")
+            return None
+        
+        # Get the outer HTML of the element inside the iframe
+        outer_html = frame.evaluate(f'document.querySelector("{selector}").outerHTML')
