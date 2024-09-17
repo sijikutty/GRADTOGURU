@@ -1,6 +1,1 @@
-            # Get all matching elements
-            view_links = frame.query_selector_all(view_link_selector)
-            
-            # Print the number of matching elements
-            print(f"Number of elements matching the selector '{view_link_selector}': {len(view_links)}")
-            
+Number of elements matching the selector 'div[id='win0divPMN_DERIVED_INDEX_BTN'] span[title='Index Page'] a': 1
