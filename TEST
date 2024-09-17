@@ -1,12 +1,17 @@
-# Print details of all iframes for debugging
-for idx, iframe in enumerate(iframes):
-    # Print id or name of the iframe for better identification
-    iframe_id = iframe.evaluate("this.id")
-    iframe_name = iframe.evaluate("this.name")
-    print(f"Iframe {idx}: id={iframe_id}, name={iframe_name}")
+      # Get all iframes
+    iframes = page.query_selector_all('iframe')
 
-    # Optionally, check the title in each iframe
-    frame = iframe.content_frame()
-    if frame:
-        title = frame.evaluate("document.title")
-        print(f"Iframe {idx} title: {title}")
+    # Print details of all iframes for debugging
+    for idx, iframe in enumerate(iframes):
+        # Print id or name of the iframe for better identification
+        iframe_id = iframe.evaluate("this.id")
+        iframe_name = iframe.evaluate("this.name")
+        print(f"Iframe {idx}: id={iframe_id}, name={iframe_name}")
+
+        # Optionally, check the title in each iframe
+        frame = iframe.content_frame()
+        if frame:
+            title = frame.evaluate("document.title")
+            print(f"Iframe {idx} title: {title}")
+
+if title: Process Detail  then i want to click on 'view log/trace' link inside that frame.i dont want to get strict mode violation error.hence can you use the idx fetched and get exact link
