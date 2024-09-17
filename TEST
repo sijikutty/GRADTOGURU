@@ -1,9 +1,2 @@
-         for idx, view_link in enumerate(view_links):
-                    href = view_link.evaluate("this.href")
-                    text = view_link.evaluate("this.textContent")
-                    id = view_link.evaluate("this.id")
-                    name = view_link.evaluate("this.name")
-                    print(f"View Log/Trace Link {idx}: href={href}, text={text}, id={id}, name={name}")
-                
-                # Click the first available link (or choose based on your criteria)
-                view_links[0].click()
+            view_link_selector = "a:has-text('View Log/Trace')"
+            view_links = frame.query_selector_all(view_link_selector)
