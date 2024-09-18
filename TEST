@@ -1,23 +1,46 @@
-from playwright.sync_api import sync_playwright
+ try:
+        # Locate the target iframe for filling in the form
+        targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+        navigate_menu(page=page,
+                      menu_sequence=["PeopleTools", 
+                                     "Process Scheduler", 
+                                     "Process Monitor"])
+        targetContentFrame.get_by_label("Instance", exact=True).fill('742288')
+        targetContentFrame.get_by_role("button", name="Refresh").click()
 
-def run(playwright):
-    browser = playwright.chromium.launch()
-    context = browser.new_context()
-    page = context.new_page()
+        process_inst_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text='742288')
+        post_status = process_inst_row.locator("[id^='PMN_PRCSLIST_DISTSTATUS']")
 
-    try:
-        # Your Playwright code here
-        page.goto("https://example.com")
-        # Other actions that might throw strict mode violation
+        # Wait for Post status to be Posted for approx 10min.
+        retry = 0
+        while retry < 600:
+
+            if post_status.text_content() =="Posted":
+                break
+
+            else:
+                targetContentFrame.get_by_role("button", name="Refresh").click() 
+                retry += 1
+
+        if post_status.text_content().lower() != "posted":
+            raise Exception(f"Post Status : {post_status.text_content()}")
+
+        targetContentFrame.get_by_role("link", name="Details").click()
+        time.sleep(10)
+
+        page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
+        with page.expect_download(timeout=120000) as download_info:
+                page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="HF_SUSP_BLC.csv").click()
+
+
+        download = download_info.value
+        path=r"Result/"+ download.suggested_filename
+        download.save_as(path=path)
     except Exception as e:
-        if 'strict mode violation' in str(e).lower():
-            print("Caught a strict mode violation exception, handling it.")
-            # Handle the exception, e.g., skip the action or log it
-        else:
-            raise  # Re-raise if it's a different exception
-
-    context.close()
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
+            if 'strict mode violation' in str(e).lower():
+                print("Caught a strict mode violation exception, handling it.")
+                # Handle the exception, e.g., skip the action or log it
+            else:
+                raise Exception("Failed to run job")
+-----------
+playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']
