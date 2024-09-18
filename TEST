@@ -1,11 +1,7 @@
-link_text = 'More information...'  # Replace with the text of the link you're checking
-        page.wait_for_selector(f'.popup-selector text={link_text}', timeout=5000)  # Adjust if needed
+link_text = 'More information...'  # Replace with the link text you want to find
+        link_exists = page.locator(f'//div[contains(@class, "popup-selector")]//a[text()="{link_text}"]').count()
 
-        # Now check if the link is present inside the popup
-        count = page.locator(f'.popup-selector text={link_text}').count()  # Adjust selector as necessary
-
-        if count > 0:
+        if link_exists > 0:
             print('Link is present in the popup.')
         else:
             print('Link is not present in the popup.')
-playwright._impl._errors.Error: Unexpected token "=" while parsing selector ".popup-selec
