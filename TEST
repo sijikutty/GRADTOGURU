@@ -1,5 +1,6 @@
-# Access the specific iframe using its ID
-popup_dialog = page.frame_locator("iframe#ptModFrame_0")
+# Wait for the iframe to be attached
+popup_dialog = page.frame_locator("iframe[name='ptModFrame_0']")
+await popup_dialog.wait_for_selector("link[name='View Log/Trace']")
 
 # Click the link within the iframe
-popup_dialog.get_by_role("link", name="View Log/Trace").click()
+await popup_dialog.get_by_role("link", name="View Log/Trace").click()
