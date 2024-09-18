@@ -1,7 +1,25 @@
-link_text = 'More information...'  # Replace with the link text you want to find
-        link_exists = page.locator(f'//div[contains(@class, "popup-selector")]//a[text()="{link_text}"]').count()
+ # Get the iframe element
+        iframe_element = page.locator('iframe[title="process detail"]')
 
-        if link_exists > 0:
-            print('Link is present in the popup.')
-        else:
-            print('Link is not present in the popup.')
+        # Access the inner frame
+        iframe = iframe_element.content_frame()
+
+        # Wait for the 'view log/trace' button to be visible
+        iframe.wait_for_selector('text="view log/trace"', timeout=5000)
+
+        # Get the 'view log/trace' element
+        log_trace_element = iframe.locator('text="view log/trace"')
+
+        # Get properties/attributes of the element
+        properties = {
+            'text': log_trace_element.inner_text(),
+            'href': log_trace_element.get_attribute('href'),  # Example for link elements
+            'class': log_trace_element.get_attribute('class'),
+            'id': log_trace_element.get_attribute('id'),
+            # Add more attributes as necessary
+        }
+
+        # Print the properties
+        print("Properties of 'view log/trace':")
+        for key, value in properties.items():
+            print(f"{key}: {value}")
