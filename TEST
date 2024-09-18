@@ -24,6 +24,8 @@ try:
 except Exception as e:
     # Handle potential errors during clicking (e.g., element not clickable, timeout)
     print(f"Error clicking the link: {e}")
+
+Error clicking the link: Link with ID 'PMN_DERIVED_INDEX_BTN' not found in the iframe.
 ----------
     try:
         # Check if there are any iframes with the desired name
