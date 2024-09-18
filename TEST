@@ -1,24 +1,4 @@
- iframes = page.query_selector_all('iframe')
-    
-    # Find the iframe with the highest numeric suffix
-    target_iframe = max(
-        iframes,
-        key=lambda iframe: int(iframe.evaluate('this.id.split("_")[1]') or '-1') if iframe.evaluate('this.id') and iframe.evaluate('this.id').startswith('ptModFrame_') else -1
-    )
-    # Access the iframe's content frame
-    frame = target_iframe.content_frame()
-    if frame:
-        # Define the selector for the link containing 'View Log/Trace'
-        view_link_selector = "a:has-text('View Log/Trace')"
-        try:
-            # Use locator API to find and click the link with the text 'View Log/Trace'
-            link = frame.locator(view_link_selector)
-            if link.count() > 0:
-                link.first.click()
-                print("Clicked the first 'View Log/Trace' link inside the iframe.")
-            else:
-                print("No link with the text 'View Log/Trace' found inside the iframe.")
-        except Exception as e:
-            print(f"An error occurred while clicking the link: {e}")
-    else:
-        print("Failed to get content frame from the iframe.")
+            links = frame.query_selector_all('a')
+            for link in links:
+                text = link.inner_text()
+                print(f"Link text found: {text}")
