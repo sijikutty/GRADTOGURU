@@ -1,7 +1,10 @@
-        link_text = 'More information...'  # Replace with the text of the link you're checking
-        count = page.locator(f'text={link_text}').count()
+link_text = 'More information...'  # Replace with the text of the link you're checking
+        page.wait_for_selector(f'.popup-selector text={link_text}', timeout=5000)  # Adjust if needed
+
+        # Now check if the link is present inside the popup
+        count = page.locator(f'.popup-selector text={link_text}').count()  # Adjust selector as necessary
 
         if count > 0:
-            print('Link is present on the page.')
+            print('Link is present in the popup.')
         else:
-            print('Link is not present on the page.')
+            print('Link is not present in the popup.')
