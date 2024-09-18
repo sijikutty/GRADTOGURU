@@ -10,13 +10,14 @@ try:
     # Select the first matching iframe
     popup_dialog_frame = iframes.nth(0)
 
+    # Wait for the iframe to be visible
+    popup_dialog_frame.wait_for(state='visible')
+
     # Check if the link exists within the iframe
     view_log_link = popup_dialog_frame.locator("a#PMN_DERIVED_INDEX_BTN")
 
-    # Check if the link exists
-    link_count = view_log_link.count()
-    if link_count == 0:
-        raise RuntimeError("Link with ID 'PMN_DERIVED_INDEX_BTN' not found in the iframe.")
+    # Wait for the link to be visible before checking
+    view_log_link.wait_for(state='visible', timeout=5000)  # Adjust timeout as needed
 
     # Attempt to click the link
     view_log_link.click()
@@ -24,8 +25,30 @@ try:
 except Exception as e:
     # Handle potential errors during clicking (e.g., element not clickable, timeout)
     print(f"Error clicking the link: {e}")
+-------------
+    try:
+        # Locate the iframe with the desired name
+        iframes = page.locator("iframe[name='ptModFrame_0']")
 
-Error clicking the link: Link with ID 'PMN_DERIVED_INDEX_BTN' not found in the iframe.
+        # Check if at least one iframe is found
+        iframe_count = iframes.count()
+        if iframe_count == 0:
+            raise RuntimeError("No iframe with name 'ptModFrame_0' found on the page.")
+
+        # Select the first matching iframe (consider using a more specific selector if needed)
+        popup_dialog_frame = iframes.nth(0)
+
+        # Check if the link exists within the iframe
+        view_log_link = popup_dialog_frame.locator("a#PMN_DERIVED_INDEX_BTN")
+
+        # Check if the link exists (using count)
+        link_count = view_log_link.count()
+        if link_count == 0:
+            raise RuntimeError("Link with ID 'PMN_DERIVED_INDEX_BTN' not found in the iframe.")
+
+        # Attempt to click the link
+        view_log_link.click()
+-----
 ----------
     try:
         # Check if there are any iframes with the desired name
