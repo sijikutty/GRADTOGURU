@@ -1,10 +1,11 @@
- try:
+    try:
         # Locate the target iframe for filling in the form
         targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-        navigate_menu(page=page,
-                      menu_sequence=["PeopleTools", 
-                                     "Process Scheduler", 
-                                     "Process Monitor"])
+        
+        # Ensure the iframe is loaded
+        targetContentFrame.wait_for_selector("input[name='Instance']")
+
+        navigate_menu(page=page, menu_sequence=["PeopleTools", "Process Scheduler", "Process Monitor"])
         targetContentFrame.get_by_label("Instance", exact=True).fill('742288')
         targetContentFrame.get_by_role("button", name="Refresh").click()
 
@@ -14,33 +15,35 @@
         # Wait for Post status to be Posted for approx 10min.
         retry = 0
         while retry < 600:
-
-            if post_status.text_content() =="Posted":
+            # Wait for the post status element to be visible before accessing its text
+            post_status.wait_for(state='visible')
+            
+            if post_status.text_content() == "Posted":
                 break
-
             else:
-                targetContentFrame.get_by_role("button", name="Refresh").click() 
+                targetContentFrame.get_by_role("button", name="Refresh").click()
+                time.sleep(1)  # Short wait to avoid rapid clicks
                 retry += 1
 
         if post_status.text_content().lower() != "posted":
-            raise Exception(f"Post Status : {post_status.text_content()}")
+            raise Exception(f"Post Status: {post_status.text_content()}")
 
         targetContentFrame.get_by_role("link", name="Details").click()
         time.sleep(10)
 
-        page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-        with page.expect_download(timeout=120000) as download_info:
-                page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="HF_SUSP_BLC.csv").click()
+        # Ensure the next iframe is loaded before interacting
+        page.frame_locator("iframe[name=\"ptModFrame_0\"]").wait_for_selector("link[name='View Log/Trace']").click()
 
+        with page.expect_download(timeout=120000) as download_info:
+            page.frame_locator("iframe[name=\"ptModFrame_1\"]").wait_for_selector("link[name='HF_SUSP_BLC.csv']").click()
 
         download = download_info.value
-        path=r"Result/"+ download.suggested_filename
+        path = r"Result/" + download.suggested_filename
         download.save_as(path=path)
+
     except Exception as e:
-            if 'strict mode violation' in str(e).lower():
-                print("Caught a strict mode violation exception, handling it.")
-                # Handle the exception, e.g., skip the action or log it
-            else:
-                raise Exception("Failed to run job")
------------
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']
+        if 'strict mode violation' in str(e).lower():
+            print("Caught a strict mode violation exception, handling it.")
+            # Handle the exception appropriately
+        else:
+            raise Exception("Failed to run job: " + str(e))
