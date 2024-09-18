@@ -1,7 +1,1 @@
-        # Check if the link exists within the iframe
-        view_log_link = popup_dialog_frame.locator("a#PMN_DERIVED_INDEX_BTN")
-
-        # Wait for the link to be visible before checking
-        view_log_link.wait_for(state='visible', timeout=5000)  # Adjust timeout as needed
-
-Error clicking the link: Timeout 5000ms exceeded.
+view_log_link = popup_dialog_frame.locator("a[name='PMN_DERIVED_INDEX_BTN']") 
