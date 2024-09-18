@@ -1,6 +1,5 @@
-frames = page.frames
+ 1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")  
+E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")  
 
-# Iterate through the frames and print the title of each one
-for frame in frames:
-    if 'ptModFrame' in frame.name:
-        print(f"Title of {frame.name}: {frame.title()}")
+    popup_dialog = page.frame_locator("iframe[name=\"ptModFrame_0\"]")
+    popup_dialog.get_by_role("link", name="View Log/Trace").click()
