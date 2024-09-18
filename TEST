@@ -1,6 +1,6 @@
-popup_dialog = page.frame_locator("[id^='ptModFrame']") # This handle can be used for all the pop-up windows
-popup_dialog.get_by_role("link", name="View Log/Trace").click()
+frames = page.frames
 
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+# Iterate through the frames and print the title of each one
+for frame in frames:
+    if 'ptModFrame' in frame.name:
+        print(f"Title of {frame.name}: {frame.title()}")
