@@ -1,19 +1,6 @@
-# Assuming targetContentFrame is already defined correctly
-targetContentFrame.get_by_label("Instance", exact=True).fill('742288')
-targetContentFrame.get_by_role("button", name="Refresh").click()
-
-time.sleep(10)
-
-targetContentFrame.get_by_role("link", name="Details").click()
-time.sleep(10)
-
-# Use nth to specify which iframe to select (0 for the first, 1 for the second)
-page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-
-with page.expect_download(timeout=120000) as download_info:
-    # Now use nth to avoid the strict mode violation
-    page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="HF_SUSP_BLC.csv").click()
-
-download = download_info.value
-path = r"Result/" + download.suggested_filename
-download.save_as(path=path)
+try:
+    # Attempt to perform actions that might violate strict mode
+    # Your code here...
+except playwright._impl._errors.Error as e:
+    # Handle the error or log it
+    print(f"Caught an error: {e}")
