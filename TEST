@@ -1,2 +1,1 @@
-Number of links with text 'View Log/Trace': 1
-Link 0: text='View Log/Trace', href='javascript:submitAction_win0(document.win0,'PMN_DERIVED_INDEX_BTN');'
+target_iframe = max(page.query_selector_all('iframe'), key=lambda iframe: int(iframe.evaluate('this.id.split("_")[1]')) if re.match(r'^ptModFrame_\d+$', iframe.evaluate('this.id')) else -1)
