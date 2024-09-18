@@ -1,7 +1,19 @@
-view_link_selector = "a"
- link_locator = frame.locator(view_link_selector).locator("text=View Log/Trace")
-                if link_locator.count() > 0:
-                    link_locator.first.click()  # Click the first matching link
-                    print("Clicked the first 'View Log/Trace' link inside the iframe.")
-                else:
-                    print("No link with the text 'View Log/Trace' found inside the iframe.")
+link_locators = frame.locator(view_link_selector).locator("text=View Log/Trace")
+
+                    # Print the count of elements to verify
+                    link_count = link_locators.count()
+                    print(f"Number of links with text 'View Log/Trace': {link_count}")
+
+                    if link_count > 0:
+                        # Print details about each matching link for debugging
+                        for i in range(link_count):
+                            link_text = link_locators.nth(i).inner_text()
+                            link_href = link_locators.nth(i).get_attribute('href')
+                            print(f"Link {i}: text='{link_text}', href='{link_href}'")
+
+                        # Click the first link (you can change this index if needed)
+                        link_locators.nth(0).click()
+                        print("Clicked the first 'View Log/Trace' link inside the iframe.")
+                    else:
+                        print("No link with the text 'View Log/Trace' found inside the iframe.")
+                except Exception as e:
