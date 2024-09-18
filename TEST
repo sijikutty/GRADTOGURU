@@ -4,3 +4,9 @@
 playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
 E           1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
 E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+
+popup_dialog = page.frame_locator("iframe[name='ptModFrame_0']").locator("//div[@class='parent-container']//a[text()='View Log/Trace']")
+popup_dialog.click()
+
+popup_dialog = page.frame_locator("iframe[name='ptModFrame_0']").locator("//div[@class='parent-container']//a[text()='View Log/Trace']")
+popup_dialog.click()
