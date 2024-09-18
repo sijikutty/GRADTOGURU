@@ -10,3 +10,5 @@ popup_dialog.click()
 
 popup_dialog = page.frame_locator("iframe[name='ptModFrame_0']").locator("//div[@class='parent-container']//a[text()='View Log/Trace']")
 popup_dialog.click()
+
+<DIV    id='win0divPMN_DERIVED_INDEX_BTN'><span id='PMN_DERIVED_INDEX_BTN$span'  class='PSHYPERLINK'  title='Index Page' ><a name='PMN_DERIVED_INDEX_BTN' id='PMN_DERIVED_INDEX_BTN'  ptlinktgt='pt_peoplecode' tabindex='22' onclick='javascript:cancelBubble(event);' href="javascript:submitAction_win0(document.win0,'PMN_DERIVED_INDEX_BTN');"  class='PSHYPERLINK' >View Log/Trace</a></span><!-- PMN_DERIVED_INDEX_BTN --></DIV></td>
