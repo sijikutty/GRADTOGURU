@@ -9,9 +9,12 @@ def main():
         page.goto('https://example.com')  # Replace with your actual URL
 
         # Find the iframe with the highest numeric suffix
+        iframes = page.query_selector_all('iframe')
+        
+        # Find the iframe with the highest numeric suffix
         target_iframe = max(
-            page.query_selector_all('iframe'),
-            key=lambda iframe: int(iframe.evaluate('this.id.split("_")[1]') or '-1') if iframe.evaluate('this.id').startswith('ptModFrame_') else -1
+            iframes,
+            key=lambda iframe: int(iframe.evaluate('this.id.split("_")[1]') or '-1') if iframe.evaluate('this.id') and iframe.evaluate('this.id').startswith('ptModFrame_') else -1
         )
 
         # Access the iframe's content frame
