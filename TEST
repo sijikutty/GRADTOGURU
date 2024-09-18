@@ -1,35 +1,19 @@
-
-    page.get_by_label("Process Monitor").click()
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_label("Instance").fill("742288")
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("button", name="Refresh").click()
-    time.sleep(10)
-    page.frame_locator("iframe[name=\"TargetContent\"]").get_by_role("link", name="Details").click()
-    page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-    with page.expect_download() as download_info:
-        with page.expect_popup() as page1_info:
-            page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="HF_SUSP_BLC.csv").click()
-        page1 = page1_info.value
-    download = download_info.value
-    page1.close()
-
-   --------
+# Assuming targetContentFrame is already defined correctly
 targetContentFrame.get_by_label("Instance", exact=True).fill('742288')
-    targetContentFrame.get_by_role("button", name="Refresh").click()
+targetContentFrame.get_by_role("button", name="Refresh").click()
 
-    time.sleep(10)
-    
-    targetContentFrame.get_by_role("link", name="Details").click()
-    time.sleep(10)
-    page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
-    with page.expect_download(timeout=120000) as download_info:
-            page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="HF_SUSP_BLC.csv").click()
-        
+time.sleep(10)
 
-    download = download_info.value
-    path=r"Result/"+ download.suggested_filename
-    download.save_as(path=path)
+targetContentFrame.get_by_role("link", name="Details").click()
+time.sleep(10)
 
+# Use nth to specify which iframe to select (0 for the first, 1 for the second)
+page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("link", name="View Log/Trace").click()
 
-playwright._impl._errors.Error: Error: strict mode violation: locator("[id^='ptModFrame']") resolved to 2 elements:
-E           1) <iframe frameborder="0" id="ptModFrame_0" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_0\"]")
-E           2) <iframe frameborder="0" id="ptModFrame_1" name="ptModFra…></iframe> aka locator("iframe[name=\"ptModFrame_1\"]")
+with page.expect_download(timeout=120000) as download_info:
+    # Now use nth to avoid the strict mode violation
+    page.frame_locator("iframe[name=\"ptModFrame_1\"]").get_by_role("link", name="HF_SUSP_BLC.csv").click()
+
+download = download_info.value
+path = r"Result/" + download.suggested_filename
+download.save_as(path=path)
