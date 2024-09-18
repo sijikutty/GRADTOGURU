@@ -1,6 +1,23 @@
-try:
-    # Attempt to perform actions that might violate strict mode
-    # Your code here...
-except playwright._impl._errors.Error as e:
-    # Handle the error or log it
-    print(f"Caught an error: {e}")
+from playwright.sync_api import sync_playwright
+
+def run(playwright):
+    browser = playwright.chromium.launch()
+    context = browser.new_context()
+    page = context.new_page()
+
+    try:
+        # Your Playwright code here
+        page.goto("https://example.com")
+        # Other actions that might throw strict mode violation
+    except Exception as e:
+        if 'strict mode violation' in str(e).lower():
+            print("Caught a strict mode violation exception, handling it.")
+            # Handle the exception, e.g., skip the action or log it
+        else:
+            raise  # Re-raise if it's a different exception
+
+    context.close()
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)
