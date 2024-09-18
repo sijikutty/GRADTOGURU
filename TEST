@@ -8,3 +8,4 @@ link_text = 'More information...'  # Replace with the text of the link you're ch
             print('Link is present in the popup.')
         else:
             print('Link is not present in the popup.')
+playwright._impl._errors.Error: Unexpected token "=" while parsing selector ".popup-selec
