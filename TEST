@@ -50,3 +50,5 @@ Error clicking the link: Link with ID 'PMN_DERIVED_INDEX_BTN' not found in the i
         # Handle potential errors during clicking (e.g., element not clickable, timeout)
         print(f"Error clicking the link: {e}")
         return False
+
+Error clicking the link: 'FrameLocator' object has no attribute 'count'
