@@ -1,7 +1,21 @@
-Title of : Process Monitor
-Title of TargetContent: Process Monitor
-Title of RelatedContent: 
-Title of SRelatedContent: 
-Title of RCArea: 
-Title of ptModFrame_0: Process Detail
-Error clicking the link: 'FrameLocator' object has no attribute 'count'
+ try:
+        # Check if there are any iframes with the desired name
+        iframes = page.frame_locator("iframe[name='ptModFrame_0']")
+        if not iframes.count():
+            raise RuntimeError("No iframe with name 'ptModFrame_0' found on the page.")
+
+        # Select the first matching iframe (consider better selection logic if needed)
+        popup_dialog_frame = iframes.first()
+
+        # Check if the link exists within the iframe
+        view_log_link = popup_dialog_frame.locator("a#PMN_DERIVED_INDEX_BTN")
+        if not view_log_link.count():
+            raise RuntimeError("Link with ID 'PMN_DERIVED_INDEX_BTN' not found in the iframe.")
+
+        # Attempt to click the link
+        view_log_link.click()
+
+    except (playwright.errors.TimeoutError, playwright.errors.ElementHandleNotFound) as e:
+        # Handle potential errors during clicking (e.g., element not clickable, timeout)
+        print(f"Error clicking the link: {e}")
+        return False
