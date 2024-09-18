@@ -1,41 +1,7 @@
-process_inst_row = targetContentFrame.locator("tr[id^='tr']").filter(has_text='742288')
-        post_status = process_inst_row.locator("[id^='PMN_PRCSLIST_DISTSTATUS']")
+        link_text = 'More information...'  # Replace with the text of the link you're checking
+        count = page.locator(f'text={link_text}').count()
 
-        # Wait for Post status to be Posted for approx 10min.
-        retry = 0
-        while retry < 600:
-            post_status.wait_for(state='visible')  # Wait for the post status to be visible
-
-            if post_status.text_content() == "Posted":
-                break
-            else:
-                targetContentFrame.get_by_role("button", name="Refresh").click()
-                time.sleep(1)  # Short wait to avoid rapid clicks
-                retry += 1
-
-        if post_status.text_content().lower() != "posted":
-            raise Exception(f"Post Status: {post_status.text_content()}")
-
-        targetContentFrame.get_by_role("link", name="Details").click()
-        time.sleep(10)
-
-        # Ensure the next iframe is loaded before interacting
-        ptModFrame_0 = page.frame_locator("iframe[name=\"ptModFrame_0\"]")
-        ptModFrame_0.get_by_role("link", name="View Log/Trace").wait_for()
-        ptModFrame_0.get_by_role("link", name="View Log/Trace").click()
-
-        with page.expect_download(timeout=120000) as download_info:
-            ptModFrame_1 = page.frame_locator("iframe[name=\"ptModFrame_1\"]")
-            ptModFrame_1.get_by_role("link", name="HF_SUSP_BLC.csv").wait_for()
-            ptModFrame_1.get_by_role("link", name="HF_SUSP_BLC.csv").click()
-
-        download = download_info.value
-        path = r"Result/" + download.suggested_filename
-        download.save_as(path=path)
-
-    except Exception as e:
-        if 'strict mode violation' in str(e).lower():
-            print("Caught a strict mode violation exception, handling it.")
-            # Handle the exception appropriately
+        if count > 0:
+            print('Link is present on the page.')
         else:
-            raise Exception("Failed to run job: " + str(e))
+            print('Link is not present on the page.')
