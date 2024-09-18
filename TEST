@@ -1,4 +1,9 @@
-            links = frame.query_selector_all('a')
-            for link in links:
-                text = link.inner_text()
-                print(f"Link text found: {text}")
+        if target_iframe:
+            # Print details about the target iframe
+            iframe_id = target_iframe.evaluate('this.id')
+            print(f"Found the iframe with title 'Process Detail'")
+            print(f"Iframe ID: {iframe_id}")
+            print(f"Iframe Element: {target_iframe}")
+
+            # Access the iframe's content frame
+            frame = target_iframe.content_frame()
