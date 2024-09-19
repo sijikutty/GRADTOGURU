@@ -1,25 +1,30 @@
- # Get the iframe element
-        iframe_element = page.locator('iframe[title="process detail"]')
+from playwright.sync_api import sync_playwright
 
-        # Access the inner frame
-        iframe = iframe_element.content_frame()
+def run(playwright):
+    browser = playwright.chromium.launch(headless=False)
+    page = browser.new_page()
 
-        # Wait for the 'view log/trace' button to be visible
-        iframe.wait_for_selector('text="view log/trace"', timeout=5000)
+    # Step 1: Navigate to the main page
+    page.goto("https://example.com")
 
-        # Get the 'view log/trace' element
-        log_trace_element = iframe.locator('text="view log/trace"')
+    # Step 2: Open the first popup using get_by_role
+    first_popup = page.expect_popup(
+        lambda: page.get_by_role("button", name="Open First Popup").click()
+    )
 
-        # Get properties/attributes of the element
-        properties = {
-            'text': log_trace_element.inner_text(),
-            'href': log_trace_element.get_attribute('href'),  # Example for link elements
-            'class': log_trace_element.get_attribute('class'),
-            'id': log_trace_element.get_attribute('id'),
-            # Add more attributes as necessary
-        }
+    # Step 3: Open the second popup from the first popup
+    second_popup = first_popup.expect_popup(
+        lambda: first_popup.get_by_role("button", name="Open Second Popup").click()
+    )
 
-        # Print the properties
-        print("Properties of 'view log/trace':")
-        for key, value in properties.items():
-            print(f"{key}: {value}")
+    # Now you can interact with the second popup
+    second_popup.get_by_role("textbox").fill("Some text")
+    second_popup.get_by_role("button", name="Submit").click()
+
+    # Clean up: Close the popups
+    first_popup.close()
+    second_popup.close()
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)
