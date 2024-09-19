@@ -7,23 +7,47 @@ def run(playwright):
     # Step 1: Navigate to the main page
     page.goto("https://example.com")
 
-    # Step 2: Open the first popup by clicking 'Copy to File'
-    first_popup = page.expect_popup(
-        lambda: page.get_by_role("button", name="Copy to File").click()
-    )
+    # Step 2: Click the 'Copy to File' button directly
+    try:
+        copy_button = page.get_by_role("button", name="Copy to File")
+        assert copy_button.is_visible(), "Copy to File button is not visible."
+        print("Copy to File button is visible. Clicking...")
+        copy_button.click()
+    except Exception as e:
+        print(f"Error clicking 'Copy to File' button: {e}")
+        browser.close()
+        return
 
-    # Step 3: In the first popup, click the 'Run' button
-    second_popup = first_popup.expect_popup(
-        lambda: first_popup.get_by_role("button", name="Run").click()
-    )
+    # Step 3: Wait for the first popup to appear and then click 'Run' button
+    try:
+        first_popup = page.wait_for_event("popup")
+        print("First popup opened.")
 
-    # Step 4: In the second popup, click the 'OK' button
-    second_popup.get_by_role("button", name="OK").click()
+        run_button = first_popup.get_by_role("button", name="Run")
+        run_button.wait_for(state="visible")
+        run_button.click()
+        print("Run button clicked.")
+    except Exception as e:
+        print(f"Error interacting with first popup: {e}")
+        browser.close()
+        return
 
-    # Optional: Close the popups if needed
-    first_popup.close()
-    second_popup.close()
-    browser.close()
+    # Step 4: Wait for the second popup and click 'OK' button
+    try:
+        second_popup = first_popup.wait_for_event("popup")
+        print("Second popup opened.")
+
+        ok_button = second_popup.get_by_role("button", name="OK")
+        ok_button.wait_for(state="visible")
+        ok_button.click()
+        print("OK button clicked.")
+    except Exception as e:
+        print(f"Error interacting with second popup: {e}")
+    finally:
+        # Clean up: Close the popups if necessary
+        first_popup.close()
+        second_popup.close()
+        browser.close()
 
 with sync_playwright() as playwright:
     run(playwright)
