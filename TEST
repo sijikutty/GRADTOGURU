@@ -12,18 +12,18 @@ def run(playwright):
         copy_button = page.get_by_role("button", name="Copy to File")
         assert copy_button.is_visible(), "Copy to File button is not visible."
         print("Copy to File button is visible. Clicking...")
-        copy_button.click()
+        
+        # Click the button and expect the first popup
+        first_popup = page.expect_popup(lambda: copy_button.click())
+        print("First popup opened.")
     except Exception as e:
         print(f"Error clicking 'Copy to File' button: {e}")
         browser.close()
         return
 
-    # Step 3: Wait for the first popup to appear and then click 'Run' button
+    # Step 3: In the first popup, wait for and click the 'Run' button
     try:
-        first_popup = page.wait_for_event("popup")
-        print("First popup opened.")
-
-        run_button = first_popup.get_by_role("button", name="Run")
+        run_button = first_popup.value.get_by_role("button", name="Run")
         run_button.wait_for(state="visible")
         run_button.click()
         print("Run button clicked.")
@@ -32,12 +32,12 @@ def run(playwright):
         browser.close()
         return
 
-    # Step 4: Wait for the second popup and click 'OK' button
+    # Step 4: In the second popup, wait for and click the 'OK' button
     try:
-        second_popup = first_popup.wait_for_event("popup")
+        second_popup = first_popup.value.expect_popup(lambda: run_button.click())
         print("Second popup opened.")
 
-        ok_button = second_popup.get_by_role("button", name="OK")
+        ok_button = second_popup.value.get_by_role("button", name="OK")
         ok_button.wait_for(state="visible")
         ok_button.click()
         print("OK button clicked.")
@@ -45,8 +45,8 @@ def run(playwright):
         print(f"Error interacting with second popup: {e}")
     finally:
         # Clean up: Close the popups if necessary
-        first_popup.close()
-        second_popup.close()
+        first_popup.value.close()
+        second_popup.value.close()
         browser.close()
 
 with sync_playwright() as playwright:
