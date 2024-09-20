@@ -1,3 +1,15 @@
+
+                    "SETID"   : "SHARE",
+                    "Alloc_step":"DTAUNR_C",
+                    "Project" : "TEST_DMW_AUTOMATION10",
+                    "descr"  : "TEST",
+                    "dataset": "kk_COMP_ALLOCATIONS_GBL",
+                    "process_step": "DTAUNR_C1",
+
+
+                    "process_name":"PTADSAEPRCS"
+                }
+
 from playwright.sync_api import Page,expect
 from ps_utils import navigate_menu
 import pytest 
