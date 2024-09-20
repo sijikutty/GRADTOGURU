@@ -1,3 +1,22 @@
-popup_dialog = page.frame_locator("[id^='ptModFrame']")
-print(popup_dialog.count())
-AttributeError: 'FrameLocator' object has no attribute 'count'
+# Locate all frames with IDs starting with 'ptModFrame'
+frames = page.locator("[id^='ptModFrame']")
+
+# Count the number of frames
+frame_count = frames.count()
+print(f"Number of frames with ID starting with 'ptModFrame': {frame_count}")
+
+# If you want to interact with the frames
+for index in range(frame_count):
+    frame = frames.nth(index)
+
+    # Example of interacting with the frame
+    if frame.get_by_role("button", name="Run").is_visible():
+        frame.get_by_role("button", name="Run").click()
+        page.get_by_role("button", name="Yes").click()
+        break  # Exit the loop after clicking "Run"
+
+# Interact with a specific frame for "Server Name"
+if frame_count > 2:  # Ensure the third frame exists
+    popup_dialog = frames.nth(2)  # Change index based on your needs
+    popup_dialog.get_by_label("Server Name").select_option("PSUNX")
+    popup_dialog.get_by_role("button", name="OK", exact=True).click()
