@@ -1,27 +1,62 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import Page,expect
+from ps_utils import navigate_menu
+import pytest 
+import time
+from automation_utils import get_testdata, connect_to_oracleDB, execute_query
 
-def run(playwright):
-    browser = playwright.chromium.launch()
-    page = browser.new_page()
+@pytest.mark.parametrize("testcase", get_testdata("test_datamigration"))
+def test_datamigration(page: Page, testcase):
+    # Extract test data for the current test case
+    testdata = testcase["testdata"]  
 
-    # Navigate to your target URL
-    page.goto('http://your-url-here')
 
-    # Wait for the popup to appear
-    page.wait_for_selector('#win0divPSTOOLBAR', timeout=5000)  # Adjust the timeout as needed
+    # Navigate to the "Data Migration Workbench" section in the UI
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Lifecycle Tools", 
+                                 "Migrate Data",
+                                 "Data Migration Workbench"])
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
-    # Interact with the popup elements
-    # Assuming 'PRCSRQSTDLG_WRK_SERVERNAME' is an input or dropdown in the popup
-    page.fill('input[name="PRCSRQSTDLG_WRK_SERVERNAME"]', 'PSUNX')  # Change to select_option if it's a dropdown
+    targetContentFrame.get_by_role("link", name="Add a New Value").click()
+    time.sleep(10)
+    targetContentFrame.get_by_label("Project Name").fill(testdata["Project"])
+    targetContentFrame.get_by_label("Description").fill(testdata["descr"])
+    targetContentFrame.get_by_role("button", name="Add").click()
 
-    # Click the OK button
-    page.click("input[id='#ICSave']")
 
-    # Optionally wait for a response or new page
-    page.wait_for_timeout(1000)  # Adjust as necessary
+    if page.get_by_text("Project already exists. Press").is_visible():
+        page.get_by_role("button", name="OK").click()
+        if targetContentFrame.locator("[id=\"win0divPTADSNAME_LINK\\$0\"]").inner_text()==testdata['dataset']:
+            targetContentFrame.get_by_role("link", name=(testdata['dataset'])).click()
+            targetContentFrame.get_by_role("button", name="Select All", exact=True).click()
+            targetContentFrame.get_by_role("button", name="Delete").click()
+            targetContentFrame.get_by_role("button", name="Insert Content").click()
+    else:
+        targetContentFrame.locator("[id=\"PTADSNAME\\$0\"]").fill(testdata["dataset"])
+        targetContentFrame.get_by_role("cell", name="Save", exact=True).locator("a").click()
+        page.get_by_role("button", name="OK").click()
 
-    # Close the browser
-    browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
+    popup_dialog = page.frame_locator("[id^='ptModFrame']")
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$0\"]").fill(testdata["SETID"])
+    time.sleep(10)
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").click()
+    time.sleep(10)
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").fill(testdata['process_step'])
+    popup_dialog.get_by_role("button", name="Search", exact=True).click()
+    popup_dialog.get_by_role("button", name="Select All", exact=True).click()
+    popup_dialog.get_by_role("button", name="Insert and Return").click()
+    page.get_by_role("button", name="OK").click()
+    targetContentFrame.get_by_role("button", name="Save").click()
+    targetContentFrame.get_by_role("button", name="Copy To File").click()
+    page.get_by_role("button", name="OK").click()
+    #print(popup_dialog)
+    popup_dialog.get_by_role("cell", name="Run", exact=True).locator("a").click()
+    page.get_by_role("button", name="Yes").click()
+    #time.sleep(10)
+    page.fill('input[name="PRCSRQSTDLG_WRK_SERVERNAME"]', 'PSNT') 
+    #time.sleep(10)
+    #page.click("input[id='#ICSave']")
+    time.sleep(10)
+   
