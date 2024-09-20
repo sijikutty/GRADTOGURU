@@ -1,4 +1,18 @@
-    page.frame_locator("iframe[name=\"ptModFrame_0\"]").get_by_role("button", name="Run").click()
-    page.get_by_role("button", name="Yes").click()
-    page.frame_locator("iframe[name=\"ptModFrame_3\"]").get_by_label("Server Name").select_option("PSUNX")
-    page.frame_locator("iframe[name=\"ptModFrame_3\"]").get_by_role("button", name="OK", exact=True).click()
+# Locate all frames with IDs starting with 'ptModFrame'
+frames = page.locator("[id^='ptModFrame']")
+
+# Interact with the first frame that contains a button named "Run"
+for index in range(frames.count()):
+    frame = frames.nth(index)
+
+    # Check if the frame contains the button "Run"
+    if frame.get_by_role("button", name="Run").is_visible():
+        frame.get_by_role("button", name="Run").click()
+        page.get_by_role("button", name="Yes").click()
+        break  # Exit the loop after finding the button
+
+# Now handle the specific frame for "Server Name"
+if frames.count() > 2:  # Ensure the third frame exists
+    popup_dialog = frames.nth(2)  # Change index based on the required frame
+    popup_dialog.get_by_label("Server Name").select_option("PSUNX")
+    popup_dialog.get_by_role("button", name="OK", exact=True).click()
