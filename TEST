@@ -1,53 +1,54 @@
-from playwright.sync_api import sync_playwright
+    # Navigate to the "Data Migration Workbench" section in the UI
+    navigate_menu(page=page,
+                  menu_sequence=["PeopleTools", 
+                                 "Lifecycle Tools", 
+                                 "Migrate Data",
+                                 "Data Migration Workbench"])
+    # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
 
-def run(playwright):
-    browser = playwright.chromium.launch(headless=False)
-    page = browser.new_page()
+    targetContentFrame.get_by_role("link", name="Add a New Value").click()
+    time.sleep(10)
+    targetContentFrame.get_by_label("Project Name").fill(testdata["Project"])
+    targetContentFrame.get_by_label("Description").fill(testdata["descr"])
+    targetContentFrame.get_by_role("button", name="Add").click()
 
-    # Step 1: Navigate to the main page
-    page.goto("https://example.com")
 
-    # Step 2: Click the 'Copy to File' button directly
-    try:
-        copy_button = page.get_by_role("button", name="Copy to File")
-        assert copy_button.is_visible(), "Copy to File button is not visible."
-        print("Copy to File button is visible. Clicking...")
-        
-        # Click the button and expect the first popup
-        first_popup = page.expect_popup(lambda: copy_button.click())
-        print("First popup opened.")
-    except Exception as e:
-        print(f"Error clicking 'Copy to File' button: {e}")
-        browser.close()
-        return
+    if page.get_by_text("Project already exists. Press").is_visible():
+        page.get_by_role("button", name="OK").click()
+        if targetContentFrame.locator("[id=\"win0divPTADSNAME_LINK\\$0\"]").inner_text()==testdata['dataset']:
+            targetContentFrame.get_by_role("link", name=(testdata['dataset'])).click()
+            targetContentFrame.get_by_role("button", name="Select All", exact=True).click()
+            targetContentFrame.get_by_role("button", name="Delete").click()
+            targetContentFrame.get_by_role("button", name="Insert Content").click()
+    else:
+        targetContentFrame.locator("[id=\"PTADSNAME\\$0\"]").fill(testdata["dataset"])
+        targetContentFrame.get_by_role("cell", name="Save", exact=True).locator("a").click()
+        page.get_by_role("button", name="OK").click()
 
-    # Step 3: In the first popup, wait for and click the 'Run' button
-    try:
-        run_button = first_popup.value.get_by_role("button", name="Run")
-        run_button.wait_for(state="visible")
-        run_button.click()
-        print("Run button clicked.")
-    except Exception as e:
-        print(f"Error interacting with first popup: {e}")
-        browser.close()
-        return
+    popup_dialog = page.frame_locator("[id^='ptModFrame']")
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$0\"]").fill(testdata["SETID"])
+    time.sleep(10)
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").click()
+    time.sleep(10)
+    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").fill(testdata['process_step'])
+    popup_dialog.get_by_role("button", name="Search", exact=True).click()
+    popup_dialog.get_by_role("button", name="Select All", exact=True).click()
+    popup_dialog.get_by_role("button", name="Insert and Return").click()
+    page.get_by_role("button", name="OK").click()
+    targetContentFrame.get_by_role("button", name="Save").click()
 
-    # Step 4: In the second popup, wait for and click the 'OK' button
-    try:
-        second_popup = first_popup.value.expect_popup(lambda: run_button.click())
-        print("Second popup opened.")
+    #targetContentFrame.get_by_role("button", name="Copy To File").click()
 
-        ok_button = second_popup.value.get_by_role("button", name="OK")
-        ok_button.wait_for(state="visible")
-        ok_button.click()
-        print("OK button clicked.")
-    except Exception as e:
-        print(f"Error interacting with second popup: {e}")
-    finally:
-        # Clean up: Close the popups if necessary
-        first_popup.value.close()
-        second_popup.value.close()
-        browser.close()
-
-with sync_playwright() as playwright:
-    run(playwright)
+    #first_popup = page.expect_popup(lambda: targetContentFrame.get_by_role("button", name="Copy To File").click())
+    #print("First popup opened.")
+    targetContentFrame.get_by_role("button", name="Copy To File").click()
+    page.get_by_role("button", name="OK").click()
+    #with page.expect_popup() as page1_info:
+    #    targetContentFrame.get_by_role("button", name="Copy To File").click()
+    #page1_info.get_by_role("button", name="OK").click()
+    #
+    #page1_info.get_by_role("button", name="Run").click()
+    print(popup_dialog)
+    popup_dialog.get_by_role("cell", name="Run", exact=True).locator("a").click()
+    time.sleep(10)
