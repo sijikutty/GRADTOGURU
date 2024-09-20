@@ -1,22 +1,536 @@
-# Locate all frames with IDs starting with 'ptModFrame'
-frames = page.locator("[id^='ptModFrame']")
 
-# Count the number of frames
-frame_count = frames.count()
-print(f"Number of frames with ID starting with 'ptModFrame': {frame_count}")
+<!DOCTYPE html>
+<html class='pc chrome edgec win psc_dir-ltr psc_form-xlarge pt_classic_plus' dir='ltr' lang='en'>
+<!-- Copyright (c) 2000, 2022, Oracle and/or its affiliates.  -->
+<!-- CHROME/126.0/WIN10; ToolsRel=8.60.10; User=PWTEST; DB=FGL2D/ORACLE; AppServ=//p2807hldpst001.thehartford.com:9300; -->
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script language='JavaScript'>
+var  totalTimeoutMilliseconds = 1200000; 
+var  warningTimeoutMilliseconds = 1080000; 
+var timeOutURL = 'http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/?cmd=expire';
+var timeoutWarningPageURL = 'http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/s/WEBLIB_TIMEOUT.PT_TIMEOUTWARNING.FieldFormula.IScript_TIMEOUTWARNING';
+var sRCRequestURL = 'http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/s/WEBLIB_PTRC.ISCRIPT1.FieldFormula.IScript_RC_REQUEST';
+</script> 
 
-# Interact with frames to find the "Run" button
-for index in range(frame_count):
-    frame = frames.nth(index)
+<link id=PSSTYLEREQ_1_css rel='stylesheet' type='text/css' href='/cs/fgl2d/cache/PSSTYLEREQ_1.css' />
+<link id=PSSTYLEDEF_TANGERINE_1_css rel='stylesheet' type='text/css' href='/cs/fgl2d/cache/PSSTYLEDEF_TANGERINE_1.css' />
+<title>Process Scheduler Request</title>
+<script LANGUAGE='JavaScript'>
+try {
+document.domain = "thehartford.com";
+}
+catch(err) {;}
+</script>
+<script language='JavaScript'>
+var winName='win0';
+var winParent = null;
+var modalID = null;
+var modalZoomName = null;
+var baseKey_win0 = "\x1b\r\n";
+var altKey_win0 = "0J15678\xbc\xbe\xbf\xde";
+var ctrlKey_win0 = "JK";
+var saveWarningKeys_win0 = "";
+var firstFocusID = null;
+var bPTDrag = false;
+var refererURL = 'http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL?ICType=Panel&ICElementNum=0&ICStateNum=5&ICResubmit=1&ICAJAX=1&';
+var isNewSaveWarn = true;
+var bAccessibility_win0 =false;
+var bFMode =false;
+var bDoModal_win0 = true;
+var bJSModal_win0 = false;
+var bPromptPage_win0 = false;
+var bTabOverTB_win0 = false;
+var bTabOverPg_win0 = false;
+var bTabOverNonPS_win0 = false;
+var PIA_KEYSTRUCT={PROJECTNAME:"TEST_DMW_AUTOMATION10"};
+var strCurrUrl='http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL?PROJECTNAME=TEST_DMW_AUTOMATION10&PAGE=PRCSRQSTDLG';
+var strReqURL='http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL?PROJECTNAME=TEST_DMW_AUTOMATION10&PAGE=PRCSRQSTDLG&';
+var bIncInNavigation='T';
+var szPinCrefID='PTADSDMW_GBL';
+var szPinCrefReg='T';
+var szPinCrefLabel='Data Migration Workbench';
+var szCrefID='PTADSDMW_GBL';
+var szCrefReged='T';
+var szCrefVisible='F';
+var szCrefLabel='Data Migration Workbench';
+var szCrefUsageType='TARG';
+var localNodes = ['ERP', 'PSFT_EP', 'PSFT_RTBL'];
+var remoteUrls = [];
+bGenDomInfo = false;
+var szCalendarType = 'G';
+var bMenuSrchPage = false;
+var bGuidedAG = false;
+var bWSRP=0;var szMenuSrchText = "-999999-";
+var disablePNSubscriptions=0;var modalCloseUrl = '/cs/fgl2d/cache/PT_TRANS_16PIX_1.png';
+var modalCloseAlt = 'Close';
+var modalResizeUrl= '/cs/fgl2d/cache/PT_RESIZE_IMG_1.svg';
+var modalResizeAlt = 'Drag to resize';
+var modalMoveAlt = 'Drag to move';
+</script>
+<script Language = "JavaScript">
+bPTActEnterKey = true;
+</script>
+<script language='JavaScript'>
+var gridRowSelRgbColor_win0 ='rgb(238,238,238)';
+</script>
+<script language='JavaScript'>
+var PFieldList_win0 = [['PRCSRQSTDLG_WRK_TIMEZONE',1]];
+</script>
+<script LANGUAGE='JavaScript'>
+try {
+document.domain = "thehartford.com";
+}
+catch(err) {;}
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_COMMON_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_AJAX_NET_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_SAVEWARNINGSCRIPT_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_PAGESCRIPT_win0_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_EDITSCRIPT_win0_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_RC_JS_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_POPUPSCRIPT_win0_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_GRIDSCRIPT_win0_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_TYPEAHEAD_win0_MIN_1.js'>
+</script>
+<script language='JavaScript'>
+var nResubmit=0;
+var nLastAction=0;
+var loader=null;
+if (typeof(bCleanHtml) == 'undefined')
+	var bCleanHtml = false;
+setupTimeout2();
+var postUrl_win0='http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL';
+function aAction_win0(form, id, params, bAjax, bPrompt, sAjaxTrfUrl, bWarning, sScriptAfter, nTrfURLType)
+{
+setupTimeout2();
+if ((id != '#ICSave'))
+processing_win0(1,3000);
+aAction0_win0(form, id, params, bAjax, bPrompt, sAjaxTrfUrl, bWarning, sScriptAfter, nTrfURLType);
+}
+function submitAction_win0(form, id, event, sAjaxTrfUrl, bWarning, sScriptAfter, nTrfURLType)
+{
+setupTimeout2();
+if (!ptCommonObj2.isICQryDownload(form, id))
+ { processing_win0(1,3000); }
+preSubmitProcess_win0(form, id);
+var spellcheckpos = id.indexOf('$spellcheck');
+if ((spellcheckpos != -1) && (id.indexOf('#KEYA5') != -1))
+	form.ICAction.value = id.substring(0,spellcheckpos);
+else 
+	form.ICAction.value=id;
+var actionName = form.ICAction.value;
+form.ICXPos.value=ptCommonObj2.getScrollX();
+form.ICYPos.value=ptCommonObj2.getScrollY();
+bcUpdater.storeBcDomData();
+if ((typeof(bAutoSave) != 'undefined') && bAutoSave)
+	form.ICAutoSave.value = '1';
+if (!ptCommonObj2.isAJAXReq(form, id) && !ptCommonObj2.isPromptReq(id)){
+if (nLastAction == 1 && nResubmit > 0) return;
+form.ICResubmit.value=nResubmit;
+form.submit();
+if (!ptCommonObj2.isICQryDownload(form, id))
+	nResubmit++;
+}
+else if (ptCommonObj2.isPromptReq(id))
+	pAction_win0(form, id, arguments[2]);
+else
+	aAction_win0(form, actionName, null, true, false, sAjaxTrfUrl, bWarning, sScriptAfter, nTrfURLType);
+cancelBubble(event);
+}
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_CALENDARSCRIPT1_MIN_1.js'>
+</script>
+<script language='JavaScript' type='text/javascript' src='/cs/fgl2d/cache/PT_CALENDARSCRIPT_win0_MIN_1.js'>
+</script>
+<script language='javascript'>
+var pt_calHeadstyle=" class='PTCALHEAD' "
+var pt_calWeekHeadstyle=" class='PTCALWEEKHEAD' "
+function dateitemrefs()
+{
+this.pt_dateheader = "/cs/fgl2d/cache/PT_PORTAL_IC_CLOSE_SD_CSS_1.gif";
+this.pt_datering = "/cs/fgl2d/cache/PT_CURRENT_DATE_SD_CSS_1.gif";
+this.pt_datesel = "/cs/fgl2d/cache/PT_SELECTED_DATE_SD_CSS_1.gif";
+this.pt_nextmonth = "/cs/fgl2d/cache/PT_RIGHT_SCROLL_SD_CSS_1.gif";
+this.pt_prevmonth= "/cs/fgl2d/cache/PT_LEFT_SCROLL_SD_CSS_1.gif";
+this.pt_daystitle_hijri = "/cs/fgl2d/cache/PT_DATE_TITLE_S6_1.GIF";
+this.pt_daystitle_thai = "/cs/fgl2d/cache/PT_DATE_TITLE_S0_1.GIF";
+this.pt_daystitle_s0 = "/cs/fgl2d/cache/PT_DATE_TITLE_S0_1.GIF";
+this.pt_daystitle_m1 = "/cs/fgl2d/cache/PT_DATE_TITLE_M1_1.GIF";
+this.pt_daystitle_t2 = "/cs/fgl2d/cache/PT_DATE_TITLE_T2_1.GIF";
+this.pt_daystitle_w3 = "/cs/fgl2d/cache/PT_DATE_TITLE_W3_1.GIF";
+this.pt_daystitle_t4 = "/cs/fgl2d/cache/PT_DATE_TITLE_T4_1.GIF";
+this.pt_daystitle_f5 = "/cs/fgl2d/cache/PT_DATE_TITLE_F5_1.gif";
+this.pt_daystitle_s6 = "/cs/fgl2d/cache/PT_DATE_TITLE_S6_1.GIF";
+}
+ 
+function LoadCalendar()
+{
+var dateitems = new dateitemrefs();
+loadImages(dateitems);
+}
+function DatePrompt0_win0(dtfield,promptfield,yrfmt,bsubmit)
+{
+setupTimeout2();
+openDate_win0(dtfield, promptfield, "MDY/"+yrfmt,bsubmit,"G",0);
+}
+</script>
+<script language='JavaScript'  ptdefer='defer'>
+if (typeof ptStyleSheet == "undefined") {
+ptStyleSheet = 'PSSTYLEDEF_TANGERINE';
+}
+function onLoadExt_win0() {
+modalZoomName = null;
+var oWin=window;
+var oDoc=document;
+ptTAObj_win0.init(oWin,oDoc,oDoc.win0,'/cs/fgl2d/cache/PT_SRT2UP_SEL_1.gif','/cs/fgl2d/cache/PT_SRT2DN_SEL_1.gif','/cs/fgl2d/cache/PT_PORTAL_IC_CLOSE_1.gif',500);
+var pt_pageinfo = document.getElementById('pt_pageinfo_win0');
+if (pt_pageinfo) {
+pt_pageinfo.setAttribute('Page', 'PRCSRQSTDLG');
+pt_pageinfo.setAttribute('Component', 'RUN_PTADSAEPRCS');
+pt_pageinfo.setAttribute('Menu', 'UTILITIES');
+pt_pageinfo.setAttribute('Mode', 'CLASSIC');
+}
 
-    # Check if the "Run" button exists within a cell
-    if frame.locator("cell[name='Run']").is_visible():
-        frame.locator("cell[name='Run']").locator("a").click()  # Click the link within the cell
-        page.get_by_role("button", name="Yes").click()  # Confirm if necessary
-        break  # Exit the loop after clicking "Run"
+ g_bAccessibilityMode=false;
+var actn='';
+setKeyEventHandler_win0();ptEvent.add(window,'scroll',positionWAIT_win0);
+ptCommonObj2.generateABNSearchResults(document.win0);
+getGblSrchPageNum(actn);
+if (gSrchRsltPageNum <= 5) getAllRelatedActions();
 
-# Interact with a specific frame for "Server Name"
-if frame_count > 2:  # Ensure the third frame exists
-    popup_dialog = frames.nth(2)  # Change index based on your needs
-    popup_dialog.get_by_label("Server Name").select_option("PSUNX")
-    popup_dialog.get_by_role("button", name="OK", exact=True).click()
+ptCommonObj2.moveUnivSrchDiv();
+if (typeof(HelppopupObj_win0) != 'undefined' && HelppopupObj_win0 != null)
+ HelppopupObj_win0.StopPopup('win0');
+if (typeof(ptLongEditCounter) != 'undefined' && ptLongEditCounter != null)
+   ptLongEditCounter.onLoadLongEditCounter();
+
+doModalOnLoad_win0(true, false);
+ResetGlyph_win0();
+self.scroll(0,0);
+if (typeof ptGridObj_win0 != 'undefined' && ptGridObj_win0)
+ ptGridObj_win0.clearGridArr();
+objToBeFocus = null;
+if (bPTDrag) CancelDragAccessible();
+ bPTDrag = false;
+LoadCalendar();
+if (typeof oWin == 'undefined') setEventHandlers_win0('ICFirstAnchor_win0', 'ICLastAnchor_win0', false);
+ else
+ oWin.setEventHandlers_win0('ICFirstAnchor_win0', 'ICLastAnchor_win0', false);
+setFocus_win0('PRCSRQSTDLG_WRK_SERVERNAME',-1);
+ptLoadingStatus_empty(0);
+setupTimeout2();
+processing_win0(0,3000);
+ptConsole2.enable();
+
+UpdateBreadCrumbs();
+GenerateABN();
+GenerateFakeBC();
+bcUpdateForPTF();if (typeof(myAppsWindowOpenJS) != 'undefined' && myAppsWindowOpenJS != null && myAppsWindowOpenJS != '')
+ {
+try {eval(myAppsWindowOpenJS);} catch(e) {}
+  myAppsWindowOpenJS=null;
+}
+ResetGlyph_win0();setPageletInfoInCtxmenu_win0("true");
+GetDomData(win0, "TargetContent", "#GetDomInfo");
+}
+try{ptEvent.load(onLoadExt_win0);}catch(e){}
+</script></head>
+<body tabindex='-1'  class='PSPAGE PTCPMODAL' >
+<DIV id='pt_envinfo_win0' Browser='CHROME/126.0/WIN10' User='PWTEST' DB='FGL2D/ORACLE' AppServ='//p2807hldpst001.thehartford.com:9300' ToolsRel='8.60.10'></DIV>
+<DIV id='pt_pageinfo_win0' Page='PRCSRQSTDLG' Component='RUN_PTADSAEPRCS' Menu='UTILITIES' Mode='%Mode'><!----></DIV>
+<form id='PTADSDMW' name='win0' method='post' action="http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL"  autocomplete='off' class='PSForm'>
+<DIV class='ps_box-toolshiddens'  id='win0divPSTOOLSHIDDENS'><div class='ps_modalmask_cover psc_hidden' id='pt_modalMaskCover'>&nbsp;</div><div class='ps_modalmask psc_hidden' id='pt_modalMask'>&nbsp;</div><div id='pt_modals' class='PSMODAL'><div id='ptModalShadow' class='popupDragFrame' style='cursor:nw-resize'>&nbsp;</div></div>
+<div class='ps_ajax_console psc_hidden' id='pt_console'></div><div class='ps_typeahead psc_hidden' id='pt_typeahead0'><span id='pt_typeahead' class='spanTextDropdown'>&nbsp;</span></div><div id='WAIT_win0' class='PTCPWAITDIV' style='display:none;position:absolute;right:0;'><img id='processing' class='PTCPWAITDIVIMG' align='left' src='/cs/fgl2d/cache/PT_PROCESSING_FMODE_1.gif' alt='Processing... please wait' title='Processing... please wait' /></div>
+ <div style='visibility:hidden; display:none; position:absolute;left:-10000px;top:auto; width:1px; height:1px;overflow:hidden;' aria-relevant='text additions'  aria-live='assertive' aria-atomic='true' class='psc_processing psc_hidden' id='Delayed_win0'>&nbsp;</div><div aria-relevant='text additions' aria-live='assertive' aria-atomic='true' id='SAVED_win0' class='PTCPSAVEDIV' style='display:none;position:absolute;right:0;'><table role='presentation' border='0' class='PTCPSAVETBL' cellpadding='0' cellspacing='0'><tr><td><img src='/cs/fgl2d/cache/PTPORTAL_POPBOX_LEFT_1.gif' width='7' height='39' border='0' alt=''/></td><td id='saveWait_win0' width='35' align='center' valign='middle' background='/cs/fgl2d/cache/PTPORTAL_POPBOX_CENTER_1.gif'><img src='/cs/fgl2d/cache/PT_LOADER_1.gif' width='24' height='24' alt=''/></td><td nowrap='nowrap' background='/cs/fgl2d/cache/PTPORTAL_POPBOX_CENTER_1.gif'><span aria-relevant='text additions' aria-live='assertive' aria-atomic='true' id='ptStatusText_win0' dir='ltr' class='PSPROCESSING'>&nbsp;</span></td><td><img src='/cs/fgl2d/cache/PTPORTAL_POPBOX_RIGHT_1.gif' width='6' height='39' alt=''/></td><td>&nbsp;</td></tr></table></div><DIV class='x'  id='win0divPSHIDDENFIELDS' style='display:none'><input type='hidden' name='ICType' id='ICType' value='Panel' />
+<input type='hidden' name='ICElementNum' id='ICElementNum' value='0' />
+<input type='hidden' name='ICStateNum' id='ICStateNum' value='8' />
+<input type='hidden' name='ICAction' id='ICAction' value='None' />
+<input type='hidden' name='ICModelCancel' id='ICModelCancel' value='0' />
+<input type='hidden' name='ICXPos' id='ICXPos' value='0' />
+<input type='hidden' name='ICYPos' id='ICYPos' value='0' />
+<input type='hidden' name='ResponsetoDiffFrame' id='ResponsetoDiffFrame' value='-1' />
+<input type='hidden' name='TargetFrameName' id='TargetFrameName' value='None' />
+<input type='hidden' name='FacetPath' id='FacetPath' value='None' />
+<input type='hidden' name='ICFocus' id='ICFocus' value='' />
+<input type='hidden' name='ICSaveWarningFilter' id='ICSaveWarningFilter' value='0' />
+<input type='hidden' name='ICChanged' id='ICChanged' value='-1' />
+<input type='hidden' name='ICSkipPending' id='ICSkipPending' value='0' />
+<input type='hidden' name='ICAutoSave' id='ICAutoSave' value='0' />
+<input type='hidden' name='ICResubmit' id='ICResubmit' value='0' />
+<input type='hidden' name='ICSID' id='ICSID' value='3Z+LonBbpeHgfOSAfg5w4Yg6GPR/IP7JfNiJZGvuJOI=' />
+<input type='hidden' name='ICActionPrompt' id='ICActionPrompt' value='false' />
+<input type='hidden' name='ICTypeAheadID' id='ICTypeAheadID' value='' />
+<input type='hidden' name='ICBcDomData' id='ICBcDomData' value='' />
+<input type='hidden' name='ICPanelName' id='ICPanelName' value='' />
+<input type='hidden' name='ICFind' id='ICFind' value='' />
+<input type='hidden' name='ICAddCount' id='ICAddCount' value='' />
+<input type='hidden' name='ICAppClsData' id='ICAppClsData' value='' />
+</DIV>
+</DIV>
+<a name='ICFirstAnchor_win0' id='ICFirstAnchor_win0'></a>
+<DIV class='ps_box-pagetabs' id='win0divPSPANELTABS'></DIV>
+<DIV class='ps_pagecontainer' id='win0divPAGECONTAINER'><DIV class='ps_pspagecontainer' id='win0divPSPAGECONTAINER'><table role='presentation'  border='0' id='ACE_width' cellpadding='0' cellspacing='0' class='PSPAGECONTAINER' cols='16' width='1039'>
+<tr>
+<td width='1' height='12'></td>
+<td width='13'></td>
+<td width='152'></td>
+<td width='3'></td>
+<td width='6'></td>
+<td width='120'></td>
+<td width='154'></td>
+<td width='33'></td>
+<td width='47'></td>
+<td width='3'></td>
+<td width='91'></td>
+<td width='10'></td>
+<td width='39'></td>
+<td width='221'></td>
+<td width='74'></td>
+<td width='64'></td>
+</tr>
+<tr>
+<td height='1'></td>
+<td colspan='2' rowspan='2'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_OPRIDlbl'><span  class='PSEDITBOXLABEL' >User ID</span></DIV></td>
+<td colspan='5'></td>
+<td colspan='3' rowspan='2'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_RUN_CNTL_IDlbl'><span  class='PSEDITBOXLABEL' >Run Control ID</span></DIV></td>
+</tr>
+<tr>
+<td height='14'></td>
+<td colspan='2'></td>
+<td colspan='3'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_OPRID'><span  class='PSEDITBOX_DISPONLY' id='PRCSRQSTDLG_WRK_OPRID' >PWTEST</span><!-- PRCSRQSTDLG_WRK_OPRID -->
+</DIV></td>
+<td></td>
+<td colspan='4'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_RUN_CNTL_ID'><span  class='PSEDITBOX_DISPONLY' id='PRCSRQSTDLG_WRK_RUN_CNTL_ID' >TEST_DMW_AUTOMATION10</span><!-- PRCSRQSTDLG_WRK_RUN_CNTL_ID -->
+</DIV></td>
+</tr>
+<tr>
+<td height='13' colspan='2'></td>
+<td colspan='12'  valign='top' align='left'>
+<hr width='100%' align='left'  class='PSHORIZONTALRULE' />
+</td>
+</tr>
+<tr>
+<td height='1'></td>
+<td colspan='2' rowspan='3'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_SERVERNAMElbl'><label for='PRCSRQSTDLG_WRK_SERVERNAME' id='PRCSRQSTDLG_WRK_SERVERNAME_LBL' class='PSDROPDOWNLABEL' >Server Name</label></DIV></td>
+<td rowspan='8'></td>
+<td colspan='3' rowspan='3'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_SERVERNAME'><select name='PRCSRQSTDLG_WRK_SERVERNAME' id='PRCSRQSTDLG_WRK_SERVERNAME' tabindex='11' size='1'  class='PSDROPDOWNLIST' style='width:234px; ' onchange="addchg_win0(this);return doEdits_win0(this,'','N','N','N','N','Y','Y',0);" onkeydown="if ((typeof isLoaderInProcess == 'function') && isLoaderInProcess() && ptCommonObj2!=null) { ptCommonObj2.terminateEvent(event); } " >
+<option value="">&nbsp; </option>
+<option value="PSNT">PSNT</option>
+<option value="PSNT2">PSNT2</option>
+<option value="PSUNX" selected='selected'>PSUNX</option>
+</select>
+</DIV></td>
+<td colspan='3'></td>
+<td colspan='6' rowspan='2' nowrap='nowrap'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_RUNDATE'><input type='text' name='PRCSRQSTDLG_WRK_RUNDATE' id='PRCSRQSTDLG_WRK_RUNDATE' tabindex='12' value="09/20/2024"  class='PSEDITBOX PTCPEDITBOXWITHICON ' style='width:127px; ' maxlength='10' onchange="addchg_win0(this);return doEdits_win0(this,'DMDY/450','N','N','N','N','N','N',0);" onkeyup="if (isPromptKey(event))DatePrompt_win0('PRCSRQSTDLG_WRK_RUNDATE','PRCSRQSTDLG_WRK_RUNDATE','450',false);return false;" /><a class='PSHYPERLINK PT_CLASSICPLUS_CALENDAR'  name='PRCSRQSTDLG_WRK_RUNDATE$prompt' id='PRCSRQSTDLG_WRK_RUNDATE$prompt' role='button' aria-labelledby='PRCSRQSTDLG_WRK_RUNDATE$prompt$img'tabindex='13' onfocus='doFocus_win0(this,true,false);' href="javascript:DatePrompt_win0('PRCSRQSTDLG_WRK_RUNDATE','PRCSRQSTDLG_WRK_RUNDATE$prompt','450',false);"><img src="/cs/fgl2d/cache/PT_CALENDAR_PROMPT_NUI_1.svg" alt='Calendar Run Date' title='Calendar Run Date' id='PRCSRQSTDLG_WRK_RUNDATE$prompt$img' name='PRCSRQSTDLG_WRK_RUNDATE$prompt$img' class='PT_CLASSICPLUS_CALENDAR'  border='0' align='absmiddle' style='vertical-align:middle;' /></a>
+</DIV></td>
+</tr>
+<tr>
+<td height='22'></td>
+<td colspan='2' rowspan='3'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_RUNDATElbl'><label for='PRCSRQSTDLG_WRK_RUNDATE' id='PRCSRQSTDLG_WRK_RUNDATE_LBL' class='PSEDITBOXLABEL' >Run Date</label></DIV></td>
+</tr>
+<tr>
+<td height='1'></td>
+<td colspan='4'></td>
+<td colspan='3' rowspan='5' nowrap='nowrap'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_RESETTOCURRDTTM'><a role='presentation' class='PSPUSHBUTTON Left' onclick='javascript:if(event.target.id == this.firstChild.firstChild.id) { return true; } else return((this.firstChild &amp;&amp; this.firstChild.firstChild) != null ? this.firstChild.firstChild.click() : false);'><span style='background-Color: transparent;'><input type='button' name='PRCSRQSTDLG_WRK_RESETTOCURRDTTM' id='PRCSRQSTDLG_WRK_RESETTOCURRDTTM' tabindex='17' value='Reset to Current Date/Time'  class='PSPUSHBUTTON' style='width:273px; ' onclick="submitAction_win0(document.win0,this.id,event);" /></span></a><!-- PRCSRQSTDLG_WRK_RESETTOCURRDTTM --></DIV></td>
+</tr>
+<tr>
+<td height='1'></td>
+<td colspan='2' rowspan='3'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_RECURNAMElbl'><label for='PRCSRQSTDLG_WRK_RECURNAME' id='PRCSRQSTDLG_WRK_RECURNAME_LBL' class='PSDROPDOWNLABEL' >Recurrence</label></DIV></td>
+<td colspan='3' rowspan='2'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_RECURNAME'><select name='PRCSRQSTDLG_WRK_RECURNAME' id='PRCSRQSTDLG_WRK_RECURNAME' tabindex='14' size='1'  class='PSDROPDOWNLIST' style='width:234px; ' onchange="addchg_win0(this);submitAction_win0(this.form,this.id);/*8000,0*/" onkeydown="if ((typeof isLoaderInProcess == 'function') && isLoaderInProcess() && ptCommonObj2!=null) { ptCommonObj2.terminateEvent(event); } " >
+<option value="" selected='selected'>&nbsp; </option>
+<option value="CorpTax_General_WD1-10_12pm">CorpTax_General_WD1-10_12pm</option>
+<option value="CorpTax_General_WD1-11_2pm">CorpTax_General_WD1-11_2pm</option>
+<option value="CorpTax_General_WD1-11_4am">CorpTax_General_WD1-11_4am</option>
+<option value="CorpTax_NADT_WD1-10_1215pm">CorpTax_NADT_WD1-10_1215pm</option>
+<option value="CorpTax_NADT_WD1-11_215pm">CorpTax_NADT_WD1-11_215pm</option>
+<option value="CorpTax_NADT_WD1-11_415am">CorpTax_NADT_WD1-11_415am</option>
+<option value="Daily">Daily</option>
+<option value="Daily 10 PM">Daily 10 PM</option>
+<option value="Daily 11 pm">Daily 11 pm</option>
+<option value="Daily Purge">Daily Purge</option>
+<option value="Daily Search Rebuild">Daily Search Rebuild</option>
+<option value="DailyEdit_1pm">DailyEdit_1pm</option>
+<option value="DailyEdit_5pm">DailyEdit_5pm</option>
+<option value="DailyEdit_9am">DailyEdit_9am</option>
+<option value="DailyPost_11am">DailyPost_11am</option>
+<option value="DailyPost_3pm">DailyPost_3pm</option>
+<option value="DailyPost_6am">DailyPost_6am</option>
+<option value="DailyPost_7pm">DailyPost_7pm</option>
+<option value="Daily_5AM">Daily_5AM</option>
+<option value="EOCM Daily Partner Cleanup">EOCM Daily Partner Cleanup</option>
+<option value="Every15Mins">Every15Mins</option>
+<option value="HFD_EDIT_CLOSE">HFD_EDIT_CLOSE</option>
+<option value="HF_MCP_WD2-WD10_0230am">HF_MCP_WD2-WD10_0230am</option>
+<option value="M-F Every4Hr From 11AM">M-F Every4Hr From 11AM</option>
+<option value="M-F Every4Hr from 9AM">M-F Every4Hr from 9AM</option>
+<option value="M-F at 5pm">M-F at 5pm</option>
+<option value="Monthly_1am">Monthly_1am</option>
+<option value="PC_WEEKLY">PC_WEEKLY</option>
+<option value="PerfMon Reaper Recurrence">PerfMon Reaper Recurrence</option>
+<option value="RS">RS</option>
+<option value="SPRO_HCM_RM_EXCEP_CHECK">SPRO_HCM_RM_EXCEP_CHECK</option>
+<option value="SP_HCM_INTG_FOR_DELIVERABLE_WO">SP_HCM_INTG_FOR_DELIVERABLE_WO</option>
+<option value="Spro_User_Profile_Created_Chek">Spro_User_Profile_Created_Chek</option>
+<option value="Workflow Init 10 Mins">Workflow Init 10 Mins</option>
+<option value="Workflow Init 60 Sec">Workflow Init 60 Sec</option>
+</select>
+</DIV></td>
+<td rowspan='4'></td>
+<td colspan='3' rowspan='4' nowrap='nowrap'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_RUNTIME'><input type='text' name='PRCSRQSTDLG_WRK_RUNTIME' id='PRCSRQSTDLG_WRK_RUNTIME' tabindex='15' value="6:27:00PM"  class='PSEDITBOX' style='width:127px; ' maxlength='10' onchange="addchg_win0(this);return doEdits_win0(this,'TPM;AM','N','N','N','N','N','N',0);"  />
+</DIV></td>
+</tr>
+<tr>
+<td height='23'></td>
+<td colspan='2' rowspan='3'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_RUNTIMElbl'><label for='PRCSRQSTDLG_WRK_RUNTIME' id='PRCSRQSTDLG_WRK_RUNTIME_LBL' class='PSEDITBOXLABEL' >Run Time</label></DIV></td>
+</tr>
+<tr>
+<td height='1'></td>
+<td colspan='2' rowspan='3' nowrap='nowrap'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLG_WRK_TIMEZONE'><input type='text' name='PRCSRQSTDLG_WRK_TIMEZONE' id='PRCSRQSTDLG_WRK_TIMEZONE' tabindex='18' value=""  class='PSEDITBOX PTCPEDITBOXWITHICON ' style='width:90px; ' maxlength='9'  /><a class='PSHYPERLINK PT_CLASSICPLUS_PROMPT_LOOKUP'  name='PRCSRQSTDLG_WRK_TIMEZONE$prompt' id='PRCSRQSTDLG_WRK_TIMEZONE$prompt' role='button' aria-labelledby='PRCSRQSTDLG_WRK_TIMEZONE$prompt$img'tabindex='19' href="javascript:pAction_win0(document.win0,'PRCSRQSTDLG_WRK_TIMEZONE$prompt');"><img src="/cs/fgl2d/cache/PT_LOOKUP_PROMPT_NUI_1.svg" alt='Look up Time Zone' title='Look up Time Zone' id='PRCSRQSTDLG_WRK_TIMEZONE$prompt$img' name='PRCSRQSTDLG_WRK_TIMEZONE$prompt$img' class='PT_CLASSICPLUS_PROMPT_LOOKUP'  border='0' align='absmiddle' style='vertical-align:middle;' /></a>
+</DIV></td>
+</tr>
+<tr>
+<td height='4'></td>
+<td colspan='2' rowspan='2'  valign='top' align='right'>
+<DIV  class=' PT_CP_DIV_LABEL' id='win0divPRCSRQSTDLG_WRK_TIMEZONElbl'><label for='PRCSRQSTDLG_WRK_TIMEZONE' id='PRCSRQSTDLG_WRK_TIMEZONE_LBL' class='PSEDITBOXLABEL' >Time Zone</label></DIV></td>
+</tr>
+<tr>
+<td height='18'></td>
+<td colspan='10'  valign='top' align='left'>
+<DIV    id='win0divPSTIMEZONE_TZDESCR'><span  class='PSEDITBOX_DISPONLY' id='PSTIMEZONE_TZDESCR' >&nbsp;</span><!-- PSTIMEZONE_TZDESCR -->
+</DIV></td>
+</tr>
+<tr>
+<td height='136' colspan='2'></td>
+<td colspan='13'  valign='top' align='left'>
+<DIV    id='win0divPRCSRQSTDLGLIST$0'><div class='PTCPGRIDTITLE' onclick='javascript:if(event.target.id == this.firstElementChild.firstElementChild.id) { return true; } else return((this.firstElementChild &amp;&amp; this.firstElementChild.firstElementChild) != null ? this.firstElementChild.firstElementChild.click() : false);'  align='left' > Process List </div>
+<table cellspacing='0' class='PSLEVEL1GRIDWBO'  id='PRCSRQSTDLGLIST$scroll$0' dir='ltr' cols='1' width='1107' cellpadding='0'>
+<tr><td>
+<table dir='ltr' border='0' cellpadding='2' cellspacing='0' cols='7' width='100%' class='PSLEVEL1GRID' style='border-style:none' >
+<tr>
+<th scope='col' width='38' align='left' class='PSLEVEL1GRIDCOLUMNHDR PSGRIDFIRSTCOLUMN' ><a name='PRCSRQSTDLGLIST$srt0$0' id='PRCSRQSTDLGLIST$srt0$0' role='button' tabindex='34' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt0$0');" title="Click to sort ascending">Select</a></th>
+<th scope='col' width='230' align='left' class='PSLEVEL1GRIDCOLUMNHDR' ><a name='PRCSRQSTDLGLIST$srt1$0' id='PRCSRQSTDLGLIST$srt1$0' role='button' tabindex='35' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt1$0');" title="Click to sort ascending">Description</a></th>
+<th scope='col' width='113' align='left' class='PSLEVEL1GRIDCOLUMNHDR' ><a name='PRCSRQSTDLGLIST$srt2$0' id='PRCSRQSTDLGLIST$srt2$0' role='button' tabindex='36' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt2$0');" title="Click to sort ascending">Process Name</a></th>
+<th scope='col' width='112' align='left' class='PSLEVEL1GRIDCOLUMNHDR' ><a name='PRCSRQSTDLGLIST$srt3$0' id='PRCSRQSTDLGLIST$srt3$0' role='button' tabindex='37' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt3$0');" title="Click to sort ascending">Process Type</a></th>
+<th scope='col' width='70' align='left' class='PSLEVEL1GRIDCOLUMNHDR' ><span  class='PSLEVEL1GRIDCOLUMNHDR' id='PRCSRQSTDLGLIST$srt4$0$star'>*</span><a name='PRCSRQSTDLGLIST$srt4$0' id='PRCSRQSTDLGLIST$srt4$0' role='button' tabindex='38' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt4$0');" title="Click to sort ascending">Type</a></th>
+<th scope='col' width='73' align='left' class='PSLEVEL1GRIDCOLUMNHDR' ><span  class='PSLEVEL1GRIDCOLUMNHDR' id='PRCSRQSTDLGLIST$srt5$0$star'>*</span><a name='PRCSRQSTDLGLIST$srt5$0' id='PRCSRQSTDLGLIST$srt5$0' role='button' tabindex='39' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt5$0');" title="Click to sort ascending">Format</a></th>
+<th scope='col' width='95' align='left' class='PSLEVEL1GRIDCOLUMNHDR' ><a name='PRCSRQSTDLGLIST$srt6$0' id='PRCSRQSTDLGLIST$srt6$0' role='button' tabindex='40' class='PSLEVEL1GRIDCOLUMNHDR' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLGLIST$srt6$0');" title="Click to sort ascending">Distribution</a></th>
+</tr>
+<tr id='trPRCSRQSTDLGLIST$0_row1' bufnum='0' valign='center' onClick="HighLightTR('rgb(238,238,238)','','trPRCSRQSTDLGLIST$0_row1');" onMouseOver="hoverLightTR('rgb(253,255,200)','',0,'trPRCSRQSTDLGLIST$0_row1');" onmouseout="hoverLightTR('rgb(253,255,200)','',1,'trPRCSRQSTDLGLIST$0_row1');">
+<td align='left'  style='white-space:nowrap;' height='35' class='PSLEVEL1GRIDROW PSGRIDFIRSTCOLUMN' >
+<DIV    id='win0divPRCSRQSTDLG_WRK_SELECT_FLAG$0'><input type='hidden' name='PRCSRQSTDLG_WRK_SELECT_FLAG$chk$0' id='PRCSRQSTDLG_WRK_SELECT_FLAG$chk$0' value="Y" />
+<input type='checkbox' name='PRCSRQSTDLG_WRK_SELECT_FLAG$0' id='PRCSRQSTDLG_WRK_SELECT_FLAG$0' tabindex='72' value="Y" checked='checked' onclick="setupTimeout2();    this.form.PRCSRQSTDLG_WRK_SELECT_FLAG$chk$0.value=(this.checked?'Y':'N');doFocus_win0(this,false,true);" />
+</DIV></td>
+<td class='PSLEVEL1GRIDROW'  align='left'  class='PSLEVEL1GRIDROW' >
+<DIV    id='win0divDESCR$0'><span id='DESCR$span$0'  class='PSHYPERLINKDISABLED'  title='Description' >PTADSAEPRCS</span><!-- DESCR$0 --></DIV></td>
+<td class='PSLEVEL1GRIDROW'  align='left'  class='PSLEVEL1GRIDROW' >
+<DIV    id='win0divPRCSRQSTDLGLIST_PRCSNAME$0'><span  class='PSEDITBOX_DISPONLY' id='PRCSRQSTDLGLIST_PRCSNAME$0' >PTADSAEPRCS</span><!-- PRCSRQSTDLGLIST_PRCSNAME$0 -->
+</DIV></td>
+<td class='PSLEVEL1GRIDROW'  align='left'  class='PSLEVEL1GRIDROW' >
+<DIV    id='win0divPRCSRQSTDLGLIST_PRCSTYPEDESCR$0'><span  class='PSEDITBOX_DISPONLY' id='PRCSRQSTDLGLIST_PRCSTYPEDESCR$0' >Application Engine</span><!-- PRCSRQSTDLGLIST_PRCSTYPEDESCR$0 -->
+</DIV></td>
+<td class='PSLEVEL1GRIDROW'  align='left'  class='PSLEVEL1GRIDROW' >
+<DIV    id='win0divPRCSRQSTDLG_WRK_OUTDESTTYPE$0'><select name='PRCSRQSTDLG_WRK_OUTDESTTYPE$0' id='PRCSRQSTDLG_WRK_OUTDESTTYPE$0' tabindex='74' size='1'  class='PSDROPDOWNLIST' style='width:85px; ' onchange="addchg_win0(this);submitAction_win0(this.form,this.id);/*a000,200000*/" onkeydown="if ((typeof isLoaderInProcess == 'function') && isLoaderInProcess() && ptCommonObj2!=null) { ptCommonObj2.terminateEvent(event); } "  aria-required='true'>
+<option value="5">Email</option>
+<option value="2">File</option>
+<option value="6" selected='selected'>Web</option>
+<option value="4">Window</option>
+</select>
+</DIV></td>
+<td class='PSLEVEL1GRIDROW'  align='left'  class='PSLEVEL1GRIDROW' >
+<DIV    id='win0divPRCSRQSTDLG_WRK_OUTDESTFORMAT$0'><select name='PRCSRQSTDLG_WRK_OUTDESTFORMAT$0' id='PRCSRQSTDLG_WRK_OUTDESTFORMAT$0' tabindex='75' size='1'  class='PSDROPDOWNLIST' style='width:89px; ' onchange="addchg_win0(this);submitAction_win0(this.form,this.id);/*8000,200000*/" onkeydown="if ((typeof isLoaderInProcess == 'function') && isLoaderInProcess() && ptCommonObj2!=null) { ptCommonObj2.terminateEvent(event); } "  aria-required='true'>
+<option value="5">HTM</option>
+<option value="2">PDF</option>
+<option value="14" selected='selected'>TXT</option>
+<option value="8">XLS</option>
+<option value="17">XML</option>
+<option value="20">XMLP</option>
+</select>
+</DIV></td>
+<td class='PSLEVEL1GRIDROW'  align='left'  class='PSLEVEL1GRIDROW' >
+<DIV    id='win0divPRCSRQSTDLG_WRK_DIST_DETAIL_BTN$0'><span id='PRCSRQSTDLG_WRK_DIST_DETAIL_BTN$span$0'  class='PSHYPERLINK'  title='Distribute To' ><a name='PRCSRQSTDLG_WRK_DIST_DETAIL_BTN$0' id='PRCSRQSTDLG_WRK_DIST_DETAIL_BTN$0'  ptlinktgt='pt_peoplecode' tabindex='76' onclick='javascript:cancelBubble(event);' href="javascript:submitAction_win0(document.win0,'PRCSRQSTDLG_WRK_DIST_DETAIL_BTN$0');"  class='PSHYPERLINK' >Distribution</a></span><!-- PRCSRQSTDLG_WRK_DIST_DETAIL_BTN$0 --></DIV></td>
+</tr>
+</table></td></tr>
+</table>
+</DIV>
+</td>
+</tr>
+<tr>
+<td height='9' colspan='16'></td>
+</tr>
+</table>
+</DIV>
+<DIV class='' id='win0divPSTOOLBAR'><span style='margin: 5px'><a class='PSPUSHBUTTON Left PSPRIMARY' role='presentation' onclick='javascript:if(event.target.id == this.firstChild.firstChild.id) { return true; } else return((this.firstChild &amp;&amp; this.firstChild.firstChild) != null ? this.firstChild.firstChild.click() : false);'><span style='background-Color: transparent;border:0;'><input type='button' id='#ICSave' name='#ICSave'  class='PSPUSHBUTTONTBOK PSPRIMARY'   value='OK' onclick="javascript:submitAction_win0(document.win0, '#ICSave');" tabindex='230'/> </span></a><a class='PSPUSHBUTTON Left' role='presentation' onclick='javascript:if(event.target.id == this.firstChild.firstChild.id) { return true; } else return((this.firstChild &amp;&amp; this.firstChild.firstChild) != null ? this.firstChild.firstChild.click() : false);'><span style='background-Color: transparent;border:0;'><input type='button' id='#ICCancel' name='#ICCancel'  class='PSPUSHBUTTONTBCANCEL'   value='Cancel' onclick="javascript:doUpdateParent(document.win0,'#ICCancel');" tabindex='231'/> </span></a></span></DIV>
+<div id='pt_dragtxt' class='PSLEVEL1GRIDCOLUMNHDR'></div><div onmouseup='ptGridResizeObj_win0.TDselUp();' onmousemove='ptGridResizeObj_win0.TDselMove();' id='pt_dragResize' onmouseout='ptGridResizeObj_win0.dragTD=false;' onmbouseover='ptGridResizeObj_win0.dragTD=true;'></div></DIV>
+<DIV class='' id='win0divPSPANELTABLINKS'></DIV>
+<div id='DetachDiv' height=0 width=0 frameborder=0></div>
+<a name='ICLastAnchor_win0' id='ICLastAnchor_win0'></a>
+
+<!-- Embedded Help popup Begin -->
+<div id='HelppopupDiv_win0' style='display:none; position:absolute; top:0; left:0'>t</div>
+<div id='HelpDragFrame_win0' class='popupDragFrame'>&nbsp;</div><table id='HelppopupContainer_win0' width='20' border='0' cellpadding='0' cellspacing='0' style='opacity:1; display:none; position:absolute; top:0; left:0' >
+<tr>
+<td id='HelppopupInner_win0' class='HelppopupInner' align='left' valign='top' style='position:absolute;z-Index:302;'>
+<div id='HelppopupTitleBar_win0' class='PTPOPUP_HEADER HelppopupTitleBar' style='width:341px'><div id='HelppopupTitleBarLeftImage'></div><div id='HelppopupTitleBarMiddle_win0' style='width:333px' class='HelppopupTitleBarMiddle' dir='ltr'>
+<table>
+<td id='HelppopupTitle_win0' style='width:290px; cursor: move;'><span class='PTPOPUP_TITLE'>Help</span></td>
+<td style='width:45px'><a id='ptcphelppopupclosediv'><img id='#HELPPOPUPCLOSE' tabindex='0' class='PTCPHELPPOPUPCLOSEIMG' style='cursor:pointer' title='Close' alt='Close' onclick='HelppopupObj_win0.StopPopup("win0");' onKeyPress="var kC=keyPressHandler(event); if (kC==13 || kC==32) HelppopupObj_win0.StopPopup('win0');" align='right' src='/cs/fgl2d/cache/PT_MODAL_CLOSE_NUI_1.svg'/></a></td>
+</table>
+</div><div id='HelppopupTitleBarRightImage'></div></div><div id='HelpdivpopupFrame_win0' class='MOBGImage HelpdivpopupFrame' tabindex='-1' onclick='HelppopupObj_win0.SetFocusFlag(false);' style='border: 1px #bcbaba solid; padding:12px; overflow:auto;'>test</div><div id='HelppopupShadow' class='popupShadow' style='position:absolute;z-index:-1;'><div id='HelppopupShadowTopRightCorner' class='popupShadowTopRightCorner' style='height:10px;'>&nbsp;</div><div id='HelppopupShadowTop' class='popupShadowTop' >&nbsp;</div><div id='HelppopupShadowBottom' class='popupShadowBottom' style='height:10px'><div id='HelppopupShadowBottomLeftCorner' class='popupShadowBottomLeftCorner' style='height:10px;width:10px'>&nbsp;</div><div id='HelppopupShadowBottomMiddle' class='popupShadowBottomMiddle' style='height:10px;'>&nbsp;</div><div id='HelppopupShadowBottomRightCorner' class='popupShadowBottomRightCorner' style='height:10px;width:10px'>&nbsp;</div></div></div></td>
+</tr>
+</table>
+<!-- Embedded Help popup End  -->
+<div id='pt_fakeBC' style='display:none'><ul></ul></div></form>
+<div id='popupDragFrame' class='popupDragFrame'>&nbsp;</div>
+<!-- Mouse-over popup Begin -->
+<table id='win0MOpopupContainer' width='20' border='0' cellpadding='0' cellspacing='0' style='display:none; position:absolute; top:0; left:0;' onMouseOver="MOpopupObj_win0.StartPopup('win0MOpopupContainer', '');" onMouseOut="MOpopupObj_win0.StopPopup();"><tr>
+<td id='win0MOpopupInner' height='25' width='20' align='left' valign='top' class='MOBGImage'>
+<div id='win0MOdivpopupFrame' tabindex='-1' onclick='MOpopupObj_win0.SetFocusFlag(false);' style='overflow:auto; width:20px; height: 60px; padding:8px; box-shadow:0 0 5px #000000; background-color:white; border: 1px solid #666666;'>test</div></td>
+</tr>
+</table>
+<!-- Mouse-over popup End  -->
+</body>
+<script language='JavaScript'>
+var nMaxSavedStates=5;
+var sHistURL="http://p2807hldpst001.thehartford.com:8300/psc/fgl2d/EMPLOYEE/ERP/c/UTILITIES.PTADSDMW.GBL?page=PRCSRQSTDLG&";
+var bCloseModal = false;
+var bICList = false;
+var bHtml5Doc = true;
+var bClearBackState=false;
+var bPageTransfered=false;
+var bTransferAnimate=false;
+var bCleanHtml = true;
+var bDefer = false;
+document.hiddenFldArr_win0 =new Array('ICType','ICElementNum','ICStateNum','ICAction','ICModelCancel','ICXPos','ICYPos','ResponsetoDiffFrame','TargetFrameName','FacetPath','ICFocus','ICSaveWarningFilter','ICChanged','ICSkipPending','ICAutoSave','ICResubmit','ICSID','ICActionPrompt','ICTypeAheadID','ICBcDomData','ICPanelName','ICFind','ICAddCount','ICAppClsData');
+document.chgFldArr_win0 = new Array();
+var bCleanHtml = true;
+var bDefer = false;
+document.hiddenFldArr_win0 =new Array('ICType','ICElementNum','ICStateNum','ICAction','ICModelCancel','ICXPos','ICYPos','ResponsetoDiffFrame','TargetFrameName','FacetPath','ICFocus','ICSaveWarningFilter','ICChanged','ICSkipPending','ICAutoSave','ICResubmit','ICSID','ICActionPrompt','ICTypeAheadID','ICBcDomData','ICPanelName','ICFind','ICAddCount','ICAppClsData');
+document.chgFldArr_win0 = new Array();
+var bCDATA = false;
+var bAccessibleLayout = false;
+var bLoadCompleted = true;
+</script></html>
