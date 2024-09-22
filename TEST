@@ -1,29 +1,27 @@
-            {
-                "key"       : "Unit test GUI - b56",
-                "env"       : "Dev",
-                "runflag"   : "Y",
-                "scenario"  : "test_k_PT_PSUSER",
-                "testdata"  : {
-                    "permissionlist"   : "k_PT_PSUSER",
-                    "menu":"NUI_FRAMEWORK",
-                    "component1" : "PSUSEROPTNDEFINE",
-                    "component2"  : "PTNUI_HP_COMP",
-                    "component3": "PTNUI_MENU_COMP",
-                    "component4": "PTNUI_MRU_COMP",
-                    "component5" : "PTNUI_MYFAV_COMP",
-                    "component6"  : "PTNUI_NAVBAR",
-                    "component7": "PTNUI_NAVCOLL_COMP",
-                    "component8": "PT_LANDINGPAGE",
-                    "component9": "PT_MDSTARTPAGE_NUI",
-                    "component10": "PT_QAB_POPUP_FL"
-                }
-            },
+# Assuming testdata is defined as in your JSON
+components = [
+    testdata['component1'],
+    testdata['component2'],
+    testdata['component3'],
+    testdata['component4'],
+    testdata['component5'],
+    testdata['component6'],
+    testdata['component7'],
+    testdata['component8'],
+    testdata['component9'],
+    testdata['component10'],
+]
 
-    sample_select_row = frame.locator("tr[id^='tr']").filter(has_text=testdata['menu'])
-    sample_select_row.get_by_text("Edit Components").click()
+# Select the row based on menu
+sample_select_row = frame.locator("tr[id^='tr']").filter(has_text=testdata['menu'])
+sample_select_row.get_by_text("Edit Components").click()
 
-    component1 = frame.locator("tr[id^='tr']").filter(has_text=testdata['component1'])
-    if component1.get_by_role("checkbox").is_checked:
-        print("Component has been selected properly")
+# Loop through each component and check if it's selected
+for component in components:
+    component_locator = frame.locator("tr[id^='tr']").filter(has_text=component)
+    checkbox = component_locator.get_by_role("checkbox")
+
+    if checkbox.is_checked:
+        print(f"{component} has been selected properly")
     else:
-        raise Exception("Components are not selected properly")
+        raise Exception(f"{component} is not selected properly")
