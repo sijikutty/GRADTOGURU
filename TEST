@@ -1,74 +1,29 @@
-
-                    "SETID"   : "SHARE",
-                    "Alloc_step":"DTAUNR_C",
-                    "Project" : "TEST_DMW_AUTOMATION10",
-                    "descr"  : "TEST",
-                    "dataset": "kk_COMP_ALLOCATIONS_GBL",
-                    "process_step": "DTAUNR_C1",
-
-
-                    "process_name":"PTADSAEPRCS"
+            {
+                "key"       : "Unit test GUI - b56",
+                "env"       : "Dev",
+                "runflag"   : "Y",
+                "scenario"  : "test_k_PT_PSUSER",
+                "testdata"  : {
+                    "permissionlist"   : "k_PT_PSUSER",
+                    "menu":"NUI_FRAMEWORK",
+                    "component1" : "PSUSEROPTNDEFINE",
+                    "component2"  : "PTNUI_HP_COMP",
+                    "component3": "PTNUI_MENU_COMP",
+                    "component4": "PTNUI_MRU_COMP",
+                    "component5" : "PTNUI_MYFAV_COMP",
+                    "component6"  : "PTNUI_NAVBAR",
+                    "component7": "PTNUI_NAVCOLL_COMP",
+                    "component8": "PT_LANDINGPAGE",
+                    "component9": "PT_MDSTARTPAGE_NUI",
+                    "component10": "PT_QAB_POPUP_FL"
                 }
+            },
 
-from playwright.sync_api import Page,expect
-from ps_utils import navigate_menu
-import pytest 
-import time
-from automation_utils import get_testdata, connect_to_oracleDB, execute_query
+    sample_select_row = frame.locator("tr[id^='tr']").filter(has_text=testdata['menu'])
+    sample_select_row.get_by_text("Edit Components").click()
 
-@pytest.mark.parametrize("testcase", get_testdata("test_datamigration"))
-def test_datamigration(page: Page, testcase):
-    # Extract test data for the current test case
-    testdata = testcase["testdata"]  
-
-
-    # Navigate to the "Data Migration Workbench" section in the UI
-    navigate_menu(page=page,
-                  menu_sequence=["PeopleTools", 
-                                 "Lifecycle Tools", 
-                                 "Migrate Data",
-                                 "Data Migration Workbench"])
-    # Locate the target iframe for the form
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-
-    targetContentFrame.get_by_role("link", name="Add a New Value").click()
-    time.sleep(10)
-    targetContentFrame.get_by_label("Project Name").fill(testdata["Project"])
-    targetContentFrame.get_by_label("Description").fill(testdata["descr"])
-    targetContentFrame.get_by_role("button", name="Add").click()
-
-
-    if page.get_by_text("Project already exists. Press").is_visible():
-        page.get_by_role("button", name="OK").click()
-        if targetContentFrame.locator("[id=\"win0divPTADSNAME_LINK\\$0\"]").inner_text()==testdata['dataset']:
-            targetContentFrame.get_by_role("link", name=(testdata['dataset'])).click()
-            targetContentFrame.get_by_role("button", name="Select All", exact=True).click()
-            targetContentFrame.get_by_role("button", name="Delete").click()
-            targetContentFrame.get_by_role("button", name="Insert Content").click()
+    component1 = frame.locator("tr[id^='tr']").filter(has_text=testdata['component1'])
+    if component1.get_by_role("checkbox").is_checked:
+        print("Component has been selected properly")
     else:
-        targetContentFrame.locator("[id=\"PTADSNAME\\$0\"]").fill(testdata["dataset"])
-        targetContentFrame.get_by_role("cell", name="Save", exact=True).locator("a").click()
-        page.get_by_role("button", name="OK").click()
-
-    popup_dialog = page.frame_locator("[id^='ptModFrame']")
-    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$0\"]").fill(testdata["SETID"])
-    time.sleep(10)
-    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").click()
-    time.sleep(10)
-    popup_dialog.locator("[id=\"PSPROJBINDITEM_PTADSBINDEXPR\\$1\"]").fill(testdata['process_step'])
-    popup_dialog.get_by_role("button", name="Search", exact=True).click()
-    popup_dialog.get_by_role("button", name="Select All", exact=True).click()
-    popup_dialog.get_by_role("button", name="Insert and Return").click()
-    page.get_by_role("button", name="OK").click()
-    targetContentFrame.get_by_role("button", name="Save").click()
-    targetContentFrame.get_by_role("button", name="Copy To File").click()
-    page.get_by_role("button", name="OK").click()
-    #print(popup_dialog)
-    popup_dialog.get_by_role("cell", name="Run", exact=True).locator("a").click()
-    page.get_by_role("button", name="Yes").click()
-    #time.sleep(10)
-    page.fill('input[name="PRCSRQSTDLG_WRK_SERVERNAME"]', 'PSNT') 
-    #time.sleep(10)
-    #page.click("input[id='#ICSave']")
-    time.sleep(10)
-   
+        raise Exception("Components are not selected properly")
