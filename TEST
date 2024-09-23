@@ -1,27 +1,24 @@
-# Assuming testdata is defined as in your JSON
-components = [
-    testdata['component1'],
-    testdata['component2'],
-    testdata['component3'],
-    testdata['component4'],
-    testdata['component5'],
-    testdata['component6'],
-    testdata['component7'],
-    testdata['component8'],
-    testdata['component9'],
-    testdata['component10'],
-]
+    frame.get_by_role("button", name="Refresh").click()
 
-# Select the row based on menu
-sample_select_row = frame.locator("tr[id^='tr']").filter(has_text=testdata['menu'])
-sample_select_row.get_by_text("Edit Components").click()
+    run_status = frame.locator("[id=\"PMN_PRCSLIST_RUNSTATUSDESCR\\$0\"]").inner_text
 
-# Loop through each component and check if it's selected
-for component in components:
-    component_locator = frame.locator("tr[id^='tr']").filter(has_text=component)
-    checkbox = component_locator.get_by_role("checkbox")
+    # Wait for Run status to be Success/Not Success/Warning/Error for approx 10min.
+    retry = 0
+    while retry < 600:
+        expected_values=['Success','Error','Warning','No Success']
 
-    if checkbox.is_checked:
-        print(f"{component} has been selected properly")
-    else:
-        raise Exception(f"{component} is not selected properly")
+        if run_status.text_content() in expected_values:
+            break
+
+        else:
+            frame.get_by_role("button", name="Refresh").click() 
+            retry += 1
+
+    if run_status.text_content().lower() != "success":
+        raise Exception(f"Process Status : {run_status.text_content()}")
+
+---
+	Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebButton("Refresh").Click
+
+Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").innertext()
+	
