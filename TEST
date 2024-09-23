@@ -9,10 +9,21 @@ retry = 0
 Dim expected_values
 expected_values = Array("Success", "Error", "Warning", "No Success")
 
+Dim isStatusValid
+isStatusValid = False
+
 Do While retry < 600
     run_status = Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
 
-    If Not IsError(Application.Match(run_status, expected_values, 0)) Then
+    ' Check if run_status is one of the expected values
+    For Each expected_status In expected_values
+        If run_status = expected_status Then
+            isStatusValid = True
+            Exit For
+        End If
+    Next
+
+    If isStatusValid Then
         Exit Do
     Else
         Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebButton("Refresh").Click
