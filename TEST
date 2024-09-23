@@ -1,2 +1,4 @@
-If AIUtil.FindTextBlock("Project already exists. Press OK to edit the existing project, or cancel. (257,227)").CheckExists(True) Then
-		Browser("Browser").Page("Data Migration Workbench").WebButton("OK").Click
+            print(f"The time taken for the download link to appear is {load_time:.2f} seconds.")
+            if load_time>120:
+                raise Exception("Query performance is low")
+            break
