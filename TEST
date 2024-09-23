@@ -1,24 +1,26 @@
-    frame.get_by_role("button", name="Refresh").click()
+Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebButton("Refresh").Click
 
-    run_status = frame.locator("[id=\"PMN_PRCSLIST_RUNSTATUSDESCR\\$0\"]").inner_text
+Dim run_status
+run_status = Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
 
-    # Wait for Run status to be Success/Not Success/Warning/Error for approx 10min.
-    retry = 0
-    while retry < 600:
-        expected_values=['Success','Error','Warning','No Success']
+' Wait for Run status to be Success/Not Success/Warning/Error for approx 10 min.
+Dim retry
+retry = 0
+Dim expected_values
+expected_values = Array("Success", "Error", "Warning", "No Success")
 
-        if run_status.text_content() in expected_values:
-            break
+Do While retry < 600
+    run_status = Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").GetROProperty("innertext")
 
-        else:
-            frame.get_by_role("button", name="Refresh").click() 
-            retry += 1
+    If Not IsError(Application.Match(run_status, expected_values, 0)) Then
+        Exit Do
+    Else
+        Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebButton("Refresh").Click
+        retry = retry + 1
+        Wait(1) ' Optional wait to avoid rapid clicking
+    End If
+Loop
 
-    if run_status.text_content().lower() != "success":
-        raise Exception(f"Process Status : {run_status.text_content()}")
-
----
-	Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebButton("Refresh").Click
-
-Browser("Browser").Page("Data Migration Workbench").Frame("TargetContent_3").WebElement("PMN_PRCSLIST_RUNSTATUSDESCR$0").innertext()
-	
+If LCase(run_status) <> "success" Then
+    Err.Raise vbObjectError + 9999, "Process Status: " & run_status
+End If
