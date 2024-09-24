@@ -1,23 +1,5 @@
-import time
+    process_instance_id =int(process_instance_id )
+    process_instance_id = process_instance_id-1
+    frame.get_by_label("Instance").fill(process_instance_id)
 
-max_retries = 10  # Set a maximum number of retries
-retry_count = 0
-
-while retry_count < max_retries:
-    try:
-        frame.get_by_label("Instance").fill(process_instance_id)
-        frame.get_by_label("to", exact=True).fill(process_instance_id)
-        frame.get_by_role("button", name="Refresh").click()
-        
-        # Check for the expected text
-        expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"trREPORTS_GRID\\$0_row1\"]")).to_contain_text(testdata["program"])
-        break  # Exit the loop if the text is found
-    except Exception as e:
-        print("Attempting to refresh...")
-
-        # Wait for a moment before retrying
-        time.sleep(2)  # Adjust the sleep time as needed
-        retry_count += 1
-
-if retry_count == max_retries:
-    print("Error: The report is still not visible in Report Manager after several attempts.")
+playwright._impl._errors.Error: value: expected string, got number
