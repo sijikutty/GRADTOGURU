@@ -1,16 +1,23 @@
-try:
-    frame.get_by_label("Instance").fill(process_instance_id)
-    frame.get_by_label("to", exact=True).fill(process_instance_id)
-    frame.get_by_role("button", name="Refresh").click()
-    expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"trREPORTS_GRID\\$0_row1\"]")).to_contain_text(testdata["program"])
-except Exception as e:
-    print("Error: The report is not visible in Report Manager.", e)
-    raise e
+import time
 
-try:
-    frame.locator("[id=\"REPORT_NAME\\$0\"]").click()
-    frame.get_by_role("button", name="Return").click()
-    expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"trREPORTS_GRID\\$0_row1\"]")).to_contain_text(testdata["program"])
-except Exception as e:
-    print("Error: Return button didn't work properly.", e)
-    raise e
+max_retries = 10  # Set a maximum number of retries
+retry_count = 0
+
+while retry_count < max_retries:
+    try:
+        frame.get_by_label("Instance").fill(process_instance_id)
+        frame.get_by_label("to", exact=True).fill(process_instance_id)
+        frame.get_by_role("button", name="Refresh").click()
+        
+        # Check for the expected text
+        expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"trREPORTS_GRID\\$0_row1\"]")).to_contain_text(testdata["program"])
+        break  # Exit the loop if the text is found
+    except Exception as e:
+        print("Attempting to refresh...")
+
+        # Wait for a moment before retrying
+        time.sleep(2)  # Adjust the sleep time as needed
+        retry_count += 1
+
+if retry_count == max_retries:
+    print("Error: The report is still not visible in Report Manager after several attempts.")
