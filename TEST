@@ -1,1 +1,39 @@
-page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"CURR_STP_TGTF_FIELDNAME\\$1\"]").select_option("BOOK_CODE")
+from playwright.sync_api import sync_playwright
+
+def check_selected_options(page):
+    # Locate the iframe containing the target content
+    iframe = page.frame_locator("iframe[name='TargetContent']")
+
+    # Locate all rows in the table (adjust the selector as needed)
+    rows = iframe.locator("tr").all()
+
+    for index, row in enumerate(rows):
+        # Locate the select element within the current row
+        select = row.locator("[id='CURR_STP_TGTF_FIELDNAME\\$1']")
+        
+        # Ensure the select element exists in the current row
+        if select.count() > 0:
+            # Get the currently selected option
+            selected_option = select.input_value()  # or use select.selected_option() for more details
+            
+            # Check if the selected option matches "BOOK_CODE"
+            if selected_option == "BOOK_CODE":
+                print(f"Row {index + 1}: 'BOOK_CODE' is selected.")
+            else:
+                print(f"Row {index + 1}: Selected option is '{selected_option}'.")
+        else:
+            print(f"Row {index + 1}: No select element found.")
+
+# Example usage
+with sync_playwright() as p:
+    browser = p.chromium.launch()
+    page = browser.new_page()
+    
+    # Navigate to the page containing the iframe
+    page.goto('YOUR_PAGE_URL')
+
+    # Call the function to check selected options
+    check_selected_options(page)
+
+    # Close the browser
+    browser.close()
