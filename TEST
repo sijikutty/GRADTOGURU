@@ -1,2 +1,7 @@
+# Wait for up to 20 seconds for the warning to appear
+try:
+    page.wait_for_selector("text='Warning -- No ChartFields'", timeout=20000)  # 20 seconds
     if page.get_by_text("Warning -- No ChartFields").is_visible():
         page.get_by_role("button", name="OK").click()
+except Exception as e:
+    print("The warning message did not appear within the time limit.")
