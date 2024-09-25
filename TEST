@@ -1,1 +1,2 @@
-Just wanted to give you a heads-up.
+    if page.get_by_text("Warning -- No ChartFields").is_visible():
+        page.get_by_role("button", name="OK").click()
