@@ -1,6 +1,1 @@
-# Wait for up to 20 seconds for the warning to appear
-page.wait_for_selector("text='Warning -- No ChartFields'", timeout=20000)  # 20 seconds
-
-# Check if the warning is visible, and if so, click the OK button
-if page.get_by_text("Warning -- No ChartFields", strict=False).is_visible():
-    page.get_by_role("button", name="OK").click()
+expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"CURR_STP_TGTF_FIELDNAME\\$2\"]")).to_have_value("BOOK_CODE");
