@@ -7,11 +7,14 @@ def check_selected_options(page):
     # Locate all rows in the table (adjust the selector as needed)
     rows = iframe.locator("tr").all()
 
-    for index, row in enumerate(rows):
-        # Locate the select element within the current row
-        select = row.locator("[id='CURR_STP_TGTF_FIELDNAME\\$1']")
-        
-        # Ensure the select element exists in the current row
+    # Check the number of rows found
+    print(f"Number of rows found: {len(rows)}")
+
+    for index in range(len(rows)):
+        # Use the index to build the selector for the select element
+        select = iframe.locator(f"[id='CURR_STP_TGTF_FIELDNAME\\${index + 1}']")
+
+        # Check if the select element exists in the current row
         if select.count() > 0:
             # Get the currently selected option
             selected_option = select.input_value()  # or use select.selected_option() for more details
