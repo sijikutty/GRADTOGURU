@@ -1,1 +1,4 @@
-new_filename = f'export{int("export2.txt".split("export")[1].split(".")[0]) + 1}.txt'
+	Window("PS/nVision").Dialog("PeopleSoft nVision Report").Activate
+	Window("PS/nVision").Dialog("PeopleSoft nVision Report").WinEdit("Request Name:").Set Datatable.Value("Requestname")
+	Window("PS/nVision").Dialog("PeopleSoft nVision Report").WinEdit("Edit").Set Datatable.Value("BU")
+	Window("PS/nVision").Dialog("PeopleSoft nVision Report").WinButton("Run").Click
