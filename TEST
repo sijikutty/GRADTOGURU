@@ -1,11 +1,7 @@
-    # Locate the table rows
-    rows = page.frame_locator('iframe[name="TargetContent"]').locator('table tbody tr')
-
-    # Loop through each row and check if it contains the desired text
     value_found = False
     for row in rows.all():
-        cell_text = row.locator('td[id^="PORTAL_SECDYVW_PORTAL_AUTHNAME"]').inner_text()
-        if 'pp_ww' in cell_text:
+        input_value = row.locator('td[id^="PORTAL_SECDYVW_PORTAL_AUTHNAME"] input').input_value()  # Adjust the selector for the input
+        if input_value == 'pp_ww':
             value_found = True
             break
 
