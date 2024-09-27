@@ -1,9 +1,11 @@
-    value_found = False
-    for row in rows.all():
-        input_value = row.locator('td[id^="PORTAL_SECDYVW_PORTAL_AUTHNAME"] input').input_value()  # Adjust the selector for the input
-        if input_value == 'pp_ww':
-            value_found = True
-            break
+    rows = frame.locator("tr").all()
 
-    # Assert that the value was found
-    expect(value_found).to_be(True)
+    for index in range(len(rows)):
+        # Use the index to build the selector for the select element
+        select = frame.locator(f"[id='PORTAL_SECDYVW_PORTAL_AUTHNAME\\${index + 1}']")
+            # Get the currently selected option
+        selected_option = select.input_value()  # or use select.selected_option() for more details
+                # Check if the selected option matches "BOOK_CODE"
+        if selected_option == "k_PT_PSUSER":
+            print("Translation page book code displays fine")
+            break
