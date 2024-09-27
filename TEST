@@ -2,3 +2,9 @@
 	Window("PS/nVision").Dialog("PeopleSoft nVision Report").WinEdit("Request Name:").Set Datatable.Value("Requestname")
 	Window("PS/nVision").Dialog("PeopleSoft nVision Report").WinEdit("Edit").Set Datatable.Value("BU")
 	Window("PS/nVision").Dialog("PeopleSoft nVision Report").WinButton("Run").Click
+
+	If AIUtil.FindTextBlock(requestName & ".xls -").CheckExists(True) Then
+	        WriteToUFTOne "Test is success"
+	    Else
+	        WriteToUFTOne "Test failed"
+	End If
