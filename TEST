@@ -1,3 +1,5 @@
-    
-    frame.get_by_role("tab", name="Folder Security").click()
-    expect(page.frame_locator("iframe[name=\"TargetContent\"]").locator("[id=\"PORTAL_SECDYVW_PORTAL_AUTHNAME\\$41\"]")).to_be_visible()
+ # Locate the table rows and filter for rows that contain the desired text
+    rows_with_text = page.frame_locator('iframe[name="TargetContent"]').locator('table tbody tr').filter(has_text='pp_ww')
+
+    # Assert that at least one row was found
+    expect(rows_with_text.count()).to_be_greater_than(0)
