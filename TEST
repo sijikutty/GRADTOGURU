@@ -1,5 +1,13 @@
- # Locate the table rows and filter for rows that contain the desired text
-    rows_with_text = page.frame_locator('iframe[name="TargetContent"]').locator('table tbody tr').filter(has_text='pp_ww')
+    # Locate the table rows
+    rows = page.frame_locator('iframe[name="TargetContent"]').locator('table tbody tr')
 
-    # Assert that at least one row was found
-    expect(rows_with_text.count()).to_be_greater_than(0)
+    # Loop through each row and check if it contains the desired text
+    value_found = False
+    for row in rows.all():
+        cell_text = row.locator('td[id^="PORTAL_SECDYVW_PORTAL_AUTHNAME"]').inner_text()
+        if 'pp_ww' in cell_text:
+            value_found = True
+            break
+
+    # Assert that the value was found
+    expect(value_found).to_be(True)
