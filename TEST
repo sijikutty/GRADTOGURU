@@ -1,11 +1,10 @@
-    rows = frame.locator("tr").all()
-
-    for index in range(len(rows)):
-        # Use the index to build the selector for the select element
-        select = frame.locator(f"[id='PORTAL_SECDYVW_PORTAL_AUTHNAME\\${index + 1}']")
-            # Get the currently selected option
-        selected_option = select.input_value()  # or use select.selected_option() for more details
-                # Check if the selected option matches "BOOK_CODE"
-        if selected_option == "k_PT_PSUSER":
-            print("Translation page book code displays fine")
-            break
+{
+    "python.terminal.activateEnvironment": true,
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "args": ["-NoExit", "-Command", "Invoke-Expression 'path\\to\\your\\venv\\Scripts\\Activate.ps1'"],
+            "shellExe": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell"
+}
