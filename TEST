@@ -1,10 +1,4 @@
-{
-    "python.terminal.activateEnvironment": true,
-    "terminal.integrated.profiles.windows": {
-        "PowerShell": {
-            "args": ["-NoExit", "-Command", "Invoke-Expression 'path\\to\\your\\venv\\Scripts\\Activate.ps1'"],
-            "shellExe": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
-        }
-    },
-    "terminal.integrated.defaultProfile.windows": "PowerShell"
-}
+PytestUnknownMarkWarning: Unknown pytest.mark.order - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.order(1)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
