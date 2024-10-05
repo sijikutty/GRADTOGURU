@@ -1,4 +1,5 @@
-PytestUnknownMarkWarning: Unknown pytest.mark.order - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
-    @pytest.mark.order(1)
+C:\>aws --version
+aws-cli/2.15.51 Python/3.11.8 Windows/10 exe/AMD64
 
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+aws --version
+aws-cli/1.35.0 Python/3.11.2 Windows/10 botocore/1.35.34
