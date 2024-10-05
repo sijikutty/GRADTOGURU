@@ -1,5 +1,5 @@
-@pytest.fixture(scope="session")
-  def page(browser):
-E       fixture 'browser' not found
->       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, fail_after_cannot_order, monkeypatch, page, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, set_test_dependency, teardown, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, update_rally
->       use 'pytest --fixtures [testpath]' for help on them.
+pytest PS_Testing\test_gui
+ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]
+pytest: error: unrecognized arguments: --headed --slowmo PS_Testing\test_gui
+  inifile: C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui\pytest.ini
+  rootdir: C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui
