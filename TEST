@@ -1,7 +1,11 @@
-pytest PS_Testing\test_gui
-================================================= test session starts ==================================================
-platform win32 -- Python 3.11.2, pytest-8.0.0, pluggy-1.5.0
-rootdir: C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui
-configfile: pytest.ini
-plugins: base-url-2.1.0, dependency-0.6.0, order-1.3.0, playwright-0.5.2, xdist-3.6.1
-collecting 0 items / 44 errors
+import platform
+
+# Get the architecture
+architecture = platform.architecture()[0]
+
+# Get the platform name
+platform_name = platform.system()
+
+# Output the results
+print(f"Platform: {platform_name}")
+print(f"Architecture: {architecture}")
