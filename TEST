@@ -1,10 +1,4 @@
-@pytest.fixture(scope="session")
-def page(browser):
-    page = browser.new_page()
-    yield page
-    page.close()
+page.frame_locator("iframe[name=\"TargetContent\"]"
 
 
-@pytest.fixture(scope="session")
-def set_test_dependency(request):
-    depends(request, ["ps_login"], scope="session")
+page.locator("iframe[name=\"psNavBarIFrame\"]").content_frame()
