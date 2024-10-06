@@ -1,4 +1,1 @@
-page.frame_locator("iframe[name=\"TargetContent\"]"
-
-
-page.locator("iframe[name=\"psNavBarIFrame\"]").content_frame()
+$env:DEBUG = "pw:*"; playwright install
