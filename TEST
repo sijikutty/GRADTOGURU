@@ -1,5 +1,10 @@
-pytest PS_Testing\test_gui
-ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]
-pytest: error: unrecognized arguments: --headed --slowmo PS_Testing\test_gui
-  inifile: C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui\pytest.ini
-  rootdir: C:\Github\corp_corpit_ps_egl_test_automation\PS_Testing\test_gui
+@pytest.fixture(scope="session")
+def page(browser):
+    page = browser.new_page()
+    yield page
+    page.close()
+
+
+@pytest.fixture(scope="session")
+def set_test_dependency(request):
+    depends(request, ["ps_login"], scope="session")
