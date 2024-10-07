@@ -1,11 +1,12 @@
-import platform
+ session = boto3.Session(profile_name="dev")
 
-# Get the architecture
-architecture = platform.architecture()[0]
+    secretmanagerclient = session.client("secretsmanager", region_name="us-east-1")
 
-# Get the platform name
-platform_name = platform.system()
+    response = secretmanagerclient.get_secret_value(SecretId=testdata["db_secret"])
+    secret = json.loads(response['SecretString'])
+    print(secret['username'])
 
-# Output the results
-print(f"Platform: {platform_name}")
-print(f"Architecture: {architecture}")
+botocore.exceptions.ParamValidationError: Parameter validation failed:
+E               Invalid type for parameter SecretId, value: ['dev/2807/fgld', 'dev2/2808/fgl2d'], type: <class 'list'>, valid types: <class 'str'>
+
+.venv\Lib\site-packages\botocore\validate.py:381: ParamValidationError
