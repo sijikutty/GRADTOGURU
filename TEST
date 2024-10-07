@@ -1,22 +1,12 @@
-def connect_to_oracleDB(secretID):
-    db_secrets = get_DBsecrets(secretID)
+failed_connections = []
 
+for secret_id in secret_ids:
     try:
-        print("Connecting to DB")
-        connection = oracledb.connect(user=db_secrets['username'],
-                                      password=db_secrets['password'],
-                                      host=db_secrets['host'],
-                                      port=db_secrets['port'],
-                                      service_name=db_secrets['servicename'])
-
-        print("Database connected successfully")
-        return connection
+        connection = connect_to_oracleDB(secret_id)
+        print(f"Successful data connection - {secret_id}")
     except Exception as e:
-        print(f"Error connecting to Oracle DB: {e}")
-        return None
-----
- connection = connect_to_oracleDB(secret_id)
-        if connection:
-            print(f"Successful data connection-{secret_id}")
-        else:
-            raise Exception(f"Failed to connect to the database-{secret_id}")
+        failed_connections.append(f"Failed to connect to the database - {secret_id}: {e}")
+
+# After attempting all connections, check if there were any failures
+if failed_connections:
+    raise Exception("Errors occurred during database connections:\n" + "\n".join(failed_connections))
