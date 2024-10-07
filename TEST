@@ -1,12 +1,16 @@
- session = boto3.Session(profile_name="dev")
+import boto3
+import json
 
-    secretmanagerclient = session.client("secretsmanager", region_name="us-east-1")
+session = boto3.Session(profile_name="dev")
+secretmanagerclient = session.client("secretsmanager", region_name="us-east-1")
 
-    response = secretmanagerclient.get_secret_value(SecretId=testdata["db_secret"])
-    secret = json.loads(response['SecretString'])
-    print(secret['username'])
+# Assume testdata["db_secret"] is a list of secret IDs
+secret_ids = testdata["db_secret"]  # This should be a list of secret IDs
 
-botocore.exceptions.ParamValidationError: Parameter validation failed:
-E               Invalid type for parameter SecretId, value: ['dev/2807/fgld', 'dev2/2808/fgl2d'], type: <class 'list'>, valid types: <class 'str'>
-
-.venv\Lib\site-packages\botocore\validate.py:381: ParamValidationError
+for secret_id in secret_ids:
+    try:
+        response = secretmanagerclient.get_secret_value(SecretId=secret_id)
+        secret = json.loads(response['SecretString'])
+        print(f"Username for {secret_id}: {secret['username']}")
+    except Exception as e:
+        print(f"Error retrieving secret {secret_id}: {e}")
