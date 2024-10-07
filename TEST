@@ -1,16 +1,22 @@
-import boto3
-import json
+def connect_to_oracleDB(secretID):
+    db_secrets = get_DBsecrets(secretID)
 
-session = boto3.Session(profile_name="dev")
-secretmanagerclient = session.client("secretsmanager", region_name="us-east-1")
-
-# Assume testdata["db_secret"] is a list of secret IDs
-secret_ids = testdata["db_secret"]  # This should be a list of secret IDs
-
-for secret_id in secret_ids:
     try:
-        response = secretmanagerclient.get_secret_value(SecretId=secret_id)
-        secret = json.loads(response['SecretString'])
-        print(f"Username for {secret_id}: {secret['username']}")
+        print("Connecting to DB")
+        connection = oracledb.connect(user=db_secrets['username'],
+                                      password=db_secrets['password'],
+                                      host=db_secrets['host'],
+                                      port=db_secrets['port'],
+                                      service_name=db_secrets['servicename'])
+
+        print("Database connected successfully")
+        return connection
     except Exception as e:
-        print(f"Error retrieving secret {secret_id}: {e}")
+        print(f"Error connecting to Oracle DB: {e}")
+        return None
+----
+ connection = connect_to_oracleDB(secret_id)
+        if connection:
+            print(f"Successful data connection-{secret_id}")
+        else:
+            raise Exception(f"Failed to connect to the database-{secret_id}")
