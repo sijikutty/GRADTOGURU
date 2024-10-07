@@ -1,38 +1,13 @@
-def connect_to_oracleDB(secretID):
-    db_secrets = get_DBsecrets(secretID)
+failed_connections = []
 
-    try:
-        print("Connecting to DB")
-        connection = oracledb.connect(user=db_secrets['username'],
-                                      password=db_secrets['password'],
-                                      host=db_secrets['host'],
-                                      port=db_secrets['port'],
-                                      service_name=db_secrets['servicename'])
-
-        print("Database connected successfully")
-        return connection
-    except Exception as e:
-        print(f"Error connecting to Oracle DB: {e}")
-        return None
-
----
-    for secret_id in secret_ids:
+for secret_id in secret_ids:
     # Connect to Oracle DB
-        try:
-            connection = connect_to_oracleDB(secret_id)
-            print(f"Successful data connection-{secret_id}")
-        except Exception as e:
-            failed_connections.append(f"Failed to connect to the database - {secret_id}: {e}")
+    connection = connect_to_oracleDB(secret_id)
+    if connection is None:
+        failed_connections.append(f"Failed to connect to the database - {secret_id}")
+    else:
+        print(f"Successful data connection - {secret_id}")
 
-    # After attempting all connections, check if there were any failures
-    if failed_connections:
-        raise Exception("Errors occurred during database connections:\n" + "\n".join(failed_connections))
-
-    ------
-Connecting to DB
-Error connecting to Oracle DB: ORA-28000: The account is locked.
-Help: https://docs.oracle.com/error-help/db/ora-28000/
-Successful data connection-dev/g/fgld
-Connecting to DB
-Database connected successfully
-Successful data connection-dev2/g/fgl2d
+# After attempting all connections, check if there were any failures
+if failed_connections:
+    raise Exception("Errors occurred during database connections:\n" + "\n".join(failed_connections))
