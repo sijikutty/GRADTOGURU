@@ -1,4 +1,6 @@
 result = connect_to_oracleDB(secret_id)
 
-if not result['status']:
+if result is None:
+    raise Exception(f"Failed to connect to the database - {secret_id}: Connection returned None")
+elif not result['status']:
     raise Exception(f"Failed to connect to the database - {secret_id}: {result['error']}")
