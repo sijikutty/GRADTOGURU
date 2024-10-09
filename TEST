@@ -1,15 +1,3 @@
-failed_connections = []
-
-for secret_id in secret_ids:
-    # Connect to Oracle DB
-    try:
-        connection = connect_to_oracleDB(secret_id)
+connection = connect_to_oracleDB(secret_id)
         if connection is None:
-            raise Exception(f"Connection returned None for {secret_id}")  # Explicitly raise an error
-        print(f"Successful data connection - {secret_id}")
-    except Exception as e:
-        failed_connections.append(f"Failed to connect to the database - {secret_id}: {e}")
-
-# After attempting all connections, check if there were any failures
-if failed_connections:
-    raise Exception("Errors occurred during database connections:\n" + "\n".join(failed_connections))
+            raise Exception(f"Failed to connect to the database - {secret_id}{e}")
