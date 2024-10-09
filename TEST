@@ -1,37 +1,4 @@
-connection = connect_to_oracleDB(secret_id)
-        if connection is None:
-            raise Exception(f"Failed to connect to the database - {secret_id}{e}")
+result = connect_to_oracleDB(secret_id)
 
-def connect_to_oracleDB(secretID):
-    db_secrets = get_DBsecrets(secretID)
-    print(db_secrets)
-    try:
-        print("Connecting to DB")
-        print(oracledb.__version__)
-        connection = oracledb.connect(user=db_secrets['username'],
-                                      password=db_secrets['password'],
-                                      host=db_secrets['host'],
-                                      port=db_secrets['port'],
-                                      service_name=db_secrets['servicename'])
-
-        print("Database connected successfully")
-        
-        # Example query
-        query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'MAX' "
-        
-        cursor = connection.cursor()
-        cursor.execute(query)
-        result = cursor.fetchone()
-        
-        count = result[0] if result else None
-        
-        print(f"Result of the query: {count}")
-        
-        cursor.close()
-        connection.close()
-        
-        return {"status": True, "count": count}
-
-    except Exception as e:
-        print(f"Error connecting to Oracle DB: {e}")
-        return {"status": False, "error": str(e)}
+if not result['status']:
+    raise Exception(f"Failed to connect to the database - {secret_id}: {result['error']}")
