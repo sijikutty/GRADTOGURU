@@ -1,57 +1,108 @@
-Subject: Proposal for Improved Process on MTE Oracle Database Ticket Resolution
-
-Hi [Recipient's Name],
-
-I hope this message finds you well.
-
-I would like to address an ongoing issue we’ve encountered with the current process for password resets and account unlocks in the MTE Oracle database. As you may be aware, when we raise tickets for these requests, they are often closed without any confirmation that the issue has been resolved.
-
-Currently, there seems to be a lack of communication between the requestor and the person resolving the ticket. Updates are being made directly in MTE, stating that the request has been sent to the application owner, but there is no email communication or Teams chat to confirm that the issue has been addressed.
-
-I believe this process needs to be improved for the following reasons:
-
-Accountability: It is crucial that the application owner is involved as an approver during the request process.
-User Confirmation: The final password reset or account unlock should always be communicated directly to the requestor. This ensures that the user is informed and can verify that their issue has been resolved.
-Enhanced Communication: Before closing any ticket, the responsible team should check in with the user to confirm resolution.
-Implementing these changes will not only streamline the process but also enhance user satisfaction and accountability.
-
-Thank you for considering this proposal. I am looking forward to your thoughts on how we can improve this process.
-
-Best regards,
-
-[Your Name]
-[Your Position]
-[Your Contact Information]
-[Your Company]
+from playwright.sync_api import expect, Page
+from automation_utils import get_testdata
+from ps_utils import navigate_menu
+import pytest
 
 
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_submit_chartfield_req(page:Page, set_test_dependency, testcase):
+    navigate_menu(page=page,
+                  menu_sequence=["Set Up Financials/Supply Chain",
+                                 "Common Definitions",
+                                 "Design ChartFields",
+                                 "Define Values",
+                                 "Submit ChartField Request"])
+    
+    frame = page.frame_locator("iframe[name='TargetContent']")
 
+    expect(frame.get_by_label("SetID")).to_be_visible()
+    expect(frame.get_by_text("Field Name")).to_be_visible()
+    expect(frame.get_by_text("Field Action")).to_be_visible()
+    expect(frame.get_by_text("Field Value")).to_be_visible()
+    
+    
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_query_manager(page : Page, set_test_dependency, testcase):
 
-You said:
-make it such a way that subordinate is requesting that change
-ChatGPT said:
-ChatGPT
-Subject: Request for Improvement in MTE Oracle Database Ticket Resolution Process
+    navigate_menu(page=page,
+                  menu_sequence=["Reporting Tools",
+                                 "Query",
+                                 "Query Manager"])
 
-Hi [Manager's Name],
+    frame = page.frame_locator("iframe[name='TargetContent']")
 
-I hope you’re doing well.
+    frame.get_by_label("Search By").select_option(label="Query Name")
+    frame.locator("[id^='QRYSELECT_WRK_QRYSEARCHTEXT']").fill("HF_ACCOUNTS")
+    frame.get_by_role("button", name="Search", exact=True).click()
 
-I wanted to bring to your attention an issue I’ve been experiencing with the current process for password resets and account unlocks in the MTE Oracle database. When tickets are raised for these requests, they often get closed without any confirmation that the issue has been resolved, which has been quite frustrating.
+    expect(frame.locator("[id=\"win0divQRYSELECT_WRK_QRYNAME\\$0\"]")).to_be_visible()
+        
+    
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_create_jrnl(page : Page, set_test_dependency, testcase):
 
-Currently, there seems to be a lack of communication between the requestor and the person resolving the ticket. Updates are made directly in MTE, indicating that the request has been sent to the application owner, but there is no follow-up via email or Teams chat to confirm that the issue has been addressed.
+    navigate_menu(page = page, 
+                menu_sequence=["General Ledger", 
+                                 "Journals", 
+                                 "Journal Entry", 
+                                 "Create/Update Journal Entries"])
+    
+    frame = page.frame_locator("iframe[name='TargetContent']")
+    
+    expect(frame.get_by_text("Business Unit")).to_be_visible()
+    expect(frame.get_by_text("Journal ID")).to_be_visible()
+    expect(frame.get_by_text("Journal Date")).to_be_visible()
+    
+    
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_process_monitor(page : Page, set_test_dependency, testcase):
 
-I would like to suggest a few changes that could improve the process:
+    navigate_menu(page= page,
+                  menu_sequence=["PeopleTools",
+                                "Process Scheduler",
+                                "Process Monitor"])
+    
+    frame = page.frame_locator("iframe[name='TargetContent']")
 
-Involve Application Owners: Having the application owner as an approver during the request process could help ensure that all necessary checks are made.
-Direct Communication with Requestors: The final password reset or account unlock should be communicated directly to the requestor. This would confirm that their issue has been resolved.
-Verification Before Closure: Before closing any ticket, it would be beneficial to check in with the user to confirm that the resolution was effective.
-I believe implementing these changes could significantly enhance user satisfaction and accountability. Thank you for considering this request. I’m happy to discuss this further if you’d like.
+    expect(frame.get_by_role("cell", name="View Process Requests", exact=True)).to_be_visible()
 
-Best regards,
+    
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_tree_manager(page : Page, set_test_dependency, testcase):
 
-[Your Name]
-[Your Position]
+    navigate_menu(page= page,
+                  menu_sequence=["Tree Manager",
+                                "Tree Manager"])
+    
+    frame = page.frame_locator("iframe[name='TargetContent']")
+    
+    frame.get_by_role("button", name="Search", exact=True).click()
+    expect(frame.get_by_role("columnheader", name="Tree Name")).to_be_visible()
 
+    
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_tree_auditor(page : Page, set_test_dependency, testcase):
 
+    navigate_menu(page= page,
+                  menu_sequence=["Tree Manager",
+                                 "Tree Auditor"])
+    
+    frame = page.frame_locator("iframe[name='TargetContent']")
+  
+    expect(frame.locator("#RUN_TREE_AUDVW_RUN_CNTL_ID")).to_be_visible()
 
+    
+@pytest.mark.parametrize("testcase", get_testdata("test_ps_pages"))
+def test_pg_user_profiles(page : Page, set_test_dependency, testcase):
+
+    navigate_menu(page= page,
+                  menu_sequence=["PeopleTools", 
+                                 "Security",
+                                 "User Profiles",
+                                 "User Profiles"])
+    
+    frame = page.frame_locator("iframe[name='TargetContent']")
+  
+    frame.get_by_role("button", name="Search", exact=True).click()
+    frame.get_by_role("cell", name="User ID", exact=True).click()
+    expect(frame.get_by_role("cell", name="User ID", exact=True)).to_be_visible()
