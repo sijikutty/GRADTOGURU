@@ -1,25 +1,95 @@
-
 import json
 
 # Your JSON data
 data = {
-    "testcases": 
+    "testcases": [
+        {
+            "key": "Unit test GUI - TC34063",
+            "env": "Dev",
+            "runflag": "N",
+            "scenario": "test_export_import_tree",
+            "testdata": {
+                "run_control_id": "test1",
+                "server": "PSUNX",
+                "outputfile": "export4.txt",
+                "structure": "CONSOLIDATION",
+                "setid": "SHARE",
+                "effdt": "01/01/2019",
+                "tree": "HFIRE_STAT_BU_COMB",
+                "exportprocess": "TREEMOVER",
+                "importprocess": "TREEMOVER",
+                "descr": "test1"
+            }
+        },
+        {
+            "key": "Unit test GUI - TC34011",
+            "env": "Dev",
+            "runflag": "N",
+            "scenario": "test_cadency_job",
+            "testdata": {
+                "program_name": "HF_CADENCY",
+                "run_control_id": "test1",
+                "server_name": "PSUNX",
+                "userid": "PWTEST"
+            }
+        },
+        {
+            "key": "Unit test GUI - TC34041",
+            "env": "Dev",
+            "runflag": "N",
+            "scenario": "test_role_property",
+            "testdata": {
+                "program_name": "LOOKUP_RECON",
+                "run_control_id": "test1",
+                "server_name": "PSUNX",
+                "userid": "PWTEST"
+            }
+        },
+        {
+            "key": "Unit test GUI - TC34040",
+            "env": "Dev",
+            "runflag": "N",
+            "scenario": "test_oim_sync",
+            "testdata": {
+                "requestid": "test1",
+                "descr": "testing",
+                "run_control_id": "test1",
+                "server": "PSUNX",
+                "serviceopr": "USER_PROFILE",
+                "instance": "OIM_SFTP4",
+                "oimprocess": "EOP_PUBLISHT"
+            }
+        },
+        {
+            "key": "Unit test GUI - TC34062",
+            "env": "Dev",
+            "runflag": "N",
+            "scenario": "test_Affiliate_Bookcode",
+            "testdata": {
+                "tree1": "AFFILIATE",
+                "tree2": "BOOK_CODE",
+                "range1": "[10000 - 99999]",
+                "range2": "[ ]",
+                "range_1": "[CASH] - Cash",
+                "range_2": "[GPON] - GAAP_Only",
+                "range_3": "[NCSH] - Non_Cash_Common",
+                "descr1": "AFFILIATE_LIST - Affiliate",
+                "descr2": "GAAP_BASIS - GAAP Basis"
+            }
+        }
+    ]
 }
 
-# Sort the testcases by the value of "key"
-sorted_testcases = sorted(data["testcases"], key=lambda x: x["key"])
+# Add "env_var" after "testdata"
+for testcase in data["testcases"]:
+    testcase["env_var"] = {"write": "N"}
 
-# Create a new JSON structure with the sorted testcases
-sorted_data = {
-    "testcases": sorted_testcases
-}
+# Output the modified JSON
+output_json = json.dumps(data, indent=4)
 
-# Output the sorted JSON
-output_json = json.dumps(sorted_data, indent=4)
-
-# Print or save the sorted JSON
+# Print or save the modified JSON
 print(output_json)
 
 # Optionally, save to a file
-with open('sorted_testcases.json', 'w') as f:
+with open('modified_testcases.json', 'w') as f:
     f.write(output_json)
