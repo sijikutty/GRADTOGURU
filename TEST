@@ -1,1 +1,2126 @@
+TC33964
+TC33968
+TC33972
+TC33973
+TC33974
+TC33975
+TC33976
+TC33977
+TC33979
+TC33980
+TC33981
+TC33982
+TC33983
+TC33984
+TC33985
+TC33986
+TC33989
+TC33990
+TC33991
+TC33992
+TC33993
+TC33994
+TC33995
+TC33996
+TC33997
+TC33998
+TC33999  SORT the below json file in the order of above testcases.
+------
+{    
+    "testcases" : [
 
+
+        {
+            "key"       : "Smoketest GUI - TC32535",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_ae_program",
+            "testdata"  : 
+            {
+                "program_name"   : "Simple AE test program",
+                "run_control_id" : "test1",
+                "server"         : "PSUNX"
+            }
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32537",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_cobol_program",
+            "testdata"  : 
+            {
+                "program_name"   : "Simple COBOL test program",
+                "run_control_id" : "test1",
+                "server"         : "PSUNX"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34063",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_export_import_tree",
+            "testdata"  : 
+            {
+                "run_control_id" : "test1",
+                "server"         : "PSUNX",
+                "outputfile":"export4.txt",
+                "structure"         : "CONSOLIDATION",
+                "setid":"SHARE",
+                "effdt"         : "01/01/2019",
+                "tree":"HFIRE_STAT_BU_COMB",
+                "exportprocess":"TREEMOVER",
+                "importprocess":"TREEMOVER",
+                "descr" : "test1"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34011",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_cadency_job",
+            "testdata"  : 
+            {
+                "program_name"   : "HF_CADENCY",
+                "run_control_id" : "test1",
+                "server_name"         : "PSUNX",
+                "userid":"PWTEST"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34041",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_role_property",
+            "testdata"  : 
+            {
+                "program_name"   : "LOOKUP_RECON",
+                "run_control_id" : "test1",
+                "server_name"         : "PSUNX",
+                "userid":"PWTEST"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34040",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_oim_sync",
+            "testdata"  : 
+            {
+                "requestid"   : "test1",
+                "descr":"testing",
+                "run_control_id" : "test1",
+                "server"         : "PSUNX",
+                "serviceopr":"USER_PROFILE",
+                "instance":"OIM_SFTP4",
+                "oimprocess":"EOP_PUBLISHT"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34062",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Affiliate_Bookcode",
+            "testdata"  : 
+            {
+                "tree1"   : "AFFILIATE",
+                "tree2"   : "BOOK_CODE",
+                "range1" : "[10000 - 99999]",
+                "range2" : "[ ]",
+                "range_1":"[CASH] - Cash",
+                "range_2":"[GPON] - GAAP_Only",
+                "range_3":"[NCSH] - Non_Cash_Common",
+                "descr1":"AFFILIATE_LIST - Affiliate",
+                "descr2":"GAAP_BASIS - GAAP Basis"
+            }
+        },
+        {
+            "key"       : "Smoketest GUI - TC32538",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_run_psquery",
+            "testdata"  : 
+            {
+                "query" : "HF_ACCOUNTS"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34058",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Run_Queries_view_output",
+            "testdata"  : 
+            {
+                "query" : "NAVG_BAL_INT_BINDERS",
+                "Year"  :"2024",
+                "Period":"2"
+            }
+            
+        },
+        {
+            "key"       : "Unit test GUI - TC34066",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Query_performance",
+            "testdata"  : 
+            {
+                "query" : "NAVG_BAL_INT_BINDERS",
+                "Year"  :"2024",
+                "Period":"2"
+            }
+            
+        },
+        {
+            "key"       : "Unit test GUI - TC34064",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_download_PSQuery_Result",
+            "testdata"  : 
+            {
+                "query" : "HF_JRNL_DTLS_COMBINED_STAT",
+                "Year"  :"2024",
+                "Period":"4"
+            }
+            
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32735",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_schedule_queries",
+            "testdata"  : 
+            {
+                "query"          : "HF_ACCOUNTS",
+                "run_control_id" : "test1",
+                "server"         : "PSUNX"
+            }
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32539",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_nvision_report_request",
+            "testdata"  : 
+            {
+                "business_unit"      : "25000",
+                "report_id"          : "LFSTTB01",
+                "report_as_of_date"  : "03/31/2024",
+                "server"             : "PSNT"
+            }
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32734",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_nvision_reportbook",
+            "testdata"  : 
+            {
+                "run_control_id" : "test1",
+                "business_unit"  : "25000",
+                "report_id"      : "LFSTTB01",
+                "server"         : "PSNT"
+            }
+        },
+        {
+            "key"       : "Smoketest GUI - TC32540",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_nvision_drilldown",
+            "testdata"  : 
+            {
+                "run_control_id" : "test1",
+                "business_unit"  : "25000",
+                "report_id"      : "LFSTTB01",
+                "server"         : "PSNT",
+                "drilldown_baseurl" : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d_1/EMPLOYEE/ERP/c/REPORT_BOOKS.IC_RUN_DRILLDOWN.GBL?Action=A&NVS_INSTANCE="
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34014",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_nvision_drilldown_timing",
+            "testdata"  : 
+            {
+                "run_control_id" : "test1",
+                "business_unit"  : "25000",
+                "report_id"      : "LFSTTB01",
+                "server"         : "PSNT",
+                "drilldown_baseurl" : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d_1/EMPLOYEE/ERP/c/REPORT_BOOKS.IC_RUN_DRILLDOWN.GBL?Action=A&NVS_INSTANCE="
+            }
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32542",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_ps_pages",
+            "testdata"  : { }
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32546",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_fah_login",
+            "testdata"  : {
+                "fah_url"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                "secretID"  : "dev/fah/pia"
+            }
+        },
+        {
+            "key"       : "Smoketest GUI - TC32550",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_ODS_Smoketest_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["dev/app2809/pipd"]}
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32550",
+            "env"       : "QA",
+            "runflag"   : "N",
+            "scenario"  : "test_ODS_Smoketest_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["qa/app2809/pipe"]}
+        },
+        {
+            "key"       : "Smoketest GUI - TC32549",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_FAH_Smoketest_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["dev/app2808/hubd"]}
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32549",
+            "env"       : "QA",
+            "runflag"   : "N",
+            "scenario"  : "test_FAH_Smoketest_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["qa/app2808/hubq"]}
+        },
+        {
+            "key"       : "Smoketest GUI - TC32545",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_PS_Smoketest_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["qa/2807/fgle", "dev2/2808/fgl2d"]}
+        },
+        {
+            "key"       : "Smoketest GUI - TC33496",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_PS_EGL_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["qa/2807/fgle", "dev2/2808/fgl2d"]}
+        },
+        {
+            "key"       : "Smoketest GUI - TC33512",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_FAH_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["dev/app2808/hubd","qa/app2808/hubq"]}
+        },
+        {
+            "key"       : "Smoketest GUI - TC33513",
+            "env"       : "Dev",
+            "runflag"   : "Y",
+            "scenario"  : "test_ODS_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["dev/app2809/pipd","qa/app2809/pipe"]}
+        },
+
+        {
+            "key"       : "Smoketest GUI - TC32545",
+            "env"       : "QA",
+            "runflag"   : "N",
+            "scenario"  : "test_PS_Smoketest_DB_connectivity",
+            "testdata"  : {
+                "db_secret"   : ["qa/2807/fgle"]}
+        },
+        {
+            "key"       : "Smoketest GUI - TC32536",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_sqr_program",
+            "testdata"  : 
+            {
+                "run_control_id" : "test1",
+                "unit"           : "10000", 
+                "ledger"         : "ACTUALS",
+                "fiscal_year"    : "2023",
+                "from_period"    : "1",
+                "to_period"      : "7", 
+                "server"         : "PSUNX"
+            }
+        },
+        {
+            "key"       : "Smoketest GUI - TC32547",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_fah_concurrent",
+            "testdata"  : {
+                "fah_url"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                "fahReport" : "HIG Basic Validation Report",
+                "fahSource" : "BAC",
+                "fahRequestid": "456",
+                "fahsecretID"  : "dev/fah/pia",
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/FAH_Concurrent_Program",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+            }
+        },
+        {
+            "key"       : "Smoketest GUI - TC32541",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_load_journal",
+            "testdata"  : {
+                "Sheetname"   : "Basic Import",
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34045",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_SSJ_Verify_layout",
+            "testdata"  : {
+                "Sheetname"   : "Basic Import",
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/SSJ_Verify_layout",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34002",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_CI_User_Profile",
+            "testdata"  : {
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/USER_PROFILE",
+                "pssecretID"  : "dev/psgl/pia",
+                "execpath":"C:/Program Files/PT860/bin/client/winx86/pside.exe",
+                "env":"FGL2D",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34000",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Record_validation",
+            "testdata"  : {
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Record_validation",
+                "pssecretID"  : "dev/psgl/pia",
+                "execpath":"C:/Program Files/PT860/bin/client/winx86/pside.exe",
+                "env":"FGL2D",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34048",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_SSJ_Edit_Recalc_checked",
+            "testdata"  : {
+                "Sheetname"   : "Basic Import",
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/SSJ_Edit_Recalc_checked",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34047",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_SSJ_Edit_Checked",
+            "testdata"  : {
+                "Sheetname"   : "Basic Import",
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/SSJ_Edit_Checked",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34046",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_SSJ_Verify_Setup",
+            "testdata"  : {
+                "Sheetname"   : "Basic Import",
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/SSJ_Verify_Setup",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33968",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_nvision_2tier",
+            "testdata"  : {
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Nvision_2tier",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "ENVR":"FGL2D",
+                "Requestname":"TEST1",
+                "BU":"10000",
+                "Nvision_layout":"HF_BAL Due Stat Reclass",
+                "layoutpath": "C:\\Program Files\\PT860\\nvision\\LAYOUT\\HF_BAL Due Stat Reclass.xnv",
+                "nvisionpath": "C:/Program Files/PT860/bin/client/winx86/"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34050",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_nvision_conbs",
+            "testdata"  : {
+                "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Nvision_CONBS",
+                "pssecretID"  : "dev/psgl/pia",
+                "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                "ENVR":"FGL2D",
+                "reportname":"CONBS",
+                "reportdescr":"CONBS -- GAAP_CON_BS-All_Operating_Unit",
+                "Requestname":"TEST1",
+                "BU":"10000",
+                "Nvision_layout":"HF_GAAP Consolidated Balance Sheet",
+                "layoutpath": "C:\\Github\\corp_corpit_ps_egl_test_automation\\UFT\\HF_GAAP Consolidated Balance Sheet.xnv",
+                "nvisionpath": "C:/Program Files/PT860/bin/client/winx86/"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33972",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_manual_jrnl_create",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "Jrnldate":"07/31/2024"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33973",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_manual_jrnl_edit",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "Jrnldate":"07/31/2024"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33974",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_manual_jrnl_post",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "userid":"PWTEST",
+                "Jrnldate":"09/01/2024"
+            }
+        },
+        {
+            "key"       : "Unit test GUI - TC34051",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Journal_Auto_Reversal",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "jrnl_ref":"0999",
+                "userid":"PWTEST",
+                "scenario"  : "test_Journal_Auto_Reversal",
+                "Jrnldate":"08/31/2024",
+                "ps_db":"dev2/2808/fgl2d"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33993",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_Journal_ID_Ref_Onl",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "jrnl_ref":"0999",
+                "userid":"PWTEST",
+                "scenario"  : "test_Journal_ID_Ref_Onl",
+                "Jrnldate":"07/31/2024"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33975",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_batch_jrnl_edit",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "run_control_id":"test1",
+                "server":"PSUNX",
+                "editprocess":"GL_JEDIT",
+                "Jrnldate":"07/31/2024"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33976",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_batch_jrnl_post",
+            "testdata"  : {
+                "business_unit":"10000",
+                "ledger":"ACTUALS",
+                "source":"A01",
+                "account":"100010",
+                "foreign_amount_line1":"1500",
+                "foreign_amount_line2":"-1500",
+                "oper_unit":"000",
+                "run_control_id":"test1",
+                "server":"PSUNX",
+                "postprocess":"GL_JP",
+                "Jrnldate":"07/31/2024",
+                "Year":"2024",
+                "Period":"7"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33984",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_combo_build_process",
+            "testdata"  : {
+                "run_control_id":"test1",
+                "asofdt":"07/23/2024",
+                "processfrequency":"A",
+                "BU":"10000",
+                "ledger_grp":"ACTUALS",
+                "build_optn":"S",
+                "server":"PSUNX",
+                "ps_db":"dev2/2808/fgl2d",
+                "combobuildprocess":"FS_CEBD"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33985",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_CF_Security_process",
+            "testdata"  : {
+                "run_control_id":"test1",
+                "processfrequency":"O",
+                "processtype":"B",
+                "reqdtoptn":"S",
+                "security_method":"3",
+                "server":"PSUNX",
+                "ps_db":"dev2/2808/fgl2d",
+                "cfsecurityprocess":"SEC_BLD"
+            }
+        },
+        {
+            "key"       : "QA test GUI - TC33977",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_approval_workflow",
+                "testdata"  : {
+                    "business_unit":"10000",
+                    "ledger":"ACTUALS",
+                    "source":"ACG",
+                    "account":"100010",
+                    "foreign_amount_line1":"1500",
+                    "foreign_amount_line2":"-1500",
+                    "oper_unit":"000",
+                    "Jrnldate":"07/31/2024"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34074",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_approval_as_approver",
+                    "testdata"  : {
+                        "business_unit":"10000",
+                        "ledger":"ACTUALS",
+                        "source":"ACG",
+                        "account":"100010",
+                        "foreign_amount_line1":"1500",
+                        "foreign_amount_line2":"-1500",
+                        "oper_unit":"000",
+                        "Jrnldate":"08/31/2024"
+                    }
+                },
+        {
+                "key"       : "QA test GUI - TC33995",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_open_period_update",
+                    "testdata"  : {
+                        "Calendar":"01",
+                        "Unit":"40001",
+                        "Ledger_Code":"BOOK_CODE",
+                        "Ledger_Group":"ACTUALS",
+                        "From_Period1":"6",
+                        "To_Period1":"12",
+                        "From_Period2":"1",
+                        "To_Period2":"12"
+                    }
+            },
+            {
+                "key"       : "QA test GUI - TC33979",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_equitization",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "SetID":"SHARE",
+                    "Currency":"USD",
+                    "As_of_Date":"07/16/2024",
+                    "Equitization_Group":"10078_EQTZ",
+                    "Tree":"CON_BUSINESS_UNIT",
+                    "Scope":"S",
+                    "Node":"HIG_TOP",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "equitizationprocess":"GLPQEQTZ"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34044",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_unittest_equitization",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "SetID":"SHARE",
+                    "Currency":"USD",
+                    "As_of_Date":"08/28/2024",
+                    "Equitization_Group":"10078_EQTZ",
+                    "Tree":"CON_BUSINESS_UNIT",
+                    "Scope":"S",
+                    "Node":"HIG_TOP",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "equitizationprocess":"GLPQEQTZ"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34019",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop01",
+                "testdata"  : {
+                    "BU":"25000",
+                    "ACCOUNT":"260415",
+                    "query_view":"PS_HF_FF_01_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_01",
+                    "process_step":"FLIPFLOP01",
+                    "As_of_Date":"08/22/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34022",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop02",
+                "testdata"  : {
+                    "BU":"61254",
+                    "ACCOUNT":"180706",
+                    "query_view":"PS_HF_FF_02_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_02",
+                    "process_step":"FLIPFLOP02",
+                    "As_of_Date":"08/23/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34025",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop03",
+                "testdata"  : {
+                    "BU":"25000",
+                    "ACCOUNT":"190485",
+                    "query_view":"PS_HF_FF_03_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_03",
+                    "process_step":"FLIPFLOP03",
+                    "As_of_Date":"08/23/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34020",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop1R",
+                "testdata"  : {
+                    "BU":"25000",
+                    "ACCOUNT":"260415",
+                    "query_view":"PS_HF_FF_01_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_1R",
+                    "process_step":"FLIPFLOP1R",
+                    "As_of_Date":"08/22/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34023",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop2R",
+                "testdata"  : {
+                    "BU":"61254",
+                    "ACCOUNT":"180706",
+                    "query_view":"PS_HF_FF_02_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_2R",
+                    "process_step":"FLIPFLOP2R",
+                    "As_of_Date":"08/22/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34021",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop1S",
+                "testdata"  : {
+                    "BU":"25000",
+                    "ACCOUNT":"260415",
+                    "query_view":"PS_HF_FF_1S_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_1S",
+                    "process_step":"FLIPFLOP1S",
+                    "As_of_Date":"08/22/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34024",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_FlipFlop2S",
+                "testdata"  : {
+                    "BU":"61254",
+                    "ACCOUNT":"180706",
+                    "query_view":"PS_HF_FF_2S_VW",
+                    "run_control_id":"test1",
+                    "SETID":"SHARE",
+                    "process_group":"HF_FF_2S",
+                    "process_step":"FLIPFLOP2S",
+                    "As_of_Date":"08/22/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33980",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_consolidation",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "SetID":"SHARE",
+                    "Currency":"USD",
+                    "As_of_Date":"07/16/2024",
+                    "Consol_Set":"CONS_CASH",
+                    "Tree":"CON_BUSINESS_UNIT",
+                    "Scope":"S",
+                    "Node":"HIG_TOP",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "consolidationprocess":"GLPOCONS"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34042",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_unittest_consolidation",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "SetID":"SHARE",
+                    "Currency":"USD",
+                    "As_of_Date":"07/16/2024",
+                    "Consol_Set":"CONS_CASH",
+                    "Tree":"CON_BUSINESS_UNIT",
+                    "Scope":"S",
+                    "Node":"HIG_TOP",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "consolidationprocess":"GLPOCONS"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33981",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_allocation",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "As_of_Date":"07/16/2024",
+                    "BU":"10000",
+                    "Process_group":"HF_FF_03",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "allocationprocess":"FS_ALLC"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33983",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_ledger_close",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "close_type":"C",
+                    "BU_Prompt":"10000",
+                    "As_of_Date":"12/31/2023",
+                    "closing_group":"CLOSE_01",
+                    "fiscal_year":"2023",
+                    "ledger_group":"ACTUALS",
+                    "ledger":"ACTUALS",
+                    "request_type":"F",
+                    "Selected_BU":"10000",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "ledgercloseprocess":"GLPCLOSE"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33982",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_multicurrency_process",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "BU":"18103",
+                    "Group":"USD_UK_BS",
+                    "As_of_Date":"07/18/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "multicurrencyprocess":"FSPCCURR"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33998",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_as_of_validation",
+                "testdata"  : {
+                    "run_control_id":"test2",
+                    "BU":"18307",
+                    "Group":"ACT_GBP",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "multicurrencyprocess":"FSPCCURR"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34043",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_unittest_multicurrency",
+                "testdata"  : {
+                    "run_control_id":"test2",
+                    "BU":"18308",
+                    "Group":"ACT_GBP",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "multicurrencyprocess":"FSPCCURR"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33996",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_custom_revaluation",
+                "testdata"  : {
+                    "business_unit":"18105",
+                    "ledger":"ACTUALS",
+                    "source":"TM1",
+                    "account1":"800080",
+                    "account2":"151610",
+                    "scenario"  : "test_custom_revaluation",
+                    "book_cd":"UKGP",
+                    "Foreign_Curr":"GBP",
+                    "Project_id":"2024",
+                    "foreign_amount_line1":"-1500",
+                    "foreign_amount_line2":"1500",
+                    "oper_unit":"RZ",
+                    "userid":"PWTEST",
+                    "Jrnldate":"07/31/2024",
+                    "run_control_id":"test1",
+                    "BU":"18105",
+                    "Group":"REVALUK",
+                    "As_of_Date":"07/31/2024",
+                    "setid":"SHARE",
+                    "process_step":"REVALUE_BS",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "multicurrencyprocess":"FSPCCURR"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33997",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_custom_translation",
+                "testdata"  : {                  
+                    "business_unit":"18107",
+                    "ledger":"ACTUALS",
+                    "source":"TM1",
+                    "account1":"437200",
+                    "account2":"435200",
+                    "scenario"  : "test_custom_translation",
+                    "book_cd":"CASH",
+                    "Foreign_Curr":"GBP",
+                    "Project_id":"2024",
+                    "foreign_amount_line1":"1500",
+                    "foreign_amount_line2":"-1500",
+                    "oper_unit":"RZ",
+                    "userid":"PWTEST",
+                    "Jrnldate":"07/31/2024",
+                    "run_control_id":"test1",
+                    "BU":"18107",
+                    "Group":"ACT_GBP",
+                    "As_of_Date":"07/31/2024",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "multicurrencyprocess":"FSPCCURR"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33986",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_GL_Configuration",
+                "testdata"  : {
+                    "SETID":"SHARE",
+                    "ACCOUNT":"100000",
+                    "run_control_id":"test1" ,
+                    "CFValueset":"CMB_PAR_CASH",
+                    "closing_rule" :"CLOSE_01",
+                    "secretID"  : "dev/psgl/pia"    ,
+                    "profile":"AC29738"   ,
+                    "BU":"10000"  ,
+                    "Rate_indx":"REUT",
+                    "Timespan":"2021ITD" ,
+                    "Source":"A01" ,
+                    "Combo_rule":"10000"  ,
+                    "Group":"10000",
+                    "process_group":"ACT_GBP"  ,
+                    "process_step":"ACT_GBP"  ,
+                    "trans_rule":"UK_IS_RE_A",
+                    "reval_step":"REVALUE_BS",
+                    "reportid":"PCSTBS",
+                    "scope":"BU001",
+                    "Equitization_Group":"10000_EQTZ",
+                    "Elimination_set":"EG01"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34049",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_batch_import",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "charset":"ISO_8859-1",
+                    "input_file":"C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.txt",
+                    "server":"PSUNX",
+                    "batchimport":"GL_EXCL_JRNL"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33989",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Open_Item_Recon_SSJ1",
+                "testdata"  : {
+                    "Sheetname"   : "Open Item Recon",
+                    "open_item_key":"1234",
+                    "run_control_id":"test1",
+                    "descr":"TEST",
+                    "BU":"40001",
+                    "Ledger":"ACTUALS",
+                    "Asofdt":"07/28/2024",
+                    "server":"PSUNX",
+                    "openrecon":"GL_OI_RECON",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34068",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Open_Item_Blank",
+                "testdata"  : {
+                    "Sheetname"   : "Open Item Blank",
+                    "open_item_key":" ",
+                    "run_control_id":"test1",
+                    "descr":"TEST",
+                    "BU":"40001",
+                    "Ledger":"ACTUALS",
+                    "Asofdt":"08/28/2024",
+                    "server":"PSUNX",
+                    "openrecon":"GL_OI_RECON",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Open_Item_Blank",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33990",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Open_Item_Recon_SSJ2",
+                "testdata"  : {
+                    "Sheetname"   : "Open Item Recon",
+                    "open_item_key":"1234",
+                    "run_control_id":"test1",
+                    "descr":"TEST",
+                    "BU":"40001",
+                    "Ledger":"ACTUALS",
+                    "source":"TM1",
+                    "Asofdt":"07/28/2024",
+                    "server":"PSUNX",
+                    "openrecon":"GL_OI_RECON",
+                    "editprocess":"GL_JEDIT",
+                    "Year":"2024",
+                    "Month":"4",
+                    "postprocess":"GL_JP",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34067",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_SSJ_Open_Item_Recon",
+                "testdata"  : {
+                    "Sheetname"   : "Open Item Recon",
+                    "open_item_key":"1234",
+                    "run_control_id":"test1",
+                    "descr":"TEST",
+                    "BU":"40001",
+                    "Ledger":"ACTUALS",
+                    "Asofdt":"07/28/2024",
+                    "server":"PSUNX",
+                    "openrecon":"GL_OI_RECON",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33991",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Open_Item_Recon_Unpost",
+                "testdata"  : {
+                    "Sheetname"   : "Open Item Recon",
+                    "open_item_key":"1234",
+                    "run_control_id":"test1",
+                    "descr":"TEST",
+                    "BU":"40001",
+                    "Ledger":"ACTUALS",
+                    "Asofdt":"07/28/2024",
+                    "server":"PSUNX",
+                    "openrecon":"GL_OI_RECON",
+                    "Year":"2024",
+                    "Month":"4",
+                    "source":"TM1",
+                    "postprocess":"GL_JP",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33994",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Journal_ID_Ref_SSJ",
+                "testdata"  : {
+                    "Sheetname"   : "JRNL_REF",
+                    "Jrnl_reference":"PS_AUTO",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33964",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_datamigration_workbench",
+                "testdata"  : {
+                    "SETID"   : "SHARE",
+                    "Alloc_step":"DTAUNR_C",
+                    "Project" : "TEST_DMW_AUTOMATION10",
+                    "descr"  : "TEST",
+                    "dataset": "HF_COMP_ALLOCATIONS_GBL",
+                    "process_step": "DTAUNR_C1",
+                    "server_name": "PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "process_name":"PTADSAEPRCS",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/datamigration",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "ps_url"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33992",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Open_Item_Recon_Reconcile_manual",
+                "testdata"  : {
+                    "business_unit":"40001",
+                    "ledger":"ACTUALS",
+                    "source":"TM1",
+                    "account1":"156806",
+                    "account2":"156807",
+                    "foreign_amount_line1":"1500",
+                    "foreign_amount_line2":"-1500",
+                    "oper_unit":"000",
+                    "userid":"PWTEST",
+                    "scenario"  : "test_Open_Item_Recon_Reconcile_manual",
+                    "open_item_key":"5556",
+                    "run_control_id":"test1",
+                    "server":"PSUNX",
+                    "postprocess":"GL_JP"  ,
+                    "Jrnldate":"07/30/2024" ,
+                    "reversaldate":"07/31/2024" ,
+                    "Year":"2024",
+                    "Period":"7"                 
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33999",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Suspense_reclass",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "systemid":"FAH",
+                    "descr":"SUSPENSE REPORT FOR BLC",
+                    "jrnl_template":"BLC",
+                    "server":"PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "suspenseprocess":"HF_SUS_RCFRP"
+                }
+            },
+            {
+                "key"       : "QA test GUI - TC33963",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_data_archive",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "server":"PSUNX",
+                    "Template":"HF_FAH_A",
+                    "QRY":"HF_FAH_ONLINE",
+                    "archivalprocess":"PSARCHIVE"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34005",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_message_node_def",
+                "testdata"  : {
+                    "msg_node":"ANONYMOUS",
+                    "msg_userid":"PSADMIN",
+                    "msg_emailid":"de_identified@thehartford.com"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34004",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_validate_url_def",
+                "testdata"  : {
+                    "URL_ID_1":"PPM_MONITOR",
+                    "URL_ID_2":"PPM_PPMI",
+                    "URLID":"NONE"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34013",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_syndicate_recon_query",
+                "testdata"  : {
+                    "query"          : "EGL_SYNDICATE_RECON",
+                    "run_control_id" : "test1",
+                    "server"         : "PSUNX"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34008",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_custom_image_files",
+                "testdata"  : {
+                    "imagename"          : "ZZ"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34006",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_ledger_code",
+                    "testdata"  : {
+                        "Calendar":"01",
+                        "Unit":"40001",
+                        "Ledger_Code":"BOOK_CODE",
+                        "Ledger_Group":"ACTUALS",
+                        "From_Period1":"6",
+                        "To_Period1":"12",
+                        "From_Period2":"1",
+                        "To_Period2":"12"
+                    }
+            },
+            {
+                "key"       : "Unit test GUI - TC34065",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Schedule_PSQueries",
+                "testdata"  : 
+                {
+                    "query"          : "HF_ACCOUNTS",
+                    "run_control_id" : "test1",
+                    "server"         : "PSUNX"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34070",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_JRNL_LN_REF_SSJ",
+                "testdata"  : {
+                    "Sheetname"   : "JRNL_REF",
+                    "Jrnl_reference":"PS_AUTO",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Load_Journal_to_Template",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json",
+                    "Jrnldatapath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/jrnldata.json",
+                    "macropath": "C:/Github/corp_corpit_ps_egl_test_automation/Load_Journal/JRNL1_WS_PT_860_FGL2D.xlsm"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34069",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_JRNL_LN_REF_online",
+                "testdata"  : {
+                    "business_unit":"10000",
+                    "ledger":"ACTUALS",
+                    "source":"A01",
+                    "account":"100010",
+                    "foreign_amount_line1":"1500",
+                    "foreign_amount_line2":"-1500",
+                    "oper_unit":"000",
+                    "jrnl_ref":"0999",
+                    "userid":"PWTEST",
+                    "scenario"  : "test_JRNL_LN_REF_online",
+                    "Jrnldate":"07/31/2024"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34016",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "asofdt":"07/23/2024",
+                    "processfrequency":"A",
+                    "BU":"10000",
+                    "ledger_grp":"ACTUALS",
+                    "build_optn":"S",
+                    "server":"PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "combobuildprocess":"FS_CEBD"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34018",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_Jrnl",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "asofdt":"08/23/2024",
+                    "processfrequency":"A",
+                    "BU":"10000",
+                    "ledger_grp":"ACTUALS",
+                    "build_optn":"S",
+                    "server":"PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "combobuildprocess":"FS_CEBD"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34003",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_validate_server_def",
+                    "testdata"  : {
+                        "serverconcurrency1":"6",
+                        "serverconcurrency2":"10",
+                        "serverconcurrency3":"0",
+                        "server1":"PSNT",
+                        "server2":"PSUNX",
+                        "ENV":"FGL2D",
+                        "retries":"5"
+                    }
+            },
+            {
+                "key"       : "Unit test GUI - TC34056",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_datamigration",
+                "testdata"  : {
+                    "SETID"   : "SHARE",
+                    "Alloc_step":"DTAUNR_C",
+                    "Project" : "TEST_DMW_AUTOMATION12",
+                    "descr"  : "TEST",
+                    "dataset": "HF_COMP_ALLOCATIONS_GBL",
+                    "process_step": "DTAUNR_C1",
+                    "server_name": "PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "process_name":"PTADSAEPRCS",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/datamigration",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "ps_url"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34012",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_allocation_changes",
+                "testdata"  : {
+                    "SETID"   : "SHARE",
+                    "Alloc_step":"AUTOTEST1",
+                    "Descr" : "TEST",
+                    "Batch_rec"  : "HF_ALC_P_TAO",
+                    "Table": "HF_JRNL_H_L_VW",
+                    "Fieldname": "JRNL_HDR_STATUS"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34061",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_HF_PT_PSUSER",
+                "testdata"  : {
+                    "permissionlist"   : "HF_PT_PSUSER",
+                    "menu":"NUI_FRAMEWORK",
+                    "component1" : "PSUSEROPTNDEFINE",
+                    "component2"  : "PTNUI_HP_COMP",
+                    "component3": "PTNUI_MENU_COMP",
+                    "component4": "PTNUI_MRU_COMP",
+                    "component5" : "PTNUI_MYFAV_COMP",
+                    "component6"  : "PTNUI_NAVBAR",
+                    "component7": "PTNUI_NAVCOLL_COMP",
+                    "component8": "PT_LANDINGPAGE",
+                    "component9": "PT_MDSTARTPAGE_NUI",
+                    "component10": "PT_QAB_POPUP_FL"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34060",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_PTPT1000_PTPT3500",
+                "testdata"  : {
+                    "permissionlist1"   : "PTPT1000",
+                    "permissionlist2"   : "PTPT3500",
+                    "menu1":"NUI_FRAMEWORK",
+                    "menu2":"PORTAL_ADMIN",
+                    "component1" : "PTGPLT_APP_TILE_FL",
+                    "component2"  : "PTNUI_HP_COMP",
+                    "component3": "PTNUI_MENU_COMP",
+                    "component4": "PT_QAB_POPUP_FL",
+                    "component5" : "PT_MDSTARTPAGE_NUI",
+                    "component6"  : "PT_LANDINGPAGE",
+                    "component7": "PTNUI_MRU_COMP",
+                    "component8": "PTNUI_MYFAV_COMP",
+                    "component9": "PTNUI_NAVBAR",
+                    "component10": "PT_AGSTARTPAGE_NUI",
+                    "component11": "PTNUI_NAVCOLL_COMP",
+                    "component12"  : "PORTAL_CREF_LNK",
+                    "component13": "PORTAL_EDIT_FAV",
+                    "component14": "PORTAL_RLNK_1COL",
+                    "component15" : "PORTAL_RLNK_1COL_H",
+                    "component16"  : "PORTAL_RLNK_3COL",
+                    "component17": "PORTAL_SEARCH"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34001",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_return_button",
+                "testdata"  : 
+                {
+                    "run_control_id" : "test123",
+                    "unit"           : "10000", 
+                    "ledger"         : "ACTUALS",
+                    "fiscal_year"    : "2023",
+                    "from_period"    : "1",
+                    "to_period"      : "7", 
+                    "server"         : "PSUNX",
+                    "program"        :"GLS7010"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34015",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_fluid_tile_config",
+                "testdata"  : 
+                {
+                    "image" : "ZZ_CREATE_JRNLS",
+                    "perm_list"           : "HF_PT_PSUSER", 
+                    "behaviour"         : "2REQ",
+                    "fiscal_year"    : "2023",
+                    "from_period"    : "1",
+                    "to_period"      : "7", 
+                    "server"         : "PSUNX"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34007",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_view_all_button",
+                "testdata"  : 
+                {
+                    "setid" : "SHARE",
+                    "reval_step" : "REVALUE_BS",
+                    "trans_step":"ACT_GBP",
+                    "chartfield1":"BOOK_CODE",
+                    "cf1_value":"STAT",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "server":"PSUNX",
+                    "run_control_id":"test1",
+                    "BU":"18307",
+                    "Group":"REVALUE_BS",
+                    "As_of_Date":"09/25/2024",
+                    "multicurrencyprocess":"FS_MC"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34071",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Validate_suspense_report",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "systemid":"FAH",
+                    "descr":"SUSPENSE REPORT FOR BLC",
+                    "jrnl_template":"BLC",
+                    "server":"PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "suspenseprocess":"HF_SUS_RCFRP"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34072",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Validate_fields",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "systemid":"FAH",
+                    "descr":"SUSPENSE REPORT FOR EXP PAIDS",
+                    "jrnl_template":"EXP_PAIDS",
+                    "server":"PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "suspenseprocess":"HF_SUS_RCFRP",
+                    "output":"HF_SUSP_EXP_PAIDS.csv"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34073",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Journal_Approval_as_Requester",
+                    "testdata"  : {
+                        "business_unit":"10000",
+                        "ledger":"ACTUALS",
+                        "source":"ACG",
+                        "account":"100010",
+                        "foreign_amount_line1":"1500",
+                        "foreign_amount_line2":"-1500",
+                        "oper_unit":"000",
+                        "Jrnldate":"07/31/2024"
+                    }
+                },
+            {
+                "key"       : "Unit test GUI - TC34017",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Security",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "processfrequency":"O",
+                    "processtype":"B",
+                    "reqdtoptn":"S",
+                    "security_method":"3",
+                    "server":"PSUNX",
+                    "ps_db":"dev2/2808/fgl2d",
+                    "cfsecurityprocess":"SEC_BLD"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34030",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_ACCOUNT",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Account",
+                    "segment":"Account",
+                    "Descr_TBL":"GL_ACCOUNT_TBL_DESCR",
+                    "Operation_name":"HF_ACCOUNT_CF_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "100000",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation3",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34031",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_CHARTFIELD1",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"RPT",
+                    "segment":"Risk Participation Code",
+                    "Descr_TBL":"CHARTFIELD1_TBL_DESCR",
+                    "Operation_name":"HF_CHARTFIELD1_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "A",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34032",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_CHARTFIELD2",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Cust Mrkt",
+                    "segment":"Customer Market",
+                    "Descr_TBL":"CHARTFIELD2_TBL_DESCR",
+                    "Operation_name":"HF_CHARTFIELD2_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "100",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34033",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_CHARTFIELD3",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Distr",
+                    "segment":"Distribution Channel",
+                    "Descr_TBL":"CHARTFIELD3_TBL_DESCR",
+                    "Operation_name":"HF_CHARTFIELD3_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "99",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34034",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_CLASS_FLD",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Location Code",
+                    "segment":"Location Code",
+                    "Descr_TBL":"CLASS_CF_TBL_DESCR",
+                    "Operation_name":"HF_CLASS_FLD_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "110",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34035",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_FUND_CODE",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Portfolio Code",
+                    "segment":"Portfolio Code",
+                    "Descr_TBL":"FUND_TBL_DESCR",
+                    "Operation_name":"HF_FUND_CODE_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "0006",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34036",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_OPERATING_UNIT",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Operating Unit",
+                    "segment":"Operating Unit",
+                    "Descr_TBL":"OPER_UNIT_TBL_DESCR",
+                    "Operation_name":"HF_OPER_UNIT_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "000",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34037",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_PRODUCT",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Product Type",
+                    "segment":"Product Type",
+                    "Descr_TBL":"PRODUCT_TBL_DESCR",
+                    "Operation_name":"HF_PRODUCT_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "10010",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34038",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_BUDGET_REF",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Statutory Line of Business",
+                    "segment":"Statutory Line of Business",
+                    "Descr_TBL":"BUD_REF_TBL_DESCR",
+                    "Operation_name":"HF_BUDGET_REF_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "10",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34039",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_Chartfield_Validation_PROGRAM_CODE",
+                "testdata"  : {
+                    "fahlink"   : "http://p2808hldebz002.thehartford.com:8005/OA_HTML/AppsLocalLogin.jsp",
+                    "pslink"    : "http://p2807hldpst001.thehartford.com:8300/psp/fgl2d/?cmd=login&languageCd=ENG&",
+                    "Link":"Cost Center",
+                    "segment":"Cost Center",
+                    "Descr_TBL":"PROGRAM_TBL_DESCR",
+                    "Operation_name":"HF_PROGRAM_CODE_FULL_SYNC",
+                    "SETID" : "SHARE",
+                    "Chartfieldvalue" : "10001",
+                    "run_control_id": "test55",
+                    "server":"PSUNX",
+                    "CFDescr" : "Automation5",
+                    "Request_id":"TESTAUTO",
+                    "Request_descr":"testing",
+                    "publishprocess":"HF_CF_FL_PUB",
+                    "test_path" : "C:/Github/corp_corpit_ps_egl_test_automation/UFT/Chartfield_Validation",
+                    "fahsecretID"  : "dev/fah/pia",
+                    "pssecretID"  : "dev/psgl/pia",
+                    "uftrespath": "C:/Github/corp_corpit_ps_egl_test_automation/Result/uftres.json"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34476",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_3rd_party_1_HF_FAIJEDIT",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "Description":"3rd Party Edit for RMB",
+                    "systemid":"FAH",
+                    "template":"RMB",
+                    "server":"PSUNX",
+                    "editprocess":"HF_FAIJEDIT"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34477",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_3rd_party_2_HF_FAIJPOST",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "Description":"3rd Party Post for RMB",
+                    "systemid":"FAH",
+                    "template":"RMB",
+                    "server":"PSUNX",
+                    "postprocess":"HF_FAIJPOST"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34028",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_3rd_party_3_HF_SUS_RCFRP",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "language":"ENG",
+                    "Description":"SUSPENSE REPORT FOR RMB",
+                    "systemid":"FAH",
+                    "template":"RMB",
+                    "server":"PSUNX",
+                    "suspenseprocess":"HF_SUS_RCFRP"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34029",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_3rd_party_4_FS_JGEN",
+                "testdata"  : {
+                    "run_control_id":"test1",
+                    "template":"RMB",
+                    "BU":"25000",
+                    "ledger_group":"ACTUALS",
+                    "Setid":"SHARE",
+                    "Acctdefn":"FAIJRNL",
+                    "server":"PSUNX",
+                    "fsjgenprocess":"FS_JGEN"
+                }
+            },
+            {
+                "key"       : "Unit test GUI - TC34057",
+                "env"       : "Dev",
+                "runflag"   : "N",
+                "scenario"  : "test_SQR_GLS7010_program",
+                "testdata"  : 
+                {
+                    "run_control_id" : "test1",
+                    "unit"           : "10000", 
+                    "ledger"         : "ACTUALS",
+                    "fiscal_year"    : "2023",
+                    "from_period"    : "1",
+                    "to_period"      : "7", 
+                    "server"         : "PSUNX"
+                }
+            },
+
+
+        {
+            "key"       : "Smoketest GUI - TC33934",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_RMB_regression",
+            "testdata"  : 
+            {
+                "autosys_url"    : "https://wcctest.thehartford.com/wcc/ui/Launcher.html",
+                "odsserver":"infetlhd003",
+                "ods_unix_secretID"  : "dev/app2809/fitap01d",
+                "search_path" : "/appl/cits/dev/infashr/fit/data/in",
+                "file_to_edit" : "RMB.txt",
+                "ODS_file_load_job":"7kaad5cmm_rmb_ldg_wkfl_load",
+                "RMB_load_job":"7kaad5bxm_fit_rmb_gbd_billing",
+                "ps_db":"dev/2807/fgld",
+                "local_file_path":"C:/Github/corp_corpit_ps_egl_test_automation/Input files/RMB.txt"
+                
+            }
+        },
+        {
+            "key"       : "Smoketest AWS_Infra - TC33298",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_PS_EGL_EC2_instances",
+            "ec2_instances" : {
+                "web_instance_1" : "i-000f1471df6ab1fa8",
+                "web_instance_2" : "i-011ece139280cb590",
+                "app_instance_1" : "i-008c603dd1ea4ada4",
+                "app_instance_2" : "i-056ecca76cf4c2164", 
+                "ora_instance_1" : "i-036afd5f0d2da2349",
+                "ora_instance_2" : "i-0cacdf2adc4de33a4"
+            }
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33299",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_FAH_EC2_instances",
+            "ec2_instances" : {
+                "web_instance_1" : "i-0e79e6dddab36c860", 
+                "ora_instance_1" : "i-09092982fa5ac7540"
+            }
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33300",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_ODS_EC2_instances",
+            "ec2_instances" : {
+                "web_instance_1" : "i-022c694310d78571a", 
+                "ora_instance_1" : "i-0918e66e3084be11c"
+            }
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33496",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_PS_EGL_DB_connectivity",
+            "db_secret" : ["dev/2807/fgld", "dev2/2808/fgl2d"]
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33496",
+            "env"       : "QA",
+            "runflag"   : "N",
+            "scenario"  : "test_PS_EGL_DB_connectivity",
+            "db_secret" : ["qa/2807/fgle"]
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33513",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_ODS_DB_connectivity",
+            "db_secret" : ["dev/app2808/hubd"]
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33513",
+            "env"       : "QA",
+            "runflag"   : "N",
+            "scenario"  : "test_ODS_DB_connectivity",
+            "db_secret" : ["qa/app2809/pipe"]
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33512",
+            "env"       : "Dev",
+            "runflag"   : "N",
+            "scenario"  : "test_FAH_DB_connectivity",
+            "db_secret" : ["dev/app2808/hubd"]
+        },
+
+        {
+            "key"       : "Smoketest AWS_Infra - TC33512",
+            "env"       : "QA",
+            "runflag"   : "N",
+            "scenario"  : "test_FAH_DB_connectivity",
+            "db_secret" : ["qa/app2808/hubq"]
+        },
+
+
+
+        {
+            "key"          : "Smoketest AWS_Infra - TC33687",
+            "env"          : "Dev",
+            "runflag"      : "N",
+            "scenario"     : "test_ODS_unix_onprem_server",
+            "server"       : "infetlhd003",
+            "port_number"  : 22
+        }
+    ]
+}
