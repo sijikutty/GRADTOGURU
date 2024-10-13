@@ -1,1 +1,25 @@
 
+import json
+
+# Your JSON data
+data = {
+    "testcases": 
+}
+
+# Sort the testcases by the value of "key"
+sorted_testcases = sorted(data["testcases"], key=lambda x: x["key"])
+
+# Create a new JSON structure with the sorted testcases
+sorted_data = {
+    "testcases": sorted_testcases
+}
+
+# Output the sorted JSON
+output_json = json.dumps(sorted_data, indent=4)
+
+# Print or save the sorted JSON
+print(output_json)
+
+# Optionally, save to a file
+with open('sorted_testcases.json', 'w') as f:
+    f.write(output_json)
