@@ -1,1 +1,11 @@
 
+My system got stuck at 30% status while doing the upgrade. It was unlimitedly restarting after that.
+I got my system replaced finally losing all data. Only OneDrive data was recovered.
+Lost 4 work days due to this.
+
+Points noted :
+
+There was no backup file to do HP Recovery. It was pointing to a system location, but backup files were not present.
+Advance repair didn’t come up.
+Tried hard drive test/network test(complete list of tests).They were all success. But still system was failing to restart.
+Never upgrade on Wifi.
