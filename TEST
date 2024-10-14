@@ -1,8 +1,1 @@
-My system got stuck at 30% during the upgrade process and entered an endless restart loop. Unfortunately, I ultimately had to replace the entire system, resulting in the loss of all my data, except for what was recovered from OneDrive. This situation cost me four valuable workdays.
 
-Here are the key points regarding the upgrade failure:
-
-There were no backup files available for HP Recovery; the system pointed to a location that was empty.
-Advanced repair options did not appear as expected.
-I performed several tests, including hard drive and network tests, all of which passed, yet the system continued to fail to restart.
-I learned the hard way not to upgrade over Wi-Fi.
