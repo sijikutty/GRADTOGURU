@@ -1,1 +1,5 @@
 
+	If AIUtil.FindTextBlock("Security Warning").CheckExists(True) Then
+		AIUtil("check_box", "I accept the risk and want to run this application").SetState "On"
+		AIUtil.FindTextBlock("Run").Click
+	End If
