@@ -1,5 +1,17 @@
+Dim startTime, elapsedTime
+startTime = Timer
+elapsedTime = 0
 
-	If AIUtil.FindTextBlock("Security Warning").CheckExists(True) Then
-		AIUtil("check_box", "I accept the risk and want to run this application").SetState "On"
-		AIUtil.FindTextBlock("Run").Click
-	End If
+' Check for "Security Warning" for up to 30 seconds
+Do While elapsedTime < 30
+    If AIUtil.FindTextBlock("Security Warning").CheckExists(True) Then
+        ' If found, check for the checkbox and act accordingly
+        If AIUtil("check_box", "I accept the risk and want to run this application").CheckExists(True) Then
+            AIUtil("check_box", "I accept the risk and want to run this application").SetState "On"
+            AIUtil.FindTextBlock("Run").Click
+            Exit Do
+        End If
+    End If
+    elapsedTime = Timer - startTime
+    Wait(1) ' Wait for 1 second before checking again
+Loop
