@@ -1,4 +1,1 @@
-C:\>"C:\Java\jdk-1.8\bin\java" -verbose:class -version
-Unrecognized option: C:\Program
-Error: Could not create the Java Virtual Machine.
-Error: A fatal exception has occurred. Program will exit.
+for /r C:\ %i in (java.exe) do "%i" -version
