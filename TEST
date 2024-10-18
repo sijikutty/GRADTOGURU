@@ -1,4 +1,4 @@
-"C:\Program Files\Java\jdk-1.8\bin\java" -version
+C:\>"C:\Java\jdk-1.8\bin\java" -verbose:class -version
 Unrecognized option: C:\Program
 Error: Could not create the Java Virtual Machine.
 Error: A fatal exception has occurred. Program will exit.
