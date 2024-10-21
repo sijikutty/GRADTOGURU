@@ -1,8 +1,3 @@
-[distutils]
-index-servers =
-    nexus
-
-[nexus]
-repository: <your_nexus_repo_url>
-username: <your_username>
-password: <your_password>
+set PIP_INDEX_URL=https://<your_nexus_repo_url>
+set PIP_USERNAME=<your_username>
+set PIP_PASSWORD=<your_password>
