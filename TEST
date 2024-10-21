@@ -1,2 +1,8 @@
-[global]
-index-url = https://<your_username>:<your_password>@<your_nexus_repo_url>
+[distutils]
+index-servers =
+    nexus
+
+[nexus]
+repository: <your_nexus_repo_url>
+username: <your_username>
+password: <your_password>
