@@ -1,14 +1,2 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <!-- StartFragment -->
-    <div class="snippet-clipboard-content notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="Make sure\ntest case">
-      <pre class="notranslate">
-        <code>Make sure
-Make sure
-test case</code>
-      </pre>
-    </div>
-    <!-- EndFragment -->
-  </body>
-</html>
+[global]
+index-url = https://<your_username>:<your_password>@<your_nexus_repo_url>
