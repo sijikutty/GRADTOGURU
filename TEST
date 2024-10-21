@@ -1,1 +1,9 @@
-for /r C:\ %i in (java.exe) do "%i" -version
+<html>
+<body>
+<!--StartFragment-->
+<div class="snippet-clipboard-content notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="    1. Make sure test"><pre class="notranslate"><code>    1. Make sure test case
+  | </code></pre></div>
+
+<!--EndFragment-->
+</body>
+</html>
