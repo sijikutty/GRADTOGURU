@@ -1,1 +1,52 @@
+                "ODS_file_load_job":"7kaad5cmx_mxms_ldg_wkfl_load",
+                "ODS_landing_to_stg_job":"7kaad5cmx_mxms_stg_wkfl_load",
+                "Staging_Journal_to_FAH_job":"7kaad5cmx_mxms_fah_wkfl_load",
+                "file_archive":"7kaad5cmx_mxms_file_archive",
+                "log_archive":"7kaad5cmx_mxms_log_archive",
+                "Record_check":"7kaad5cmx_mxms_record_check",
+                "Workflow_exec":"7kaad5cmx_mxms_flt_wkfl_load",
+                "Update_threshold":"7kaad5cmx_mxms_thresh_handlg",
+                "FAH_processing_job":"7kaad5cmx_mxms_fah_process",
+                "3rd_party_customisation_job":"7kaad5cmx_mxms_3rd_pty_edt",
+                "3rd_party_edit_job":"7kaad5cmx_mxms_3rd_edt_vlt",
+                "journal_post":"7kaad5cmx_mxms_3rd_prt_pst",
+                "journal_ss_rt":"7kaad5cmx_mxms_3rdpy_ss_rt",
+                "journal_process":"7kaad5cmx_mxms_ps_process",
+                "maximis_load_job":"7kaad5bxx_fit_maximis",
+--
+    # List of jobs to execute sequentially
+    jobs_to_execute = [
+        (testdata["maximis_load_job"], testdata["ODS_file_load_job"]),
+        (testdata["maximis_load_job"], testdata["ODS_landing_to_stg_job"]),
+        (testdata["maximis_load_job"], testdata["Staging_Journal_to_FAH_job"]),
+        (testdata["maximis_load_job"], testdata["file_archive"]),
+        (testdata["maximis_load_job"], testdata["log_archive"]),
+    #    (testdata["maximis_load_job"], testdata["Record_check"]),
+    #    (testdata["maximis_load_job"], testdata["Workflow_exec"]),
+        (testdata["maximis_load_job"], testdata["FAH_processing_job"]),        
+        (testdata["maximis_load_job"], testdata["3rd_party_customisation_job"]),
+        (testdata["maximis_load_job"], testdata["3rd_party_edit_job"]),
+        (testdata["maximis_load_job"], testdata["journal_ss_rt"]),
+        (testdata["maximis_load_job"], testdata["journal_post"]),
+        (testdata["maximis_load_job"], testdata["Update_threshold"]),
+        (testdata["maximis_load_job"], testdata["journal_process"])
+        # Add more jobs as needed
+    ]
+-------
+7kaad5cmx_mxms_record_check
+7kaad5cmx_mxms_flt_wkfl_load
+7kaad5cmx_mxms_ldg_wkfl_load
+7kaad5cmx_mxms_stg_wkfl_load
+7kaad5cmx_mxms_fah_wkfl_load
+7kaad5cmx_mxms_file_archive
+7kaad5cmx_mxms_log_archive
+7kaad5cmx_mxms_success_email
+7kaad5cmx_mxms_fah_process
+7kaad5cmx_mxms_fah_s_email
+7kaad5cmx_mxms_thresh_handlg
+7kaad5cmx_mxms_ps_process
+7kaad5cmx_mxms_ps_s_email
+7kaad5cmx_mxms_3rd_pty_edt
+7kaad5cmx_mxms_3rd_edt_vlt
+7kaad5cmx_mxms_3rdpy_ss_rt
 
