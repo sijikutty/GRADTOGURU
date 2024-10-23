@@ -1,49 +1,23 @@
-from playwright.sync_api import Page, expect
-from automation_utils import get_testdata, get_secrets, update_remote_file, transfer_file_to_unix, autosys_login, autosys_job_run, connect_to_oracleDB, execute_query
-import pytest
+testcase json part
+                "file_watcher":"7kaad5cmm_rmb_fil_wtchr",
+                "ODS_file_load_job":"7kaad5cmm_rmb_ldg_wkfl_load",
+                "ODS_landing_to_stg_job":"7kaad5cmm_rmb_stg_wkfl_load",
+                "Staging_Journal_to_FAH_job":"7kaad5cmm_rmb_fah_wkfl_load",
+                "file_archive":"7kaad5cmm_rmb_file_archive",
+                "log_archive":"7kaad5cmm_rmb_log_archive",
+                "Record_check":"7kaad5cmm_rmb_record_check",
+                "Workflow_exec":"7kaad5cmm_rmb_flt_wkfl_load",
+                "Update_threshold":"7kaad5cmm_rmb_thresh_handlg",
+                "FAH_processing_job":"7kaad5cmm_rmb_fah_process",
+                "3rd_party_customisation_job":"7kaad5cmm_rmb_3rd_pty_edt",
+                "3rd_party_edit_job":"7kaad5cmm_rmb_3rd_edt_vlt",
+                "journal_post":"7kaad5cmm_rmb_3rd_prt_pst",
+                "journal_ss_rt":"7kaad5cmm_rmb_3rdpy_ss_rt",
+                "journal_process":"7kaad5cmm_rmb_ps_process",
+                "RMB_load_job":"7kaad5bxm_fit_rmb_gbd_billing"
 
-@pytest.mark.parametrize("testcase", get_testdata("test_RMB_regression"))
-def test_RMB_regression(page: Page, testcase):
-    # Extract test data for the test case
-    testdata = testcase["testdata"]
-    
-    # Retrieve secrets such as ODS Unix credentials using the secret ID from the test data
-    secrets = get_secrets(testdata["ods_unix_secretID"])
-
-    # Extract necessary connection information from test data
-    hostname = testdata["odsserver"]
-    username = secrets['User']
-    password = secrets['Password']
-
-    # Extract file paths and names for Unix file modification
-    search_path = testdata["search_path"]
-    Input_file = testdata["file_to_edit"]
-    local_input_file_path = testdata["local_file_path"]
-    local_triggr_file_path = testdata["local_triggr_file_path"]
-    trigger_file = testdata["trigger"]
-    local_log_file_path = testdata["local_log_file_path"]
-    log_file = testdata["log_file"]
-
-    # ODS Unix File modification section
-    try:
-        # Upload input file to ODS server
-        transfer_file_to_unix(hostname, username, password, local_input_file_path, search_path, Input_file)
-        
-        # Upload trigger file to ODS server
-        transfer_file_to_unix(hostname, username, password, local_triggr_file_path, search_path, trigger_file)
-        
-        # Upload log file to ODS server
-        transfer_file_to_unix(hostname, username, password, local_log_file_path, search_path, log_file)
-
-        print("ODS RMB File Upload successful.")
-    except Exception as e:
-        # Handle any runtime error during file updates on the ODS server
-        print(f"Error occurred during file upload: {str(e)}")
-
-    # Login to Autosys system using the provided URL
-    autosys_login(page, testdata["autosys_url"])
-
-    # List of jobs to execute sequentially in Autosys
+----
+code part
     jobs_to_execute = [
         (testdata["RMB_load_job"], testdata["file_watcher"]),
         (testdata["RMB_load_job"], testdata["ODS_file_load_job"]),
@@ -59,38 +33,20 @@ def test_RMB_regression(page: Page, testcase):
         (testdata["RMB_load_job"], testdata["Update_threshold"]),
         (testdata["RMB_load_job"], testdata["journal_process"])
     ]
-
-    overall_success = True  # Flag to track the overall success of all job executions
-
-    # Loop through each job and execute sequentially
-    for job in jobs_to_execute:
-        if overall_success:  # Proceed only if previous jobs were successful
-            job_status = autosys_job_run(page, testdata, job[0], job[1])
-            print(f"Autosys job {job[1]} Status: {job_status}")
-
-            # If any job fails, set the overall success flag to False
-            if job_status.upper() != "SUCCESS":
-                overall_success = False
-
-    # If any job fails, raise an exception to fail the test case
-    if not overall_success:
-        raise Exception("One or more jobs failed in Autosys.")
-
-    # Connect to Oracle Database for verification
-    connection = connect_to_oracleDB(testdata["ps_db"])
-    
-    # Query to fetch the count of journal headers with source 'RMB'
-    query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'RMB'"
-    
-    if connection:
-        # Execute the query and capture the result
-        query_result = execute_query(connection, query)
-
-        # Check the status of the query execution
-        if query_result["status"]:
-            print(f"Query executed successfully. Count: {query_result['count']}")
-        else:
-            print(f"Failed to execute query. Error: {query_result['error']}")
-    else:
-        # Log if database connection fails
-        print("Failed to connect to the Oracle database.")
+---make both testcase part and code part in sequence as below.include missing ones.
+7kaad5cmm_rmb_fil_wtchr
+7kaad5cmm_rmb_ldg_wkfl_load
+7kaad5cmm_rmb_stg_wkfl_load
+7kaad5cmm_rmb_fah_wkfl_load
+7kaad5cmm_rmb_file_archive
+7kaad5cmm_rmb_log_archive
+7kaad5cmm_rmb_success_email
+7kaad5cmm_rmb_fah_process
+7kaad5cmm_rmb_fah_s_email
+7kaad5cmm_rmb_3rd_pty_edit
+7kaad5cmm_rmb_3rd_edt_vldt
+7kaad5cmm_rmb_3rd_sus_rpt
+7kaad5cmm_rmb_3rd_pty_post
+7kaad5cmm_rmb_thrsh_hndlg
+7kaad5cmm_rmb_ps_process
+7kaad5cmm_rmb_ps_s_email
