@@ -1,73 +1,89 @@
-import paramiko
-import os
+from playwright.sync_api import Page, expect
+from automation_utils import get_testdata, get_secrets,update_remote_file,transfer_file_to_unix,autosys_login,autosys_job_run,connect_to_oracleDB,execute_query
+import pytest
 
-# Server details
-hostname = "b"
-username = "v"
-password = "c"
 
-# File paths
-server_directory = '/appl/k/dev/infashr/fit/data/in'
-file_to_edit = "g.txt"
-local_file_path = "C:/b.txt"
-
-def directory_exists(sftp, remote_path):
-    """
-    Function to check if a directory exists on the remote server.
-    """
-    try:
-        sftp.stat(remote_path)
-        return True
-    except FileNotFoundError:
-        return False
-    except Exception as e:
-        raise Exception(f"Error checking directory existence: {str(e)}")
-
-def transfer_file_to_unix(hostname, username, password, local_file_path, server_directory, file_name):
-    """
-    Function to transfer a local file to a remote Unix server via SFTP.
-    """
-    # Check if the local file exists
-    if not os.path.exists(local_file_path):
-        raise Exception(f"Local file '{local_file_path}' not found.")
-
-    # Initialize SSH client
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+@pytest.mark.parametrize("testcase", get_testdata("test_RMB_regression"))
+def test_RMB_regression(page: Page, testcase):
+    # Extract test data
+    testdata = testcase["testdata"]
     
+    # Retrieve secrets using the secret ID from test data
+    secrets = get_secrets(testdata["ods_unix_secretID"])
+
+    # Extract necessary connection information from test data
+    hostname = testdata["odsserver"]
+    username = secrets['User']
+    password = secrets['Password']
+
+    # Extract file location and content for ODS Unix file modification
+    search_path = testdata["search_path"]
+    Input_file = testdata["file_to_edit"]
+    local_input_file_path = testdata["local_file_path"]
+    local_triggr_file_path = testdata["local_triggr_file_path"]
+    trigger_file=testdata["trigger"]
+    local_log_file_path = testdata["local_log_file_path"]
+    log_file=testdata["log_file"]
+
+    # ODS Unix File modification
     try:
-        # Connect to the remote server
-        ssh_client.connect(hostname=hostname, username=username, password=password)
-        
-        # Open SFTP session over the SSH connection
-        sftp = ssh_client.open_sftp()
-        
-        # Check if the specified directory exists on the server
-        if not directory_exists(sftp, server_directory):
-            raise Exception(f"Directory {server_directory} does not exist on the server.")
-        
-        # Place the local system file in the Unix server folder      
-        sftp.put(local_file_path, os.path.join(server_directory, file_name))
-        print(f"File '{file_name}' successfully uploaded to {server_directory} on the server.")
-        
-        # Close the SFTP session
-        sftp.close()
+        # Attempt to update the remote file on ODS server
+        transfer_file_to_unix(hostname, username, password, local_input_file_path, search_path,Input_file)
+        # Attempt to update the trigger file on ODS server
+        transfer_file_to_unix(hostname, username, password, local_triggr_file_path, search_path,trigger_file)
+        # Attempt to update the log file on ODS server
+        transfer_file_to_unix(hostname, username, password, local_log_file_path, search_path,log_file)
 
+        print("ODS RMB File Upload successful.")
     except Exception as e:
-        # Handle exceptions that occur during file transfer
-        raise Exception(f"Failed to upload file: {str(e)}")
+        # Handle and print any runtime error that occurs during file update
+        print(f"Error occurred: {str(e)}")
 
-    finally:
-        # Ensure the SSH client is closed in all cases
-        if ssh_client:
-            ssh_client.close()
+    # Call autosys login function
+    autosys_login(page, testdata["autosys_url"])
 
-# Main execution
-try:
-    # Attempt to upload the local file to the remote Unix server
-    transfer_file_to_unix(hostname, username, password, local_file_path, server_directory, file_to_edit)
-    print("ODS TM1 File Upload successful.")
-            
-except Exception as e:
-    # Handle and print any runtime error that occurs during file upload
-    print(f"Error occurred: {str(e)}")
+    # List of jobs to execute sequentially
+    jobs_to_execute = [
+        (testdata["RMB_load_job"], testdata["file_watcher"]),
+        (testdata["RMB_load_job"], testdata["ODS_file_load_job"]),
+        (testdata["RMB_load_job"], testdata["ODS_landing_to_stg_job"]),
+        (testdata["RMB_load_job"], testdata["Staging_Journal_to_FAH_job"]),
+        (testdata["RMB_load_job"], testdata["file_archive"]),
+        (testdata["RMB_load_job"], testdata["log_archive"]),
+        (testdata["RMB_load_job"], testdata["FAH_processing_job"]),        
+        (testdata["RMB_load_job"], testdata["3rd_party_customisation_job"]),
+        (testdata["RMB_load_job"], testdata["3rd_party_edit_job"]),
+        (testdata["RMB_load_job"], testdata["journal_ss_rt"]),
+        (testdata["RMB_load_job"], testdata["journal_post"]),
+        (testdata["RMB_load_job"], testdata["Update_threshold"]),
+        (testdata["RMB_load_job"], testdata["journal_process"])
+    ]
+    overall_success = True  # Flag to track overall success
+
+    for job in jobs_to_execute:
+        if overall_success:
+            job_status = autosys_job_run(page, testdata, job[0], job[1])
+            print(f"Autosys job {job[1]} Status: {job_status}")
+
+            if job_status.upper() != "SUCCESS":
+                overall_success = False  # Update flag if any job fails
+
+    if not overall_success:
+        raise Exception("One or more jobs failed.")    
+    
+    # Connect to Oracle DB
+    connection = connect_to_oracleDB(testdata["ps_db"])
+    query = "SELECT COUNT(*) FROM PS_JRNL_HEADER WHERE SOURCE = 'RMB'"    
+    if connection:
+        # Execute query
+        query_result = execute_query(connection, query)
+
+        # Check query execution status
+        if query_result["status"]:
+            print(f"Query executed successfully. Count: {query_result['count']}")
+        else:
+            print(f"Failed to execute query. Error: {query_result['error']}")
+    else:
+        print("Failed to connect to the database.")
+    
+    
