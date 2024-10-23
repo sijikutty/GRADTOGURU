@@ -1,50 +1,37 @@
-                "ODS_file_load_job":"7kaad5cmm_nps_pnc_ldg_wkfl_load",
-                "ODS_landing_to_stg_job":"7kaad5cmm_nps_pnc_stg_wkfl_load",
-                "Staging_Journal_to_FAH_job":"7kaad5cmm_nps_pnc_fah_wkfl_load",
-                "file_to_edit" : "NPPS.out",
-                "file_archive":"7kaad5cmm_nps_pnc_file_archive",
-                "log_archive":"7kaad5cmm_nps_pnc_log_archive",
-                "Record_check":"7kaad5cmm_nps_pnc_record_check",
-                "Workflow_exec":"7kaad5cmm_nps_pnc_flt_wkfl_load",
-                "Update_threshold":"7kaad5cmm_nps_pnc_thresh_handlg",
-                "FAH_processing_job":"7kaad5cmm_nps_pnc_fah_process",
-                "3rd_party_customisation_job":"7kaad5cmm_nps_pnc_3rd_pty_edt",
-                "3rd_party_edit_job":"7kaad5cmm_nps_pnc_3rd_edt_vlt",
-                "journal_post":"7kaad5cmm_nps_pnc_3rd_prt_pst",
-                "journal_ss_rt":"7kaad5cmm_nps_pnc_3rdpy_ss_rt",
-                "journal_process":"7kaad5cmm_nps_pnc_ps_process",
-                "NPPS_load_job":"7kaad5bxm_fit_npps_pnc",
-
-    jobs_to_execute = [
-        (testdata["NPPS_load_job"], testdata["ODS_file_load_job"]),
-        (testdata["NPPS_load_job"], testdata["ODS_landing_to_stg_job"]),
-        (testdata["NPPS_load_job"], testdata["Staging_Journal_to_FAH_job"]),
-        (testdata["NPPS_load_job"], testdata["file_archive"]),
-        (testdata["NPPS_load_job"], testdata["log_archive"]),
-    #    (testdata["NPPS_load_job"], testdata["Record_check"]),
-    #    (testdata["NPPS_load_job"], testdata["Workflow_exec"]),
-        (testdata["NPPS_load_job"], testdata["FAH_processing_job"]),        
-        (testdata["NPPS_load_job"], testdata["3rd_party_customisation_job"]),
-        (testdata["NPPS_load_job"], testdata["3rd_party_edit_job"]),
-        (testdata["NPPS_load_job"], testdata["journal_ss_rt"]),
-        (testdata["NPPS_load_job"], testdata["journal_post"]),
-        (testdata["NPPS_load_job"], testdata["Update_threshold"]),
-        (testdata["NPPS_load_job"], testdata["journal_process"])
-        # Add more jobs as needed
-    ]
-
-7kaad5cmm_nps_pnc_ldg_wkfl_ld
-7kaad5cmm_nps_pnc_stg_wkfl_ld
-7kaad5cmm_nps_pnc_fah_wkfl_ld
-7kaad5cmm_nps_pnc_log_archive
-7kaad5cmm_nps_pnc_success_mail
-7kaad5cmm_nps_pnc_fah_process
-7kaad5cmm_nps_pnc_fah_s_email
-7kaad5cmm_nps_pnc_3rd_pty_edit
-7kaad5cmm_nps_pnc_3rd_edt_vldt
-7kaad5cmm_nps_pnc_3rdpy_ss_rpt
-7kaad5cmm_nps_pnc_3rd_prty_pst
-7kaad5cmm_nps_pnc_thrsh_hndlg
-7kaad5cmm_nps_pnc_ps_process
-7kaad5cmm_nps_pnc_ps_s_email
-
+{
+    "ODS_file_load_job": "7kaad5cmm_nps_pnc_ldg_wkfl_load",
+    "ODS_landing_to_stg_job": "7kaad5cmm_nps_pnc_stg_wkfl_load",
+    "Staging_Journal_to_FAH_job": "7kaad5cmm_nps_pnc_fah_wkfl_load",
+    "file_to_edit": "NPPS.out",
+    "file_archive": "7kaad5cmm_nps_pnc_file_archive",
+    "log_archive": "7kaad5cmm_nps_pnc_log_archive",
+    "Record_check": "7kaad5cmm_nps_pnc_record_check",
+    "Workflow_exec": "7kaad5cmm_nps_pnc_flt_wkfl_load",
+    "Update_threshold": "7kaad5cmm_nps_pnc_thresh_handlg",
+    "FAH_processing_job": "7kaad5cmm_nps_pnc_fah_process",
+    "FAH_success_email": "7kaad5cmm_nps_pnc_fah_s_email",
+    "3rd_party_customisation_job": "7kaad5cmm_nps_pnc_3rd_pty_edit",
+    "3rd_party_edit_job": "7kaad5cmm_nps_pnc_3rd_edt_vldt",
+    "journal_post": "7kaad5cmm_nps_pnc_3rd_prt_pst",
+    "journal_ss_rt": "7kaad5cmm_nps_pnc_3rdpy_ss_rt",
+    "journal_process": "7kaad5cmm_nps_pnc_ps_process",
+    "process_success_email": "7kaad5cmm_nps_pnc_ps_s_email",
+    "NPPS_load_job": "7kaad5bxm_fit_npps_pnc"
+}
+jobs_to_execute = [
+    (testdata["NPPS_load_job"], testdata["ODS_file_load_job"]),
+    (testdata["NPPS_load_job"], testdata["ODS_landing_to_stg_job"]),
+    (testdata["NPPS_load_job"], testdata["Staging_Journal_to_FAH_job"]),
+    (testdata["NPPS_load_job"], testdata["file_archive"]),
+    (testdata["NPPS_load_job"], testdata["log_archive"]),
+    (testdata["NPPS_load_job"], testdata["success_mail"]),
+    (testdata["NPPS_load_job"], testdata["FAH_processing_job"]),
+    (testdata["NPPS_load_job"], testdata["FAH_success_email"]),
+    (testdata["NPPS_load_job"], testdata["3rd_party_customisation_job"]),
+    (testdata["NPPS_load_job"], testdata["3rd_party_edit_job"]),
+    (testdata["NPPS_load_job"], testdata["journal_ss_rt"]),
+    (testdata["NPPS_load_job"], testdata["journal_post"]),
+    (testdata["NPPS_load_job"], testdata["Update_threshold"]),
+    (testdata["NPPS_load_job"], testdata["journal_process"]),
+    (testdata["NPPS_load_job"], testdata["process_success_email"])
+]
