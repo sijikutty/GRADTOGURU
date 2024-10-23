@@ -1,78 +1,100 @@
-                "ODS_file_load_job":"7kaad5cmm_exp_ldg_wkfl_load",
-                "ODS_landing_to_stg_job":"7kaad5cmm_exp_stg_wkfl_load",
-                "Staging_Journal_to_FAH_job":"7kaad5cmm_exp_fah_wkfl_load",
-                "file_to_edit" : "Expense.out",
-                "file_archive":"7kaad5cmm_exp_file_archive",
-                "log_archive":"7kaad5cmm_exp_log_archive",
-                "Record_check":"7kaad5cmm_exp_record_check",
-                "Workflow_exec":"7kaad5cmm_exp_flt_wkfl_load",
-                "Update_threshold":"7kaad5cmm_exp_thresh_handlg",
-                "FAH_processing_job":"7kaad5cmm_exp_fah_process",
-                "3rd_party_customisation_job":"7kaad5cmm_exp_3rd_pty_edt",
-                "3rd_party_edit_job":"7kaad5cmm_exp_3rd_edt_vlt",
-                "journal_post":"7kaad5cmm_exp_3rd_prt_pst",
-                "journal_ss_rt":"7kaad5cmm_exp_3rdpy_ss_rt",
-                "journal_process":"7kaad5cmm_exp_ps_process",
-                "Expense_load_job":"7kaad5bxm_fit_pc_corp_exp_paid"
-
-    jobs_to_execute = [
-        (testdata["Expense_load_job"], testdata["ODS_file_load_job"]),
-        (testdata["Expense_load_job"], testdata["ODS_landing_to_stg_job"]),
-        (testdata["Expense_load_job"], testdata["Staging_Journal_to_FAH_job"]),
-        (testdata["Expense_load_job"], testdata["file_archive"]),
-        (testdata["Expense_load_job"], testdata["log_archive"]),
-        (testdata["Expense_load_job"], testdata["FAH_processing_job"]),        
-        (testdata["Expense_load_job"], testdata["3rd_party_customisation_job"]),
-        (testdata["Expense_load_job"], testdata["3rd_party_edit_job"]),
-        (testdata["Expense_load_job"], testdata["journal_ss_rt"]),
-        (testdata["Expense_load_job"], testdata["journal_post"]),
-        (testdata["Expense_load_job"], testdata["Update_threshold"]),
-        (testdata["Expense_load_job"], testdata["journal_process"])
-
-    ]
-7kaad5cmm_pc_ins_instc_hdr
-7kaad5cmm_pc_ins_instc_dtl
-7kaad5cmm_pc_up_filename_hdr
-7kaad5cmm_pc_up_filename_dtl
-7kaad5cmm_pc_ins_ldg_bch_hdr
-7kaad5cmm_pc_ins_ldg_bch_dtl
-7kaad5cmm_pc_flt_wkfl_load
-7kaad5cmm_pc_src_fil_chk_hdr
-7kaad5cmm_pc_crt_symlink_hdr
-7kaad5cmm_pc_src_fil_chk_dtl
-7kaad5cmm_pc_crt_symlink_dtl
-7kaad5cmm_pc_ldg_wkfl_load
-7kaad5cmm_pc_up_ldg_tcnt_hdr
-7kaad5cmm_pc_up_ldg_tcnt_dtl
-7kaad5cmm_pc_up_ldg_mbch_hdr
-7kaad5cmm_pc_up_ldg_mbch_dtl
-7kaad5cmm_pc_cls_ldg_bch_hdr
-7kaad5cmm_pc_cls_ldg_bch_dtl
-7kaad5cmm_pc_ins_stg_bch_hdr
-7kaad5cmm_pc_ins_stg_bch_dtl
-7kaad5cmm_pc_stg_wkfl_load
-7kaad5cmm_pc_up_tot_dbt_crt
-7kaad5cmm_pc_up_stg_tcnt_hdr
-7kaad5cmm_pc_up_stg_tcnt_dtl
-7kaad5cmm_pc_mndtry_bch_up
-7kaad5cmm_pc_chk_jrnl_dbtcrt
-7kaad5cmm_pc_chk_bunt_dbtcrt
-7kaad5cmm_pc_chk_ptyp_dbtcrt
-7kaad5cmm_pc_chk_ctrl_tot_ln
-7kaad5cmm_pc_chk_dup_val
-7kaad5cmm_pc_cls_stg_bch_hdr
-7kaad5cmm_pc_cls_stg_bch_dtl
-7kaad5cmm_pc_chk_excp_lst_ml
-7kaad5cmm_pc_ins_fah_bch_hdr
-7kaad5cmm_pc_ins_fah_bch_dtl
-7kaad5cmm_pc_up_fah_tcnt_hdr
-7kaad5cmm_pc_up_fah_tcnt_dtl
-7kaad5cmm_pc_cls_fah_bch_hdr
-7kaad5cmm_pc_cls_fah_bch_dtl
-7kaad5cmm_pc_file_archive
-7kaad5cmm_pc_log_archive
-7kaad5cmm_pc_success_email
-7kaad5cmm_exp_fah_process
-7kaad5cmm_exp_fah_s_email
-7kaad5cmm_exp_ps_process
-7kaad5cmm_exp_ps_s_email
+{
+    "ODS_file_load_job": "7kaad5cmm_pc_ldg_wkfl_load",
+    "ODS_landing_to_stg_job": "7kaad5cmm_pc_stg_wkfl_load",
+    "Staging_Journal_to_FAH_job": "7kaad5cmm_exp_fah_process",
+    "file_to_edit": "Expense.out",
+    "file_archive": "7kaad5cmm_pc_file_archive",
+    "log_archive": "7kaad5cmm_pc_log_archive",
+    "Record_check": "7kaad5cmm_pc_chk_dup_val",
+    "Workflow_exec": "7kaad5cmm_pc_flt_wkfl_load",
+    "Update_threshold": "7kaad5cmm_pc_chk_ctrl_tot_ln",
+    "FAH_processing_job": "7kaad5cmm_exp_fah_process",
+    "3rd_party_customisation_job": "7kaad5cmm_pc_mndtry_bch_up",
+    "3rd_party_edit_job": "7kaad5cmm_pc_chk_jrnl_dbtcrt",
+    "journal_post": "7kaad5cmm_exp_ps_process",
+    "journal_ss_rt": "7kaad5cmm_pc_chk_excp_lst_ml",
+    "journal_process": "7kaad5cmm_exp_ps_process",
+    "Expense_load_job": "7kaad5bxm_fit_pc_corp_exp_paid",
+    "pc_ins_instc_hdr": "7kaad5cmm_pc_ins_instc_hdr",
+    "pc_ins_instc_dtl": "7kaad5cmm_pc_ins_instc_dtl",
+    "pc_up_filename_hdr": "7kaad5cmm_pc_up_filename_hdr",
+    "pc_up_filename_dtl": "7kaad5cmm_pc_up_filename_dtl",
+    "pc_ins_ldg_bch_hdr": "7kaad5cmm_pc_ins_ldg_bch_hdr",
+    "pc_ins_ldg_bch_dtl": "7kaad5cmm_pc_ins_ldg_bch_dtl",
+    "pc_src_fil_chk_hdr": "7kaad5cmm_pc_src_fil_chk_hdr",
+    "pc_crt_symlink_hdr": "7kaad5cmm_pc_crt_symlink_hdr",
+    "pc_src_fil_chk_dtl": "7kaad5cmm_pc_src_fil_chk_dtl",
+    "pc_crt_symlink_dtl": "7kaad5cmm_pc_crt_symlink_dtl",
+    "pc_up_ldg_tcnt_hdr": "7kaad5cmm_pc_up_ldg_tcnt_hdr",
+    "pc_up_ldg_tcnt_dtl": "7kaad5cmm_pc_up_ldg_tcnt_dtl",
+    "pc_up_ldg_mbch_hdr": "7kaad5cmm_pc_up_ldg_mbch_hdr",
+    "pc_up_ldg_mbch_dtl": "7kaad5cmm_pc_up_ldg_mbch_dtl",
+    "pc_cls_ldg_bch_hdr": "7kaad5cmm_pc_cls_ldg_bch_hdr",
+    "pc_cls_ldg_bch_dtl": "7kaad5cmm_pc_cls_ldg_bch_dtl",
+    "pc_ins_stg_bch_hdr": "7kaad5cmm_pc_ins_stg_bch_hdr",
+    "pc_ins_stg_bch_dtl": "7kaad5cmm_pc_ins_stg_bch_dtl",
+    "pc_up_tot_dbt_crt": "7kaad5cmm_pc_up_tot_dbt_crt",
+    "pc_up_stg_tcnt_hdr": "7kaad5cmm_pc_up_stg_tcnt_hdr",
+    "pc_up_stg_tcnt_dtl": "7kaad5cmm_pc_up_stg_tcnt_dtl",
+    "pc_chk_bunt_dbtcrt": "7kaad5cmm_pc_chk_bunt_dbtcrt",
+    "pc_chk_ptyp_dbtcrt": "7kaad5cmm_pc_chk_ptyp_dbtcrt",
+    "pc_cls_stg_bch_hdr": "7kaad5cmm_pc_cls_stg_bch_hdr",
+    "pc_cls_stg_bch_dtl": "7kaad5cmm_pc_cls_stg_bch_dtl",
+    "pc_ins_fah_bch_hdr": "7kaad5cmm_pc_ins_fah_bch_hdr",
+    "pc_ins_fah_bch_dtl": "7kaad5cmm_pc_ins_fah_bch_dtl",
+    "pc_up_fah_tcnt_hdr": "7kaad5cmm_pc_up_fah_tcnt_hdr",
+    "pc_up_fah_tcnt_dtl": "7kaad5cmm_pc_up_fah_tcnt_dtl",
+    "pc_cls_fah_bch_hdr": "7kaad5cmm_pc_cls_fah_bch_hdr",
+    "pc_cls_fah_bch_dtl": "7kaad5cmm_pc_cls_fah_bch_dtl",
+    "success_email": "7kaad5cmm_pc_success_email",
+    "fah_s_email": "7kaad5cmm_exp_fah_s_email",
+    "ps_s_email": "7kaad5cmm_exp_ps_s_email"
+}
+jobs_to_execute = [
+    (testdata["Expense_load_job"], testdata["ODS_file_load_job"]),
+    (testdata["Expense_load_job"], testdata["ODS_landing_to_stg_job"]),
+    (testdata["Expense_load_job"], testdata["Staging_Journal_to_FAH_job"]),
+    (testdata["Expense_load_job"], testdata["file_archive"]),
+    (testdata["Expense_load_job"], testdata["log_archive"]),
+    (testdata["Expense_load_job"], testdata["FAH_processing_job"]),
+    (testdata["Expense_load_job"], testdata["3rd_party_customisation_job"]),
+    (testdata["Expense_load_job"], testdata["3rd_party_edit_job"]),
+    (testdata["Expense_load_job"], testdata["journal_ss_rt"]),
+    (testdata["Expense_load_job"], testdata["journal_post"]),
+    (testdata["Expense_load_job"], testdata["Update_threshold"]),
+    (testdata["Expense_load_job"], testdata["journal_process"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_instc_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_instc_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_up_filename_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_up_filename_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_ldg_bch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_ldg_bch_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_src_fil_chk_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_crt_symlink_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_src_fil_chk_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_crt_symlink_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_up_ldg_tcnt_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_up_ldg_tcnt_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_up_ldg_mbch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_up_ldg_mbch_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_cls_ldg_bch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_cls_ldg_bch_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_stg_bch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_stg_bch_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_up_tot_dbt_crt"]),
+    (testdata["Expense_load_job"], testdata["pc_up_stg_tcnt_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_up_stg_tcnt_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_chk_bunt_dbtcrt"]),
+    (testdata["Expense_load_job"], testdata["pc_chk_ptyp_dbtcrt"]),
+    (testdata["Expense_load_job"], testdata["pc_cls_stg_bch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_cls_stg_bch_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_fah_bch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_ins_fah_bch_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_up_fah_tcnt_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_up_fah_tcnt_dtl"]),
+    (testdata["Expense_load_job"], testdata["pc_cls_fah_bch_hdr"]),
+    (testdata["Expense_load_job"], testdata["pc_cls_fah_bch_dtl"]),
+    (testdata["Expense_load_job"], testdata["success_email"]),
+    (testdata["Expense_load_job"], testdata["fah_s_email"]),
+    (testdata["Expense_load_job"], testdata["ps_s_email"])
+]
