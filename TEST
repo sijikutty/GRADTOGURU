@@ -1,15 +1,1 @@
-How can I log in to Rally with SSO instead of using my username and password each time?
 
-To set up Single Sign-On (SSO) for Rally, so you don’t need to enter your username and password each time, follow these steps:
-
-Bookmark Your Rally Page
-First, navigate to your Rally page and add it to your bookmarks.
-
-Edit the Bookmark
-Open your bookmarks, locate the one you just created for Rally, and select the option to edit this bookmark.
-
-Update the URL
-Change the bookmarked URL to rally.qq.com.
-
-Access Rally Quickly
-Now, whenever you want to access Rally, simply click this bookmark. You'll be automatically logged in via SSO, without needing to enter your username or password.
