@@ -1,10 +1,13 @@
-    From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
-    To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
+From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
+To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
 
-    if From_period==testdata['From_Period1']:
-        From_period=From_period+1
+# Get the current value of From_period
+current_from_period = From_period.input_value()  # Adjust this method based on your framework
 
-    # Fill in the period fields for the first update
-    targetContentFrame.get_by_label("From Period").fill(From_period)
-----
-TypeError: Object of type Locator is not JSON serializable
+if current_from_period == testdata['From_Period1']:
+    # Increment the value; convert to int if necessary
+    new_from_period = int(current_from_period) + 1
+    From_period.fill(str(new_from_period))  # Ensure to fill with a string
+
+# Fill in the period fields for the first update
+targetContentFrame.get_by_label("From Period").fill(str(new_from_period))
