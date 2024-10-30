@@ -1,13 +1,18 @@
-From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
-To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
+   # Locate the period fields to verify the updates
+    From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
+    To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
 
-# Get the current value of From_period
-current_from_period = From_period.input_value()  # Adjust this method based on your framework
+    # Get the current value of From_period
+    current_from_period = From_period  # Adjust this method based on your framework
+    new_from_period=current_from_period
+    if current_from_period == testdata['From_Period1']:
+        # Increment the value; convert to int if necessary
+        new_from_period = int(current_from_period) + 1
+        #From_period.fill(str(new_from_period))  # Ensure to fill with a string
 
-if current_from_period == testdata['From_Period1']:
-    # Increment the value; convert to int if necessary
-    new_from_period = int(current_from_period) + 1
-    From_period.fill(str(new_from_period))  # Ensure to fill with a string
+    # Fill in the period fields for the first update
+    targetContentFrame.get_by_label("From Period").fill(new_from_period)
+    targetContentFrame.get_by_label("To Period").fill(testdata['To_Period1'])
 
-# Fill in the period fields for the first update
-targetContentFrame.get_by_label("From Period").fill(str(new_from_period))
+TypeError: Object of type Locator is not JSON serializable
+
