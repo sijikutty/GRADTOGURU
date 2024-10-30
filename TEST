@@ -1,5 +1,8 @@
-@pytest.fixture(scope="session")
 def page(browser):
     page = browser.new_page()
+    
+    # Set default timeout for this specific page
+    page.set_default_timeout(60000)  # 60 seconds
+
     yield page
     page.close()
