@@ -1,8 +1,10 @@
-def page(browser):
-    page = browser.new_page()
-    
-    # Set default timeout for this specific page
-    page.set_default_timeout(60000)  # 60 seconds
+    From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
+    To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
 
-    yield page
-    page.close()
+    if From_period==testdata['From_Period1']:
+        From_period=From_period+1
+
+    # Fill in the period fields for the first update
+    targetContentFrame.get_by_label("From Period").fill(From_period)
+----
+TypeError: Object of type Locator is not JSON serializable
