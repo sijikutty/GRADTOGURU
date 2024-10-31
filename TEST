@@ -1,18 +1,19 @@
-   # Locate the period fields to verify the updates
-    From_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_FROM\\$0\"]")
-    To_period = targetContentFrame.locator("[id=\"FIN_OPEN_PERIOD_OPEN_PERIOD_TO\\$0\"]")
-
-    # Get the current value of From_period
-    current_from_period = From_period  # Adjust this method based on your framework
-    new_from_period=current_from_period
-    if current_from_period == testdata['From_Period1']:
-        # Increment the value; convert to int if necessary
-        new_from_period = int(current_from_period) + 1
-        #From_period.fill(str(new_from_period))  # Ensure to fill with a string
-
-    # Fill in the period fields for the first update
-    targetContentFrame.get_by_label("From Period").fill(new_from_period)
-    targetContentFrame.get_by_label("To Period").fill(testdata['To_Period1'])
-
-TypeError: Object of type Locator is not JSON serializable
-
+7kaad5cmm_rfs_fil_wtchr
+7kaad5cmm_rfs_ldg_wkfl_load
+7kaad5cmm_rfs_stg_wkfl_load
+7kaad5cmm_rfs_fah_wkfl_load
+7kaad5cmm_rfs_file_archive
+7kaad5cmm_rfs_log_archive
+7kaad5cmm_rfs_success_email
+7kaad5cmm_rfs_fah_s_email
+7kaad5cmm_rfs_upd_ps_stg_fah
+7kaad5cmm_rfs_3rd_pty_edit
+7kaad5cmm_rfs_fah_process
+7kaad5cmm_rfs_upd_ps_stg_fai
+7kaad5cmm_rfs_3rd_sus_rpt
+7kaad5cmm_rfs_3rd_pty_pst
+7kaad5cmm_rfs_thrsh_hndlg
+7kaad5cmm_rfs_ps_process_pre
+7kaad5cmm_rfs_ps_process
+7kaad5cmm_rfs_ps_s_email
+--------------
