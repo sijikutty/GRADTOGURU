@@ -1,1 +1,41 @@
+{
+    "file_watch_job": "7kaad5cmm_rfs_fil_wtchr",
+    "landing_to_stg_job": "7kaad5cmm_rfs_ldg_wkfl_load",
+    "staging_job": "7kaad5cmm_rfs_stg_wkfl_load",
+    "fah_workflow_load": "7kaad5cmm_rfs_fah_wkfl_load",
+    "file_archive": "7kaad5cmm_rfs_file_archive",
+    "log_archive": "7kaad5cmm_rfs_log_archive",
+    "success_email_job": "7kaad5cmm_rfs_success_email",
+    "fah_success_email": "7kaad5cmm_rfs_fah_s_email",
+    "update_ps_stg_fah": "7kaad5cmm_rfs_upd_ps_stg_fah",
+    "third_party_edit_job": "7kaad5cmm_rfs_3rd_pty_edit",
+    "fah_processing_job": "7kaad5cmm_rfs_fah_process",
+    "update_ps_stg_fai": "7kaad5cmm_rfs_upd_ps_stg_fai",
+    "third_party_suspend_report": "7kaad5cmm_rfs_3rd_sus_rpt",
+    "third_party_post_job": "7kaad5cmm_rfs_3rd_pty_pst",
+    "threshold_handling_job": "7kaad5cmm_rfs_thrsh_hndlg",
+    "ps_process_pre_job": "7kaad5cmm_rfs_ps_process_pre",
+    "ps_process_job": "7kaad5cmm_rfs_ps_process",
+    "ps_success_email": "7kaad5cmm_rfs_ps_s_email"
+}
+------
+jobs_to_execute = [
+    (testdata["file_watch_job"], testdata["landing_to_stg_job"]),
+    (testdata["file_watch_job"], testdata["staging_job"]),
+    (testdata["file_watch_job"], testdata["fah_workflow_load"]),
+    (testdata["file_watch_job"], testdata["file_archive"]),
+    (testdata["file_watch_job"], testdata["log_archive"]),
+    (testdata["file_watch_job"], testdata["success_email_job"]),
+    (testdata["file_watch_job"], testdata["fah_success_email"]),
+    (testdata["file_watch_job"], testdata["update_ps_stg_fah"]),
+    (testdata["file_watch_job"], testdata["third_party_edit_job"]),
+    (testdata["file_watch_job"], testdata["fah_processing_job"]),
+    (testdata["file_watch_job"], testdata["update_ps_stg_fai"]),
+    (testdata["file_watch_job"], testdata["third_party_suspend_report"]),
+    (testdata["file_watch_job"], testdata["third_party_post_job"]),
+    (testdata["file_watch_job"], testdata["threshold_handling_job"]),
+    (testdata["file_watch_job"], testdata["ps_process_pre_job"]),
+    (testdata["file_watch_job"], testdata["ps_process_job"]),
+    (testdata["file_watch_job"], testdata["ps_success_email"])
+]
 
