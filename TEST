@@ -1,62 +1,9 @@
-def update_rally(page, request, testcase):
-    ''' This fixture updates rally after the completion of each test'''
-
-    yield
-
-    # Taking screenshot of the test
     screenshot_path = f"Result\\{request.function.__name__}.png"
-    page.screenshot(path=screenshot_path)
 
-    notes = ""
+    # Wait for the page to be fully loaded
+    page.wait_for_load_state('networkidle')  # Ensure the page is idle
 
------
- @pytest.fixture(scope="function", autouse=True)
-    def update_rally(page, request, testcase):
-        ''' This fixture updates rally after the completion of each test'''
-
-        yield
-
-        # Taking screenshot of the test
-        screenshot_path = f"Result\\{request.function.__name__}.png"
->       page.screenshot(path=screenshot_path)
-
-PS_Testing\test_gui\conftest.py:31:
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
-.venv\Lib\site-packages\playwright\sync_api\_generated.py:10095: in screenshot
-    self._sync(
-.venv\Lib\site-packages\playwright\_impl\_page.py:697: in screenshot
-    encoded_binary = await self._channel.send("screenshot", params)
-.venv\Lib\site-packages\playwright\_impl\_connection.py:63: in send
-    return await self._connection.wrap_api_call(
-.venv\Lib\site-packages\playwright\_impl\_connection.py:495: in wrap_api_call
-    return await cb()
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
-
-self = <playwright._impl._connection.Channel object at 0x0000019844B46310>, method = 'screenshot', params = {}
-return_as_dict = False
-
-    async def inner_send(
-        self, method: str, params: Optional[Dict], return_as_dict: bool
-    ) -> Any:
-        if params is None:
-            params = {}
-        callback = self._connection._send_message_to_server(
-            self._object, method, _filter_none(params)
-        )
-        if self._connection._error:
-            error = self._connection._error
-            self._connection._error = None
-            raise error
-        done, _ = await asyncio.wait(
-            {
-                self._connection._transport.on_error_future,
-                callback.future,
-            },
-            return_when=asyncio.FIRST_COMPLETED,
-        )
-        if not callback.future.done():
-            callback.future.cancel()
->       result = next(iter(done)).result()
-E       playwright._impl._errors.TimeoutError: Timeout 60000ms exceeded.
-
-.venv\Lib\site-packages\playwright\_impl\_connection.py:101: TimeoutError
+    # Measure time taken for the screenshot
+    start_time = time.time()
+    page.screenshot(path=screenshot_path, timeout=120000)  # Increased timeout
+    print(f"Screenshot taken in {time.time() - start_time} seconds")
