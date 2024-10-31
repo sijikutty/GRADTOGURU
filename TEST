@@ -1,1 +1,41 @@
+{
+    "file_watch_job": "7kaad5cmm_nav_fil_wtchr",
+    "landing_to_stg_job": "7kaad5cmm_nav_ldg_wkfl_load",
+    "staging_job": "7kaad5cmm_nav_stg_wkfl_load",
+    "fah_workflow_load": "7kaad5cmm_nav_fah_wkfl_load",
+    "file_archive": "7kaad5cmm_nav_file_archive",
+    "log_archive": "7kaad5cmm_nav_log_archive",
+    "success_email_job": "7kaad5cmm_nav_success_email",
+    "fah_processing_job": "7kaad5cmm_nav_fah_process",
+    "fah_success_email": "7kaad5cmm_nav_fah_s_email",
+    "third_party_edit_job": "7kaad5cmm_nav_3rd_pty_edit",
+    "third_party_validation_job": "7kaad5cmm_nav_3rd_edt_vldt",
+    "third_party_suspend_report": "7kaad5cmm_nav_3rd_sus_rpt",
+    "third_party_post_job": "7kaad5cmm_nav_3rd_pty_post",
+    "threshold_handling_job": "7kaad5cmm_nav_thrsh_hndlg",
+    "ps_process_job": "7kaad5cmm_nav_ps_process",
+    "ps_success_email": "7kaad5cmm_nav_ps_s_email",
+    "update_ledger_job": "7kaad5cmm_nav_upd_ledger",
+    "update_ledger_group_job": "7kaad5cmm_nav_upd_ledger_grp"
+}
+----
+jobs_to_execute = [
+    (testdata["file_watch_job"], testdata["landing_to_stg_job"]),
+    (testdata["file_watch_job"], testdata["staging_job"]),
+    (testdata["file_watch_job"], testdata["fah_workflow_load"]),
+    (testdata["file_watch_job"], testdata["file_archive"]),
+    (testdata["file_watch_job"], testdata["log_archive"]),
+    (testdata["file_watch_job"], testdata["success_email_job"]),
+    (testdata["file_watch_job"], testdata["fah_processing_job"]),
+    (testdata["file_watch_job"], testdata["fah_success_email"]),
+    (testdata["file_watch_job"], testdata["third_party_edit_job"]),
+    (testdata["file_watch_job"], testdata["third_party_validation_job"]),
+    (testdata["file_watch_job"], testdata["third_party_suspend_report"]),
+    (testdata["file_watch_job"], testdata["third_party_post_job"]),
+    (testdata["file_watch_job"], testdata["threshold_handling_job"]),
+    (testdata["file_watch_job"], testdata["ps_process_job"]),
+    (testdata["file_watch_job"], testdata["ps_success_email"]),
+    (testdata["file_watch_job"], testdata["update_ledger_job"]),
+    (testdata["file_watch_job"], testdata["update_ledger_group_job"])
+]
 
