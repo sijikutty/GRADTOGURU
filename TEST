@@ -1,11 +1,7 @@
-if not directory_exists(sftp, server_directory):
-            raise Exception(f"Directory {server_directory} does not exist on the server.")
-        
-
-        # List all files and directories in the specified directory
-        for filename in os.listdir(server_directory):
-            file_path = os.path.join(server_directory, filename)
-
-        # Check if it is a file (not a directory)
-        if os.path.isfile(file_path):
+files = sftp.listdir(server_directory)
+    if files:
+        print(f"Files in {server_directory}:")
+        for filename in files:
             print(filename)
+    else:
+        print(f"No files found in {server_directory}.")
