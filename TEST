@@ -1,17 +1,15 @@
 import paramiko
-import os
 
 # Server credentials and file information
 hostname = "kk"
 username = "n"
 password = "m&9Qp"
-remote_file_path = "/appl/ch/Rf.txt"  # Remote file path on the server
-local_file_path = "C:/Github/Input files/Rf.txt"  # Local path where the file will be saved
+remote_file_path = "/appl/ch/Rf.txt"  # Path to the remote file on the server
 
-# Function to download a file from the remote server
-def download_file_from_unix(hostname, username, password, remote_file_path, local_file_path):
+# Function to read the content of a remote file
+def read_remote_file_content(hostname, username, password, remote_file_path):
     """
-    Function to download a file from a remote Unix server to the local machine using SFTP.
+    Function to read the content of a file on a remote Unix server using SFTP.
     """
     # Initialize SSH client
     ssh_client = paramiko.SSHClient()
@@ -29,20 +27,26 @@ def download_file_from_unix(hostname, username, password, remote_file_path, loca
         # Check if the remote file exists
         try:
             sftp.stat(remote_file_path)  # Check if file exists on the server
-            print(f"File found: {remote_file_path}. Initiating download...")
-            
-            # Download the remote file to the local system
-            sftp.get(remote_file_path, local_file_path)
-            print(f"File '{remote_file_path}' successfully downloaded to '{local_file_path}'.")
+            print(f"File found: {remote_file_path}. Reading content...")
+
+            # Open the remote file
+            with sftp.open(remote_file_path, 'r') as remote_file:
+                # Read the entire content of the file
+                file_content = remote_file.read().decode('utf-8')  # decode to convert bytes to string
+                print("File content read successfully.")
+                return file_content  # Return file content
 
         except FileNotFoundError:
             print(f"Error: File '{remote_file_path}' not found on the server.")
-        
-        # Close the SFTP session
-        sftp.close()
+            return None
+
+        finally:
+            # Close the SFTP session
+            sftp.close()
 
     except Exception as e:
         print(f"Error: {e}")
+        return None
 
     finally:
         # Ensure the SSH client is closed
@@ -51,7 +55,11 @@ def download_file_from_unix(hostname, username, password, remote_file_path, loca
 
 # Main execution
 try:
-    download_file_from_unix(hostname, username, password, remote_file_path, local_file_path)
-    print("File download completed successfully.")
+    file_content = read_remote_file_content(hostname, username, password, remote_file_path)
+    if file_content:
+        print("Content of the file:")
+        print(file_content)  # Print the content of the file
+    else:
+        print("No content found or error occurred.")
 except Exception as e:
-    print(f"An error occurred during file download: {str(e)}")
+    print(f"An error occurred: {str(e)}")
