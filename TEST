@@ -1,51 +1,22 @@
 import paramiko
 import os
-from pathlib import Path
 
-# Server credentials
+# Server credentials and file information
 hostname = "kk"
 username = "n"
 password = "m&9Qp"
+remote_file_path = "/appl/ch/Rf.txt"  # Remote file path on the server
+local_file_path = "C:/Github/Input files/Rf.txt"  # Local path where the file will be saved
 
-# Files to check and upload
-files_to_check = [
-    ("C:/Github/Input files/Rf.txt", "/appl/ch/Rf.txt"),
-    ("C:/Github/Input files/Rf.trg", "/appl/ch/Rf.trg"),
-    ("C:/Github/Input files/Rf.log", "/appl/ch/Rf.log")
-]
-
-# Directory on the remote server
-server_directory = "/appl/ch/"
-
-# Function to check if a file exists on the remote server
-def file_exists(sftp, remote_path):
-    try:
-        sftp.stat(remote_path)
-        return True  # File exists
-    except FileNotFoundError:
-        return False  # File does not exist
-
-# Function to check if a directory exists on the remote server
-def directory_exists(sftp, remote_path):
-    try:
-        sftp.stat(remote_path)
-        return True  # Directory exists
-    except FileNotFoundError:
-        return False  # Directory does not exist
-
-# Function to transfer file to the Unix server
-def transfer_file_to_unix(hostname, username, password, local_file_path, remote_file_path):
+# Function to download a file from the remote server
+def download_file_from_unix(hostname, username, password, remote_file_path, local_file_path):
     """
-    Function to transfer a local file to a remote Unix server via SFTP.
+    Function to download a file from a remote Unix server to the local machine using SFTP.
     """
-    # Check if the local file exists
-    if not os.path.exists(local_file_path):
-        raise Exception(f"Local file '{local_file_path}' not found.")
-
     # Initialize SSH client
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    
+
     try:
         # Connect to the remote server
         print(f"Connecting to {hostname}...")
@@ -55,56 +26,32 @@ def transfer_file_to_unix(hostname, username, password, local_file_path, remote_
         # Open SFTP session over the SSH connection
         sftp = ssh_client.open_sftp()
 
-        # Check if the specified directory exists on the server
-        if not directory_exists(sftp, server_directory):
-            raise Exception(f"Directory {server_directory} does not exist on the server.")
-        
-        # Check if the remote file already exists
-        if not file_exists(sftp, remote_file_path):
-            # If file doesn't exist, upload the file
-            print(f"Uploading file '{local_file_path}' to '{remote_file_path}'...")
-            sftp.put(local_file_path, remote_file_path)
-            print(f"File '{remote_file_path}' successfully uploaded.")
+        # Check if the remote file exists
+        try:
+            sftp.stat(remote_file_path)  # Check if file exists on the server
+            print(f"File found: {remote_file_path}. Initiating download...")
+            
+            # Download the remote file to the local system
+            sftp.get(remote_file_path, local_file_path)
+            print(f"File '{remote_file_path}' successfully downloaded to '{local_file_path}'.")
 
-            # Change file permissions to 644 (readable by owner, group, and others)
-            print(f"Changing permissions for {remote_file_path} to 644 (rw-r--r--).")
-            sftp.chmod(remote_file_path, 0o644)
-
-            # Confirm permissions change
-            print(f"Permissions for {remote_file_path} changed to 644.")
-
-        else:
-            print(f"File '{remote_file_path}' already exists on the server. Skipping upload.")
-
-        # List all files in the directory to confirm
-        print(f"Listing all files in {server_directory}:")
-        files = sftp.listdir(server_directory)
-        if files:
-            for filename in files:
-                print(filename)
-        else:
-            print(f"No files found in {server_directory}.")
+        except FileNotFoundError:
+            print(f"Error: File '{remote_file_path}' not found on the server.")
         
         # Close the SFTP session
         sftp.close()
 
     except Exception as e:
-        # Handle exceptions that occur during file transfer
-        raise Exception(f"Failed to upload file: {str(e)}")
+        print(f"Error: {e}")
 
     finally:
-        # Ensure the SSH client is closed in all cases
+        # Ensure the SSH client is closed
         if ssh_client:
             ssh_client.close()
 
 # Main execution
 try:
-    # Iterate over the files to check and upload
-    for local_file_path, remote_file_path in files_to_check:
-        transfer_file_to_unix(hostname, username, password, local_file_path, remote_file_path)
-    
-    print("ODS TM1 File Uploads successful.")
-            
+    download_file_from_unix(hostname, username, password, remote_file_path, local_file_path)
+    print("File download completed successfully.")
 except Exception as e:
-    # Handle and print any runtime error that occurs during file upload
-    print(f"Error occurred: {str(e)}")
+    print(f"An error occurred during file download: {str(e)}")
