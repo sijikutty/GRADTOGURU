@@ -1,9 +1,12 @@
-    screenshot_path = f"Result\\{request.function.__name__}.png"
+import os
 
-    # Wait for the page to be fully loaded
-    page.wait_for_load_state('networkidle')  # Ensure the page is idle
+# Define the directory
+server_directory = '/aapl/in'
 
-    # Measure time taken for the screenshot
-    start_time = time.time()
-    page.screenshot(path=screenshot_path, timeout=120000)  # Increased timeout
-    print(f"Screenshot taken in {time.time() - start_time} seconds")
+# List all files and directories in the specified directory
+for filename in os.listdir(server_directory):
+    file_path = os.path.join(server_directory, filename)
+
+    # Check if it is a file (not a directory)
+    if os.path.isfile(file_path):
+        print(filename)
