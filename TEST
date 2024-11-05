@@ -56,4 +56,55 @@ def transfer_file_to_unix(hostname, username, password, local_file_path, remote_
         sftp = ssh_client.open_sftp()
 
         # Check if the specified directory exists on the server
-        if not directory_exists(s
+        if not directory_exists(sftp, server_directory):
+            raise Exception(f"Directory {server_directory} does not exist on the server.")
+        
+        # Check if the remote file already exists
+        if not file_exists(sftp, remote_file_path):
+            # If file doesn't exist, upload the file
+            print(f"Uploading file '{local_file_path}' to '{remote_file_path}'...")
+            sftp.put(local_file_path, remote_file_path)
+            print(f"File '{remote_file_path}' successfully uploaded.")
+
+            # Change file permissions to 644 (readable by owner, group, and others)
+            print(f"Changing permissions for {remote_file_path} to 644 (rw-r--r--).")
+            sftp.chmod(remote_file_path, 0o644)
+
+            # Confirm permissions change
+            print(f"Permissions for {remote_file_path} changed to 644.")
+
+        else:
+            print(f"File '{remote_file_path}' already exists on the server. Skipping upload.")
+
+        # List all files in the directory to confirm
+        print(f"Listing all files in {server_directory}:")
+        files = sftp.listdir(server_directory)
+        if files:
+            for filename in files:
+                print(filename)
+        else:
+            print(f"No files found in {server_directory}.")
+        
+        # Close the SFTP session
+        sftp.close()
+
+    except Exception as e:
+        # Handle exceptions that occur during file transfer
+        raise Exception(f"Failed to upload file: {str(e)}")
+
+    finally:
+        # Ensure the SSH client is closed in all cases
+        if ssh_client:
+            ssh_client.close()
+
+# Main execution
+try:
+    # Iterate over the files to check and upload
+    for local_file_path, remote_file_path in files_to_check:
+        transfer_file_to_unix(hostname, username, password, local_file_path, remote_file_path)
+    
+    print("ODS TM1 File Uploads successful.")
+            
+except Exception as e:
+    # Handle and print any runtime error that occurs during file upload
+    print(f"Error occurred: {str(e)}")
