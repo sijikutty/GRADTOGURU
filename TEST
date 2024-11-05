@@ -1,55 +1,13 @@
-def transfer_file_to_unix(hostname, username, password, local_file_path, server_directory, file_name):
-    """
-    Function to transfer a local file to a remote Unix server via SFTP.
-    """
-    # Check if the local file exists
-    if not os.path.exists(local_file_path):
-        raise Exception(f"Local file '{local_file_path}' not found.")
-
-    # Initialize SSH client
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+# Change file permissions to be readable by everyone
+try:
+    remote_file_path = os.path.join(server_directory, file_name)
+    print(f"Changing permissions for {remote_file_path} to be readable.")
     
-    try:
-        # Connect to the remote server
-        ssh_client.connect(hostname=hostname, username=username, password=password)
-        
-        # Open SFTP session over the SSH connection
-        sftp = ssh_client.open_sftp()
-        
-        # Check if the specified directory exists on the server
-        if not directory_exists(sftp, server_directory):
-            raise Exception(f"Directory {server_directory} does not exist on the server.")
-        
-        # Place the local system file in the Unix server folder
-        remote_file_path = os.path.join(server_directory, file_name)
-        sftp.put(local_file_path, remote_file_path)
-        print(f"File '{file_name}' successfully uploaded to {server_directory} on the server.")
-        
-        # Check if the file exists right after uploading
-        try:
-            sftp.stat(remote_file_path)  # Verify the file exists on the remote server
-            print(f"File '{file_name}' confirmed on the remote server.")
-        except FileNotFoundError:
-            print(f"Error: File '{file_name}' not found after upload.")
+    # Change permissions to 644 (readable by owner, group, and others)
+    sftp.chmod(remote_file_path, 0o644)
+    
+    # Confirm permissions change
+    print(f"Permissions for {remote_file_path} changed to 644 (rw-r--r--).")
 
-        # List all files in the directory to confirm
-        files = sftp.listdir(server_directory)
-        if files:
-            print(f"Files in {server_directory}:")
-            for filename in files:
-                print(filename)
-        else:
-            print(f"No files found in {server_directory}.")
-        
-        # Close the SFTP session
-        sftp.close()
-
-    except Exception as e:
-        # Handle exceptions that occur during file transfer
-        raise Exception(f"Failed to upload file: {str(e)}")
-
-    finally:
-        # Ensure the SSH client is closed in all cases
-        if ssh_client:
-            ssh_client.close()
+except Exception as e:
+    print(f"Error changing file permissions: {e}")
