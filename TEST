@@ -1,12 +1,11 @@
-import os
+if not directory_exists(sftp, server_directory):
+            raise Exception(f"Directory {server_directory} does not exist on the server.")
+        
 
-# Define the directory
-server_directory = '/aapl/in'
+        # List all files and directories in the specified directory
+        for filename in os.listdir(server_directory):
+            file_path = os.path.join(server_directory, filename)
 
-# List all files and directories in the specified directory
-for filename in os.listdir(server_directory):
-    file_path = os.path.join(server_directory, filename)
-
-    # Check if it is a file (not a directory)
-    if os.path.isfile(file_path):
-        print(filename)
+        # Check if it is a file (not a directory)
+        if os.path.isfile(file_path):
+            print(filename)
