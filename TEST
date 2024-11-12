@@ -1,65 +1,16 @@
-import paramiko
-
-# Server credentials and file information
-hostname = "kk"
-username = "n"
-password = "m&9Qp"
-remote_file_path = "/appl/ch/Rf.txt"  # Path to the remote file on the server
-
-# Function to read the content of a remote file
-def read_remote_file_content(hostname, username, password, remote_file_path):
-    """
-    Function to read the content of a file on a remote Unix server using SFTP.
-    """
-    # Initialize SSH client
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-    try:
-        # Connect to the remote server
-        print(f"Connecting to {hostname}...")
-        ssh_client.connect(hostname=hostname, username=username, password=password)
-        print(f"Connected to {hostname}.")
-
-        # Open SFTP session over the SSH connection
-        sftp = ssh_client.open_sftp()
-
-        # Check if the remote file exists
-        try:
-            sftp.stat(remote_file_path)  # Check if file exists on the server
-            print(f"File found: {remote_file_path}. Reading content...")
-
-            # Open the remote file
-            with sftp.open(remote_file_path, 'r') as remote_file:
-                # Read the entire content of the file
-                file_content = remote_file.read().decode('utf-8')  # decode to convert bytes to string
-                print("File content read successfully.")
-                return file_content  # Return file content
-
-        except FileNotFoundError:
-            print(f"Error: File '{remote_file_path}' not found on the server.")
-            return None
-
-        finally:
-            # Close the SFTP session
-            sftp.close()
-
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-    finally:
-        # Ensure the SSH client is closed
-        if ssh_client:
-            ssh_client.close()
-
-# Main execution
-try:
-    file_content = read_remote_file_content(hostname, username, password, remote_file_path)
-    if file_content:
-        print("Content of the file:")
-        print(file_content)  # Print the content of the file
-    else:
-        print("No content found or error occurred.")
-except Exception as e:
-    print(f"An error occurred: {str(e)}")
+Function OpenLog(LogFileName As String) As Workbook
+Dim PriorActiveWB As Workbook
+Dim TemplateFileName As String
+Dim TemplateDir As String
+Dim LogFileSpec As String
+    
+    TemplateFileName = "Import Log"
+    
+    Set PriorActiveWB = ActiveWorkbook
+    TemplateDir = ActiveWorkbook.Path
+    If Not WorkbookIsOpen(LogFileName) Then
+        LogFileSpec = TemplateDir + "\" + LogFileName
+        If Dir(LogFileSpec) = "" Then
+            Workbooks.Add
+            ActiveSheet.Name = "Import Log"
+            ActiveSheet.Cells(1, 1) = "Workbook"
