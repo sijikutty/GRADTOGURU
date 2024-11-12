@@ -1,16 +1,1 @@
-Function OpenLog(LogFileName As String) As Workbook
-Dim PriorActiveWB As Workbook
-Dim TemplateFileName As String
-Dim TemplateDir As String
-Dim LogFileSpec As String
-    
-    TemplateFileName = "Import Log"
-    
-    Set PriorActiveWB = ActiveWorkbook
-    TemplateDir = ActiveWorkbook.Path
-    If Not WorkbookIsOpen(LogFileName) Then
-        LogFileSpec = TemplateDir + "\" + LogFileName
-        If Dir(LogFileSpec) = "" Then
-            Workbooks.Add
-            ActiveSheet.Name = "Import Log"
-            ActiveSheet.Cells(1, 1) = "Workbook"
+=TEXTJOIN(CHAR(10), TRUE, IF($A$2:$A$8=A2, $B$2:$B$8, ""))
