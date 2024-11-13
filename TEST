@@ -1,1 +1,2 @@
-datetime_now = datetime.datetime.utcnow()
+import datetime
+datetime_now = datetime.datetime.now(datetime.timezone.utc)
