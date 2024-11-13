@@ -1,105 +1,86 @@
-CreateExpenseReport
-WithdrawAnExpenseReport
-ModifyExpenseReport
-ViewExpenseReport
-PrintExpenseReport
-ReviewerHasReceivedEmailToApprove
-ReviewerApprovalOfExpenseReport
-"HRSupervisorHasReceivedEmailTo
-Approve"
-HRSupervisorApprovalOfExpenseReport
-"ExpenseManagerHasReceivedEmailTo
-Approve"
-"ExpenseManagerApprovalOfExpense
-Report"
-NoticeOfApproval
-ReviewerSendBackOfExpenseREport
-HRSupervisorSendBackOfExpenseREport
-"ExpenseManagerSendBackOfExpense
-Report"
-Re-Assign_Approval
-ViewEmployeeTransactionHistory
-ViewEmployeeOrganizationalData
-ViewEmployeePaymentHistory
-ViewEmployeePersonalData
-"Employee Able to navigate to NRSIT page
- from Travel and Expense Center"
-ExpenseTransactionProcessing
-"ExpenseReportApprovedForPaymentBack
-ToPending"
-PayCycleRunForExpenseReports
-EditEmployeeOrganizationalData
-AuthorizeUsers
-EditEmployeePersonalData
-LoadEmployeeInformationFromExternal
-LoadMasterCorporateCardData
-LoadCorporateCardTransactionfiles
-HRPayrollMannualExpense
-"Weekly&MonthlyT&EDataToExpense
-System"
-"CreditCardInboundfeedVendorsare
-BankofAmericaandAMEX"
-SyncWalletWithExpenseReport
-AssignExpenseReviewers
-"AdminPerformingActionsOnExpense
-ReportForUsers"
-LoadVisaArchivesfromFrontend
-NRSITE&YRunfromFrontend
-LoadVisaCCdatafromFrontend
-AnyOtherPSQueriesRunByBusiness
-ViewAnalytics
-CreateExpenseReportToAddExpenseLines
-"CreateExpenseReportToAddFromMy
-Wallet"
-CreateExpenseReportForUKEmployees
-CreateExpenseReportForHKEmployees
-OutOfpocketExpense
-"ApproverCannotEdit/AttachReceipt
-(Negative testing)"
-NF_FluidForExpenseSubmissionAndApproval
-NF_MultipleAttachmentsCanBeAddedAtOnce
-NF_AttachmentsCanBeAddedAtHeaderLevel
-"NF_PreventExpenseReportFromSubmitted
-IfReceiptsAreNotAttachedForUSUsers"
-NF_AddCommentsIfReceiptNotAttached
-"NF_PreventExpenseReportFromSubmitted
-IfReceiptsAreNotAttachedForHongKong(HK)users"
-"NF_PreventExpenseReportFromSubmitted
-IfReceiptsAreNotAttachedForUKusers"
-NF_ApproverCanViewAllAttendees
-"NF_NonPreferredMerchant_
-PrefilledJustification"
-NF_ViewNotesAndAnalyticsForSubmitter
-NF_ViewNotesAndAnalyticsForApprover
-NF_ExpenseWorkCentre
-NF_ExceptionCommentsAndRiskPageAllowsTheApproverToViewTheRiskLevel
-"SplitExpenseLineandcheckwithwallet
-Item"
-SplitExpenseLineandCheckoutofPocket
-PreauditorSendbackAnExpenseReport
-T&ELearningCentre
-CurrenySymbol($)ForUSUsers(dollars)
-CurrenySymbolForUKUsers(pound)
-CurrenySymbol($)ForHKUsers
-ChangeFieldsInMyWallet
-CreateExpensereportUsingAddQuickFill
-NonPreferredJustification
-AccountingdetailsatHeaderlevel
-ToCHECKemployeedetails atHeaderlevel
-MyExpenseReports 
-Expensehistory 
-AccountingdetailsViewedbyApprover
-ApprovalChain 
-WorklistApprover
-AlternateApprover 
-NF_AddCommentsIfReceiptNotAttached
-"NF_PreventExpenseReportFromSubmitted
-IfReceiptsAreNotAttachedForHongKong(HK)users"
-"NF_PreventExpenseReportFromSubmitted
-IfReceiptsAreNotAttachedForUKusers"
-EX_SheetPending
-"HotelWizardWithoutItemization
-(negative testing)"
-AMEXPaymentTypeChanges
+Create Expense Report
+Withdraw An Expense Report
+Modify Expense Report
+View Expense Report
+Print Expense Report
+Reviewer Has Received Email To Approve
+Reviewer Approval Of Expense Report
+HR Supervisor Has Received Email To Approve
+HR Supervisor Approval Of Expense Report
+Expense Manager Has Received Email To Approve
+Expense Manager Approval Of Expense Report
+Notice Of Approval
+Reviewer Send Back Of Expense Report
+HR Supervisor Send Back Of Expense Report
+Expense Manager Send Back Of Expense Report
+Re-Assign Approval
+View Employee Transaction History
+View Employee Organizational Data
+View Employee Payment History
+View Employee Personal Data
+Employee Able To Navigate To NRSIT Page From Travel And Expense Center
+Expense Transaction Processing
+Expense Report Approved For Payment Back To Pending
+Pay Cycle Run For Expense Reports
+Edit Employee Organizational Data
+Authorize Users
+Edit Employee Personal Data
+Load Employee Information From External
+Load Master Corporate Card Data
+Load Corporate Card Transaction Files
+HR Payroll Manual Expense
+Weekly & Monthly T&E Data To Expense System
+Credit Card Inbound Feed Vendors Are Bank of America And AMEX
+Sync Wallet With Expense Report
+Assign Expense Reviewers
+Admin Performing Actions On Expense Report For Users
+Load Visa Archives From Frontend
+NRSIT E&Y Run From Frontend
+Load Visa CC Data From Frontend
+Any Other PS Queries Run By Business
+View Analytics
+Create Expense Report To Add Expense Lines
+Create Expense Report To Add From My Wallet
+Create Expense Report For UK Employees
+Create Expense Report For HK Employees
+Out of Pocket Expense
+Approver Cannot Edit/Attach Receipt (Negative Testing)
+NF Fluid For Expense Submission And Approval
+NF Multiple Attachments Can Be Added At Once
+NF Attachments Can Be Added At Header Level
+NF Prevent Expense Report From Submitted If Receipts Are Not Attached For US Users
+NF Add Comments If Receipt Not Attached
+NF Prevent Expense Report From Submitted If Receipts Are Not Attached For Hong Kong (HK) Users
+NF Prevent Expense Report From Submitted If Receipts Are Not Attached For UK Users
+NF Approver Can View All Attendees
+NF Non Preferred Merchant Pre-filled Justification
+NF View Notes And Analytics For Submitter
+NF View Notes And Analytics For Approver
+NF Expense Work Centre
+NF Exception Comments And Risk Page Allows The Approver To View The Risk Level
+Split Expense Line And Check With Wallet Item
+Split Expense Line And Check Out of Pocket
+Preauditor Send Back An Expense Report
+T&E Learning Centre
+Currency Symbol ($) For US Users (Dollars)
+Currency Symbol For UK Users (Pound)
+Currency Symbol ($) For HK Users
+Change Fields In My Wallet
+Create Expense Report Using Add Quick Fill
+Non Preferred Justification
+Accounting Details At Header Level
+To Check Employee Details At Header Level
+My Expense Reports
+Expense History
+Accounting Details Viewed By Approver
+Approval Chain
+Worklist Approver
+Alternate Approver
+NF Add Comments If Receipt Not Attached
+NF Prevent Expense Report From Submitted If Receipts Are Not Attached For Hong Kong (HK) Users
+NF Prevent Expense Report From Submitted If Receipts Are Not Attached For UK Users
+EX Sheet Pending
+Hotel Wizard Without Itemization (Negative Testing)
+AMEX Payment Type Changes
 Favourite
-AdjustPaidExpenses
+Adjust Paid Expenses
