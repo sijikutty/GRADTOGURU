@@ -1,1 +1,2 @@
-=IFERROR(MID(A1, SEARCH("te", A1) + 2, LEN(A1) - SEARCH("te", A1) - 1), "")
+=MID(A1, SEARCH("TE_", A1) + 3, LEN(A1) - SEARCH("TE_", A1) - 2)
+=TRIM(TEXTJOIN(" ", TRUE, MID(B1, ROW(INDIRECT("1:" & LEN(B1))), 1)))
