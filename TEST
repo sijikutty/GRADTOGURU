@@ -1,1 +1,2 @@
-=TEXTJOIN(CHAR(10), TRUE, IF($A$2:$A$8=A2, $B$2:$B$8, ""))
+C:\b\k\.venv\Lib\site-packages\botocore\auth.py:424: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    datetime_now = datetime.datetime.utcnow()
