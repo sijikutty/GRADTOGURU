@@ -1,86 +1,40 @@
-User should be able to create an Expense Report
-User should be able to withdraw an Expense Report
-User should be able to modify an Expense Report
-User should be able to view an Expense Report
-User should be able to print an Expense Report
-Approver should be able to receive an email to approve the Expense Report
-Approver should be able to approve an Expense Report
-HR Supervisor should be able to receive an email to approve an Expense Report
-HR Supervisor should be able to approve an Expense Report
-Expense Manager should be able to receive an email to approve an Expense Report
-Expense Manager should be able to approve an Expense Report
-Approver should be able to view the Notice of Approval
-Approver should be able to send back an Expense Report
-HR Supervisor should be able to send back an Expense Report
-Expense Manager should be able to send back an Expense Report
-Approver should be able to re-assign approval for an Expense Report
-User should be able to view Employee Transaction History
-User should be able to view Employee Organizational Data
-User should be able to view Employee Payment History
-User should be able to view Employee Personal Data
-User should be able to navigate to the NRSIT page from the Travel and Expense Center
-User should be able to process an Expense Transaction
-Approver should be able to approve an Expense Report and move it back to Pending
-User should be able to run the Pay Cycle for Expense Reports
-HR should be able to edit Employee Organizational Data
-Admin should be able to authorize Users
-HR should be able to edit Employee Personal Data
-User should be able to load Employee Information from External Systems
-User should be able to load Master Corporate Card Data
-User should be able to load Corporate Card Transaction Files
-HR should be able to process Payroll Manual Expense
-User should be able to input Weekly & Monthly T&E Data into the Expense System
-User should be able to sync Credit Card Inbound Feed from Bank of America and AMEX
-User should be able to sync Wallet with an Expense Report
-Admin should be able to assign Expense Reviewers
-Admin should be able to perform actions on Expense Reports for Users
-User should be able to load Visa Archives from Frontend
-User should be able to run NRSIT E&Y from Frontend
-User should be able to load Visa CC Data from Frontend
-Business user should be able to run any Other PS Queries
-User should be able to view Analytics
-User should be able to create an Expense Report to add Expense Lines
-User should be able to create an Expense Report to add expenses from My Wallet
-User should be able to create an Expense Report for UK Employees
-User should be able to create an Expense Report for HK Employees
-User should be able to input Out of Pocket Expenses
-Approver should be able to prevent Expense Report submission if Receipts are not attached (Negative Testing)
-User should be able to handle NF Fluid for Expense Submission and Approval
-User should be able to handle NF Multiple Attachments that can be added at once
-User should be able to handle NF Attachments added at Header Level
-Approver should be able to prevent Expense Report from being submitted if Receipts are not attached for US Users
-Approver should be able to add Comments if Receipts are not attached
-Approver should be able to prevent Expense Report from being submitted if Receipts are not attached for Hong Kong (HK) Users
-Approver should be able to prevent Expense Report from being submitted if Receipts are not attached for UK Users
-Approver should be able to view all attendees for an Expense Report
-Approver should be able to handle NF Non-Preferred Merchant Pre-filled Justifications
-Approver should be able to view Notes and Analytics for Submitter
-Approver should be able to view Notes and Analytics for Approver
-Approver should be able to access the NF Expense Work Centre
-Approver should be able to view Exception Comments and Risk Levels on the Risk Page
-User should be able to split an Expense Line and check with Wallet Item
-User should be able to split an Expense Line and check Out of Pocket
-Approver should be able to send back an Expense Report to Pre-auditor
-User should be able to access T&E Learning Centre
-User should be able to see Currency Symbol ($) for US Users (Dollars)
-User should be able to see Currency Symbol for UK Users (Pound)
-User should be able to see Currency Symbol ($) for HK Users
-User should be able to change Fields in My Wallet
-User should be able to create an Expense Report using Add Quick Fill
-User should be able to provide Non-Preferred Justifications
-User should be able to view Accounting Details at the Header Level
-User should be able to check Employee Details at the Header Level
-User should be able to view their Expense Reports
-User should be able to view their Expense History
-Approver should be able to view Accounting Details during the Approval Process
-Approver should be able to view the Approval Chain
-Approver should be able to view their Worklist for approval
-Approver should be able to assign an Alternate Approver
-Approver should be able to add Comments if Receipts are not attached
-Approver should be able to prevent Expense Report from being submitted if Receipts are not attached for Hong Kong (HK) Users
-Approver should be able to prevent Expense Report from being submitted if Receipts are not attached for UK Users
-User should be able to view the EX Sheet if Pending
-User should be able to use the Hotel Wizard Without Itemization (Negative Testing)
-User should be able to view AMEX Payment Type Changes
-User should be able to mark Favorites
-User should be able to adjust Paid Expenses
+def allocation_grp_setup(testdata,page,avail_status):
+    navigate_menu(page=page,
+                          menu_sequence=["Allocations", 
+                                         "Define and Perform Allocations", 
+                                         "Define Allocation Group"])   
+        # Locate the target iframe for the form
+    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
+    targetContentFrame.get_by_role("button", name="Add a New Value").click()
+    targetContentFrame.get_by_label("SetID").fill(testdata["SETID"])
+    targetContentFrame.get_by_label("Allocation Group").fill(testdata["process_group"])
+    targetContentFrame.get_by_role("button", name="Add").click()
+    new_value="N"
+    try:
+        # Checking if the Run Control ID already exists
+        #expect(targetContentFrame.get_by_text("Search Results")).to_be_visible(timeout=2000)
+#
+        #required_section = targetContentFrame.locator("table").filter(has_text="Search Results")
+        #required_section.get_by_text(targetContentFrame, exact=True).click()
+        targetContentFrame.get_by_text(testdata["process_group"]).click()
+        targetContentFrame.get_by_role("button", name="Correct History").click()
+    except AssertionError as e:
+        new_value="Y"
+        print("Adding new Allocation Group")
+
+
+    #targetContentFrame.get_by_role("button", name="Search", exact=True).click()
+    if avail_status=="Y":    
+        #targetContentFrame.get_by_role("button", name="Delete row").click()
+        targetContentFrame.locator("[id=\"GROUPBOX_EFFDT\\$delete\\$0\\$\\$0\"]").click()
+        page.get_by_role("button", name="OK").click()
+        targetContentFrame.get_by_role("button", name="Save").click()
+    if new_value=="N":
+        targetContentFrame.get_by_role("button", name="Add a new row at row").first.click()
+    
+    current_date=datetime.now().strftime("%m/%d/%Y")
+    print(current_date)
+    targetContentFrame.get_by_label("Effective Date").fill(current_date)
+    targetContentFrame.locator("[id=\"ALLOC_GRSTP_TBL_PROCESS_STEP\\$0\"]").fill(testdata["process_step"])
+    targetContentFrame.get_by_role("button", name="Save").click()
+    print("Define Allocation Group Completed")
