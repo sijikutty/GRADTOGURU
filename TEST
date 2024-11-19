@@ -1,18 +1,10 @@
-echo -e "-----------------------------------------------------------" >> $LogFl
-echo "-                `basename $0` " >> $LogFl
-echo -e "-----------------------------------------------------------" >> $LogFl
-echo "Started         : `date '+%m/%d/%y %H:%M:%S'`" >> $LogFl
+echo $DB
+echo $FIT_SCRIPT
+#. /App/.profile 
+echo $FIT_SCRIPT
+CRED=`$FIT_SCRIPT/getcred.pl "SID:$DB" "qq_THRESHOLD_SERV"`
+ConnStr=$CRED@$DB
 
-# TO CHANGE SEGMENT18 FROM gg
-RS=`sqlplus -s $ConnStr <<EOF >> $LogFl
-WHENEVER SQLERROR EXIT 1
-@$updatesqlfile
-EXIT;
-EOF`
-
-if [ $? -ne 0 ]; then
-    $FIT_SCRIPT/fit_email.sh "$1 *** Failed - DB error in Invoke PS Process***" "$LogFl"
-    exit 16
-fi
-
-echo "Journal Generator Template for gg Successfully Changed" >> $LogFl
+updatesqlfile=$FIT_SQL/qq_Template_Upd.sql
+LogFl=$FIT_LOG/$1_PS_$$.log
+server=`cat $FIT_SCRIPT/ps_server.txt`
