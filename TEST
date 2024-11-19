@@ -3,17 +3,16 @@ echo "-                `basename $0` " >> $LogFl
 echo -e "-----------------------------------------------------------" >> $LogFl
 echo "Started         : `date '+%m/%d/%y %H:%M:%S'`" >> $LogFl
 
-#TO CHANGE SEGMENT18 FROM gg
+# TO CHANGE SEGMENT18 FROM gg
+RS=`sqlplus -s $ConnStr <<EOF >> $LogFl
+WHENEVER SQLERROR EXIT 1
+@$updatesqlfile
+EXIT;
+EOF`
 
-	  RS=`sqlplus -s $ConnStr << EOF >> $LogFl
-		WHENEVER SQLERROR EXIT 1
-		 @$updatesqlfile
-		 EXIT;
-		 EOF`
-		if [ $? -ne 0 ] ; then
-		 $FIT_SCRIPT/fit_email.sh "$1 *** Failed - DB error in Invoke PS Process***" "$LogFl"
-		 exit 16
-		fi
-		echo "Journal Generator Template for gg Successfully Changed" >> $LogFl
+if [ $? -ne 0 ]; then
+    $FIT_SCRIPT/fit_email.sh "$1 *** Failed - DB error in Invoke PS Process***" "$LogFl"
+    exit 16
+fi
 
-warning: here-document at line 39 delimited by end-of-file (wanted `EOF')
+echo "Journal Generator Template for gg Successfully Changed" >> $LogFl
