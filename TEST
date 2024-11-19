@@ -1,40 +1,19 @@
-def allocation_grp_setup(testdata,page,avail_status):
-    navigate_menu(page=page,
-                          menu_sequence=["Allocations", 
-                                         "Define and Perform Allocations", 
-                                         "Define Allocation Group"])   
-        # Locate the target iframe for the form
-    targetContentFrame = page.frame_locator("iframe[name=\"TargetContent\"]")
-    targetContentFrame.get_by_role("button", name="Add a New Value").click()
-    targetContentFrame.get_by_label("SetID").fill(testdata["SETID"])
-    targetContentFrame.get_by_label("Allocation Group").fill(testdata["process_group"])
-    targetContentFrame.get_by_role("button", name="Add").click()
-    new_value="N"
-    try:
-        # Checking if the Run Control ID already exists
-        #expect(targetContentFrame.get_by_text("Search Results")).to_be_visible(timeout=2000)
-#
-        #required_section = targetContentFrame.locator("table").filter(has_text="Search Results")
-        #required_section.get_by_text(targetContentFrame, exact=True).click()
-        targetContentFrame.get_by_text(testdata["process_group"]).click()
-        targetContentFrame.get_by_role("button", name="Correct History").click()
-    except AssertionError as e:
-        new_value="Y"
-        print("Adding new Allocation Group")
+echo -e "-----------------------------------------------------------" >> $LogFl
+echo "-                `basename $0` " >> $LogFl
+echo -e "-----------------------------------------------------------" >> $LogFl
+echo "Started         : `date '+%m/%d/%y %H:%M:%S'`" >> $LogFl
 
+#TO CHANGE SEGMENT18 FROM gg
 
-    #targetContentFrame.get_by_role("button", name="Search", exact=True).click()
-    if avail_status=="Y":    
-        #targetContentFrame.get_by_role("button", name="Delete row").click()
-        targetContentFrame.locator("[id=\"GROUPBOX_EFFDT\\$delete\\$0\\$\\$0\"]").click()
-        page.get_by_role("button", name="OK").click()
-        targetContentFrame.get_by_role("button", name="Save").click()
-    if new_value=="N":
-        targetContentFrame.get_by_role("button", name="Add a new row at row").first.click()
-    
-    current_date=datetime.now().strftime("%m/%d/%Y")
-    print(current_date)
-    targetContentFrame.get_by_label("Effective Date").fill(current_date)
-    targetContentFrame.locator("[id=\"ALLOC_GRSTP_TBL_PROCESS_STEP\\$0\"]").fill(testdata["process_step"])
-    targetContentFrame.get_by_role("button", name="Save").click()
-    print("Define Allocation Group Completed")
+	  RS=`sqlplus -s $ConnStr << EOF >> $LogFl
+		WHENEVER SQLERROR EXIT 1
+		 @$updatesqlfile
+		 EXIT;
+		 EOF`
+		if [ $? -ne 0 ] ; then
+		 $FIT_SCRIPT/fit_email.sh "$1 *** Failed - DB error in Invoke PS Process***" "$LogFl"
+		 exit 16
+		fi
+		echo "Journal Generator Template for gg Successfully Changed" >> $LogFl
+
+warning: here-document at line 39 delimited by end-of-file (wanted `EOF')
