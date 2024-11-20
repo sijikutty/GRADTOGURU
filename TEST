@@ -1,18 +1,15 @@
-Verify that the user is able to enter values for the necessary fields for Basic Add Asset creation  in PeopleSoft Financials upgraded version - 9.2
-Verify that the user is able to enter values for the necessary fields for Asset creation  in PeopleSoft Financials upgraded version - 9.2
-To Verify that Cost Adjustments (Update cost Information) can be made to an asset  in PeopleSoft Financials upgraded version - 9.2.
-To Verify that AE Inter Transfer Transactions in PeopleSoft Financials upgraded version - 9.2.
-To Verify user can review depreciation amounts of each asset from Asset Depreciation Page.
-To Run the depreciation process for an asset transferred to another dept in PeopleSoft Financials upgraded version - 9.2.
-To Verify Asset Management workcenter verification, Various Sections, Links, PS Queries and Reports in the WorkCenter in PeopleSoft Financials upgraded version - 9.2.
-Calculate the depreciation Bonus of an asset based on the Profile setup
-To Verify that Assets can be retired by All Books in PeopleSoft Financials upgraded version - 9.2.
-To Verify that a retired asset can be reinstated in PeopleSoft Financials upgraded version - 9.2.
-To Verify that depreciation calculation process in PeopleSoft Financials upgraded version - 9.2.
-"To check asset interface physical and financial data  review/
-approve in single view"
-"To display the error details for the asset interface preinterface
-error transaction"
-To check the asset management work centre option
-"To  create asset through asset automation program for
- tangible and intangible profile id"
+User should be able to enter values for all necessary fields when creating an asset in the Basic Add Asset page.
+User should be able to enter values for the necessary fields when creating an asset in PeopleSoft Financials.
+User should be able to make cost adjustments (update cost information) for an asset in PeopleSoft Financials.
+User should be able to process AE Inter Transfer transactions in PeopleSoft Financials.
+User should be able to review the depreciation amounts of each asset on the Asset Depreciation page in PeopleSoft Financials.
+User should be able to run the depreciation process for an asset that has been transferred to another department in PeopleSoft Financials.
+User should be able to access and verify various sections, links, PS Queries, and reports in the Asset Management WorkCenter in PeopleSoft Financials.
+User should be able to calculate the depreciation bonus of an asset based on the profile setup in PeopleSoft Financials.
+User should be able to retire assets in all books in PeopleSoft Financials.
+User should be able to reinstate a retired asset in PeopleSoft Financials.
+User should be able to run and verify the depreciation calculation process for assets in PeopleSoft Financials.
+User should be able to review and approve the physical and financial data of an asset interface in a single view in PeopleSoft Financials.
+User should be able to display error details for asset interface pre-interface error transactions in PeopleSoft Financials.
+User should be able to access and use the relevant options in the Asset Management WorkCenter in PeopleSoft Financials.
+User should be able to create tangible and intangible assets through the Asset Automation Program for the specified profile ID in PeopleSoft Financials.
