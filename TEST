@@ -1,34 +1,72 @@
+#!/usr/bin/perl -s
+# $Header: /appl/fitbatch/scripts/RCS/getcred.pl,v 1.1 2012/10/25 15:20:53 ar69784 Exp $
+# Get credentials for use in authenticating client tasks to services.
+# See show_help() below for more information.
+# Proprietary and confidential information of The Hartford.
+# $Log: getcred.pl,v $
+# Revision 1.1  2012/10/25 15:20:53  ar69784
 
 use Env;             # Get environment variables.
 use localapp;        # std local settings and routines.
 use Sys::Hostname;   # Module to get the hostname.
+use POSIX qw(strftime);  # For timestamp in log
+use File::Basename;  # For extracting file paths
 
 ( our $ver = q($Revision: 1.1 $)) =~ s/\$Rev\w+: (\d+\.\d+) \$$/v$1/o;
-  our ( $help, $h ); # optional flags provided at runtime via interpreter -s flag above.
+our ( $help, $h ); # optional flags provided at runtime via interpreter -s flag above.
 
-show_help(0) if $h or $help;  # flags received via the perl -s switch above.
+# Show help if requested
+show_help(0) if $h or $help;
 
+# Check if the right number of arguments is passed
 if ( @ARGV == 2 ){
    our ( $server, $ID, $PW ) = @ARGV; 
 }else{
     print "($this $ver): Incorrect number of arguments were given.\n";
     show_help(1);  # and quit.
 }
-my ( $id,$pw ) = get_login_string( $server, $HOME, $ID ) unless $PW;
+
+# Get login credentials if password is not passed
+my ( $id, $pw ) = get_login_string( $server, $HOME, $ID ) unless $PW;
 $id ||= $ID;
 $pw ||= $PW;
 
+# Log the credentials (and potentially password) into a log file
+log_credentials($server, $id, $pw);
+
+# Print the credentials (Database, ID, and Password)
 if ( $id and $pw ){
     print qq($id/$pw);
 }else{
     die qq(($this $ver): Credentials for "$server" and "$ID" not found);
 }
+
 exit 0;
 
 #------------------------------------------------------------------------------
 
-sub show_help {
+# Function to write credentials to a log file
+sub log_credentials {
+    my ($server, $id, $pw) = @_;
+    
+    # Define the log file location (e.g., in /var/log/ or user's home directory)
+    my $log_file = "$HOME/getcred.log";  # Log file path (you can change this)
 
+    # Open the log file for appending
+    open my $log_fh, '>>', $log_file or die "Cannot open log file: $!\n";
+    
+    # Get the current timestamp
+    my $timestamp = strftime "%Y-%m-%d %H:%M:%S", localtime;
+    
+    # Log the server, user ID, and password (masking password for security)
+    print $log_fh "$timestamp - Server: $server, User ID: $id, Password: " . ('*' x length($pw)) . "\n";
+    
+    # Close the log file
+    close $log_fh;
+}
+
+# Show help message
+sub show_help {
     my $retcode = shift;
     my $header = '-' x 25 . " $this $ver " . '-' x 25;
     my $lines  = '-' x length $header;
