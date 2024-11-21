@@ -1,38 +1,20 @@
-import re
+jobs_to_execute = [
+                        (testdata["gg"], testdata["file_watcher"]),
+                        (testdata["gg"], testdata["gg_file_load_job"]),
+                        (testdata["gg"], testdata["gg_landing_to_stg_job"]),
+                        (testdata["gg"], testdata["Staging_Journal_to_FAH_job"])]
+    overall_success = True  # Flag to track the overall success of all job executions
 
-# Function to update the date in the text file
-def update_date_in_file(file_path, new_date):
-    try:
-        # Read the file content
-        with open(file_path, 'r') as file:
-            content = file.read()
+    # Loop through each job and execute sequentially
+    for job in jobs_to_execute:
+        if overall_success:  # Proceed only if previous jobs were successful
+            job_status = autosys_job_run(page, testdata, job[0], job[1])
+            print(f"Autosys job {job[1]} Status: {job_status}")
 
-        # Find the first date in the content (assuming the date is in MM/DD/YYYY format)
-        old_date_match = re.search(r'\b(\d{2}/\d{2}/\d{4})\b', content)
-        
-        if old_date_match:
-            old_date = old_date_match.group(1)  # Extract the old date
-            print(f"Found old date: {old_date}")
+            # If any job fails, set the overall success flag to False
+            if job_status.upper() != "SUCCESS":
+                overall_success = False
 
-            # Replace the old date with the new date
-            updated_content = content.replace(old_date, new_date)
-
-            # Write the updated content back to the file
-            with open(file_path, 'w') as file:
-                file.write(updated_content)
-
-            print(f"Date updated from {old_date} to {new_date} successfully.")
-        else:
-            print("No date found in the file.")
-    
-    except FileNotFoundError:
-        print(f"File not found: {file_path}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-# Example usage
-file_path = 'C:/wrt.txt'  # Path to the file
-new_date = '12/01/2024'   # New date to replace with
-
-# Call the function to update the date
-update_date_in_file(file_path, new_date)
+    # If any job fails, raise an exception to fail the test case
+    if not overall_success:
+        raise Exception("One or more jobs failed in Autosys.")
