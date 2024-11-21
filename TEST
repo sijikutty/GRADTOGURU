@@ -1,18 +1,15 @@
-    # Get the text from the sixth cell in the second row
-    Job_status = Log_row.locator("td:nth-child(5)").inner_text().strip()
-
-    # Wait for Run status to be Success/Not Success for approximately 10 minutes.
-    retry = 0
-    while retry < 600:
-        expected_values = ['SUCCESS', 'FAILURE']
-        print(Job_status)
-        if Job_status in expected_values:
-            break
-        else:
-            # Wait for 20 seconds before retrying
-            page.wait_for_timeout(20000)
-            
-            # Click on "Refresh" button
-            frame.get_by_role("button", name="Refresh").click()
-            
-            retry += 1
+LogFl=$FIT_LOG/$1 
+chmod 755 $LogFl
+sqlfile=$FIT_SQL/max_count.sql
+ConnStr=`cat $FIT_SCRIPT/$2`
+Start_time=`date +%H%M%S`
+End_time=190000
+src_name=`echo $1 | cut -d. -f1`
+check_count()
+{
+	MAX_COUNT=`sqlplus -s $ConnStr << EOF
+	@$sqlfile
+	EXIT;
+	EOF`
+	if [ $? -ne 0 ] ; then
+	 echo -e "\nDatabase error" >> $LogFl
