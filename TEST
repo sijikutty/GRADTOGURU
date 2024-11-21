@@ -1,22 +1,18 @@
-jobs_to_execute = [
-    (testdata["gg"], testdata["file_watcher"]),
-    (testdata["gg"], testdata["gg_file_load_job"]),
-    (testdata["gg"], testdata["gg_landing_to_stg_job"]),
-    (testdata["gg"], testdata["Staging_Journal_to_FAH_job"])
-]
+    # Get the text from the sixth cell in the second row
+    Job_status = Log_row.locator("td:nth-child(5)").inner_text().strip()
 
-# Flag to track the success of the job execution
-overall_success = True
-
-# Loop through each job and execute sequentially
-for job in jobs_to_execute:
-    if overall_success:  # Proceed only if previous job was successful
-        job_status = autosys_job_run(page, testdata, job[0], job[1])
-        print(f"Autosys job {job[1]} Status: {job_status}")
-
-        # If the job fails, raise an exception and stop further execution
-        if job_status.upper() != "SUCCESS":
-            raise Exception(f"Job {job[1]} failed. Terminating further job executions.")
-
-# If all jobs succeeded, the test continues
-print("All jobs executed successfully.")
+    # Wait for Run status to be Success/Not Success for approximately 10 minutes.
+    retry = 0
+    while retry < 600:
+        expected_values = ['SUCCESS', 'FAILURE']
+        print(Job_status)
+        if Job_status in expected_values:
+            break
+        else:
+            # Wait for 20 seconds before retrying
+            page.wait_for_timeout(20000)
+            
+            # Click on "Refresh" button
+            frame.get_by_role("button", name="Refresh").click()
+            
+            retry += 1
