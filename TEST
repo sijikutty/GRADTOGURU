@@ -5,11 +5,24 @@ ConnStr=`cat $FIT_SCRIPT/$2`
 Start_time=`date +%H%M%S`
 End_time=190000
 src_name=`echo $1 | cut -d. -f1`
+
 check_count()
 {
-	MAX_COUNT=`sqlplus -s $ConnStr << EOF
-	@$sqlfile
-	EXIT;
-	EOF`
-	if [ $? -ne 0 ] ; then
-	 echo -e "\nDatabase error" >> $LogFl
+    # Capture both stdout and stderr from sqlplus
+    MAX_COUNT=`sqlplus -s $ConnStr << EOF
+    @$sqlfile
+    EXIT;
+    EOF` 2>&1  # Capture both stdout and stderr
+
+    # Check if sqlplus returned an error
+    if [ $? -ne 0 ] ; then
+        echo -e "\nDatabase error occurred during the execution of the SQL script:" >> $LogFl
+        echo "Error details from SQL*Plus:" >> $LogFl
+        echo "$MAX_COUNT" >> $LogFl  # Log the exact error message or output from sqlplus
+    else
+        echo -e "\nSQL executed successfully, result:" >> $LogFl
+        echo "$MAX_COUNT" >> $LogFl  # Log the successful output if needed
+    fi
+}
+
+check_count
