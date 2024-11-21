@@ -1,2 +1,38 @@
-PP|JRNLSTND|11/03/2024|25001|25000|405218|PPON|D|04NA|876|310|231|C1|AL||B009|-46.96|USD
-PP|JRNLSTND|11/03/2024|25001|25000|587403|PPON|D|04NA|876|310|231|C1|AL||B009|46.96|USD
+import re
+
+# Function to update the date in the text file
+def update_date_in_file(file_path, new_date):
+    try:
+        # Read the file content
+        with open(file_path, 'r') as file:
+            content = file.read()
+
+        # Find the first date in the content (assuming the date is in MM/DD/YYYY format)
+        old_date_match = re.search(r'\b(\d{2}/\d{2}/\d{4})\b', content)
+        
+        if old_date_match:
+            old_date = old_date_match.group(1)  # Extract the old date
+            print(f"Found old date: {old_date}")
+
+            # Replace the old date with the new date
+            updated_content = content.replace(old_date, new_date)
+
+            # Write the updated content back to the file
+            with open(file_path, 'w') as file:
+                file.write(updated_content)
+
+            print(f"Date updated from {old_date} to {new_date} successfully.")
+        else:
+            print("No date found in the file.")
+    
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage
+file_path = 'C:/wrt.txt'  # Path to the file
+new_date = '12/01/2024'   # New date to replace with
+
+# Call the function to update the date
+update_date_in_file(file_path, new_date)
