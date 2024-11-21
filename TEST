@@ -1,20 +1,22 @@
 jobs_to_execute = [
-                        (testdata["gg"], testdata["file_watcher"]),
-                        (testdata["gg"], testdata["gg_file_load_job"]),
-                        (testdata["gg"], testdata["gg_landing_to_stg_job"]),
-                        (testdata["gg"], testdata["Staging_Journal_to_FAH_job"])]
-    overall_success = True  # Flag to track the overall success of all job executions
+    (testdata["gg"], testdata["file_watcher"]),
+    (testdata["gg"], testdata["gg_file_load_job"]),
+    (testdata["gg"], testdata["gg_landing_to_stg_job"]),
+    (testdata["gg"], testdata["Staging_Journal_to_FAH_job"])
+]
 
-    # Loop through each job and execute sequentially
-    for job in jobs_to_execute:
-        if overall_success:  # Proceed only if previous jobs were successful
-            job_status = autosys_job_run(page, testdata, job[0], job[1])
-            print(f"Autosys job {job[1]} Status: {job_status}")
+# Flag to track the success of the job execution
+overall_success = True
 
-            # If any job fails, set the overall success flag to False
-            if job_status.upper() != "SUCCESS":
-                overall_success = False
+# Loop through each job and execute sequentially
+for job in jobs_to_execute:
+    if overall_success:  # Proceed only if previous job was successful
+        job_status = autosys_job_run(page, testdata, job[0], job[1])
+        print(f"Autosys job {job[1]} Status: {job_status}")
 
-    # If any job fails, raise an exception to fail the test case
-    if not overall_success:
-        raise Exception("One or more jobs failed in Autosys.")
+        # If the job fails, raise an exception and stop further execution
+        if job_status.upper() != "SUCCESS":
+            raise Exception(f"Job {job[1]} failed. Terminating further job executions.")
+
+# If all jobs succeeded, the test continues
+print("All jobs executed successfully.")
