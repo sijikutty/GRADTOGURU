@@ -8,10 +8,26 @@ if [ -z $1 ]; then
     echo "No value provided for source system parameter"
     exit 1
 fi
-ssh -q  $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd
+
+# Log the start of the process
+echo "Starting FAH Processing for source system: $1 on $(date)" >> /tmp/fah_process.log
+
+# Capture the output and error of the ssh command to diagnose failure
+ssh_output=$(ssh -q  $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd 2>&1)
+
+# Check the result of the command
 if [ $? -eq 0 ]; then
+    echo "FAH Processing for $1 completed successfully." >> /tmp/fah_process.log
     exit 0
 else
+    # If the command fails, capture the error and send the email with error details
     EMAIL=`cat $FIT_SCRIPT/fah_maillist.txt`
-    echo "Autosys FAH Processing failed for $1" |mutt -s "Autosys FAH Processing failed for $1" $EMAIL
-  while running this i am getting Autosys FAH Processing failed.i want to know exact error
+
+    # Log the error for troubleshooting
+    echo "Error occurred during FAH processing for $1:" >> /tmp/fah_process.log
+    echo "$ssh_output" >> /tmp/fah_process.log
+
+    # Send an email with the error details
+    echo "Autosys FAH Processing failed for $1. Error Details: $ssh_output" | mutt -s "Autosys FAH Processing failed for $1" $EMAIL
+    exit 1
+fi
