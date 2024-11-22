@@ -1,28 +1,17 @@
-LogFl=$FIT_LOG/$1 
-chmod 755 $LogFl
-sqlfile=$FIT_SQL/max_count.sql
-ConnStr=`cat $FIT_SCRIPT/$2`
-Start_time=`date +%H%M%S`
-End_time=190000
-src_name=`echo $1 | cut -d. -f1`
+# Paramter description
+# $1 - Source system code
+#
+server=`cat $FIT_SCRIPT/fah_server.txt`
+SID=$(echo `hostname`|tr '[:upper:]' '[:lower:]')
 
-check_count()
-{
-    # Capture both stdout and stderr from sqlplus
-    MAX_COUNT=`sqlplus -s $ConnStr << EOF
-    @$sqlfile
-    EXIT;
-    EOF` 2>&1  # Capture both stdout and stderr
-
-    # Check if sqlplus returned an error
-    if [ $? -ne 0 ] ; then
-        echo -e "\nDatabase error occurred during the execution of the SQL script:" >> $LogFl
-        echo "Error details from SQL*Plus:" >> $LogFl
-        echo "$MAX_COUNT" >> $LogFl  # Log the exact error message or output from sqlplus
-    else
-        echo -e "\nSQL executed successfully, result:" >> $LogFl
-        echo "$MAX_COUNT" >> $LogFl  # Log the successful output if needed
-    fi
-}
-
-check_count
+if [ -z $1 ]; then
+    echo "No value provided for source system parameter"
+    exit 1
+fi
+ssh -q  $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd
+if [ $? -eq 0 ]; then
+    exit 0
+else
+    EMAIL=`cat $FIT_SCRIPT/fah_maillist.txt`
+    echo "Autosys FAH Processing failed for $1" |mutt -s "Autosys FAH Processing failed for $1" $EMAIL
+  while running this i am getting Autosys FAH Processing failed.i want to know exact error
