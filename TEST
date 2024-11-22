@@ -1,3 +1,20 @@
+#!/bin/ksh
+#-----------------------------------------------------------------------
+# Program Name   : fah_invoke_script.sh                                                                                      #
+#                                                                                   
+# Description    : Wrapper script to call the FAH concurrent program     
+#                  to process source data sent from ODS                             
+# Usage	    	 : To be called from Autosys            
+#                 						                    
+# Change History :                                                                  
+#                                                                                   
+# Author           Date         Change Details                                      
+# ---------------  -----------  --------------------------------------
+# Fabian	    24-Oct-2012	Intial revision 
+# Fabian	    09-Nov-2012 Added logic to check source system param         
+# Fabian      19-Dec-2012 Made changes to connect to phub directly                         
+# -----------------------------------------------------------------------
+
 # Paramter description
 # $1 - Source system code
 #
@@ -10,21 +27,21 @@ if [ -z $1 ]; then
 fi
 
 # Log the start of the process
-echo "Starting FAH Processing for source system: $1 on $(date)" >> /tmp/fah_process.log
+echo "Starting FAH Processing for source system: $1 on $(date)" >> `cat $FIT_SCRIPT/fah_process.log`
 
 # Capture the output and error of the ssh command to diagnose failure
-ssh_output=$(ssh -q  $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd 2>&1)
+ssh_output=$(ssh -v  $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd 2>&1)
 
 # Check the result of the command
 if [ $? -eq 0 ]; then
-    echo "FAH Processing for $1 completed successfully." >> /tmp/fah_process.log
+    echo "FAH Processing for $1 completed successfully." >> `cat $FIT_SCRIPT/fah_process.log`
     exit 0
 else
     # If the command fails, capture the error and send the email with error details
     EMAIL=`cat $FIT_SCRIPT/fah_maillist.txt`
 
     # Log the error for troubleshooting
-    echo "Error occurred during FAH processing for $1:" >> /tmp/fah_process.log
+    echo "Error occurred during FAH processing for $1:" >> `cat $FIT_SCRIPT/fah_process.log`
     echo "$ssh_output" >> /tmp/fah_process.log
 
     # Send an email with the error details
