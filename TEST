@@ -1,16 +1,1 @@
-debug1: Local version string SSH-2.0-OpenSSH_8.0
-debug1: Remote protocol version 2.0, remote software version OpenSSH_8.0
-debug1: match: OpenSSH_8.0 pat OpenSSH* compat 0x04000000
-debug1: Authenticating to p2808hh:22 as 'kkim'
-debug1: SSH2_MSG_KEXINIT sent
-debug1: SSH2_MSG_KEXINIT received
-debug1: kex: algorithm: curve25519-sha256
-debug1: kex: host key algorithm: ecdsa-sha2-nistp256
-debug1: kex: server->client cipher: aes256-gcm@openssh.com MAC: <implicit> compression: none
-debug1: kex: client->server cipher: aes256-gcm@openssh.com MAC: <implicit> compression: none
-debug1: kex: curve25519-sha256 need=32 dh_need=32
-debug1: kex: curve25519-sha256 need=32 dh_need=32
-debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
-debug1: Server host key: ecdsa
-debug1: read_passphrase: can't open /dev/tty: No such device or address
-ssh_askpass: exec(/usr/libexec/openssh/ssh-askpass): No such file or directory Host key verification failed.
+
