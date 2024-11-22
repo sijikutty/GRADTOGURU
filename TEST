@@ -1,55 +1,16 @@
-#!/bin/ksh
-#-----------------------------------------------------------------------
-# Program Name   : fah_invoke_script.sh
-#
-# Description    : Wrapper script to call the FAH concurrent program
-#                  to process source data sent from ODS
-# Usage          : To be called from Autosys
-#
-# Change History :
-#
-# Author         Date         Change Details
-# ---------------  -----------  --------------------------------------
-# Fabian          24-Oct-2012  Initial revision
-# Fabian          09-Nov-2012  Added logic to check source system param
-# Fabian          19-Dec-2012  Made changes to connect to phub directly
-#-----------------------------------------------------------------------
-
-# Parameter description
-# $1 - Source system code
-#
-
-# Fetch server name and SID
-server=$(cat $FIT_SCRIPT/fah_server.txt)
-SID=$(echo `hostname` | tr '[:upper:]' '[:lower:]')
-
-# Check if the source system parameter is provided
-if [ -z "$1" ]; then
-    echo "No value provided for source system parameter"
-    exit 1
-fi
-
-# Log the start of the process
-echo "Starting FAH Processing for source system: $1 on $(date)" >> $FIT_SCRIPT/fah_process.log
-
-# Capture the output and error of the ssh command to diagnose failure
-ssh_output=$(ssh -v $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd 2>&1)
-
-# Check the result of the command
-if [ $? -eq 0 ]; then
-    # If the SSH command was successful, log the success
-    echo "FAH Processing for $1 completed successfully." >> $FIT_SCRIPT/fah_process.log
-    exit 0
-else
-    # If the command fails, capture the error and send the email with error details
-    EMAIL=$(cat $FIT_SCRIPT/fah_maillist.txt)
-
-    # Log the error for troubleshooting
-    echo "Error occurred during FAH processing for $1:" >> $FIT_SCRIPT/fah_process.log
-    echo "$ssh_output" >> $FIT_SCRIPT/fah_process.log  # Log to the correct file
-
-    # Send an email with the error details using mutt
-    echo -e "Autosys FAH Processing failed for $1. Error Details:\n$ssh_output" | mutt -s "Autosys FAH Processing failed for $1" $EMAIL
-    
-    exit 1
-fi
+debug1: Local version string SSH-2.0-OpenSSH_8.0
+debug1: Remote protocol version 2.0, remote software version OpenSSH_8.0
+debug1: match: OpenSSH_8.0 pat OpenSSH* compat 0x04000000
+debug1: Authenticating to p2808hh:22 as 'kkim'
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: algorithm: curve25519-sha256
+debug1: kex: host key algorithm: ecdsa-sha2-nistp256
+debug1: kex: server->client cipher: aes256-gcm@openssh.com MAC: <implicit> compression: none
+debug1: kex: client->server cipher: aes256-gcm@openssh.com MAC: <implicit> compression: none
+debug1: kex: curve25519-sha256 need=32 dh_need=32
+debug1: kex: curve25519-sha256 need=32 dh_need=32
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug1: Server host key: ecdsa
+debug1: read_passphrase: can't open /dev/tty: No such device or address
+ssh_askpass: exec(/usr/libexec/openssh/ssh-askpass): No such file or directory Host key verification failed.
