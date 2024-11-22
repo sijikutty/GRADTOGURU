@@ -1,50 +1,55 @@
 #!/bin/ksh
 #-----------------------------------------------------------------------
-# Program Name   : fah_invoke_script.sh                                                                                      #
-#                                                                                   
-# Description    : Wrapper script to call the FAH concurrent program     
-#                  to process source data sent from ODS                             
-# Usage	    	 : To be called from Autosys            
-#                 						                    
-# Change History :                                                                  
-#                                                                                   
-# Author           Date         Change Details                                      
+# Program Name   : fah_invoke_script.sh
+#
+# Description    : Wrapper script to call the FAH concurrent program
+#                  to process source data sent from ODS
+# Usage          : To be called from Autosys
+#
+# Change History :
+#
+# Author         Date         Change Details
 # ---------------  -----------  --------------------------------------
-# Fabian	    24-Oct-2012	Intial revision 
-# Fabian	    09-Nov-2012 Added logic to check source system param         
-# Fabian      19-Dec-2012 Made changes to connect to phub directly                         
-# -----------------------------------------------------------------------
+# Fabian          24-Oct-2012  Initial revision
+# Fabian          09-Nov-2012  Added logic to check source system param
+# Fabian          19-Dec-2012  Made changes to connect to phub directly
+#-----------------------------------------------------------------------
 
-# Paramter description
+# Parameter description
 # $1 - Source system code
 #
-server=`cat $FIT_SCRIPT/fah_server.txt`
-SID=$(echo `hostname`|tr '[:upper:]' '[:lower:]')
 
-if [ -z $1 ]; then
+# Fetch server name and SID
+server=$(cat $FIT_SCRIPT/fah_server.txt)
+SID=$(echo `hostname` | tr '[:upper:]' '[:lower:]')
+
+# Check if the source system parameter is provided
+if [ -z "$1" ]; then
     echo "No value provided for source system parameter"
     exit 1
 fi
 
 # Log the start of the process
-echo "Starting FAH Processing for source system: $1 on $(date)" >> `cat $FIT_SCRIPT/fah_process.log`
+echo "Starting FAH Processing for source system: $1 on $(date)" >> $FIT_SCRIPT/fah_process.log
 
 # Capture the output and error of the ssh command to diagnose failure
-ssh_output=$(ssh -v  $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd 2>&1)
+ssh_output=$(ssh -v $server /appl/fitbatch/scripts/fah_process_source_data.sh $1 ofahd 2>&1)
 
 # Check the result of the command
 if [ $? -eq 0 ]; then
-    echo "FAH Processing for $1 completed successfully." >> `cat $FIT_SCRIPT/fah_process.log`
+    # If the SSH command was successful, log the success
+    echo "FAH Processing for $1 completed successfully." >> $FIT_SCRIPT/fah_process.log
     exit 0
 else
     # If the command fails, capture the error and send the email with error details
-    EMAIL=`cat $FIT_SCRIPT/fah_maillist.txt`
+    EMAIL=$(cat $FIT_SCRIPT/fah_maillist.txt)
 
     # Log the error for troubleshooting
-    echo "Error occurred during FAH processing for $1:" >> `cat $FIT_SCRIPT/fah_process.log`
-    echo "$ssh_output" >> /tmp/fah_process.log
+    echo "Error occurred during FAH processing for $1:" >> $FIT_SCRIPT/fah_process.log
+    echo "$ssh_output" >> $FIT_SCRIPT/fah_process.log  # Log to the correct file
 
-    # Send an email with the error details
-    echo "Autosys FAH Processing failed for $1. Error Details: $ssh_output" | mutt -s "Autosys FAH Processing failed for $1" $EMAIL
+    # Send an email with the error details using mutt
+    echo -e "Autosys FAH Processing failed for $1. Error Details:\n$ssh_output" | mutt -s "Autosys FAH Processing failed for $1" $EMAIL
+    
     exit 1
 fi
