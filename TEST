@@ -1,42 +1,59 @@
-import re
-from datetime import datetime, timedelta
+-- Search in the PSPCODE table (PeopleCode Text) for %UpdateStats
+SELECT 
+    'PeopleCode' AS Source,
+    PCCODEID, 
+    PCODETEXT, 
+    RECTYPE, 
+    SUBRECNAME, 
+    CREATEDT 
+FROM 
+    PSPCODE 
+WHERE 
+    UPPER(PCODETEXT) LIKE '%UPDATESTATS%'
 
-def update_date_in_file(file_path, new_date):
-    try:
-        # Read the file content
-        with open(file_path, 'r') as file:
-            content = file.read()
+UNION
 
-        # Find all dates in the content (assuming the date is in MM/DD/YYYY format)
-        date_matches = re.findall(r'\d{2}/\d{2}/\d{4}', content)
+-- Search in PSAEAPPL (Application Engine) for %UpdateStats references in AE programs
+SELECT 
+    'Application Engine' AS Source,
+    AEAPPLID AS PCCODEID,
+    AECODETEXT AS PCODETEXT, 
+    'AE' AS RECTYPE, 
+    '' AS SUBRECNAME, 
+    CREATEDT 
+FROM 
+    PSAEAPPL 
+WHERE 
+    UPPER(AECODETEXT) LIKE '%UPDATESTATS%'
 
-        if len(date_matches) >= 2:
-            # Convert the new date to a datetime object
-            new_date_obj = datetime.strptime(new_date, '%m/%d/%Y')
+UNION
 
-            # Calculate the second date by adding one day to the new date
-            second_date_obj = new_date_obj + timedelta(days=1)
-            second_date = second_date_obj.strftime('%m/%d/%Y')
+-- Search in PSRECORD (Record PeopleCode) for references to %UpdateStats
+SELECT 
+    'Record PeopleCode' AS Source,
+    RCRDNAME AS PCCODEID,
+    RECTYPE AS PCODETEXT, 
+    SUBRECNAME,
+    CREATEDT 
+FROM 
+    PSRECORD 
+WHERE 
+    UPPER(RECTYPE) LIKE '%UPDATESTATS%'
 
-            # Replace the first occurrence of the first date with new_date
-            updated_content = content.replace(date_matches[0], new_date, 1)
+UNION
 
-            # Replace the second occurrence of the second date with the second date (new_date + 1 day)
-            updated_content = updated_content.replace(date_matches[1], second_date, 1)
+-- Search in SQLTEXTDEFN (SQL definitions) for %UpdateStats references
+SELECT 
+    'SQL Definition' AS Source,
+    SQLID AS PCCODEID,
+    SQLTEXT AS PCODETEXT, 
+    'SQL' AS RECTYPE, 
+    '' AS SUBRECNAME, 
+    CREATEDT 
+FROM 
+    SQLTEXTDEFN 
+WHERE 
+    UPPER(SQLTEXT) LIKE '%UPDATESTATS%'
 
-            # Write the updated content back to the file
-            with open(file_path, 'w') as file:
-                file.write(updated_content)
-
-            print(f"Dates updated: {date_matches[0]} -> {new_date} and {date_matches[1]} -> {second_date} successfully.")
-        else:
-            print("There are not enough dates found in the file.")
-
-    except Exception as e:
-        raise Exception(f"Failed to update date in file: {str(e)}")
-
-
-# Example usage
-file_path = "C:/Github/vv/Input files/maximis.out"
-new_date = '11/04/2024'
-update_date_in_file(file_path, new_date)
+ORDER BY 
+    CREATEDT;
