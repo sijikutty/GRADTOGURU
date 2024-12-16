@@ -1,100 +1,22 @@
-from playwright.sync_api import expect, Page
-from automation_utils import get_testdata
-from ps_utils import navigate_menu
-import pytest, time
-from datetime import datetime
-import os
-import shutil
-
-def create_asset(page: Page, testdata: dict):
-    # Navigate to the "Create/Update Journal Entries" section
-    navigate_menu(page=page,
-                  menu_sequence=["Asset Management",
-                                 "Asset Transactions",
-                                 "Owned Assets",
-                                 "Basic Add"])
-    
-    # Take Screenshot of the result
-    scenario = testdata['scenario']
-    screenshot_folder = os.path.join("Result", scenario)
-    os.makedirs(screenshot_folder, exist_ok=True)
-    clear_screenshot_folder(screenshot_folder)
-
-    frame = page.frame_locator("iframe[name='TargetContent']")
-    current_date = datetime.now().strftime("%m/%d/%Y")
-    frame.get_by_role("button", name="Add a New Value").click()
-    page.wait_for_load_state('networkidle')
-    frame.get_by_label("Business Unit").fill(testdata['business_unit'])
-    frame.get_by_role("button", name="Add").click()
-    frame.get_by_label("Description").fill(testdata['Description'])
-    frame.get_by_label("Short Desc").fill(testdata['Desc'])
-    frame.get_by_label("Asset Status").select_option("I")
-    frame.get_by_label("Acquisition Date").fill(current_date)
-    frame.get_by_label("Profile ID").fill(testdata['Profile_id'])
-    frame.get_by_label("Acquisition Code").select_option("P")
-    frame.get_by_label("New Asset").check()
-    screenshot_path = os.path.join(screenshot_folder, "1_General_Information.png")
-    page.screenshot(path=screenshot_path)
-    frame.get_by_label("Asset Acquisition Detail").click()
-    frame.get_by_label("Description").fill(testdata['Desc'])
-    frame.get_by_label("Category").fill(testdata['Category'])
-    frame.get_by_label("Quantity").fill(testdata['Quantity'])
-    frame.get_by_label("Amount").fill(testdata['Amount'])
-    frame.get_by_label("Sales Tax").fill(testdata['Sales_Tax'])
-    popup_dialog = page.frame_locator("[id^='ptModFrame']")
-    screenshot_path = os.path.join(screenshot_folder, "2_Asset_Acquisition.png")
-    page.screenshot(path=screenshot_path)
-    frame.get_by_role("link", name="Interfaces Info...").click()
-    popup_dialog.get_by_label("Invoice Number").fill(testdata['Desc'])
-    popup_dialog.get_by_label("Invoice Date").fill(current_date)
-    popup_dialog.get_by_label("Supplier ID").fill(testdata['Supplier_ID'])
-    popup_dialog.get_by_role("button", name="OK", exact=True).click()
-    screenshot_path = os.path.join(screenshot_folder, "3_Interfaces_Info.png")
-    page.screenshot(path=screenshot_path)
-    frame.get_by_role("link", name="Acquisition Detail Chartfields").click()
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$0\"]").fill(testdata['reg_offc'])
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$1\"]").fill(testdata['key_offc'])
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$2\"]").fill(testdata['Dept'])
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$3\"]").fill(testdata['function'])
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$4\"]").fill(testdata['exp_comp'])
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$5\"]").fill(testdata['State'])
-    popup_dialog.locator("[id=\"FS_CF_DESC_WRK_CHARTFIELD_VALUE\\$9\"]").fill(testdata['Melob'])
-    screenshot_path = os.path.join(screenshot_folder, "4_Chartfields.png")
-    page.screenshot(path=screenshot_path)
-    popup_dialog.get_by_role("button", name="OK", exact=True).click()
-    frame.get_by_role("button", name="Capitalize").click()
-    frame.get_by_label("Trans Date").fill(current_date)
-    frame.get_by_label("Acctg Date").fill(current_date)
-    screenshot_path = os.path.join(screenshot_folder, "5_Accounting_dt.png")
-    page.screenshot(path=screenshot_path)
-    frame.get_by_label("Manufacture/License/Custodian").click()
-    frame.get_by_label("Serial ID").fill(testdata['Serial_id'])
-    frame.get_by_label("Manufacturer ID").fill(testdata['Manufacture'])
-    frame.get_by_role("button", name="Save").click()
-    time.sleep(10)
-    #page.wait_for_load_state('networkidle')
-    Asset_id=frame.locator("#win0divASSET_ASSET_ID").inner_text()
-    print("Asset ID : ", Asset_id)
-
-    screenshot_path = os.path.join(screenshot_folder, "6_asset_creation.png")
-    page.screenshot(path=screenshot_path)
-
-    return Asset_id
-
 def clear_screenshot_folder(folder_path):
     if os.path.exists(folder_path):
-            # Loop through all the files and directories in the folder
-            for item in os.listdir(folder_path):
-                item_path = os.path.join(folder_path, item)
-                try:
-                    # If it's a directory, delete it recursively
-                    if os.path.isdir(item_path):
-                        shutil.rmtree(item_path)
-                    # If it's a file, delete it
-                    else:
-                        os.remove(item_path)
-                    print(f"Deleted: {item_path}")
-                except Exception as e:
-                    print(f"Error deleting {item_path}: {e}")
+        # Loop through all the files and directories in the folder
+        for item in os.listdir(folder_path):
+            item_path = os.path.join(folder_path, item)
+            try:
+                # If it's a directory, delete it recursively
+                if os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
+                    print(f"Deleted directory: {item_path}")
+                # If it's a file, delete it
+                else:
+                    os.remove(item_path)
+                    print(f"Deleted file: {item_path}")
+            except PermissionError:
+                print(f"Permission denied to delete: {item_path}")
+            except FileNotFoundError:
+                print(f"File not found (already deleted?): {item_path}")
+            except Exception as e:
+                print(f"Error deleting {item_path}: {e}")
     else:
-            print(f"Folder {folder_path} does not exist")
+        print(f"Folder {folder_path} does not exist")
