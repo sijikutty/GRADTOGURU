@@ -1,59 +1,25 @@
--- Search in the PSPCODE table (PeopleCode Text) for %UpdateStats
-SELECT 
-    'PeopleCode' AS Source,
-    PCCODEID, 
-    PCODETEXT, 
-    RECTYPE, 
-    SUBRECNAME, 
-    CREATEDT 
-FROM 
-    PSPCODE 
-WHERE 
-    UPPER(PCODETEXT) LIKE '%UPDATESTATS%'
+import os
+import shutil
 
-UNION
+def clear_folder(folder_path):
+    # Check if the folder exists
+    if os.path.exists(folder_path):
+        # Loop through all the files and directories in the folder
+        for item in os.listdir(folder_path):
+            item_path = os.path.join(folder_path, item)
+            try:
+                # If it's a directory, delete it recursively
+                if os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
+                # If it's a file, delete it
+                else:
+                    os.remove(item_path)
+                print(f"Deleted: {item_path}")
+            except Exception as e:
+                print(f"Error deleting {item_path}: {e}")
+    else:
+        print(f"Folder {folder_path} does not exist")
 
--- Search in PSAEAPPL (Application Engine) for %UpdateStats references in AE programs
-SELECT 
-    'Application Engine' AS Source,
-    AEAPPLID AS PCCODEID,
-    AECODETEXT AS PCODETEXT, 
-    'AE' AS RECTYPE, 
-    '' AS SUBRECNAME, 
-    CREATEDT 
-FROM 
-    PSAEAPPL 
-WHERE 
-    UPPER(AECODETEXT) LIKE '%UPDATESTATS%'
-
-UNION
-
--- Search in PSRECORD (Record PeopleCode) for references to %UpdateStats
-SELECT 
-    'Record PeopleCode' AS Source,
-    RCRDNAME AS PCCODEID,
-    RECTYPE AS PCODETEXT, 
-    SUBRECNAME,
-    CREATEDT 
-FROM 
-    PSRECORD 
-WHERE 
-    UPPER(RECTYPE) LIKE '%UPDATESTATS%'
-
-UNION
-
--- Search in SQLTEXTDEFN (SQL definitions) for %UpdateStats references
-SELECT 
-    'SQL Definition' AS Source,
-    SQLID AS PCCODEID,
-    SQLTEXT AS PCODETEXT, 
-    'SQL' AS RECTYPE, 
-    '' AS SUBRECNAME, 
-    CREATEDT 
-FROM 
-    SQLTEXTDEFN 
-WHERE 
-    UPPER(SQLTEXT) LIKE '%UPDATESTATS%'
-
-ORDER BY 
-    CREATEDT;
+# Example usage
+folder_path = r'C:\path\to\your\folder'  # Update with the target folder path
+clear_folder(folder_path)
