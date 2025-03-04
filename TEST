@@ -1,22 +1,1098 @@
-def clear_screenshot_folder(folder_path):
-    if os.path.exists(folder_path):
-        # Loop through all the files and directories in the folder
-        for item in os.listdir(folder_path):
-            item_path = os.path.join(folder_path, item)
-            try:
-                # If it's a directory, delete it recursively
-                if os.path.isdir(item_path):
-                    shutil.rmtree(item_path)
-                    print(f"Deleted directory: {item_path}")
-                # If it's a file, delete it
-                else:
-                    os.remove(item_path)
-                    print(f"Deleted file: {item_path}")
-            except PermissionError:
-                print(f"Permission denied to delete: {item_path}")
-            except FileNotFoundError:
-                print(f"File not found (already deleted?): {item_path}")
-            except Exception as e:
-                print(f"Error deleting {item_path}: {e}")
-    else:
-        print(f"Folder {folder_path} does not exist")
+{
+    "testcases": [
+        {
+            "key": "Smoketest GUI - TC35207",
+            "env": "DEV",
+            "runflag": "Y",
+            "tcid" : "TC35207",
+            "scenario": "test_PS_login",
+            "testdata": {
+                "ps_url": "http://p3911hldpep005.thehartford.com:8100/psp/efin2d/?cmd=login&languageCd=ENG&",
+                "secretID": "dev/psfscm/pia"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35204",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35204",
+            "scenario": "test_TC01_Create_Asset_Basic_Add",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC01_Create_Asset_Basic_Add"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35205",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35205",
+            "scenario": "test_TC02_Asset_Description_length",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "ABCDEFGHIJKLMNOPQRSTUVWWXYZABCDEFGHIJKLMNOPQRSTUVWWXYZ",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC02_Asset_Description_length"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35210",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35210",
+            "scenario": "test_TC33_AM_WorkCentre",
+            "testdata": {
+                "scenario": "test_TC33_AM_WorkCentre"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35211",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35211",
+            "scenario": "test_TC22_Depreciation_Process",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC22_Depreciation_Process",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35212",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35212",
+            "scenario": "test_TC26_FluidForAssetManagement",
+            "testdata": {
+                "scenario": "test_TC26_FluidForAssetManagement"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35214",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35214",
+            "scenario": "test_TC20_Retire_Assets",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC20_Retire_Assets",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35215",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35215",
+            "scenario": "test_TC21_Reinstate_Assets",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC21_Reinstate_Assets",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35206",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35206",
+            "scenario": "test_TC03_Change_In_Capitalized_Asset",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC03_Change_In_Capitalized_Asset"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35221",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35221",
+            "scenario": "test_TC27_AssetProfileDeactivateFeature",
+            "testdata": {
+                "Setid": "SHARE",
+                "Profile": "BLD_EQP",
+                "scenario": "test_TC27_AssetProfileDeactivateFeature"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35222",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35222",
+            "scenario": "test_TC23_Accounting_Entries_Creation",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC23_Accounting_Entries_Creation",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35257",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35257",
+            "scenario": "test_TC04_Cost_Adjustment",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC04_Cost_Adjustment",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "Adj_Amt":"50"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35258",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35258",
+            "scenario": "test_TC05_Asset_Transfer",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC05_Asset_Transfer",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "Dept_NEW":"WKF",
+                "Region_new":"C2"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35259",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35259",
+            "scenario": "test_TC06_Cost_Percentage",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC06_Cost_Percentage",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "Percentage":"5",
+                "Final_Amt":"262,500.00"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35260",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35260",
+            "scenario": "test_TC07_Asset_Cost_Single_Row",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC07_Asset_Cost_Single_Row",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "Adj_Amt":"50"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35261",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35261",
+            "scenario": "test_TC08_Prior_Period_Depreciation",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC08_Prior_Period_Depreciation",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35262",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35262",
+            "scenario": "test_TC09_IntraTransfer",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC09_IntraTransfer",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "Dept_NEW":"WKF",
+                "Region_new":"C2"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35263",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35263",
+            "scenario": "test_TC10_InterTransfer",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC10_InterTransfer",
+                "Request_id":"test",
+                "Request_id_1":"test1",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST",
+                "BU_NEW":"25000"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35314",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35314",
+            "scenario": "test_TC32_AssetTransactionReversalfeatures",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC32_AssetTransactionReversalfeatures",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35315",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35315",
+            "scenario": "test_TC24_Close_Depreciation",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC24_Close_Depreciation",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35316",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35316",
+            "scenario": "test_TC16_Allocation_process",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC16_Allocation_process",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "process_group":"AM_MLB_RE",
+                "process_step":"AM_MLB_RE1",
+                "allocationprocess":"FS_ALLC",
+                "ps_db":"dev2/3911/efin2d"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35317",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35317",
+            "scenario": "test_TC13_WorkCenter_Verification",
+            "testdata": {
+                "scenario": "test_TC13_WorkCenter_Verification",
+                "business_unit": "15000"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35318",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35318",
+            "scenario": "test_TC11_Review_Depreciation",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC11_Review_Depreciation",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35319",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35319",
+            "scenario": "test_TC12_Depreciation_process_IntraTransfer",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC12_Depreciation_process_IntraTransfer",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "Dept_NEW":"WKF",
+                "Region_new":"C2"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35320",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35320",
+            "scenario": "test_TC17_Depreciation_Reporting_Process",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC17_Depreciation_Reporting_Process",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        }
+        ,
+        {
+            "key": "QA test GUI - TC35321",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35321",
+            "scenario": "test_TC18_Loading_the_Net_Book_Value_Table",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC18_Loading_the_Net_Book_Value_Table",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "ps_db":"dev2/3911/efin2d"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35393",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35393",
+            "scenario": "test_TC28_AddCommentAndAttachmentsLink",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC28_AddCommentAndAttachmentsLink",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "input_file": "C:/Github/corp_corpit_ps_egl_test_automation/login.ps1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35394",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35394",
+            "scenario": "test_TC19_Asset_Depreciation_Bonus",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC19_Asset_Depreciation_Bonus",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35395",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35395",
+            "scenario": "test_TC36_CreateNewAssetWithProfileSetup",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"TEST3",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC36_CreateNewAssetWithProfileSetup",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35396",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35396",
+            "scenario": "test_TC25_Generate_Journals",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC25_Generate_Journals",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1",
+                "ps_db":"dev2/3911/efin2d"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35397",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35397",
+            "scenario": "test_TC29_AssetInterface",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC29_AssetInterface",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35398",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35398",
+            "scenario": "test_TC30_DisplayErrorDetailsForAssetInterface",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC30_DisplayErrorDetailsForAssetInterface",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        },
+        {
+            "key": "QA test GUI - TC35399",
+            "env": "DEV",
+            "runflag": "N",
+            "tcid" : "TC35399",
+            "scenario": "test_TC31_MultipleErrorMessageForAssetInterfacedata",
+            "testdata": {
+                "business_unit": "15000",
+                "Description": "TEST",
+                "Desc": "TEST",
+                "Date": "12/12/2024",
+                "Profile_id":"AUTO_M",
+                "Category":"AUTO",
+                "Quantity":"1",
+                "Sales_Tax":"250000",
+                "Amount":"5000000",
+                "Serial_id":"123",
+                "Manufacture":"3 COM",
+                "Supplier_ID":"0090010374",
+                "State":"000",
+                "Dept":"E08",
+                "Melob":"99",
+                "function":"9",
+                "exp_comp":"9",
+                "reg_offc":"00",
+                "key_offc":"058",
+                "scenario": "test_TC31_MultipleErrorMessageForAssetInterfacedata",
+                "Request_id":"test",
+                "server":"PSUNX",
+                "secretID": "dev/psfscm/pia",
+                "run_control_id":"TEST1"
+            },
+            "env_variables": {
+                "writedefect": "N"
+            }
+        }
+    ],
+    "rally_secrets": "C:/Users/{homedir}/.secret/rally_secrets.xml",
+    "rally": {
+        "server": "rally1.rallydev.com",
+        "workspace": "Corporate IT",
+        "project": "IT Finance IGNITE",
+        "s3bucket": "app-5208-dev-ue1-shared-s3-1",
+        "inputfile": "Testing/rallyinput/rally_tc_results.json",
+        "tcjsonfile": "Testing/Data/testcase.json"
+    }
+}
